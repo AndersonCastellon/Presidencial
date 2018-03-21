@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Presidenciales 2019</string>
+    <string name="TextEmail">Email</string>
+    <string name="TextPass">Contraseña</string>
+    <string name="btnLogin">Iniciar sesion</string>
+    <string name="btnNewAccount">Crear cuenta</string>
+    <string name="tvOpcionesInicio">O inicia con</string>
+    <string name="btnLoginGoogle">Google</string>
+    <string name="btnLoginFacebook">Facebook</string>
+</resources>
