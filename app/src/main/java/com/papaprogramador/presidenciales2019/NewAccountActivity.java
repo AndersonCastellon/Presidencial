@@ -40,10 +40,7 @@ public class NewAccountActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = mAuth.getCurrentUser();
-                if (user == null){
-                    //NO ESTA LOGUEADO
-                }
-                else{
+                if (user != null){
                     //ESTA LOGUEADO
                     Toast.makeText(getApplicationContext(),"Te registrastes como: " + user.getEmail(),
                             Toast.LENGTH_LONG).show();
@@ -67,7 +64,7 @@ public class NewAccountActivity extends AppCompatActivity {
         String passwordCreate = EditTextPassword.getText().toString();
 
         if (!emailCreate.isEmpty() && !passwordCreate.isEmpty()){
-        mAuth.signInWithEmailAndPassword(emailCreate, passwordCreate).addOnCompleteListener(this,
+            mAuth.createUserWithEmailAndPassword(emailCreate, passwordCreate).addOnCompleteListener(this,
                 new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
