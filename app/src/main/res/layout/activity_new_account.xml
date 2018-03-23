@@ -64,7 +64,7 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/icon_bottom_margin">
 
-        <Button
+        <com.google.android.gms.common.SignInButton
             android:id="@+id/btnLoginGoogle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

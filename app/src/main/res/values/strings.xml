@@ -7,4 +7,7 @@
     <string name="tvOpcionesInicio">O inicia con</string>
     <string name="btnLoginGoogle">Google</string>
     <string name="btnLoginFacebook">Facebook</string>
+    <string name="EmailPasswordIncorrect">Email o contraseña incorrectos</string>
+    <string name="ErrorSignInGoogle">Error al iniciar con Google</string>
+    <string name="IniciasteComo">Iniciastes como:</string>
 </resources>

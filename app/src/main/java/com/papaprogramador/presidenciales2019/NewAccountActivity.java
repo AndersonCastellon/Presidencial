@@ -70,12 +70,12 @@ public class NewAccountActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()){
-                    Toast.makeText(NewAccountActivity.this, "Cuenta creada correctamente",
-                            Toast.LENGTH_LONG).show();
+/*                    Toast.makeText(NewAccountActivity.this, "Cuenta creada correctamente",
+                            Toast.LENGTH_LONG).show();*/
                     startActivity(new Intent(NewAccountActivity.this, MainActivity.class));
                 }else{
 
-                    Toast.makeText(NewAccountActivity.this, "Error en la creación",
+                    Toast.makeText(NewAccountActivity.this, "Ha ocurrido un error",
                             Toast.LENGTH_LONG).show();
                 }
 
