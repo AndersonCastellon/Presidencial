@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,16 +20,19 @@ public class NewAccountActivity extends LoginActivity {
     private FirebaseAuth.AuthStateListener Listener;
 
     private EditText EditTextEmail, EditTextPassword;
+    private Button btnNewAccount;
+    private ProgressBar mProgressBar;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_account);
 
-        mAuth = FirebaseAuth.getInstance();
         EditTextEmail = findViewById(R.id.editTexEmailCreate);
         EditTextPassword = findViewById(R.id.editTextPasswordCreate);
-        Button btnNewAccount = findViewById(R.id.btnNewAccountCreate);
+        btnNewAccount = findViewById(R.id.btnNewAccountCreate);
+        mProgressBar = findViewById(R.id.ProgressBarNewAccount);
 
+        mAuth = FirebaseAuth.getInstance();
         //Inicializacion del escuchador
         Listener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -54,6 +58,7 @@ public class NewAccountActivity extends LoginActivity {
     }
 
     private void CreateNewAccount() {
+        ProgressStatusVisible();
         String emailCreate = EditTextEmail.getText().toString();
         String passwordCreate = EditTextPassword.getText().toString();
 
@@ -62,7 +67,7 @@ public class NewAccountActivity extends LoginActivity {
                 new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
+                ProgressStatusGone();
                 if (task.isSuccessful()){
                     goMainScreen();
                 }else{
@@ -95,5 +100,21 @@ public class NewAccountActivity extends LoginActivity {
             mAuth.removeAuthStateListener(Listener);
         }
 
+    }
+
+    private void ProgressStatusVisible(){
+
+        EditTextEmail.setVisibility(View.GONE);
+        EditTextPassword.setVisibility(View.GONE);
+        btnNewAccount.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
+    }
+    private void ProgressStatusGone(){
+
+        EditTextEmail.setVisibility(View.VISIBLE);
+        EditTextPassword.setVisibility(View.VISIBLE);
+        btnNewAccount.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
     }
 }

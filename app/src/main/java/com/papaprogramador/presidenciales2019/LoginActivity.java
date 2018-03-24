@@ -33,6 +33,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private EditText mTextEmail;
     private EditText mTextPassword;
     private ProgressBar mProgressBar;
+    private Button mBtnLogin;
+    private Button mBtnNewAccount;
+    private SignInButton mBtnLoginGoogle;
+    private Button mBtnLoginFacebook;
     public  static final int SIGN_IN_CODE = 777;
 
     //Variable para la autenticacion con Firebase
@@ -55,10 +59,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //Innicializacion de los elementos de la UI
         mTextEmail = findViewById(R.id.editTexEmail);
         mTextPassword = findViewById(R.id.editTextPassword);
-        Button mBtnLogin = findViewById(R.id.btnLogin);
-        Button mBtnNewAccount = findViewById(R.id.btnNewAccount);
-        SignInButton mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
-        Button mBtnLoginFacebook = findViewById(R.id.btnLoginFacebook);
+        mBtnLogin = findViewById(R.id.btnLogin);
+        mBtnNewAccount = findViewById(R.id.btnNewAccount);
+        mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
+        mBtnLoginFacebook = findViewById(R.id.btnLoginFacebook);
         mProgressBar = findViewById(R.id.mProgressBar);
 
 
@@ -125,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     //METODO PARA INICIAR SESION CON EMAIL
     private void Ingresar() {
-        mProgressBar.setVisibility(View.VISIBLE);
+        ProgressStatusVisible();
 
         //Valores a las variables necesarias
         String email = mTextEmail.getText().toString();
@@ -138,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        mProgressBar.setVisibility(View.GONE);
+                        ProgressStatusGone();
                         if (task.isSuccessful()){
                         goMainScreen();
                     }
@@ -176,14 +180,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     //Método para obtener las credenciales de Google y usarlas en FirebaseAuth
     private void FirebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
 
-        mProgressBar.setVisibility(View.VISIBLE);
+        ProgressStatusVisible();
         AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
         mAuth.signInWithCredential(credential).addOnCompleteListener(this,
                 new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                mProgressBar.setVisibility(View.GONE);
-
+                ProgressStatusGone();
                 if (!task.isSuccessful()){
                     Toast.makeText(LoginActivity.this,getString(R.string.ErrorAuthWithGoogle),
                             Toast.LENGTH_LONG).show();
@@ -223,6 +226,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
             mAuth.removeAuthStateListener(Listener);
         }
+
+    }
+
+    private void ProgressStatusVisible(){
+
+        mTextEmail.setVisibility(View.GONE);
+        mTextPassword.setVisibility(View.GONE);
+        mBtnLogin.setVisibility(View.GONE);
+        mBtnNewAccount.setVisibility(View.GONE);
+        mBtnLoginGoogle.setVisibility(View.GONE);
+        mBtnLoginFacebook.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+
+    }
+    private void ProgressStatusGone(){
+
+        mTextEmail.setVisibility(View.VISIBLE);
+        mTextPassword.setVisibility(View.VISIBLE);
+        mBtnLogin.setVisibility(View.VISIBLE);
+        mBtnNewAccount.setVisibility(View.VISIBLE);
+        mBtnLoginGoogle.setVisibility(View.VISIBLE);
+        mBtnLoginFacebook.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
 
     }
 }

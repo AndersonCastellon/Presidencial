@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void CloseSesionFull() {
         mAuth.signOut();
         logOut();
-        revoke();
+        Toast.makeText(MainActivity.this, R.string.CloseSesionFull, Toast.LENGTH_LONG).show();
+        //revoke();
     }
 
     public void logOut() {
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         });
     }
 
-    public void revoke() {
+    /*public void revoke() {
         Auth.GoogleSignInApi.revokeAccess(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull Status status) {
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 }
             }
         });
-    }
+    }*/
 
     @Override
     protected void onStart() {
