@@ -2,12 +2,10 @@ package com.papaprogramador.presidenciales2019;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,13 +14,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class NewAccountActivity extends AppCompatActivity {
+public class NewAccountActivity extends LoginActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener Listener;
 
     private EditText EditTextEmail, EditTextPassword;
-    private Button btnLoginGoogle;
-    private Button btnLoginFacebook;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +28,6 @@ public class NewAccountActivity extends AppCompatActivity {
         EditTextEmail = findViewById(R.id.editTexEmailCreate);
         EditTextPassword = findViewById(R.id.editTextPasswordCreate);
         Button btnNewAccount = findViewById(R.id.btnNewAccountCreate);
-        ProgressBar mProgressbar = findViewById(R.id.LoginProgressBarCreate);
-        mProgressbar.setVisibility(View.INVISIBLE);
 
         //Inicializacion del escuchador
         Listener = new FirebaseAuth.AuthStateListener() {
@@ -42,7 +36,7 @@ public class NewAccountActivity extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null){
                     //ESTA LOGUEADO
-                    Toast.makeText(getApplicationContext(),"Te registrastes como: " + user.getEmail(),
+                    Toast.makeText(getApplicationContext(),R.string.IniciasteComo + user.getEmail(),
                             Toast.LENGTH_LONG).show();
                     startActivity(new Intent(NewAccountActivity.this, MainActivity.class));
                 }
@@ -70,12 +64,10 @@ public class NewAccountActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()){
-/*                    Toast.makeText(NewAccountActivity.this, "Cuenta creada correctamente",
-                            Toast.LENGTH_LONG).show();*/
-                    startActivity(new Intent(NewAccountActivity.this, MainActivity.class));
+                    goMainScreen();
                 }else{
 
-                    Toast.makeText(NewAccountActivity.this, "Ha ocurrido un error",
+                    Toast.makeText(NewAccountActivity.this, R.string.CreateNewAccountERROR,
                             Toast.LENGTH_LONG).show();
                 }
 
@@ -83,7 +75,8 @@ public class NewAccountActivity extends AppCompatActivity {
         });
 
         }else {
-            Toast.makeText(NewAccountActivity.this, "Introduce Email y Contraseña", Toast.LENGTH_LONG).show();
+            Toast.makeText(NewAccountActivity.this, R.string.IntoEmailAndPasswordForNewAccount,
+                    Toast.LENGTH_LONG).show();
         }
 
     }

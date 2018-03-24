@@ -10,4 +10,7 @@
     <string name="EmailPasswordIncorrect">Email o contraseña incorrectos</string>
     <string name="ErrorSignInGoogle">Error al iniciar con Google</string>
     <string name="IniciasteComo">Iniciastes como:</string>
+    <string name="CreateNewAccountERROR">Ha ocurrido un error</string>
+    <string name="IntoEmailAndPasswordForNewAccount">Introduce Email y Contraseña</string>
+    <string name="ErrorAuthWithGoogle">No se pudo autenticar con Google</string>
 </resources>

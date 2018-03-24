@@ -48,40 +48,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/LinearLayoutButtons"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="@dimen/icon_bottom_margin"
-        android:text="@string/tvOpcionesInicio" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvText"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/icon_bottom_margin">
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/btnLoginGoogle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/btnLoginGoogle" />
-
-        <Button
-            android:id="@+id/btnLoginFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/btnLoginFacebook" />
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/LoginProgressBarCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
-
 </RelativeLayout>
