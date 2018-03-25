@@ -1,4 +1,6 @@
 <resources>
+
+    <!--INICIO Strings para todo el sistema de logIn de la aplicacion-->
     <string name="app_name">Presidenciales 2019</string>
     <string name="TextEmail">Email</string>
     <string name="TextPass">Contraseña</string>
