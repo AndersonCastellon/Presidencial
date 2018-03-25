@@ -52,15 +52,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         mBtnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CloseSesionFull();
+                CloseFullSession();
             }
         });
     }
 
-    private void CloseSesionFull() {
+    private void CloseFullSession() {
         mAuth.signOut();
         logOut();
-        Toast.makeText(MainActivity.this, R.string.CloseSesionFull, Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this, R.string.CloseFullSession, Toast.LENGTH_LONG).show();
         //revoke();
     }
 

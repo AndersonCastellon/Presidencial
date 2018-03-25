@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Button mBtnNewAccount;
     private SignInButton mBtnLoginGoogle;
     private Button mBtnLoginFacebook;
+    private TextView mtextView;
     public  static final int SIGN_IN_CODE = 777;
 
     //Variable para la autenticacion con Firebase
@@ -64,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
         mBtnLoginFacebook = findViewById(R.id.btnLoginFacebook);
         mProgressBar = findViewById(R.id.mProgressBar);
-
+        mtextView = findViewById(R.id.tvText);
 
         //Inicializacion del escuchador
         Listener = new FirebaseAuth.AuthStateListener() {
@@ -237,6 +239,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mBtnNewAccount.setVisibility(View.GONE);
         mBtnLoginGoogle.setVisibility(View.GONE);
         mBtnLoginFacebook.setVisibility(View.GONE);
+       mtextView.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
 
     }
@@ -248,6 +251,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mBtnNewAccount.setVisibility(View.VISIBLE);
         mBtnLoginGoogle.setVisibility(View.VISIBLE);
         mBtnLoginFacebook.setVisibility(View.VISIBLE);
+        mtextView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.GONE);
 
     }

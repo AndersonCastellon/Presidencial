@@ -15,5 +15,5 @@
     <string name="ErrorAuthWithGoogle">No se pudo autenticar con Google</string>
     <string name="not_close_session">No se pudo cerrar la sesion</string>
     <string name="not_revoke">No se revocó la sesion</string>
-    <string name="CloseSesionFull">Cerraste la sesion</string>
+    <string name="CloseFullSession">Cerraste la sesion</string>
 </resources>
