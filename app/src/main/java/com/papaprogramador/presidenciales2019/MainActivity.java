@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_main);
 
         Button mBtnLogout = findViewById(R.id.BtnLogout);
-
+        //Coneccion con la api de google para la autenticación
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .build();
 
         mAuth = FirebaseAuth.getInstance();
+        //Escuchador para validar la session iniciada
         Listener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 }
             }
         };
-
+        //Metodo del boton
         mBtnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,14 +57,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
     }
-
+    //Metodo para cerrar la session completa en firebase y luego en google
     private void CloseFullSession() {
         mAuth.signOut();
         logOut();
         Toast.makeText(MainActivity.this, R.string.CloseFullSession, Toast.LENGTH_LONG).show();
         //revoke();
     }
-
+    //Metodo que cierra la session en google
     public void logOut() {
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
             @Override
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             mAuth.removeAuthStateListener(Listener);
         }
     }
-
+    //Método para ir a la ventana de login
     protected void goLogInScreen() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         startActivity(intent);
     }
 
-
+    //Sobreescritura de este metodo al implementar GoogleApiClient.OnConnectionFailedListener
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 

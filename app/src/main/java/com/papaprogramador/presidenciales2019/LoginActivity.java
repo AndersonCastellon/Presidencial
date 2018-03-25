@@ -197,10 +197,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
-    /*Este metodo goMainScreen puede ser utilizado para ir a la siguiente activity en caso de que el inicio de sesion
-    sea exitoso, se puede utilizar para cualquier opcion de inicio de sesion, google, facebook y correo
-    electronico*/
-    protected void goMainScreen() {
+        //Metodo para ir a el activity principal en caso de session exitosa
+        protected void goMainScreen() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);

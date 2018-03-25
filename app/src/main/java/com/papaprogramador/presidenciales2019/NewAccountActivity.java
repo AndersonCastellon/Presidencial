@@ -3,6 +3,7 @@ package com.papaprogramador.presidenciales2019;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class NewAccountActivity extends LoginActivity {
+public class NewAccountActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener Listener;
 
@@ -39,7 +40,6 @@ public class NewAccountActivity extends LoginActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null){
-                    //ESTA LOGUEADO
                     Toast.makeText(getApplicationContext(),R.string.IniciasteComo + user.getEmail(),
                             Toast.LENGTH_LONG).show();
                     startActivity(new Intent(NewAccountActivity.this, MainActivity.class));
@@ -56,7 +56,7 @@ public class NewAccountActivity extends LoginActivity {
         });
 
     }
-
+    //Método para crear la nueva cuenta en firebase
     private void CreateNewAccount() {
         ProgressStatusVisible();
         String emailCreate = EditTextEmail.getText().toString();
@@ -84,6 +84,13 @@ public class NewAccountActivity extends LoginActivity {
                     Toast.LENGTH_LONG).show();
         }
 
+    }
+    //Metodo para ir a el activity principal en caso de session exitosa
+    private void goMainScreen() {
+        Intent intent = new Intent(NewAccountActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override
