@@ -69,7 +69,11 @@ public class NewAccountActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 ProgressStatusGone();
                 if (task.isSuccessful()){
-                    goMainScreen();
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    user.sendEmailVerification();
+                    goEmailVerificationScreen();
+                    //goMainScreen();
+
                 }else{
 
                     Toast.makeText(NewAccountActivity.this, R.string.CreateNewAccountERROR,
@@ -85,13 +89,21 @@ public class NewAccountActivity extends AppCompatActivity {
         }
 
     }
-    //Metodo para ir a el activity principal en caso de session exitosa
+
+    private void goEmailVerificationScreen() {
+        Intent intent = new Intent(NewAccountActivity.this, EmailVerificationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+/*    //Metodo para ir a el activity principal en caso de session exitosa
     private void goMainScreen() {
         Intent intent = new Intent(NewAccountActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
+    }*/
 
     @Override
     protected void onStart() {
