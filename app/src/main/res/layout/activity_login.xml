@@ -75,10 +75,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <Button
+        <com.facebook.login.widget.LoginButton
             android:id="@+id/btnLoginFacebook"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/icon_bottom_margin"
             android:text="@string/btnLoginFacebook" />
 
     </LinearLayout>
