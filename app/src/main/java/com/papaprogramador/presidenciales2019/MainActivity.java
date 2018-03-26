@@ -51,11 +51,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 }
             }
         };
-            //Verificar si el inicio con Facebook es null
-        if (AccessToken.getCurrentAccessToken() == null){
 
-            goLogInScreen();
-        }
         //Metodo del boton
         mBtnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             }
         });
     }
-    //Metodo para cerrar la session completa en firebase y luego en google
+    //Metodo para cerrar la session completa en firebase, Facebook y Google
     private void CloseFullSession() {
         mAuth.signOut();
         logOut();

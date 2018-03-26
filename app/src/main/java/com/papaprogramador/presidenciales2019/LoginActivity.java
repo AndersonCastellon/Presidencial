@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -29,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -77,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mProgressBar = findViewById(R.id.mProgressBar);
         mtextView = findViewById(R.id.tvText);
 
+        //Linea para leer el correo del usuario
         mBtnLoginFacebook.setReadPermissions(Arrays.asList("email"));
 
         //Inicializacion del escuchador
@@ -138,19 +141,19 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mBtnLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                ProgressStatusVisible();
-                goMainScreen();
-                ProgressStatusGone();
+                handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
             @Override
             public void onCancel() {
-                Toast.makeText(LoginActivity.this, getString(R.string.CancelLoginFacebook), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, getString(R.string.CancelLoginFacebook),
+                        Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException error) {
-                Toast.makeText(LoginActivity.this, R.string.ErrorLoginFacebook, Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, R.string.ErrorLoginFacebook,
+                        Toast.LENGTH_LONG).show();
 
             }
         });
@@ -160,11 +163,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         //DENTRO DE ONCREATE
     }
-
-
     //FUERA DEL ONCREATE
 
-
+    //Método para enviar el token de facebook a firebase y realizar la autenticacion
+    private void handleFacebookAccessToken(AccessToken accessToken) {
+        ProgressStatusVisible();
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        mAuth.signInWithCredential(credential).addOnCompleteListener(LoginActivity.this,
+                new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), R.string.facebookErrorLogin,
+                            Toast.LENGTH_LONG).show();
+                }
+                ProgressStatusGone();
+            }
+        });
+    }
 
     //METODO PARA INICIAR SESION CON EMAIL
     private void SignInWitchEmail() {

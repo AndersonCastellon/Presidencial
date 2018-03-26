@@ -25,4 +25,5 @@
     <string name="CloseFullSession">Cerraste la sesion</string>
     <string name="CancelLoginFacebook">Has cancelado el inicio de sesion con Facebook</string>
     <string name="ErrorLoginFacebook">Ha ocurrido un error</string>
+    <string name="facebookErrorLogin">Error en inicio de sesion con Facebook</string>
 </resources>
