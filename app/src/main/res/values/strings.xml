@@ -23,4 +23,6 @@
     <string name="not_close_session">No se pudo cerrar la sesion</string>
     <string name="not_revoke">No se revocó la sesion</string>
     <string name="CloseFullSession">Cerraste la sesion</string>
+    <string name="CancelLoginFacebook">Has cancelado el inicio de sesion con Facebook</string>
+    <string name="ErrorLoginFacebook">Ha ocurrido un error</string>
 </resources>

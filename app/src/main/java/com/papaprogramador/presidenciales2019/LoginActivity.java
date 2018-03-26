@@ -6,12 +6,18 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -27,6 +33,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Arrays;
+
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -37,8 +45,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Button mBtnLogin;
     private Button mBtnNewAccount;
     private SignInButton mBtnLoginGoogle;
-    private Button mBtnLoginFacebook;
+    private LoginButton mBtnLoginFacebook;
     private TextView mtextView;
+    private CallbackManager callbackManager;
     public  static final int SIGN_IN_CODE = 777;
 
     //Variable para la autenticacion con Firebase
@@ -68,6 +77,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mProgressBar = findViewById(R.id.mProgressBar);
         mtextView = findViewById(R.id.tvText);
 
+        mBtnLoginFacebook.setReadPermissions(Arrays.asList("email"));
+
         //Inicializacion del escuchador
         Listener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -86,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View v) {
                 //METODO PARA INGRESAR
-                Ingresar();
+                SignInWitchEmail();
 
             }
         });
@@ -121,6 +132,32 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
         //FIN DE AUTENTICACION CON GOOGLE
 
+        //INICIO AUTENTICACION CON FACEBOOK
+
+        callbackManager = CallbackManager.Factory.create();
+        mBtnLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                ProgressStatusVisible();
+                goMainScreen();
+                ProgressStatusGone();
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(LoginActivity.this, getString(R.string.CancelLoginFacebook), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(LoginActivity.this, R.string.ErrorLoginFacebook, Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
+        //FIN AUTENTICACION CON FACEBOOK
+
         //DENTRO DE ONCREATE
     }
 
@@ -130,7 +167,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 
     //METODO PARA INICIAR SESION CON EMAIL
-    private void Ingresar() {
+    private void SignInWitchEmail() {
         ProgressStatusVisible();
 
         //Valores a las variables necesarias
@@ -162,6 +199,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SIGN_IN_CODE){
 
@@ -169,6 +207,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             handleSingInResult(result);
         }
     }
+
     //Si el resultado de onActivityResult es exitoso se pasa el token a firebase aquí
     @SuppressLint("ResourceType")
     private void handleSingInResult(GoogleSignInResult result) {

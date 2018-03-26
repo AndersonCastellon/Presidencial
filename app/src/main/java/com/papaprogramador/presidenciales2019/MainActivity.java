@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -49,6 +51,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 }
             }
         };
+            //Verificar si el inicio con Facebook es null
+        if (AccessToken.getCurrentAccessToken() == null){
+
+            goLogInScreen();
+        }
         //Metodo del boton
         mBtnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private void CloseFullSession() {
         mAuth.signOut();
         logOut();
+        LoginManager.getInstance().logOut();
         Toast.makeText(MainActivity.this, R.string.CloseFullSession, Toast.LENGTH_LONG).show();
         //revoke();
     }
