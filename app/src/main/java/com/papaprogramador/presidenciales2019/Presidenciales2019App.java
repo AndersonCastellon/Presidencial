@@ -16,4 +16,5 @@ public class Presidenciales2019App extends Application {
 
         AppEventsLogger.activateApp(this);
     }
+
 }

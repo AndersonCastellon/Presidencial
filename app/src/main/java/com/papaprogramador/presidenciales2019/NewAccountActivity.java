@@ -90,8 +90,15 @@ public class NewAccountActivity extends AppCompatActivity {
 
     }
 
+    //Método para ir al aviso para verificar el correo electrónico
     private void goEmailVerificationScreen() {
+        String email = EditTextEmail.getText().toString();
+        String password = EditTextPassword.getText().toString();
+
         Intent intent = new Intent(NewAccountActivity.this, EmailVerificationActivity.class);
+        intent.putExtra("email", email);
+        intent.putExtra("password", password);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

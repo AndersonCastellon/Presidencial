@@ -88,10 +88,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null){
-                    //ESTA LOGUEADO
-                    Toast.makeText(getApplicationContext(),getString(R.string.IniciasteComo) + user.getEmail(),
-                            Toast.LENGTH_LONG).show();
-                    goMainScreen();
+                    if (user.isEmailVerified()){
+                        //ESTA LOGUEADO
+                        Toast.makeText(getApplicationContext(),getString(R.string.IniciasteComo) + user.getEmail(),
+                                Toast.LENGTH_LONG).show();
+                        goMainScreen();
+                    }
+
                 }
             }
         };
