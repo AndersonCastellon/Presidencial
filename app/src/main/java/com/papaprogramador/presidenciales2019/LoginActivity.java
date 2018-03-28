@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -100,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onClick(View v) {
 
-                SignInWitchEmail();
+                SignInWitchEmail(mTextEmail.getText().toString(), mTextPassword.getText().toString());
 
             }
         });
@@ -176,6 +177,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (!task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), R.string.facebookErrorLogin,
                             Toast.LENGTH_LONG).show();
+                }else {
+                    goMainScreen();
                 }
                 ProgressStatusGone();
             }
@@ -183,11 +186,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     //METODO PARA INICIAR SESION CON EMAIL
-    private void SignInWitchEmail() {
+    private void SignInWitchEmail(final String email, final String password) {
 
-        //Valores a las variables necesarias
+/*        //Valores a las variables necesarias
         final String email = mTextEmail.getText().toString();
-        final String password = mTextPassword.getText().toString();
+        final String password = mTextPassword.getText().toString();*/
 
         //Validar si los valores no estan vacios
         if (!email.isEmpty() && !password.isEmpty()){
@@ -197,7 +200,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 public void onComplete(@NonNull Task<Void> task) {
                     if (user.isEmailVerified()){
                         ProgressStatusVisible();
-                        mAuth.signInWithEmailAndPassword(email, password)
+                        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+                        mAuth.signInWithCredential(credential).addOnCompleteListener(LoginActivity.this,
+                                new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (!task.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(), R.string.EmailPasswordIncorrect,
+                                                    Toast.LENGTH_LONG).show();
+                                        }else {
+                                            goMainScreen();
+                                        }
+                                        ProgressStatusGone();
+                                    }
+                                });
+/*                        mAuth.signInWithEmailAndPassword(email, password)
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -210,7 +227,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                                     Toast.LENGTH_LONG).show();
                                         }
                                     }
-                                });
+                                });*/
                     }else {
                         Toast.makeText(LoginActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
                     }

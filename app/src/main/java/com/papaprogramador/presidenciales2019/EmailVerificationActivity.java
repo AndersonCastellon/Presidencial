@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -74,7 +76,20 @@ public class EmailVerificationActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (user.isEmailVerified()){
-                        mAuth.signInWithEmailAndPassword(email, password)
+                        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+                        mAuth.signInWithCredential(credential).addOnCompleteListener(EmailVerificationActivity.this,
+                                new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (!task.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(), R.string.EmailPasswordIncorrect,
+                                                    Toast.LENGTH_LONG).show();
+                                        }else {
+                                            goMainScreen();
+                                        }
+                                    }
+                                });
+/*                        mAuth.signInWithEmailAndPassword(email, password)
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -86,7 +101,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                                                     Toast.LENGTH_LONG).show();
                                         }
                                     }
-                                });
+                                });*/
                     }else {
                         Toast.makeText(EmailVerificationActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
                     }
