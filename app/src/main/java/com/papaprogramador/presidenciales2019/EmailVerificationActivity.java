@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -14,7 +17,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class EmailVerificationActivity extends AppCompatActivity {
     private String emailIntent;
-    private String passowordIntent;
+    private String passwordIntent;
+    private TextView mTextView;
+    private Button mButton;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener Listener;
 
@@ -23,14 +28,17 @@ public class EmailVerificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_verification);
 
+        //Instancia de elementos de la UI
+        mTextView = findViewById(R.id.TextViewConfirmationNotice);
+        mButton = findViewById(R.id.EmailVerified);
 
-
+        //Se rescatan los valores del Inten mediante el Bundle
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             emailIntent = bundle.getString("email");
-            passowordIntent = bundle.getString("password");
+            passwordIntent = bundle.getString("password");
         }
-
+        //Instancia del usuario de firebase y el listener
         mAuth = FirebaseAuth.getInstance();
         Listener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -38,44 +46,58 @@ public class EmailVerificationActivity extends AppCompatActivity {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null){
                     if (user.isEmailVerified()){
-                        SignInWitchEmail(emailIntent, passowordIntent);
+                        goMainScreen();
                     }
+
                 }else {
                     goLogInScreen();
                 }
             }
         };
 
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SignInWitchEmail(emailIntent, passwordIntent);
+            }
+        });
+
 
     }
-    //METODO PARA INICIAR SESION CON EMAIL
-    private void SignInWitchEmail(String email, String password) {
-        ProgressStatusVisible();
+
+    private void SignInWitchEmail(final String email, final String password) {
+
         //Validar si los valores no estan vacios
         if (!email.isEmpty() && !password.isEmpty()){
+            final FirebaseUser user = mAuth.getCurrentUser();
+            user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (user.isEmailVerified()){
+                        mAuth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()){
+                                            goMainScreen();
+                                        }
+                                        else {
+                                            Toast.makeText(EmailVerificationActivity.this, R.string.EmailPasswordIncorrect,
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                    }else {
+                        Toast.makeText(EmailVerificationActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
 
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            ProgressStatusGone();
-                            if (task.isSuccessful()){
-                                goMainScreen();
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(), R.string.EmailPasswordIncorrect,
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
+        }else {
+            Toast.makeText(EmailVerificationActivity.this, R.string.IntoCredentials, Toast.LENGTH_LONG).show();
         }
     }
 
-    private void ProgressStatusGone() {
-    }
-
-    private void ProgressStatusVisible() {
-    }
 
     private void goMainScreen() {
         Intent intent = new Intent(EmailVerificationActivity.this, MainActivity.class);

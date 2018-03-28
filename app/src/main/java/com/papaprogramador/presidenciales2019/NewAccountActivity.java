@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class NewAccountActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener Listener;
+//    private FirebaseAuth.AuthStateListener Listener;
 
     private EditText EditTextEmail, EditTextPassword;
     private Button btnNewAccount;
@@ -35,17 +35,15 @@ public class NewAccountActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         //Inicializacion del escuchador
-        Listener = new FirebaseAuth.AuthStateListener() {
+/*        Listener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null){
-                    Toast.makeText(getApplicationContext(),R.string.IniciasteComo + user.getEmail(),
-                            Toast.LENGTH_LONG).show();
                     startActivity(new Intent(NewAccountActivity.this, MainActivity.class));
                 }
             }
-        };
+        };*/
 
 
         btnNewAccount.setOnClickListener(new View.OnClickListener() {
@@ -58,24 +56,28 @@ public class NewAccountActivity extends AppCompatActivity {
     }
     //Método para crear la nueva cuenta en firebase
     private void CreateNewAccount() {
-        ProgressStatusVisible();
         String emailCreate = EditTextEmail.getText().toString();
         String passwordCreate = EditTextPassword.getText().toString();
 
         if (!emailCreate.isEmpty() && !passwordCreate.isEmpty()){
+            ProgressStatusVisible();
             mAuth.createUserWithEmailAndPassword(emailCreate, passwordCreate).addOnCompleteListener(this,
                 new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                ProgressStatusGone();
                 if (task.isSuccessful()){
                     FirebaseUser user = mAuth.getCurrentUser();
-                    user.sendEmailVerification();
-                    goEmailVerificationScreen();
-                    //goMainScreen();
-
+                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            ProgressStatusGone();
+                           if (task.isSuccessful()){
+                               goEmailVerificationScreen();
+                           }
+                        }
+                    });
                 }else{
-
+                    ProgressStatusGone();
                     Toast.makeText(NewAccountActivity.this, R.string.CreateNewAccountERROR,
                             Toast.LENGTH_LONG).show();
                 }
@@ -104,15 +106,7 @@ public class NewAccountActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-/*    //Metodo para ir a el activity principal en caso de session exitosa
-    private void goMainScreen() {
-        Intent intent = new Intent(NewAccountActivity.this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }*/
-
-    @Override
+/*    @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(Listener);
@@ -126,7 +120,7 @@ public class NewAccountActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(Listener);
         }
 
-    }
+    }*/
 
     private void ProgressStatusVisible(){
 

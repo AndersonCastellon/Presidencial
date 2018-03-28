@@ -5,11 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".EmailVerificationActivity">
 
-        <TextView
-            android:id="@+id/TextViewConfirmationNotice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
+    <TextView
+        android:id="@+id/TextViewConfirmationNotice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TextVerificationEmail"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/EmailVerified"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="@string/Continue"
+        android:textColor="#fff"
+        android:textSize="30dp"/>
 
 
 </RelativeLayout>

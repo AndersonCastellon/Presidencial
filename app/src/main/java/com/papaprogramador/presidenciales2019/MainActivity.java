@@ -48,6 +48,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null){
                     goLogInScreen();
+                }else {
+                    if (!user.isEmailVerified()){
+                        goLogInScreen();
+                        Toast.makeText(MainActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
+
+                    }
                 }
             }
         };

@@ -89,9 +89,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null){
                     if (user.isEmailVerified()){
-                        //ESTA LOGUEADO
-                        Toast.makeText(getApplicationContext(),getString(R.string.IniciasteComo) + user.getEmail(),
-                                Toast.LENGTH_LONG).show();
                         goMainScreen();
                     }
 
@@ -102,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //METODO PARA INGRESAR
+
                 SignInWitchEmail();
 
             }
@@ -187,29 +184,41 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     //METODO PARA INICIAR SESION CON EMAIL
     private void SignInWitchEmail() {
-        ProgressStatusVisible();
 
         //Valores a las variables necesarias
-        String email = mTextEmail.getText().toString();
-        String password = mTextPassword.getText().toString();
+        final String email = mTextEmail.getText().toString();
+        final String password = mTextPassword.getText().toString();
 
         //Validar si los valores no estan vacios
         if (!email.isEmpty() && !password.isEmpty()){
+            final FirebaseUser user = mAuth.getCurrentUser();
+            user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (user.isEmailVerified()){
+                        ProgressStatusVisible();
+                        mAuth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        ProgressStatusGone();
+                                        if (task.isSuccessful()){
+                                            goMainScreen();
+                                        }
+                                        else {
+                                            Toast.makeText(LoginActivity.this, R.string.EmailPasswordIncorrect,
+                                                    Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                    }else {
+                        Toast.makeText(LoginActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
 
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        ProgressStatusGone();
-                        if (task.isSuccessful()){
-                        goMainScreen();
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), R.string.EmailPasswordIncorrect,
-                                Toast.LENGTH_LONG).show();
-                    }
-                    }
-                });
+        }else {
+            Toast.makeText(LoginActivity.this, R.string.IntoCredentials, Toast.LENGTH_LONG).show();
         }
     }
 

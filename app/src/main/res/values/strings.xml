@@ -26,4 +26,10 @@
     <string name="CancelLoginFacebook">Has cancelado el inicio de sesion con Facebook</string>
     <string name="ErrorLoginFacebook">Ha ocurrido un error</string>
     <string name="facebookErrorLogin">Error en inicio de sesion con Facebook</string>
+    <string name="TextVerificationEmail">Muchas gracias por crear tu cuenta. En unos segundos recibiras
+        un Email con un Link para que puedas verificar tu correo electrónico.
+        Una vez lo hagas, regresa aquí y presiona el boton de abajo.</string>
+    <string name="Continue">Continuar</string>
+    <string name="EmailNoVerified">Primero verifica tu Email</string>
+    <string name="IntoCredentials">Ingresa tus credenciales</string>
 </resources>
