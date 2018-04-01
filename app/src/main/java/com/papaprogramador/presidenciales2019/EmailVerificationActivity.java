@@ -89,27 +89,12 @@ public class EmailVerificationActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
-/*                        mAuth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if (task.isSuccessful()){
-                                            goMainScreen();
-                                        }
-                                        else {
-                                            Toast.makeText(EmailVerificationActivity.this, R.string.EmailPasswordIncorrect,
-                                                    Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });*/
                     }else {
                         Toast.makeText(EmailVerificationActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
                     }
                 }
             });
 
-        }else {
-            Toast.makeText(EmailVerificationActivity.this, R.string.IntoCredentials, Toast.LENGTH_LONG).show();
         }
     }
 

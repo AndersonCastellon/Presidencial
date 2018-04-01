@@ -75,14 +75,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.facebook.login.widget.LoginButton
+<!--        <com.facebook.login.widget.LoginButton
             android:id="@+id/btnLoginFacebook"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
             android:paddingTop="@dimen/PaddingFacebookButton"
             android:paddingBottom="@dimen/PaddingFacebookButton"
-            android:text="@string/btnLoginFacebook" />
+            android:text="@string/btnLoginFacebook" />-->
 
     </LinearLayout>
 

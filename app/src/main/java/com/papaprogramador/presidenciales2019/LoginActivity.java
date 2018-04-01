@@ -80,8 +80,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mProgressBar = findViewById(R.id.mProgressBar);
         mtextView = findViewById(R.id.tvText);
 
-        //Linea para leer el correo del usuario
-        mBtnLoginFacebook.setReadPermissions(Arrays.asList("email"));
+
 
         //Inicializacion del escuchador
         Listener = new FirebaseAuth.AuthStateListener() {
@@ -91,6 +90,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 if (user != null){
                     if (user.isEmailVerified()){
                         goMainScreen();
+                    }else {
+                        Toast.makeText(LoginActivity.this, R.string.EmailNotVerified,Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -136,9 +137,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
         //FIN DE AUTENTICACION CON GOOGLE
 
-        //INICIO AUTENTICACION CON FACEBOOK
+/*        //INICIO AUTENTICACION CON FACEBOOK
 
         callbackManager = CallbackManager.Factory.create();
+        //Linea para leer el correo del usuario
+        mBtnLoginFacebook.setReadPermissions("email");
         mBtnLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -160,20 +163,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
 
 
-        //FIN AUTENTICACION CON FACEBOOK
+        //FIN AUTENTICACION CON FACEBOOK*/
 
         //DENTRO DE ONCREATE
     }
     //FUERA DEL ONCREATE
 
     //Método para enviar el token de facebook a firebase y realizar la autenticacion
-    private void handleFacebookAccessToken(AccessToken accessToken) {
-        ProgressStatusVisible();
+  /*  private void handleFacebookAccessToken(AccessToken accessToken) {
         AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
         mAuth.signInWithCredential(credential).addOnCompleteListener(LoginActivity.this,
                 new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                ProgressStatusVisible();
                 if (!task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), R.string.facebookErrorLogin,
                             Toast.LENGTH_LONG).show();
@@ -183,14 +186,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 ProgressStatusGone();
             }
         });
-    }
+    }*/
 
     //METODO PARA INICIAR SESION CON EMAIL
     private void SignInWitchEmail(final String email, final String password) {
-
-/*        //Valores a las variables necesarias
-        final String email = mTextEmail.getText().toString();
-        final String password = mTextPassword.getText().toString();*/
 
         //Validar si los valores no estan vacios
         if (!email.isEmpty() && !password.isEmpty()){
@@ -214,20 +213,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                         ProgressStatusGone();
                                     }
                                 });
-/*                        mAuth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        ProgressStatusGone();
-                                        if (task.isSuccessful()){
-                                            goMainScreen();
-                                        }
-                                        else {
-                                            Toast.makeText(LoginActivity.this, R.string.EmailPasswordIncorrect,
-                                                    Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });*/
+
                     }else {
                         Toast.makeText(LoginActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
                     }
@@ -243,8 +229,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     //METODOS NECESARIOS PARA EL INICIO DE SESION CON GOOGLE
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+       // callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == SIGN_IN_CODE){
 

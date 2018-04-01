@@ -10,11 +10,11 @@ import com.facebook.appevents.AppEventsLogger;
 
 public class Presidenciales2019App extends Application {
 
-    @Override
+   /* @Override
     public void onCreate() {
         super.onCreate();
 
         AppEventsLogger.activateApp(this);
-    }
+    }*/
 
 }
