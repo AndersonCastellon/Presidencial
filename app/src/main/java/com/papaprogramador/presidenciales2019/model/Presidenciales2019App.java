@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019;
+package com.papaprogramador.presidenciales2019.model;
 
 import android.app.Application;
 

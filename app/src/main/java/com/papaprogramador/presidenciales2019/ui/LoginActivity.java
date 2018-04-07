@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019;
+package com.papaprogramador.presidenciales2019.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -6,18 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,12 +26,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-
-import java.util.Arrays;
+import com.papaprogramador.presidenciales2019.R;
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -76,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mBtnLogin = findViewById(R.id.btnLogin);
         mBtnNewAccount = findViewById(R.id.btnNewAccount);
         mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
-        mBtnLoginFacebook = findViewById(R.id.btnLoginFacebook);
+       // mBtnLoginFacebook = findViewById(R.id.btnLoginFacebook);
         mProgressBar = findViewById(R.id.mProgressBar);
         mtextView = findViewById(R.id.tvText);
 
