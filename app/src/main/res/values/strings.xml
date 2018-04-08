@@ -26,9 +26,7 @@
     <string name="CancelLoginFacebook">Has cancelado el inicio de sesion con Facebook</string>
     <string name="ErrorLoginFacebook">Ha ocurrido un error</string>
     <string name="facebookErrorLogin">Error en inicio de sesion con Facebook</string>
-    <string name="TextVerificationEmail">Muchas gracias por crear tu cuenta. En unos segundos recibiras
-        un Email con un Link para que puedas verificar tu correo electrónico.
-        Una vez lo hagas, regresa aquí y presiona el boton de abajo.</string>
+    <string name="TextVerificationEmail">!!Genial!! Ahora verifica tu Email y luego da clic aquí abajo</string>
     <string name="Continue">Continuar</string>
     <string name="EmailNoVerified">Primero verifica tu Email</string>
     <string name="IntoCredentials">Ingresa tus credenciales</string>
@@ -40,4 +38,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="UserName">Nombre de usuario</string>
+    <string name="CreateUserName">Ingresa un nombre de usuario</string>
 </resources>

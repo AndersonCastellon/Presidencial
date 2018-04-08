@@ -21,9 +21,10 @@ public class NewAccountActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 //    private FirebaseAuth.AuthStateListener Listener;
 
-    private EditText EditTextEmail, EditTextPassword;
+    private EditText EditTextEmail, EditTextPassword, EditTextUserName;
     private Button btnNewAccount;
     private ProgressBar mProgressBar;
+    private String UserName;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,7 @@ public class NewAccountActivity extends AppCompatActivity {
         EditTextPassword = findViewById(R.id.editTextPasswordCreate);
         btnNewAccount = findViewById(R.id.btnNewAccountCreate);
         mProgressBar = findViewById(R.id.ProgressBarNewAccount);
+        EditTextUserName = findViewById(R.id.editTexUserName);
 
         mAuth = FirebaseAuth.getInstance();
         //Inicializacion del escuchador
@@ -50,7 +52,12 @@ public class NewAccountActivity extends AppCompatActivity {
         btnNewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateNewAccount();
+                UserName = EditTextUserName.getText().toString();
+                if (!UserName.isEmpty()){
+                    CreateNewAccount();
+                }else{
+                    Toast.makeText(NewAccountActivity.this, R.string.CreateUserName, Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -101,6 +108,7 @@ public class NewAccountActivity extends AppCompatActivity {
         Intent intent = new Intent(NewAccountActivity.this, EmailVerificationActivity.class);
         intent.putExtra("email", email);
         intent.putExtra("password", password);
+        intent.putExtra("username", UserName);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);

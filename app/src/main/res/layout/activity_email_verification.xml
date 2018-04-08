@@ -3,14 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin"
     tools:context=".ui.EmailVerificationActivity">
 
-    <TextView
-        android:id="@+id/TextViewConfirmationNotice"
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:background="@color/primary_dark"
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/TextVerificationEmail"
-        android:textSize="30dp" />
+        card_view:cardCornerRadius="4dp">
+
+        <ImageView
+            android:id="@+id/ImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo"
+            android:alpha="0.3"/>
+
+        <TextView
+            android:id="@+id/TextViewConfirmationNotice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/TextVerificationEmail"
+            android:textSize="30sp"
+            android:typeface="sans"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/black"/>
+
+    </android.support.v7.widget.CardView>
+
 
     <Button
         android:id="@+id/EmailVerified"

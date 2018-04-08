@@ -21,6 +21,7 @@ import com.papaprogramador.presidenciales2019.R;
 public class EmailVerificationActivity extends AppCompatActivity {
     private String emailIntent;
     private String passwordIntent;
+    private String usernameIntent;
     private TextView mTextView;
     private Button mButton;
     private FirebaseAuth mAuth;
@@ -40,6 +41,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
         if (bundle != null){
             emailIntent = bundle.getString("email");
             passwordIntent = bundle.getString("password");
+            usernameIntent = bundle.getString("username");
         }
         //Instancia del usuario de firebase y el listener
         mAuth = FirebaseAuth.getInstance();

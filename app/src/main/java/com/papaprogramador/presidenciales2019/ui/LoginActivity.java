@@ -41,9 +41,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private Button mBtnLogin;
     private Button mBtnNewAccount;
     private SignInButton mBtnLoginGoogle;
-    private LoginButton mBtnLoginFacebook;
+    //private LoginButton mBtnLoginFacebook;
     private TextView mtextView;
-    private CallbackManager callbackManager;
+    //private CallbackManager callbackManager;
     public  static final int SIGN_IN_CODE = 777;
 
     //Variable para la autenticacion con Firebase
@@ -299,7 +299,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mBtnLogin.setVisibility(View.GONE);
         mBtnNewAccount.setVisibility(View.GONE);
         mBtnLoginGoogle.setVisibility(View.GONE);
-        mBtnLoginFacebook.setVisibility(View.GONE);
+        //mBtnLoginFacebook.setVisibility(View.GONE);
        mtextView.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
 
@@ -311,7 +311,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         mBtnLogin.setVisibility(View.VISIBLE);
         mBtnNewAccount.setVisibility(View.VISIBLE);
         mBtnLoginGoogle.setVisibility(View.VISIBLE);
-        mBtnLoginFacebook.setVisibility(View.VISIBLE);
+        //mBtnLoginFacebook.setVisibility(View.VISIBLE);
         mtextView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.GONE);
 

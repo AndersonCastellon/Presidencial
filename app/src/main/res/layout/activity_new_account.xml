@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin"
     tools:context=".ui.LoginActivity">
 
     <LinearLayout
@@ -12,13 +13,37 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <EditText
-            android:id="@+id/editTexEmailCreate"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/TextEmail"
-            android:inputType="textEmailAddress"
-            android:paddingTop="@dimen/activity_vertical_margin" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editTexUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/UserName"
+                android:inputType="text"
+                android:paddingTop="@dimen/activity_vertical_margin" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editTexEmailCreate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/TextEmail"
+                android:inputType="textEmailAddress"
+                android:paddingTop="@dimen/activity_vertical_margin" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/editTextPasswordCreate"
@@ -27,6 +52,8 @@
             android:hint="@string/TextPass"
             android:inputType="textPassword"
             android:paddingTop="@dimen/icon_top_margin" />
+
+        </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
 
