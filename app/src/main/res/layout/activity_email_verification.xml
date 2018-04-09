@@ -15,12 +15,12 @@
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp">
 
-        <ImageView
+<!--        <ImageView
             android:id="@+id/ImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/logo"
-            android:alpha="0.3"/>
+            android:alpha="0.3"/>-->
 
         <TextView
             android:id="@+id/TextViewConfirmationNotice"
@@ -43,8 +43,15 @@
         android:layout_alignParentBottom="true"
         android:background="@color/primary"
         android:text="@string/Continue"
-        android:textColor="#fff"
+        android:textColor="@color/white"
         android:textSize="30dp"/>
+
+    <ProgressBar
+        android:id="@+id/ProgressBarVerified"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

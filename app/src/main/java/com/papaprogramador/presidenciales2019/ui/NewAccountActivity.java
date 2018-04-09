@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -16,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.papaprogramador.presidenciales2019.R;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class NewAccountActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -25,6 +28,8 @@ public class NewAccountActivity extends AppCompatActivity {
     private Button btnNewAccount;
     private ProgressBar mProgressBar;
     private String UserName;
+    private MaterialBetterSpinner spinnerDep;
+    private String Departamento;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,21 +40,28 @@ public class NewAccountActivity extends AppCompatActivity {
         btnNewAccount = findViewById(R.id.btnNewAccountCreate);
         mProgressBar = findViewById(R.id.ProgressBarNewAccount);
         EditTextUserName = findViewById(R.id.editTexUserName);
+		spinnerDep = findViewById(R.id.spinnerDep);
 
         mAuth = FirebaseAuth.getInstance();
-        //Inicializacion del escuchador
-/*        Listener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = mAuth.getCurrentUser();
-                if (user != null){
-                    startActivity(new Intent(NewAccountActivity.this, MainActivity.class));
-                }
-            }
-        };*/
+
+		//Implementación de un Spinner estilo material design
+	    String[] departamento = {"Ahuachapán","Cabañas","Chalatenango","Cuscatlán","La Libertad","La Paz",
+	    "La Unión","Morazán","San Miguel","San Salvador","San Vicente","Santa Ana","Sonsonate","Usulután"};
+//	    spinnerDep.setAdapter(new ArrayAdapter<>(NewAccountActivity.this
+//			    , android.R.layout.simple_spinner_item, departamento));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, departamento);
+        spinnerDep.setAdapter(arrayAdapter);
+
+        spinnerDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+	        @Override
+	        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					Departamento = spinnerDep.getText().toString();
+	        }
+        });
 
 
-        btnNewAccount.setOnClickListener(new View.OnClickListener() {
+	    btnNewAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserName = EditTextUserName.getText().toString();
@@ -109,27 +121,12 @@ public class NewAccountActivity extends AppCompatActivity {
         intent.putExtra("email", email);
         intent.putExtra("password", password);
         intent.putExtra("username", UserName);
+        intent.putExtra("departamento", Departamento);
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
-/*    @Override
-    protected void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(Listener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (Listener != null){
-
-            mAuth.removeAuthStateListener(Listener);
-        }
-
-    }*/
 
     private void ProgressStatusVisible(){
 
@@ -137,7 +134,8 @@ public class NewAccountActivity extends AppCompatActivity {
         EditTextPassword.setVisibility(View.GONE);
         btnNewAccount.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
-
+	    EditTextUserName.setVisibility(View.GONE);
+	    spinnerDep.setVisibility(View.GONE);
     }
     private void ProgressStatusGone(){
 
@@ -145,5 +143,7 @@ public class NewAccountActivity extends AppCompatActivity {
         EditTextPassword.setVisibility(View.VISIBLE);
         btnNewAccount.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.GONE);
+        EditTextUserName.setVisibility(View.VISIBLE);
+	    spinnerDep.setVisibility(View.VISIBLE);
     }
 }

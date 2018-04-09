@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/activity_horizontal_margin"
     tools:context=".ui.LoginActivity">
 
@@ -55,6 +56,28 @@
 
         </android.support.design.widget.TextInputLayout>
 
+<!--        <android.support.v7.widget.AppCompatSpinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Spinner
+                android:id="@+id/spinnerDep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_horizontal_margin"
+                android:paddingBottom="@dimen/activity_horizontal_margin"/>
+
+        </android.support.v7.widget.AppCompatSpinner>-->
+
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/spinnerDep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Departamento"
+            android:textColorHint="@color/primary"
+            app:met_floatingLabel="normal" />
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -63,7 +86,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/LinearLayoutEmailAndPass"
         android:layout_centerInParent="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/activity_horizontal_margin">
 
 
         <Button
@@ -71,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnNewAccount"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+            android:theme="@style/AppTheme.Dark" />
 
     </LinearLayout>
 
