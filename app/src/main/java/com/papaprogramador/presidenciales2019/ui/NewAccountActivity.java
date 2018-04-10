@@ -3,6 +3,7 @@ package com.papaprogramador.presidenciales2019.ui;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -136,6 +137,14 @@ public class NewAccountActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.VISIBLE);
 	    EditTextUserName.setVisibility(View.GONE);
 	    spinnerDep.setVisibility(View.GONE);
+	    TextInputLayout textInputLayout1 = findViewById(R.id.textinput1);
+	    TextInputLayout textInputLayout2 = findViewById(R.id.textinput2);
+	    TextInputLayout textInputLayout3 = findViewById(R.id.textinput3);
+	    textInputLayout1.setVisibility(View.GONE);
+	    textInputLayout2.setVisibility(View.GONE);
+	    textInputLayout3.setVisibility(View.GONE);
+
+
     }
     private void ProgressStatusGone(){
 
@@ -145,5 +154,11 @@ public class NewAccountActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.GONE);
         EditTextUserName.setVisibility(View.VISIBLE);
 	    spinnerDep.setVisibility(View.VISIBLE);
+	    TextInputLayout textInputLayout1 = findViewById(R.id.textinput1);
+	    TextInputLayout textInputLayout2 = findViewById(R.id.textinput2);
+	    TextInputLayout textInputLayout3 = findViewById(R.id.textinput3);
+	    textInputLayout1.setVisibility(View.VISIBLE);
+	    textInputLayout2.setVisibility(View.VISIBLE);
+	    textInputLayout3.setVisibility(View.VISIBLE);
     }
 }

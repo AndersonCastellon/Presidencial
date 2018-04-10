@@ -3,6 +3,7 @@ package com.papaprogramador.presidenciales2019.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -113,6 +114,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //INICIO AUTENTICACION CON GOOGLE
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
+                .requestProfile()
                 .requestEmail()
                 .build();
 
@@ -292,6 +294,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //mBtnLoginFacebook.setVisibility(View.GONE);
        mtextView.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
+        TextInputLayout textInputLayout4 = findViewById(R.id.textinput4);
+        TextInputLayout textInputLayout5 = findViewById(R.id.textinput5);
+        textInputLayout4.setVisibility(View.GONE);
+        textInputLayout5.setVisibility(View.GONE);
 
     }
     private void ProgressStatusGone(){
@@ -304,6 +310,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         //mBtnLoginFacebook.setVisibility(View.VISIBLE);
         mtextView.setVisibility(View.VISIBLE);
         mProgressBar.setVisibility(View.GONE);
+        TextInputLayout textInputLayout4 = findViewById(R.id.textinput4);
+        TextInputLayout textInputLayout5 = findViewById(R.id.textinput5);
+        textInputLayout4.setVisibility(View.VISIBLE);
+        textInputLayout5.setVisibility(View.VISIBLE);
 
     }
 }

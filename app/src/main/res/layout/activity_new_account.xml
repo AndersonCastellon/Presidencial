@@ -16,7 +16,8 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/textinput1">
 
             <EditText
                 android:id="@+id/editTexUserName"
@@ -30,7 +31,8 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/textinput2">
 
             <EditText
                 android:id="@+id/editTexEmailCreate"
@@ -44,7 +46,8 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/textinput3">
 
         <EditText
             android:id="@+id/editTextPasswordCreate"
