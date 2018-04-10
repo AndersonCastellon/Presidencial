@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.support.annotation.NonNull;
@@ -58,19 +59,8 @@ public class EmailVerificationActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.ProgressBarVerified);
 
 
+	    obtenerImei();
 
-        //Verificación de los permisos necesarios para obtener el IMEI del dispositivo
-	    int permissionCheck = ContextCompat.checkSelfPermission(
-			    this, Manifest.permission.READ_PHONE_STATE );
-	    if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-		    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission
-				    .READ_PHONE_STATE }, 225);
-	    } else {
-		    TelephonyManager mTelephony = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-		    if (mTelephony.getDeviceId() != null){
-			    myIMEI = mTelephony.getDeviceId();
-		    }
-	    }
 
         //Se rescatan los valores del Inten mediante el Bundle
         Bundle bundle = getIntent().getExtras();
@@ -186,6 +176,37 @@ public class EmailVerificationActivity extends AppCompatActivity {
 		mTextView.setVisibility(View.VISIBLE);
 		mButton.setVisibility(View.VISIBLE);
 		progressBar.setVisibility(View.GONE);
+
+	}
+	//Método para solicitar el permiso de lectura de IMEI en cualquier version android
+	public String obtenerImei(){
+
+		if(Build.VERSION.SDK_INT  < Build.VERSION_CODES.M){
+			//Menores a Android 6.0
+			myIMEI = getIMEI();
+			return myIMEI;
+		} else {
+			// Mayores a Android 6.0
+			myIMEI ="";
+			if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
+					!= PackageManager.PERMISSION_GRANTED) {
+				requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},
+						225);
+				myIMEI ="";
+			} else {
+				myIMEI = getIMEI();
+			}
+
+			return myIMEI;
+
+		}
+	}
+	//Método que obtiene el IMEI
+	private String getIMEI() {
+
+		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		myIMEI = tm.getDeviceId();
+		return myIMEI;
 
 	}
 }

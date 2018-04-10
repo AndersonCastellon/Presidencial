@@ -186,11 +186,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         //Validar si los valores no estan vacios
         if (!email.isEmpty() && !password.isEmpty()){
-            final FirebaseUser user = mAuth.getCurrentUser();
-            user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (user.isEmailVerified()){
                         ProgressStatusVisible();
                         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
                         mAuth.signInWithCredential(credential).addOnCompleteListener(LoginActivity.this,
@@ -201,23 +196,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                             Toast.makeText(getApplicationContext(), R.string.EmailPasswordIncorrect,
                                                     Toast.LENGTH_LONG).show();
                                         }else {
-                                            goMainScreen();
+                                            FirebaseUser user = mAuth.getCurrentUser();
+                                            if (!user.isEmailVerified()){
+                                                Toast.makeText(LoginActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
+                                            }else {
+                                                goMainScreen();
+                                            }
                                         }
                                         ProgressStatusGone();
                                     }
-                                });
-
-                    }else {
-                        Toast.makeText(LoginActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-
-        }else {
-            Toast.makeText(LoginActivity.this, R.string.IntoCredentials, Toast.LENGTH_LONG).show();
+                        });
         }
     }
-
 
     //METODOS NECESARIOS PARA EL INICIO DE SESION CON GOOGLE
     @Override
