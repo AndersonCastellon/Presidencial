@@ -14,4 +14,8 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="background_footer">#38000000</color>
+
+
 </resources>
