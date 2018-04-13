@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
@@ -24,10 +27,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private GoogleApiClient googleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener Listener;
+    RecyclerView recyclerView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Implementación del Recyclerview
+        recyclerView = findViewById(R.id.rv);
+	    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);//Creacion del layoutmanager
+	    linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);//Orientacion del layoutmanager
+	    recyclerView.setLayoutManager(linearLayoutManager);//asignacion de layoutmanager al recyclerview
 
         Button mBtnLogout = findViewById(R.id.BtnLogout);
         //Coneccion con la api de google para la autenticación
