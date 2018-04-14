@@ -1,8 +1,9 @@
 package com.papaprogramador.presidenciales2019.model;
 
+
 public class Candidato {
 	String nombreCandidato;
-	String PartidoCandidato;
+	String partidoCandidato;
 	int votosCandidato;
 	String urlImagen;
 
@@ -11,7 +12,7 @@ public class Candidato {
 
 	public Candidato(String nombreCandidato, String partidoCandidato, int votosCandidato, String urlImagen) {
 		this.nombreCandidato = nombreCandidato;
-		PartidoCandidato = partidoCandidato;
+		this.partidoCandidato = partidoCandidato;
 		this.votosCandidato = votosCandidato;
 		this.urlImagen = urlImagen;
 	}
@@ -25,11 +26,11 @@ public class Candidato {
 	}
 
 	public String getPartidoCandidato() {
-		return PartidoCandidato;
+		return partidoCandidato;
 	}
 
 	public void setPartidoCandidato(String partidoCandidato) {
-		PartidoCandidato = partidoCandidato;
+		this.partidoCandidato = partidoCandidato;
 	}
 
 	public int getVotosCandidato() {
@@ -40,11 +41,11 @@ public class Candidato {
 		this.votosCandidato = votosCandidato;
 	}
 
-	public String getUrlImagen() {
+	public String getStringImagen() {
 		return urlImagen;
 	}
 
-	public void setUrlImagen(String urlImagen) {
+	public void setStringImagen(String urlImagen) {
 		this.urlImagen = urlImagen;
 	}
 }

@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
@@ -20,7 +20,17 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales2019.R;
+import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
+import com.papaprogramador.presidenciales2019.model.Candidato;
+import com.papaprogramador.presidenciales2019.ui.adapter.CandidatoAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
@@ -28,16 +38,44 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener Listener;
     RecyclerView recyclerView;
+    List<Candidato> candidatos;
+    CandidatoAdapter candidatoAdapter;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
 
         //Implementación del Recyclerview
         recyclerView = findViewById(R.id.rv);
 	    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);//Creacion del layoutmanager
 	    linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);//Orientacion del layoutmanager
 	    recyclerView.setLayoutManager(linearLayoutManager);//asignacion de layoutmanager al recyclerview
+
+	    candidatos = new ArrayList<>();
+	    candidatoAdapter = new CandidatoAdapter(candidatos);
+	    recyclerView.setAdapter(candidatoAdapter);
+
+	    firebaseDatabase.getReference().child(ReferenciasFirebase.NODO_CANDIDATOS).addValueEventListener(new ValueEventListener() {
+		    @Override
+		    public void onDataChange(DataSnapshot dataSnapshot) {
+		    	candidatos.remove(candidatos);
+			    for (DataSnapshot snapshot :
+					    dataSnapshot.getChildren()) {
+			    	Candidato candidato = snapshot.getValue(Candidato.class);
+			    	candidatos.add(candidato);
+			    	candidatoAdapter.notifyDataSetChanged();
+				    
+			    }
+		    }
+
+		    @Override
+		    public void onCancelled(DatabaseError databaseError) {
+
+		    }
+	    });
 
         Button mBtnLogout = findViewById(R.id.BtnLogout);
         //Coneccion con la api de google para la autenticación
