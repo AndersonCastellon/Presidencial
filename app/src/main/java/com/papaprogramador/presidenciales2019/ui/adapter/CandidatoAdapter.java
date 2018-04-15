@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales2019.ui.adapter;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales2019.R;
+import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
 import com.papaprogramador.presidenciales2019.model.Candidato;
 
 import java.util.List;
@@ -29,12 +34,23 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 	}
 
 	@Override
-	public void onBindViewHolder(CandidatoViewHolder holder, int position) {
+	public void onBindViewHolder(final CandidatoViewHolder holder, int position) {
 		Candidato candidato = candidatoList.get(position);
 		holder.textViewNombre.setText(candidato.getNombreCandidato());
 		holder.textViewPartido.setText(candidato.getPartidoCandidato());
 		holder.textViewVotos.setText(String.valueOf(candidato.getVotosCandidato()));
-		holder.imageViewCandidato.setImageURI(Uri.parse(candidato.getStringImagen()));
+
+		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(candidato.getStringImagen());
+
+		storageReference.getBytes(Constantes.ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+			@Override
+			public void onSuccess(byte[] bytes) {
+				Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+				holder.imageViewCandidato.setImageBitmap(bitmap);
+
+			}
+		});
 
 	}
 

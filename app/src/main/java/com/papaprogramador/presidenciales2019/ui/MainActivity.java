@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -38,14 +37,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener Listener;
     RecyclerView recyclerView;
-    List<Candidato> candidatos;
-    CandidatoAdapter candidatoAdapter;
+    List<Candidato> candidatoList; //Lista de objetos Candidato
+    CandidatoAdapter candidatoAdapter; //Adaptador para pasar los datos al recyclerview
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();//Instancia database
 
 
         //Implementación del Recyclerview
@@ -54,25 +53,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 	    linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);//Orientacion del layoutmanager
 	    recyclerView.setLayoutManager(linearLayoutManager);//asignacion de layoutmanager al recyclerview
 
-	    candidatos = new ArrayList<>();
-	    candidatoAdapter = new CandidatoAdapter(candidatos);
+	    //Creacion de la lista de objetos
+	    candidatoList = new ArrayList<>();
+	    //Creacion del adaptador con la lista de objetos
+	    candidatoAdapter = new CandidatoAdapter(candidatoList);
+	    //Asignacion del adaptador al recyclerview
 	    recyclerView.setAdapter(candidatoAdapter);
 
+	    //Obtencion de los datos desde la base de datos firebase
+	    //Referencia al nodo de los Candidatos
 	    firebaseDatabase.getReference().child(ReferenciasFirebase.NODO_CANDIDATOS).addValueEventListener(new ValueEventListener() {
 		    @Override
-		    public void onDataChange(DataSnapshot dataSnapshot) {
-		    	candidatos.remove(candidatos);
-			    for (DataSnapshot snapshot :
-					    dataSnapshot.getChildren()) {
-			    	Candidato candidato = snapshot.getValue(Candidato.class);
-			    	candidatos.add(candidato);
-			    	candidatoAdapter.notifyDataSetChanged();
+		    public void onDataChange(DataSnapshot dataSnapshot) {//Método donde se reciben los datos
+		    	candidatoList.removeAll(candidatoList);//Limpieza total de la lista
+			    //Foreach para recorrer la lista de datos y obtener sus valores
+			    for (DataSnapshot snapshot ://Iterar en la snapshot obtenida
+					    dataSnapshot.getChildren())/*Entrar a cada nodo hijo de la snapshot*/ {
+			    	Candidato candidato = snapshot.getValue(Candidato.class);//Asignar los valores al POJO Candidato
+			    	candidatoList.add(candidato);//Agregar la lista de objetos a la lista
+			    	candidatoAdapter.notifyDataSetChanged();//Notificar al adaptador de los cambios en los datos
 				    
 			    }
 		    }
 
 		    @Override
-		    public void onCancelled(DatabaseError databaseError) {
+		    public void onCancelled(DatabaseError databaseError) {//Método en caso de que ocurra un error en la obtención de la información
 
 		    }
 	    });
