@@ -3,6 +3,7 @@ package com.papaprogramador.presidenciales2019.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 	    // Adding Toolbar to Main screen
 	    Toolbar toolbar = findViewById(R.id.toolbar);
 	    setSupportActionBar(toolbar);
+		//Agregando tabs a la ventana principal
+	    TabLayout tabs = findViewById(R.id.tabs);
+	    tabs.addTab(tabs.newTab().setText(R.string.tabtextCandidatos));
+	    tabs.addTab(tabs.newTab().setText(R.string.tabtextOpiniones));
+	    tabs.addTab(tabs.newTab().setText(R.string.tabtextResultados));
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();//Instancia database
 
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 			    	Candidato candidato = snapshot.getValue(Candidato.class);//Asignar los valores al POJO Candidato
 			    	candidatoList.add(candidato);//Agregar la lista de objetos a la lista
 			    	candidatoAdapter.notifyDataSetChanged();//Notificar al adaptador de los cambios en los datos
-				    
+
 			    }
 		    }
 

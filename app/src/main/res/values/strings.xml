@@ -41,6 +41,9 @@
     <string name="UserName">Nombre de usuario</string>
     <string name="CreateUserName">Ingresa un nombre de usuario</string>
     <string name="Departamento">Departamento</string>
-    <string name="LabelLoginActivity">Inicia Sesion</string>
+    <string name="LabelLoginActivity">app_name</string>
     <string name="RecuperarPassword">Recuperar contraseña</string>
+    <string name="tabtextCandidatos">Candidatos</string>
+    <string name="tabtextOpiniones">Opiniones</string>
+    <string name="tabtextResultados">Resultados</string>
 </resources>
