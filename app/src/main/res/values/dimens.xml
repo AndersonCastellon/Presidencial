@@ -11,4 +11,7 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="PaddingDataCardview">1dp</dimen>
+    <dimen name="MarginTopLogin">56dp</dimen>
+    <dimen name="textSizeBotonesDialogoLogin">11sp</dimen>
 </resources>

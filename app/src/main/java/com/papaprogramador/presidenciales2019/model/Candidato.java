@@ -2,10 +2,10 @@ package com.papaprogramador.presidenciales2019.model;
 
 
 public class Candidato {
-	private String nombreCandidato;
-	private String partidoCandidato;
-	private int votosCandidato;
-	private String urlImagen;
+	String nombreCandidato;
+	String partidoCandidato;
+	int votosCandidato;
+	String urlImagen;
 
 	public Candidato() {
 	}

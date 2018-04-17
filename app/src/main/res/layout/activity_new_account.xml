@@ -77,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/Departamento"
-            android:textColorHint="@color/primary"
+            android:textColorHint="@color/accent"
             app:met_floatingLabel="normal" />
 
 
@@ -98,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnNewAccount"
-            android:theme="@style/AppTheme.Dark" />
+            style="@style/ThemeButtonsDefault" />
 
     </LinearLayout>
 
