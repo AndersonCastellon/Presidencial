@@ -6,7 +6,9 @@
     android:padding="@dimen/activity_horizontal_margin"
     tools:context=".ui.LoginActivity">
 
-
+    <!--TODO: Meter todo el contenido en un solo contenedor a excepcion
+    de la barra de progreso para poderlo ocultar por codigo
+    cuando se esté iniciando la sesion-->
     <LinearLayout
         android:id="@+id/LinearLayoutEmailAndPass"
         android:layout_width="match_parent"
