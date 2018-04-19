@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,7 @@ import com.papaprogramador.presidenciales2019.R;
 import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
 import com.papaprogramador.presidenciales2019.model.Candidato;
 import com.papaprogramador.presidenciales2019.ui.adapter.CandidatoAdapter;
+import com.papaprogramador.presidenciales2019.ui.adapter.ViewpagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +40,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private GoogleApiClient googleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener Listener;
-    RecyclerView recyclerView;
-    List<Candidato> candidatoList; //Lista de objetos Candidato
-    CandidatoAdapter candidatoAdapter; //Adaptador para pasar los datos al recyclerview
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,44 +53,31 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 	    tabs.addTab(tabs.newTab().setText(R.string.tabtextCandidatos));
 	    tabs.addTab(tabs.newTab().setText(R.string.tabtextOpiniones));
 	    tabs.addTab(tabs.newTab().setText(R.string.tabtextResultados));
+	    tabs.setTabGravity(tabs.GRAVITY_FILL);
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();//Instancia database
+        final ViewPager viewPager = findViewById(R.id.viewpagerMain);
+        ViewpagerAdapter viewpagerAdapter = new ViewpagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
 
+        viewPager.setAdapter(viewpagerAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
 
-        //Implementación del Recyclerview
-        recyclerView = findViewById(R.id.rv);
-	    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);//Creacion del layoutmanager
-	    linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);//Orientacion del layoutmanager
-	    recyclerView.setLayoutManager(linearLayoutManager);//asignacion de layoutmanager al recyclerview
+        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                viewPager.setCurrentItem(position);
+            }
 
-	    //Creacion de la lista de objetos
-	    candidatoList = new ArrayList<>();
-	    //Creacion del adaptador con la lista de objetos
-	    candidatoAdapter = new CandidatoAdapter(candidatoList);
-	    //Asignacion del adaptador al recyclerview
-	    recyclerView.setAdapter(candidatoAdapter);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-	    //Obtencion de los datos desde la base de datos firebase
-	    //Referencia al nodo de los Candidatos
-	    firebaseDatabase.getReference().child(ReferenciasFirebase.NODO_CANDIDATOS).addValueEventListener(new ValueEventListener() {
-		    @Override
-		    public void onDataChange(DataSnapshot dataSnapshot) {//Método donde se reciben los datos
-		    	candidatoList.removeAll(candidatoList);//Limpieza total de la lista
-			    //Foreach para recorrer la lista de datos y obtener sus valores
-			    for (DataSnapshot snapshot ://Iterar en la snapshot obtenida
-					    dataSnapshot.getChildren())/*Entrar a cada nodo hijo de la snapshot*/ {
-			    	Candidato candidato = snapshot.getValue(Candidato.class);//Asignar los valores al POJO Candidato
-			    	candidatoList.add(candidato);//Agregar la lista de objetos a la lista
-			    	candidatoAdapter.notifyDataSetChanged();//Notificar al adaptador de los cambios en los datos
+            }
 
-			    }
-		    }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
-		    @Override
-		    public void onCancelled(DatabaseError databaseError) {//Método en caso de que ocurra un error en la obtención de la información
-
-		    }
-	    });
+            }
+        });
 
         Button mBtnLogout = findViewById(R.id.BtnLogout);
         //Coneccion con la api de google para la autenticación
