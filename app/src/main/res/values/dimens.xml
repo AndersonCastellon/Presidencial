@@ -1,6 +1,6 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">20dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="icon_top_margin">24dp</dimen>
@@ -14,4 +14,9 @@
     <dimen name="PaddingDataCardview">1dp</dimen>
     <dimen name="MarginTopLogin">56dp</dimen>
     <dimen name="textSizeBotonesDialogoLogin">11sp</dimen>
+
+    <dimen name="header_left_padding">16dp</dimen>
+    <dimen name="header_height">192dp</dimen>
+
+    <dimen name="perfil_image_size">64dp</dimen>
 </resources>
