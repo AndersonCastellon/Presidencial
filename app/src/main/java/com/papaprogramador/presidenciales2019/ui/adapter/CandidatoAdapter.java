@@ -1,7 +1,6 @@
 package com.papaprogramador.presidenciales2019.ui.adapter;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,18 +8,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales2019.R;
-import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
 import com.papaprogramador.presidenciales2019.model.Candidato;
+import com.papaprogramador.presidenciales2019.ui.Fragments.CandidatosFragment;
 
 import java.util.List;
 
 public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.CandidatoViewHolder> {
 
 	List<Candidato> candidatoList;
+	CandidatosFragment candidatosFragment;
 
 	public CandidatoAdapter(List<Candidato> candidatoList) {
 		this.candidatoList = candidatoList;
@@ -43,14 +44,10 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(candidato.getStringImagen());
 
-		storageReference.getBytes(Constantes.ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-			@Override
-			public void onSuccess(byte[] bytes) {
-				Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-				holder.imageViewCandidato.setImageBitmap(bitmap);
-
-			}
-		});
+		Glide.with(holder.imageViewCandidato.getContext())
+				.using(new FirebaseImageLoader())
+				.load(storageReference)
+				.into(holder.imageViewCandidato);
 
 	}
 
@@ -59,7 +56,7 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		return candidatoList.size();
 	}
 
-	public static class CandidatoViewHolder extends RecyclerView.ViewHolder{
+	public static class CandidatoViewHolder extends RecyclerView.ViewHolder {
 
 		ImageView imageViewCandidato;
 		TextView textViewNombre, textViewPartido, textViewVotos;

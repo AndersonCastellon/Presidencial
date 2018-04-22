@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -37,10 +38,12 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:${supportVersionLib}"
     implementation 'com.weiwangcn.betterspinner:library-material:1.1.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.firebaseui:firebase-ui-storage:0.6.0'
 }
 
 
 
-
-
 apply plugin: 'com.google.gms.google-services'
+
+
