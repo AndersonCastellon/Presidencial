@@ -49,4 +49,10 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_ver_graficos">Ver gráficos</string>
+    <string name="menu_enviar_comentarios">Enviar comentarios</string>
+    <string name="opciones_de_cuenta">Opciones de cuenta</string>
+    <string name="menu_cerrar_sesion">Cerrar sesión</string>
+    <string name="eliminar_cuenta">Eliminar cuenta</string>
+    <string name="compartir_app">Compartir</string>
 </resources>

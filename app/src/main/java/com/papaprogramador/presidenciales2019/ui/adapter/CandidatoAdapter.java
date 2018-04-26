@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -44,9 +45,12 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(candidato.getStringImagen());
 
+		//Obteniendo la imagen con Glide, mucho más optimo
+		//TODO: Implementar placeholder para Glide
 		Glide.with(holder.imageViewCandidato.getContext())
 				.using(new FirebaseImageLoader())
 				.load(storageReference)
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.into(holder.imageViewCandidato);
 
 	}
