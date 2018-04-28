@@ -22,7 +22,6 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Anderson Castellon"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             android:textColor="@color/icons"/>
@@ -33,7 +32,6 @@
             style="@style/Widget.AppCompat.Spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="anderson.ivan.fuentes@gmail.com"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/icons"/>
 

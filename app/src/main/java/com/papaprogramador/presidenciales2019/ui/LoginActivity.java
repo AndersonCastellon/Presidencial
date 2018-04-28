@@ -75,6 +75,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		mProgressBar = findViewById(R.id.mProgressBar);
 		mtextView = findViewById(R.id.tvText);
 
+		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
+		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
+
 
 		//Inicializacion del escuchador
 		Listener = new FirebaseAuth.AuthStateListener() {
@@ -225,7 +228,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 	}
 
 	//Si el resultado de onActivityResult es exitoso se pasa el token a firebase aquí
-	@SuppressLint("ResourceType")
 	private void handleSingInResult(GoogleSignInResult result) {
 		if (result.isSuccess()) {
 			FirebaseAuthWithGoogle(result.getSignInAccount());
