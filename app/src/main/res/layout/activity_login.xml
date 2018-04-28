@@ -10,122 +10,107 @@
     de la barra de progreso para poderlo ocultar por codigo
     cuando se esté iniciando la sesion-->
     <LinearLayout
-        android:id="@+id/LinearLayoutEmailAndPass"
+        android:id="@+id/Logincontenido"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:layout_marginTop="@dimen/MarginTopLogin">
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textinput4">
+            android:orientation="vertical"
+            android:paddingTop="@dimen/activity_vertical_margin">
 
-            <EditText
-                android:id="@+id/editTexEmail"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTexEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/TextEmail"
+                    android:inputType="textEmailAddress"
+                    android:paddingTop="@dimen/activity_vertical_margin" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTextPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/TextPass"
+                    android:inputType="textPassword"
+                    android:paddingTop="@dimen/icon_top_margin" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/TextEmail"
-                android:inputType="textEmailAddress"
-                android:paddingTop="@dimen/activity_vertical_margin" />
+                android:text="@string/btnLogin"
+                style="@style/ThemeButtonsDefault"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textinput5">
+            android:layout_height="1dp"
+            android:background="#d8d8d8"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
-        <EditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/TextPass"
-            android:inputType="textPassword"
-            android:paddingTop="@dimen/icon_top_margin" />
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/btnLoginGoogle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
-        </android.support.design.widget.TextInputLayout>
+            <!--        <com.facebook.login.widget.LoginButton
+                        android:id="@+id/btnLoginFacebook"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:paddingTop="@dimen/PaddingFacebookButton"
+                        android:paddingBottom="@dimen/PaddingFacebookButton"
+                        android:text="@string/btnLoginFacebook" />-->
 
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LinearLayoutButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/LinearLayoutEmailAndPass"
-        android:layout_centerInParent="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnLogin"
-            style="@style/ThemeButtonsDefault" />
-
-
-
-    </LinearLayout>
-    <TextView
-        android:id="@+id/tvText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/LinearLayoutButtons"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="@dimen/icon_bottom_margin"
-        android:text="@string/tvOpcionesInicio" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvText"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/icon_bottom_margin">
-
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/btnLoginGoogle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-<!--        <com.facebook.login.widget.LoginButton
-            android:id="@+id/btnLoginFacebook"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:paddingTop="@dimen/PaddingFacebookButton"
-            android:paddingBottom="@dimen/PaddingFacebookButton"
-            android:text="@string/btnLoginFacebook" />-->
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/recuperarPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RecuperarPassword"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:textColor="@color/accent"
+                android:layout_gravity="bottom"
+                android:textSize="@dimen/textSizeBotonesDialogoLogin"/>
+
+            <Button
+                android:id="@+id/btnNewAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btnNewAccount"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:textColor="@color/accent"
+                android:layout_gravity="bottom"
+                android:textSize="@dimen/textSizeBotonesDialogoLogin"
+                android:gravity="right"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
-
-        <Button
-            android:id="@+id/recuperarPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/RecuperarPassword"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:textColor="@color/accent"
-            android:layout_gravity="bottom"
-            android:textSize="@dimen/textSizeBotonesDialogoLogin"/>
-
-        <Button
-            android:id="@+id/btnNewAccount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnNewAccount"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:textColor="@color/accent"
-            android:textSize="@dimen/textSizeBotonesDialogoLogin"
-            android:gravity="right|center"/>
-
-    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/mProgressBar"

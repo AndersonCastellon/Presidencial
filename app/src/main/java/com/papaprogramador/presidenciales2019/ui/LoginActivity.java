@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,14 +39,14 @@ import com.papaprogramador.presidenciales2019.R;
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 	//Declaracion de variables globales de este activity
-	private EditText mTextEmail;
-	private EditText mTextPassword;
+	private TextInputEditText  mTextEmail;
+	private TextInputEditText mTextPassword;
 	private ProgressBar mProgressBar;
 	private Button mBtnLogin;
 	private Button mBtnNewAccount;
+	private LinearLayout Logincontenido;
 	private SignInButton mBtnLoginGoogle;
 	//private LoginButton mBtnLoginFacebook;
-	private TextView mtextView;
 	//private CallbackManager callbackManager;
 	public static final int SIGN_IN_CODE = 777;
 
@@ -73,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
 		// mBtnLoginFacebook = findViewById(R.id.btnLoginFacebook);
 		mProgressBar = findViewById(R.id.mProgressBar);
-		mtextView = findViewById(R.id.tvText);
+		Logincontenido = findViewById(R.id.Logincontenido);
 
 		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
 		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
@@ -288,35 +290,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 	private void ProgressStatusVisible() {
 
-		mTextEmail.setVisibility(View.GONE);
-		mTextPassword.setVisibility(View.GONE);
-		mBtnLogin.setVisibility(View.GONE);
-		mBtnNewAccount.setVisibility(View.GONE);
-		mBtnLoginGoogle.setVisibility(View.GONE);
-		//mBtnLoginFacebook.setVisibility(View.GONE);
-		mtextView.setVisibility(View.GONE);
 		mProgressBar.setVisibility(View.VISIBLE);
-		TextInputLayout textInputLayout4 = findViewById(R.id.textinput4);
-		TextInputLayout textInputLayout5 = findViewById(R.id.textinput5);
-		textInputLayout4.setVisibility(View.GONE);
-		textInputLayout5.setVisibility(View.GONE);
+		Logincontenido.setVisibility(View.GONE);
+
 
 	}
 
 	private void ProgressStatusGone() {
 
-		mTextEmail.setVisibility(View.VISIBLE);
-		mTextPassword.setVisibility(View.VISIBLE);
-		mBtnLogin.setVisibility(View.VISIBLE);
-		mBtnNewAccount.setVisibility(View.VISIBLE);
-		mBtnLoginGoogle.setVisibility(View.VISIBLE);
-		//mBtnLoginFacebook.setVisibility(View.VISIBLE);
-		mtextView.setVisibility(View.VISIBLE);
 		mProgressBar.setVisibility(View.GONE);
-		TextInputLayout textInputLayout4 = findViewById(R.id.textinput4);
-		TextInputLayout textInputLayout5 = findViewById(R.id.textinput5);
-		textInputLayout4.setVisibility(View.VISIBLE);
-		textInputLayout5.setVisibility(View.VISIBLE);
+		Logincontenido.setVisibility(View.VISIBLE);
 
 	}
 }

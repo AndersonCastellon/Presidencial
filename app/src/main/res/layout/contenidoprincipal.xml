@@ -19,24 +19,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:elevation="4dp"
-            android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpagerMain"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/appbar"/>
-
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
+        android:layout_gravity="bottom"
         android:orientation="vertical">
-
 
         <Button
             android:id="@+id/BtnLogout"
@@ -47,6 +38,14 @@
             android:text="Cerrar sesion" />
 
     </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpagerMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
 
 
 </LinearLayout>

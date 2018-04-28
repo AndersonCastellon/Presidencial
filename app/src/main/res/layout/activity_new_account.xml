@@ -8,85 +8,86 @@
     tools:context=".ui.LoginActivity">
 
     <LinearLayout
-        android:id="@+id/LinearLayoutEmailAndPass"
+        android:id="@+id/contenido"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:paddingTop="@dimen/MarginTopLogin">
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textinput1">
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTexUserName"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTexUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/UserName"
+                    android:inputType="textPersonName"
+                    android:paddingTop="@dimen/activity_vertical_margin" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTexEmailCreate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/TextEmail"
+                    android:inputType="textEmailAddress"
+                    android:paddingTop="@dimen/activity_vertical_margin" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTextPasswordCreate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/TextPass"
+                    android:inputType="textPassword"
+                    android:paddingTop="@dimen/icon_top_margin" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/spinnerDep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/UserName"
-                android:inputType="textPersonName"
-                android:paddingTop="@dimen/activity_vertical_margin" />
+                android:hint="@string/Departamento"
+                android:textColorHint="@color/accent"
+                app:met_floatingLabel="normal" />
 
-        </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayoutButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textinput2">
+            android:paddingTop="@dimen/activity_horizontal_margin">
 
-            <EditText
-                android:id="@+id/editTexEmailCreate"
+
+            <Button
+                android:id="@+id/btnNewAccountCreate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/TextEmail"
-                android:inputType="textEmailAddress"
-                android:paddingTop="@dimen/activity_vertical_margin" />
+                android:text="@string/btnNewAccount"
+                style="@style/ThemeButtonsDefault" />
 
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textinput3">
-
-        <EditText
-            android:id="@+id/editTextPasswordCreate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/TextPass"
-            android:inputType="textPassword"
-            android:paddingTop="@dimen/icon_top_margin" />
-
-        </android.support.design.widget.TextInputLayout>
-
-
-        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-            android:id="@+id/spinnerDep"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/Departamento"
-            android:textColorHint="@color/accent"
-            app:met_floatingLabel="normal" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/LinearLayoutButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/LinearLayoutEmailAndPass"
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/activity_horizontal_margin">
-
-
-        <Button
-            android:id="@+id/btnNewAccountCreate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnNewAccount"
-            style="@style/ThemeButtonsDefault" />
+        </LinearLayout>
 
     </LinearLayout>
 

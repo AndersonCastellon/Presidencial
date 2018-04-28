@@ -119,9 +119,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
 					}
 				}
-				datosUsuario(user);
 			}
 		};
+
+		datosUsuario();
 
 		//Metodo del boton
 		mBtnLogout.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +133,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 		});
 	}
 
-	private void datosUsuario(FirebaseUser user) {
+	private void datosUsuario() {
+		FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 		Username.setText(user.getDisplayName());
 		Useremail.setText(user.getEmail());
 		//Carga de la imagen del perfil del usuario actual

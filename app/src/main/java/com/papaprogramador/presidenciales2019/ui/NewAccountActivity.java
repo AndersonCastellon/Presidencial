@@ -3,6 +3,7 @@ package com.papaprogramador.presidenciales2019.ui;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -23,14 +25,13 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class NewAccountActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-//    private FirebaseAuth.AuthStateListener Listener;
-
-    private EditText EditTextEmail, EditTextPassword, EditTextUserName;
+    private TextInputEditText EditTextEmail, EditTextPassword, EditTextUserName;
     private Button btnNewAccount;
     private ProgressBar mProgressBar;
     private String UserName;
     private MaterialBetterSpinner spinnerDep;
     private String Departamento;
+    private LinearLayout contenido;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +43,14 @@ public class NewAccountActivity extends AppCompatActivity {
         mProgressBar = findViewById(R.id.ProgressBarNewAccount);
         EditTextUserName = findViewById(R.id.editTexUserName);
 		spinnerDep = findViewById(R.id.spinnerDep);
+		contenido = findViewById(R.id.contenido);
 
         mAuth = FirebaseAuth.getInstance();
 
 		//Implementación de un Spinner estilo material design
 	    String[] departamento = {"Ahuachapán","Cabañas","Chalatenango","Cuscatlán","La Libertad","La Paz",
 	    "La Unión","Morazán","San Miguel","San Salvador","San Vicente","Santa Ana","Sonsonate","Usulután"};
-//	    spinnerDep.setAdapter(new ArrayAdapter<>(NewAccountActivity.this
-//			    , android.R.layout.simple_spinner_item, departamento));
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, departamento);
         spinnerDep.setAdapter(arrayAdapter);
@@ -131,34 +132,13 @@ public class NewAccountActivity extends AppCompatActivity {
 
     private void ProgressStatusVisible(){
 
-        EditTextEmail.setVisibility(View.GONE);
-        EditTextPassword.setVisibility(View.GONE);
-        btnNewAccount.setVisibility(View.GONE);
         mProgressBar.setVisibility(View.VISIBLE);
-	    EditTextUserName.setVisibility(View.GONE);
-	    spinnerDep.setVisibility(View.GONE);
-	    TextInputLayout textInputLayout1 = findViewById(R.id.textinput1);
-	    TextInputLayout textInputLayout2 = findViewById(R.id.textinput2);
-	    TextInputLayout textInputLayout3 = findViewById(R.id.textinput3);
-	    textInputLayout1.setVisibility(View.GONE);
-	    textInputLayout2.setVisibility(View.GONE);
-	    textInputLayout3.setVisibility(View.GONE);
-
+		contenido.setVisibility(View.GONE);
 
     }
     private void ProgressStatusGone(){
 
-        EditTextEmail.setVisibility(View.VISIBLE);
-        EditTextPassword.setVisibility(View.VISIBLE);
-        btnNewAccount.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
-        EditTextUserName.setVisibility(View.VISIBLE);
-	    spinnerDep.setVisibility(View.VISIBLE);
-	    TextInputLayout textInputLayout1 = findViewById(R.id.textinput1);
-	    TextInputLayout textInputLayout2 = findViewById(R.id.textinput2);
-	    TextInputLayout textInputLayout3 = findViewById(R.id.textinput3);
-	    textInputLayout1.setVisibility(View.VISIBLE);
-	    textInputLayout2.setVisibility(View.VISIBLE);
-	    textInputLayout3.setVisibility(View.VISIBLE);
+	    mProgressBar.setVisibility(View.GONE);
+	    contenido.setVisibility(View.VISIBLE);
     }
 }

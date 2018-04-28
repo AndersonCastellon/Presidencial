@@ -22,7 +22,6 @@ import java.util.List;
 public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.CandidatoViewHolder> {
 
 	List<Candidato> candidatoList;
-	CandidatosFragment candidatosFragment;
 
 	public CandidatoAdapter(List<Candidato> candidatoList) {
 		this.candidatoList = candidatoList;
