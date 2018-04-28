@@ -4,16 +4,18 @@ public class Usuario {
 	private String username;
 	private String email;
 	private String departamento;
-	private String IMEI;
+	private String UIDDispositivo;
+	private String Votopor;
 
 	public Usuario() {
 	}
 
-	public Usuario(String username, String email, String departamento, String IMEI) {
+	public Usuario(String username, String email, String departamento, String UIDDispositivo, String votopor) {
 		this.username = username;
 		this.email = email;
 		this.departamento = departamento;
-		this.IMEI = IMEI;
+		this.UIDDispositivo = UIDDispositivo;
+		Votopor = votopor;
 	}
 
 	public String getUsername() {
@@ -40,11 +42,19 @@ public class Usuario {
 		this.departamento = departamento;
 	}
 
-	public String getIMEI() {
-		return IMEI;
+	public String getUIDDispositivo() {
+		return UIDDispositivo;
 	}
 
-	public void setIMEI(String IMEI) {
-		this.IMEI = IMEI;
+	public void setUIDDispositivo(String UIDDispositivo) {
+		this.UIDDispositivo = UIDDispositivo;
+	}
+
+	public String getVotopor() {
+		return Votopor;
+	}
+
+	public void setVotopor(String votopor) {
+		Votopor = votopor;
 	}
 }

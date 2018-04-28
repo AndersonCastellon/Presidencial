@@ -10,17 +10,10 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:background="@color/primary_dark"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp">
-
-<!--        <ImageView
-            android:id="@+id/ImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo"
-            android:alpha="0.3"/>-->
 
         <TextView
             android:id="@+id/TextViewConfirmationNotice"
@@ -45,13 +38,6 @@
         android:text="@string/Continue"
         android:textColor="@color/icons"
         android:textSize="30dp"/>
-
-    <ProgressBar
-        android:id="@+id/ProgressBarVerified"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
 
 
 </RelativeLayout>
