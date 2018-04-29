@@ -39,7 +39,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="UserName">Nombre de usuario</string>
-    <string name="CreateUserName">Ingresa un nombre de usuario</string>
+    <string name="FaltanDatos">Faltan algunos datos</string>
     <string name="Departamento">Departamento</string>
     <string name="LabelLoginActivity">@string/app_name</string>
     <string name="RecuperarPassword">Recuperar contraseña</string>
@@ -55,4 +55,13 @@
     <string name="menu_cerrar_sesion">Cerrar sesión</string>
     <string name="eliminar_cuenta">Eliminar cuenta</string>
     <string name="compartir_app">Compartir</string>
+    <string name="TextEmailConfirm">Confirma tu email</string>
+    <string name="TextPassConfirm">Confirma tu contraseña</string>
+    <string name="EscribeNombreDeUsuario">Escribe un nombre de usuario</string>
+    <string name="EmailDiferente">El email no concuerda</string>
+    <string name="PasswordDiferente">La contraseña no concuerda</string>
+    <string name="EligeDepartamento">Escoge tu departamento</string>
+    <string name="PasswordVacio">Contraseña vacía</string>
+    <string name="EmailVacio">Escribe tu email</string>
+    <string name="CompletaTusDatos">Completa tus datos</string>
 </resources>

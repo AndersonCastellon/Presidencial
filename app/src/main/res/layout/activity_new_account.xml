@@ -11,8 +11,7 @@
         android:id="@+id/contenido"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/MarginTopLogin">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,16 +45,42 @@
                     android:paddingTop="@dimen/activity_vertical_margin" />
 
             </android.support.design.widget.TextInputLayout>
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/editTextPasswordCreate"
+                    android:id="@+id/editTexEmailConfirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/TextPass"
+                    android:hint="@string/TextEmailConfirm"
+                    android:inputType="textEmailAddress"
+                    android:paddingTop="@dimen/activity_vertical_margin" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/editTextPasswordCreate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/TextPass"
+                android:inputType="textPassword"
+                android:paddingTop="@dimen/icon_top_margin" />
+
+        </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/editTextPasswordConfirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/TextPassConfirm"
                     android:inputType="textPassword"
                     android:paddingTop="@dimen/icon_top_margin" />
 

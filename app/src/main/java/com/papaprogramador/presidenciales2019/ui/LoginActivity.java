@@ -1,9 +1,14 @@
 package com.papaprogramador.presidenciales2019.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -33,7 +38,12 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.papaprogramador.presidenciales2019.R;
+import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
+import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
+import com.papaprogramador.presidenciales2019.model.Usuario;
 
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -46,8 +56,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 	private Button mBtnNewAccount;
 	private LinearLayout Logincontenido;
 	private SignInButton mBtnLoginGoogle;
-	//private LoginButton mBtnLoginFacebook;
-	//private CallbackManager callbackManager;
+	private String IDdispositivo;
+	private String Username;
+	private String Useremail;
+	private String firebaseUID;
+	private DatabaseReference databaseReference;
 	public static final int SIGN_IN_CODE = 777;
 
 	//Variable para la autenticacion con Firebase
@@ -59,27 +72,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 	//VARIABLE PARA EL CLIENTE API DE GOOGLE
 	private GoogleApiClient googleApiClient;
 
-	//Inicio Metodo onCreate
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
+		IniciarVista();
+		obtenerID();
+
 		//Inicializacion de la instancia de Firebase
 		mAuth = FirebaseAuth.getInstance();
-
-		//Innicializacion de los elementos de la UI
-		mTextEmail = findViewById(R.id.editTexEmail);
-		mTextPassword = findViewById(R.id.editTextPassword);
-		mBtnLogin = findViewById(R.id.btnLogin);
-		mBtnNewAccount = findViewById(R.id.btnNewAccount);
-		mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
-		// mBtnLoginFacebook = findViewById(R.id.btnLoginFacebook);
-		mProgressBar = findViewById(R.id.mProgressBar);
-		Logincontenido = findViewById(R.id.Logincontenido);
-
-		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
-		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
-
+		//Referencia a la base de datos firebase
+		databaseReference = FirebaseDatabase.getInstance().getReference();
 
 		//Inicializacion del escuchador
 		Listener = new FirebaseAuth.AuthStateListener() {
@@ -136,57 +139,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 			}
 		});
 		//FIN DE AUTENTICACION CON GOOGLE
-
-/*        //INICIO AUTENTICACION CON FACEBOOK
-
-        callbackManager = CallbackManager.Factory.create();
-        //Linea para leer el correo del usuario
-        mBtnLoginFacebook.setReadPermissions("email");
-        mBtnLoginFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Toast.makeText(LoginActivity.this, getString(R.string.CancelLoginFacebook),
-                        Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Toast.makeText(LoginActivity.this, R.string.ErrorLoginFacebook,
-                        Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-
-        //FIN AUTENTICACION CON FACEBOOK*/
-
-		//DENTRO DE ONCREATE
 	}
-	//FUERA DEL ONCREATE
 
-	//Método para enviar el token de facebook a firebase y realizar la autenticacion
-  /*  private void handleFacebookAccessToken(AccessToken accessToken) {
-        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-        mAuth.signInWithCredential(credential).addOnCompleteListener(LoginActivity.this,
-                new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                ProgressStatusVisible();
-                if (!task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), R.string.facebookErrorLogin,
-                            Toast.LENGTH_LONG).show();
-                }else {
-                    goMainScreen();
-                }
-                ProgressStatusGone();
-            }
-        });
-    }*/
+	private void IniciarVista() {
+		//Innicializacion de los elementos de la UI
+		mTextEmail = findViewById(R.id.editTexEmail);
+		mTextPassword = findViewById(R.id.editTextPassword);
+		mBtnLogin = findViewById(R.id.btnLogin);
+		mBtnNewAccount = findViewById(R.id.btnNewAccount);
+		mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
+		// mBtnLoginFacebook = findViewById(R.id.btnLoginFacebook);
+		mProgressBar = findViewById(R.id.mProgressBar);
+		Logincontenido = findViewById(R.id.Logincontenido);
+
+		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
+		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
+
+	}
 
 	//METODO PARA INICIAR SESION CON EMAIL
 	private void SignInWitchEmail(final String email, final String password) {
@@ -239,7 +208,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 	}
 
 	//Método para obtener las credenciales de Google y usarlas en FirebaseAuth
-	private void FirebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
+	private void FirebaseAuthWithGoogle(GoogleSignInAccount signInAccount) { //TODO: Revisar a fondo este método para corregir el error de la base de datos
 
 		ProgressStatusVisible();
 		AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
@@ -248,12 +217,28 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 					@Override
 					public void onComplete(@NonNull Task<AuthResult> task) {
 						ProgressStatusGone();
-						if (!task.isSuccessful()) {
+						if (task.isSuccessful()) {
+							FirebaseUser user = mAuth.getCurrentUser();
+							if (user != null){
+								Username = user.getDisplayName();
+								Useremail = user.getEmail();
+								firebaseUID = user.getUid();
+								RegistrarUsuario(firebaseUID, Username, Useremail,IDdispositivo);
+							}else {
+								Toast.makeText(LoginActivity.this,"El usuario es nulo",
+										Toast.LENGTH_LONG).show();
+							}
+						}else {
 							Toast.makeText(LoginActivity.this, getString(R.string.ErrorAuthWithGoogle),
 									Toast.LENGTH_LONG).show();
 						}
 					}
 				});
+	}
+	private void RegistrarUsuario(String firebaseUID, String Username, String Useremail, String IDdispositivo) {
+		Usuario usuario = new Usuario(Username, Useremail, Constantes.DEPARTAMENTO, IDdispositivo, Constantes.VOTO_POR);
+
+		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
 	}
 
 	//Metodo para ir a el activity principal en caso de session exitosa
@@ -300,6 +285,36 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 		mProgressBar.setVisibility(View.GONE);
 		Logincontenido.setVisibility(View.VISIBLE);
+
+	}
+
+	public String obtenerID(){
+
+		if(Build.VERSION.SDK_INT  < Build.VERSION_CODES.M){
+			//Menores a Android 6.0
+			IDdispositivo = getID();
+			return IDdispositivo;
+		} else {
+			// Mayores a Android 6.0
+			IDdispositivo ="";
+			if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
+					!= PackageManager.PERMISSION_GRANTED) {
+				requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},
+						225);
+				IDdispositivo ="";
+			} else {
+				IDdispositivo = getID();
+			}
+
+			return IDdispositivo;
+
+		}
+	}
+	//Método que obtiene el IMEI
+	private String getID() {
+
+		String ID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+		return ID;
 
 	}
 }
