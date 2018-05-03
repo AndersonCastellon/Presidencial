@@ -42,6 +42,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.papaprogramador.presidenciales2019.R;
 import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
+import com.papaprogramador.presidenciales2019.io.Utils.Metodos;
 import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
 import com.papaprogramador.presidenciales2019.model.Usuario;
 
@@ -209,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 	//Método para obtener las credenciales de Google y usarlas en FirebaseAuth
 	private void FirebaseAuthWithGoogle(GoogleSignInAccount signInAccount) { //TODO: Revisar a fondo este método para corregir el error de la base de datos
-
+//TODO: Encontrar como validar si el nodo del usuario ya existe, quizá con el correo
 		ProgressStatusVisible();
 		AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
 		mAuth.signInWithCredential(credential).addOnCompleteListener(this,
@@ -223,7 +224,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 								Username = user.getDisplayName();
 								Useremail = user.getEmail();
 								firebaseUID = user.getUid();
-								RegistrarUsuario(firebaseUID, Username, Useremail,IDdispositivo);
+								Metodos metodos = new Metodos();
+								metodos.RegistrarUsuario(firebaseUID,Username,Useremail, Constantes.DEPARTAMENTO, IDdispositivo);
 							}else {
 								Toast.makeText(LoginActivity.this,"El usuario es nulo",
 										Toast.LENGTH_LONG).show();
@@ -235,12 +237,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 					}
 				});
 	}
-	private void RegistrarUsuario(String firebaseUID, String Username, String Useremail, String IDdispositivo) {
-		Usuario usuario = new Usuario(Username, Useremail, Constantes.DEPARTAMENTO, IDdispositivo, Constantes.VOTO_POR);
-
-		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
-	}
-
 	//Metodo para ir a el activity principal en caso de session exitosa
 	protected void goMainScreen() {
 		Intent intent = new Intent(LoginActivity.this, MainActivity.class);

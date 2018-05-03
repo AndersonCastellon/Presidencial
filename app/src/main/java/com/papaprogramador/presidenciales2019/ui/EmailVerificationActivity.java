@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.papaprogramador.presidenciales2019.R;
 import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
+import com.papaprogramador.presidenciales2019.io.Utils.Metodos;
 import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
 import com.papaprogramador.presidenciales2019.model.Usuario;
 
@@ -109,7 +110,8 @@ public class EmailVerificationActivity extends AppCompatActivity {
                                                     Toast.LENGTH_LONG).show();
                                         }else {
                                         	firebaseUID =  user.getUid();
-											RegistrarUsuario(firebaseUID, email, usernameIntent, departamentoIntent, IDdispositivo);
+//                                        	Metodos metodos = new Metodos();
+//	                                        metodos.RegistrarUsuario(firebaseUID, usernameIntent, email, departamentoIntent, IDdispositivo);
                                             goMainScreen();
                                         }
                                     }
@@ -123,11 +125,13 @@ public class EmailVerificationActivity extends AppCompatActivity {
         }
     }
 
-	private void RegistrarUsuario(String firebaseUID, String email, String usernameIntent, String departamentoIntent, String IDdispositivo) {
-		Usuario usuario = new Usuario(usernameIntent, email, departamentoIntent, IDdispositivo, Constantes.VOTO_POR);
-
-		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
-	}
+//	private void RegistrarUsuario(String firebaseUID, String email, String usernameIntent, String departamentoIntent, String IDdispositivo) {
+//		Usuario usuario = new Usuario(usernameIntent, email, departamentoIntent, IDdispositivo, Constantes.VOTO_POR);
+//
+//		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
+//		databaseReference.child(ReferenciasFirebase.NODO_UID).setValue(firebaseUID);
+//		databaseReference.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).setValue(IDdispositivo);
+//	}
 
 
 	private void goMainScreen() {

@@ -2,7 +2,8 @@ package com.papaprogramador.presidenciales2019.io.Utils;
 
 public class ReferenciasFirebase {
 
-	final public static String NODO_USUARIO = "Usuarios";
-	final public static String NODO_CANDIDATOS = "Candidatos";
-
+	public static final String NODO_USUARIO = "Usuarios";
+	public static final String NODO_CANDIDATOS = "Candidatos";
+	public static final String NODO_UID = "UidUsuarios";
+	public static final String NODO_ID_DISPOSITIVO = "IdDispositivos";
 }

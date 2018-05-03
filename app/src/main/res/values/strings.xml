@@ -47,8 +47,6 @@
     <string name="tabtextOpiniones">Opiniones</string>
     <string name="tabtextResultados">Resultados</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_ver_graficos">Ver gráficos</string>
     <string name="menu_enviar_comentarios">Enviar comentarios</string>
     <string name="opciones_de_cuenta">Opciones de cuenta</string>
@@ -64,4 +62,6 @@
     <string name="PasswordVacio">Contraseña vacía</string>
     <string name="EmailVacio">Escribe tu email</string>
     <string name="CompletaTusDatos">Completa tus datos</string>
+    <string name="EmailInvalido">Ingresa un email válido</string>
+    <string name="DispositivoYaUtilizado">Este dispositivo ya ha sido utilizado para crear una cuenta, el usuario ha sido eliminado</string>
 </resources>

@@ -62,7 +62,7 @@ public class CandidatosFragment extends Fragment {
 			public void onDataChange(DataSnapshot dataSnapshot) {//Método donde se reciben los datos
 				candidatoList.removeAll(candidatoList);//Limpieza total de la lista
 				//Foreach para recorrer la lista de datos y obtener sus valores
-				for (DataSnapshot snapshot ://Iterar en la snapshot obtenida
+				for (DataSnapshot snapshot ://Variable que se utilizará
 						dataSnapshot.getChildren())/*Entrar a cada nodo hijo de la snapshot*/ {
 					Candidato candidato = snapshot.getValue(Candidato.class);//Asignar los valores al POJO Candidato
 					candidatoList.add(candidato);//Agregar la lista de objetos a la lista
