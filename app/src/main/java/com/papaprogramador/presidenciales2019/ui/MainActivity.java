@@ -117,12 +117,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 						goLogInScreen();
 						Toast.makeText(MainActivity.this, R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
 
+					}else {
+						datosUsuario(user);
 					}
 				}
 			}
 		};
 
-		datosUsuario();
 
 		//Metodo del boton
 		mBtnLogout.setOnClickListener(new View.OnClickListener() {
@@ -133,8 +134,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 		});
 	}
 
-	private void datosUsuario() {
-		FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+	private void datosUsuario(FirebaseUser user) {
 		Username.setText(user.getDisplayName());
 		Useremail.setText(user.getEmail());
 		//Carga de la imagen del perfil del usuario actual

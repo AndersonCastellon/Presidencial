@@ -5,7 +5,7 @@ public class Usuario {
 	private String email;
 	private String departamento;
 	private String UIDDispositivo;
-	private String Votopor;
+	private String votopor;
 
 	public Usuario() {
 	}
@@ -15,7 +15,7 @@ public class Usuario {
 		this.email = email;
 		this.departamento = departamento;
 		this.UIDDispositivo = UIDDispositivo;
-		Votopor = votopor;
+		this.votopor = votopor;
 	}
 
 	public String getUsername() {
@@ -51,10 +51,10 @@ public class Usuario {
 	}
 
 	public String getVotopor() {
-		return Votopor;
+		return votopor;
 	}
 
 	public void setVotopor(String votopor) {
-		Votopor = votopor;
+		this.votopor = votopor;
 	}
 }

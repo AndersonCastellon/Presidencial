@@ -186,10 +186,9 @@ public class NewAccountActivity extends AppCompatActivity {
 								FirebaseUser user = mAuth.getCurrentUser();
 
 								firebaseUID = user.getUid();
-								Username = user.getDisplayName();
 								Useremail = user.getEmail();
 
-								validarDispositivo(IDdispositivo);
+								validarDispositivo(IDdispositivo, Useremail);
 
 								if (validacionDispositivo) {
 									RegistrarUsuario(firebaseUID, Username, Useremail, Departamento, IDdispositivo);
@@ -225,20 +224,19 @@ public class NewAccountActivity extends AppCompatActivity {
 		}
 	}
 
-	private void validarDispositivo(final String iDdispositivo) {
+	private void validarDispositivo(final String iDdispositivo, final String emailusuario) {
 
 		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference().child(ReferenciasFirebase.NODO_ID_DISPOSITIVO);
 
 		referenceIDdispositivo.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
-				Log.d("DatosIDDispositivos",dataSnapshot.getKey());//Eliminar despues de resolver el método
 				for (DataSnapshot iddispositivos : dataSnapshot.getChildren()) {
 					if (iddispositivos.getKey().equals(iDdispositivo)) {
 						validacionDispositivo = false;
 						break;
 					} else {
-						referenceIDdispositivo.setValue(IDdispositivo);
+						referenceIDdispositivo.child(iDdispositivo).setValue(emailusuario);
 						validacionDispositivo = true;
 					}
 
@@ -252,14 +250,14 @@ public class NewAccountActivity extends AppCompatActivity {
 		});
 	}
 
-	public void RegistrarUsuario(final String firebaseUID, String Username, String Useremail, String Departamento, final String IDdispositivo) {
+	private void RegistrarUsuario(final String firebaseUID, String Username, String Useremail, String Departamento, final String IDdispositivo) {
 
 		final Usuario usuario = new Usuario(Username, Useremail, Departamento, IDdispositivo, Constantes.VOTO_POR);
 
 		final DatabaseReference databaseReference;
 		databaseReference = FirebaseDatabase.getInstance().getReference();
 
-		databaseReference.child(ReferenciasFirebase.NODO_UID).addValueEventListener(new ValueEventListener() {
+		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				for (DataSnapshot snapshot :
@@ -268,7 +266,6 @@ public class NewAccountActivity extends AppCompatActivity {
 						break;
 					} else {
 						databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
-						databaseReference.child(ReferenciasFirebase.NODO_UID).setValue(firebaseUID);
 					}
 				}
 			}
