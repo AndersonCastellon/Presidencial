@@ -4,13 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,7 +29,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales2019.R;
 import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
-import com.papaprogramador.presidenciales2019.io.Utils.Metodos;
 import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
 import com.papaprogramador.presidenciales2019.model.Usuario;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -48,8 +45,8 @@ public class NewAccountActivity extends AppCompatActivity {
 	private String IDdispositivo;
 	private String Useremail;
 	private String firebaseUID;
-	private DatabaseReference databaseReference;
-	private boolean validacionDispositivo = true;
+	private DataSnapshot IDfirebase;
+	private boolean validacionDispositivo;
 
 	boolean PasswordesValido = true;
 	boolean EmailesValido = true;
@@ -58,11 +55,12 @@ public class NewAccountActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_account);
 
+		mAuth = FirebaseAuth.getInstance();
+
+		obtenerIDfirebase();
 		obtenerID();
 		IniciarVista();
 
-		mAuth = FirebaseAuth.getInstance();
-		databaseReference = FirebaseDatabase.getInstance().getReference();
 
 		//Implementación de un Spinner estilo material design
 		final String[] departamento = {"Ahuachapán", "Cabañas", "Chalatenango", "Cuscatlán", "La Libertad", "La Paz",
@@ -83,23 +81,22 @@ public class NewAccountActivity extends AppCompatActivity {
 		btnNewAccount.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				crearNuevaCuenta();
+				validarCampos();
 			}
 
 		});
 
 	}
 
-	private void crearNuevaCuenta() {
+	private void validarCampos() {
 		validarEmail(EditTextEmail, confirmarEmail);
 		validarPassword(EditTextPassword, confirmarPassword);
 
-		Username = EditTextUserName.getText().toString();
 		String departamentoElegido = spinnerDep.getText().toString();
-
+		String username = EditTextUserName.getText().toString();
 		boolean crearCuenta = true;
 
-		if (Username.isEmpty()) {
+		if (username.isEmpty()) {
 			Toast.makeText(NewAccountActivity.this, R.string.EscribeNombreDeUsuario,
 					Toast.LENGTH_LONG).show();
 			crearCuenta = false;
@@ -118,7 +115,7 @@ public class NewAccountActivity extends AppCompatActivity {
 		}
 
 		if (crearCuenta) {
-			CreateNewAccount();
+			crearNuevaCuenta();
 		}
 	}
 
@@ -167,113 +164,102 @@ public class NewAccountActivity extends AppCompatActivity {
 	}
 
 	//Método para crear la nueva cuenta en firebase
-	private void CreateNewAccount() {
+	private void crearNuevaCuenta() {
 		String emailCreate = EditTextEmail.getText().toString();
 		String passwordCreate = EditTextPassword.getText().toString();
 
+		validarIDfirebase(IDfirebase, IDdispositivo, emailCreate);
+
 		if (!emailCreate.isEmpty() && !passwordCreate.isEmpty()) {
 			ProgressStatusVisible();
-			mAuth.createUserWithEmailAndPassword(emailCreate, passwordCreate).addOnCompleteListener(this,
-					new OnCompleteListener<AuthResult>() {
-						@Override
-						public void onComplete(@NonNull Task<AuthResult> task) {
-							if (task.isSuccessful()) {
-								//Implementar el método de registro de usuario desde aquí
-								//Si se obtiene el resultado esperado con el método
-								//Crear la cuenta normalmente y enviar el email de verificación de correo
-								//Si no, crear el método necesario para eliminar la cuenta y notificar al usuario
-								//En un futuro, inhabilitar las opciones para votar, permitir el resto de funciones de la app
-								FirebaseUser user = mAuth.getCurrentUser();
+			if (validacionDispositivo) {
+				mAuth.createUserWithEmailAndPassword(emailCreate, passwordCreate).addOnCompleteListener(this,
+						new OnCompleteListener<AuthResult>() {
+							@Override
+							public void onComplete(@NonNull Task<AuthResult> task) {
+								if (task.isSuccessful()) {
+									//Implementar el método de registro de usuario desde aquí
+									//Si se obtiene el resultado esperado con el método
+									//Crear la cuenta normalmente y enviar el email de verificación de correo
+									//Si no, crear el método necesario para eliminar la cuenta y notificar al usuario
+									//En un futuro, inhabilitar las opciones para votar, permitir el resto de funciones de la app
+									FirebaseUser user = mAuth.getCurrentUser();
 
-								firebaseUID = user.getUid();
-								Useremail = user.getEmail();
+									firebaseUID = user.getUid();
+									Useremail = user.getEmail();
 
-								validarDispositivo(IDdispositivo, Useremail);
-
-								if (validacionDispositivo) {
 									RegistrarUsuario(firebaseUID, Username, Useremail, Departamento, IDdispositivo);
 
 									user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-										@Override
-										public void onComplete(@NonNull Task<Void> task) {
-											ProgressStatusGone();
-											if (task.isSuccessful()) {
-												goEmailVerificationScreen();
+											@Override
+											public void onComplete(@NonNull Task<Void> task) {
+												ProgressStatusGone();
+												if (task.isSuccessful()) {
+													goEmailVerificationScreen();
+												}
 											}
-										}
-									});
-								}else {
-									user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-										@Override
-										public void onComplete(@NonNull Task<Void> task) {
-											Toast.makeText(NewAccountActivity.this,R.string.DispositivoYaUtilizado,
-													Toast.LENGTH_LONG).show();
-										}
-									});
+										});
+								} else {
+									ProgressStatusGone();
+									Toast.makeText(NewAccountActivity.this, R.string.CreateNewAccountERROR,
+											Toast.LENGTH_LONG).show();
 								}
-							} else {
-								ProgressStatusGone();
-								Toast.makeText(NewAccountActivity.this, R.string.CreateNewAccountERROR,
-										Toast.LENGTH_LONG).show();
 							}
-						}
-					});
+						});
+			}
+			ProgressStatusGone();
 		} else {
 			Toast.makeText(NewAccountActivity.this, R.string.IntoEmailAndPasswordForNewAccount,
 					Toast.LENGTH_LONG).show();
 		}
 	}
 
-	private void validarDispositivo(final String iDdispositivo, final String emailusuario) {
+	private void obtenerIDfirebase() {
 
 		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference().child(ReferenciasFirebase.NODO_ID_DISPOSITIVO);
 
 		referenceIDdispositivo.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
-				for (DataSnapshot iddispositivos : dataSnapshot.getChildren()) {
-					if (iddispositivos.getKey().equals(iDdispositivo)) {
-						validacionDispositivo = false;
-						break;
-					} else {
-						referenceIDdispositivo.child(iDdispositivo).setValue(emailusuario);
-						validacionDispositivo = true;
-					}
-
-				}
+				almacenarIDfirebase(dataSnapshot);
 			}
 
 			@Override
 			public void onCancelled(DatabaseError databaseError) {
-
 			}
 		});
 	}
 
+	private void almacenarIDfirebase(DataSnapshot dataSnapshot) {
+		IDfirebase = dataSnapshot;
+	}
+
+	private void validarIDfirebase(DataSnapshot dataSnapshot, String iddispositivo, String emailusuario) {
+		DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference().child(ReferenciasFirebase.NODO_ID_DISPOSITIVO);
+
+		for (DataSnapshot iddispositivos : dataSnapshot.getChildren()) {
+			if (!iddispositivos.getKey().equals(iddispositivo)) {
+				referenceIDdispositivo.child(iddispositivo).setValue(emailusuario);
+				validacionDispositivo = true;
+				break;
+			} else {
+				Toast.makeText(NewAccountActivity.this,
+						R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
+				validacionDispositivo = false;
+				break;
+			}
+
+		}
+	}
+
 	private void RegistrarUsuario(final String firebaseUID, String Username, String Useremail, String Departamento, final String IDdispositivo) {
 
-		final Usuario usuario = new Usuario(Username, Useremail, Departamento, IDdispositivo, Constantes.VOTO_POR);
+		Usuario usuario = new Usuario(Username, Useremail, Departamento, IDdispositivo, Constantes.VOTO_POR);
 
-		final DatabaseReference databaseReference;
-		databaseReference = FirebaseDatabase.getInstance().getReference();
+		DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).addValueEventListener(new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				for (DataSnapshot snapshot :
-						dataSnapshot.getChildren()) {
-					if (snapshot.getKey().equals(firebaseUID)) {
-						break;
-					} else {
-						databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
-					}
-				}
-			}
+		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
 
-			@Override
-			public void onCancelled(DatabaseError databaseError) {
-			}
-		});
 	}
 
 	//Método para ir al aviso para verificar el correo electrónico
