@@ -408,7 +408,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 		final DatabaseReference databaseReference;
 		databaseReference = FirebaseDatabase.getInstance().getReference();
-//TODO: INVESTIGAR PORQUE ESTE MÉTODO NO EJECUTA LAS SENTENCIAS IF DENTRO DEL FOREACH
+//TODO: INVESTIGAR PORQUE ESTE MÉTODO NO EJECUTA LAS SENTENCIAS IF DENTRO DEL FOR
 		for (DataSnapshot snapshot :
 				dataSnapshot.getChildren()) {
 			if (snapshot.getValue() != null) {
