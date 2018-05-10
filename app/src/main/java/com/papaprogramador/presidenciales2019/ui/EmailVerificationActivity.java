@@ -126,7 +126,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
     }
 
 //	private void RegistrarUsuario(String firebaseUID, String email, String usernameIntent, String departamentoIntent, String IDdispositivo) {
-//		Usuario usuario = new Usuario(usernameIntent, email, departamentoIntent, IDdispositivo, Constantes.VOTO_POR);
+//		Usuario usuario = new Usuario(usernameIntent, email, departamentoIntent, IDdispositivo, Constantes.VALOR_VOTO_DEFAULT);
 //
 //		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
 //		databaseReference.child(ReferenciasFirebase.NODO_UID).setValue(firebaseUID);

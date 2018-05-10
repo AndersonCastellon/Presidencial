@@ -3,7 +3,6 @@ package com.papaprogramador.presidenciales2019.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -59,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 	private String Useremail;
 	private String firebaseUID;
 	private DataSnapshot IDfirebase;
+	private DataSnapshot UsuariosFirebase;
 	public boolean validacionDispositivoConGoogle;
 	public static final int SIGN_IN_CODE = 777;
 
@@ -76,6 +76,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		setContentView(R.layout.activity_login);
 
 		obtenerIDdeFirebase();
+		obtenerUsuariosFirebase();
 		IniciarVista();
 		obtenerID();
 
@@ -122,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestIdToken(getString(R.string.default_web_client_id))
 				.requestProfile()
-				.requestEmail()
+				.requestEmail() //TODO: INVESTIGAR COMOOBTENER EL EMAIL DE GOOGLE PARA VALIDARLO ANTES DE CREAR CUENTA EN FIREBASE
 				.build();
 
 		googleApiClient = new GoogleApiClient.Builder(this)
@@ -147,7 +148,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		mBtnLogin = findViewById(R.id.btnLogin);
 		mBtnNewAccount = findViewById(R.id.btnNewAccount);
 		mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
-		// mBtnLoginFacebook = findViewById(R.id.btnLoginFacebook);
 		mProgressBar = findViewById(R.id.mProgressBar);
 		Logincontenido = findViewById(R.id.Logincontenido);
 
@@ -207,8 +207,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 	}
 
 	//Método para obtener las credenciales de Google y usarlas en FirebaseAuth
-	private void FirebaseAuthWithGoogle(GoogleSignInAccount signInAccount) { //TODO: Revisar a fondo este método para corregir el error de la base de datos
-//TODO: Encontrar como validar si el nodo del usuario ya existe, quizá con el correo
+	private void FirebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
 		onProgressbarVisible();
 		AuthCredential credential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
 		mAuth.signInWithCredential(credential).addOnCompleteListener(this,
@@ -227,11 +226,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 								validarDispositivoConGoogle(IDfirebase);
 
 								if (validacionDispositivoConGoogle) {
-									RegistrarUsuario(firebaseUID, Username, Useremail, ReferenciasFirebase.NODO_DEPARTAMENTO, IDdispositivo);
+									crearNuevoUsuarioFirebase(UsuariosFirebase);
 								} else {
-									logOut();
-									Toast.makeText(LoginActivity.this, R.string.DispositivoYaUtilizadoGoogle,
-											Toast.LENGTH_LONG).show();
+									EliminarUsuarioGoogle(user);
+//									logOut();
 								}
 							} else {
 								Toast.makeText(LoginActivity.this, R.string.Usuario_nulo,
@@ -243,6 +241,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 						}
 					}
 				});
+	}
+
+	private void EliminarUsuarioGoogle(FirebaseUser user) {
+		user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+			@Override
+			public void onComplete(@NonNull Task<Void> task) {
+				Toast.makeText(LoginActivity.this, R.string.DispositivoYautilizadoPorOtraCuenta,
+						Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	//Metodo para ir a el activity principal en caso de session exitosa
@@ -351,26 +359,29 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		String emailusuario = Useremail;
 
 		for (DataSnapshot iddispositivos : dataSnapshot.getChildren()) {
-			if (iddispositivos.getKey().equals(iDdispositivo)) {
-				if (iddispositivos.getValue().equals(emailusuario)) {
-					validacionDispositivoConGoogle = true;
-					break;
+			if (iddispositivos != null) {
+				if (iddispositivos.getKey().equals(iDdispositivo)) {
+					if (iddispositivos.getValue().equals(emailusuario)) {
+						validacionDispositivoConGoogle = true;
+						break;
+					} else {
+						validacionDispositivoConGoogle = false;
+						break;
+					}
 				} else {
-					validacionDispositivoConGoogle = false;
+					referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).child(iDdispositivo).setValue(emailusuario);
+					validacionDispositivoConGoogle = true;
 					break;
 				}
 			} else {
 				referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).child(iDdispositivo).setValue(emailusuario);
 				validacionDispositivoConGoogle = true;
-				break;
 			}
 
 		}
 	}
 
-	private void RegistrarUsuario(final String firebaseUID, final String Username, String Useremail, String Departamento, final String IDdispositivo) {
-
-		final Usuario usuario = new Usuario(Username, Useremail, Departamento, IDdispositivo, Constantes.VOTO_POR);
+	private void obtenerUsuariosFirebase() {
 
 		final DatabaseReference databaseReference;
 		databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -378,16 +389,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
-				for (DataSnapshot snapshot :
-						dataSnapshot.getChildren()) {
-					if (snapshot.getKey().equals(firebaseUID)) {
-						databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID)
-								.child(ReferenciasFirebase.NODO_NOMBRE_USUARIO).setValue(Username);
-						break;
-					} else {
-						databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
-					}
-				}
+				almacenarUsuariosFirebase(dataSnapshot);
 			}
 
 			@Override
@@ -396,15 +398,40 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		});
 	}
 
+	private void almacenarUsuariosFirebase(DataSnapshot dataSnapshot) {
+		UsuariosFirebase = dataSnapshot;
+	}
+
+	private void crearNuevoUsuarioFirebase(DataSnapshot dataSnapshot) {
+
+		final Usuario usuario = new Usuario(Username, Useremail, Constantes.VALOR_DEPARTAMENTO_DEFAULT, IDdispositivo, Constantes.VALOR_VOTO_DEFAULT);
+
+		final DatabaseReference databaseReference;
+		databaseReference = FirebaseDatabase.getInstance().getReference();
+//TODO: INVESTIGAR PORQUE ESTE MÉTODO NO EJECUTA LAS SENTENCIAS IF DENTRO DEL FOREACH
+		for (DataSnapshot snapshot :
+				dataSnapshot.getChildren()) {
+			if (snapshot.getValue() != null) {
+				if (snapshot.getKey().equals(firebaseUID)) {
+					databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).child(ReferenciasFirebase.NODO_NOMBRE_USUARIO).setValue(Username);
+					break;
+				} else {
+					databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
+				}
+			} else {
+				databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
+			}
+
+		}
+	}
+
 	//Metodo que cierra la session en google
 	public void logOut() {
 		mAuth.signOut();
 		Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
 			@Override
 			public void onResult(@NonNull Status status) {
-				if (status.isSuccess()) {
-					Toast.makeText(getApplicationContext(), "Sesion google cerrada", Toast.LENGTH_SHORT).show();
-				} else {
+				if (!status.isSuccess()) {
 					Toast.makeText(getApplicationContext(), R.string.not_close_session, Toast.LENGTH_SHORT).show();
 				}
 			}

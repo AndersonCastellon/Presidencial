@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,7 +36,7 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class NewAccountActivity extends AppCompatActivity {
 	private FirebaseAuth mAuth;
-	private TextInputEditText EditTextEmail, EditTextPassword, EditTextUserName, confirmarEmail, confirmarPassword;
+	private TextInputEditText textoEmail, textoPassword, textoUserName, confirmarEmail, confirmarPassword;
 	private Button btnNewAccount;
 	private ProgressBar mProgressBar;
 	private String Username;
@@ -47,6 +48,8 @@ public class NewAccountActivity extends AppCompatActivity {
 	private String firebaseUID;
 	private DataSnapshot IDfirebase;
 	private boolean validacionDispositivo;
+
+	private TextInputLayout campoUserName, campoEmail, campoConfirmEmail, campoPassword, campoConfirmPassword;
 
 	boolean PasswordesValido = true;
 	boolean EmailesValido = true;
@@ -61,13 +64,8 @@ public class NewAccountActivity extends AppCompatActivity {
 		obtenerID();
 		IniciarVista();
 
-
-		//Implementación de un Spinner estilo material design
-		final String[] departamento = {"Ahuachapán", "Cabañas", "Chalatenango", "Cuscatlán", "La Libertad", "La Paz",
-				"La Unión", "Morazán", "San Miguel", "San Salvador", "San Vicente", "Santa Ana", "Sonsonate", "Usulután"};
-
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-				android.R.layout.simple_dropdown_item_1line, departamento);
+				android.R.layout.simple_dropdown_item_1line, Constantes.departamento);
 		spinnerDep.setAdapter(arrayAdapter);
 
 		spinnerDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,64 +79,86 @@ public class NewAccountActivity extends AppCompatActivity {
 		btnNewAccount.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				validarCampos();
+				if (validarCampos()) {
+					crearNuevaCuenta();
+				}
 			}
 
 		});
 
 	}
 
-	private void validarCampos() {
-		validarEmail(EditTextEmail, confirmarEmail);
-		validarPassword(EditTextPassword, confirmarPassword);
+	private boolean validarCampos() {
+		validarEmail(textoEmail, confirmarEmail);
+		validarPassword(textoPassword, confirmarPassword);
 
-		String departamentoElegido = spinnerDep.getText().toString();
-		String username = EditTextUserName.getText().toString();
+		String departamento = spinnerDep.getText().toString();
+		String username = textoUserName.getText().toString();
+
+		campoUserName.setError(null);
+		campoEmail.setError(null);
+		campoConfirmEmail.setError(null);
+		campoPassword.setError(null);
+		confirmarPassword.setError(null);
+
 		boolean crearCuenta = true;
+		View foco = null;
 
 		if (username.isEmpty()) {
-			Toast.makeText(NewAccountActivity.this, R.string.EscribeNombreDeUsuario,
-					Toast.LENGTH_LONG).show();
+			campoUserName.setError(getString(R.string.EscribeNombreDeUsuario));
+			foco = campoUserName;
 			crearCuenta = false;
 		} else if (!EmailesValido) {
-			Toast.makeText(NewAccountActivity.this, R.string.EmailDiferente,
-					Toast.LENGTH_LONG).show();
+			campoEmail.setError(getString(R.string.EmailInvalido));
+			foco = campoEmail;
 			crearCuenta = false;
 		} else if (!PasswordesValido) {
-			Toast.makeText(NewAccountActivity.this, R.string.PasswordDiferente,
-					Toast.LENGTH_LONG).show();
+			campoPassword.setError(getString(R.string.PasswordDiferente));
+			campoConfirmPassword.setError(getString(R.string.PasswordDiferente));
+			textoPassword.setText("");
+			confirmarPassword.setText("");
+			foco = campoPassword;
 			crearCuenta = false;
-		} else if (departamentoElegido.isEmpty()) {
-			Toast.makeText(NewAccountActivity.this, R.string.EligeDepartamento,
-					Toast.LENGTH_LONG).show();
+		} else if (departamento.isEmpty()) {
+			spinnerDep.setError(getString(R.string.EligeDepartamento));
+			foco = spinnerDep;
 			crearCuenta = false;
+		}
+		if (!crearCuenta){
+			foco.requestFocus();
+			return false;
+		}else {
+			return crearCuenta;
 		}
 
-		if (crearCuenta) {
-			crearNuevaCuenta();
-		}
 	}
 
 	private void IniciarVista() {
 
-		EditTextEmail = findViewById(R.id.editTexEmailCreate);
-		EditTextPassword = findViewById(R.id.editTextPasswordCreate);
+		textoEmail = findViewById(R.id.editTexEmailCreate);
+		textoPassword = findViewById(R.id.editTextPasswordCreate);
 		confirmarEmail = findViewById(R.id.editTexEmailConfirm);
 		confirmarPassword = findViewById(R.id.editTextPasswordConfirm);
 		btnNewAccount = findViewById(R.id.btnNewAccountCreate);
 		mProgressBar = findViewById(R.id.ProgressBarNewAccount);
-		EditTextUserName = findViewById(R.id.editTexUserName);
+		textoUserName = findViewById(R.id.editTexUserName);
 		spinnerDep = findViewById(R.id.spinnerDep);
 		contenido = findViewById(R.id.contenido);
+
+		campoUserName = findViewById(R.id.campo_user_name);
+		campoEmail = findViewById(R.id.campo_email);
+		campoConfirmEmail = findViewById(R.id.campo_confirm_email);
+		campoPassword = findViewById(R.id.campo_password);
+		campoConfirmPassword = findViewById(R.id.campo_confirm_password);
 	}
 
 	private void validarPassword(TextInputEditText editTextPassword, TextInputEditText confirmarPassword) {
+
 		String pass = editTextPassword.getText().toString();
 		String passconfirm = confirmarPassword.getText().toString();
 
 		if (pass.isEmpty() || passconfirm.isEmpty()) {
-			Toast.makeText(NewAccountActivity.this, R.string.PasswordVacio,
-					Toast.LENGTH_LONG).show();
+			PasswordesValido = false;
 		} else if (pass.equals(passconfirm)) {
 			PasswordesValido = true;
 		} else {
@@ -147,15 +167,14 @@ public class NewAccountActivity extends AppCompatActivity {
 	}
 
 	private void validarEmail(TextInputEditText editTextEmail, TextInputEditText confirmarEmail) {
+
 		String email = editTextEmail.getText().toString();
 		String emailconfirm = confirmarEmail.getText().toString();
 
 		if (email.isEmpty() || emailconfirm.isEmpty()) {
-			Toast.makeText(NewAccountActivity.this, R.string.EmailVacio,
-					Toast.LENGTH_LONG).show();
+			EmailesValido = false;
 		} else if (!email.contains("@")) {
-			Toast.makeText(NewAccountActivity.this, R.string.EmailInvalido,
-					Toast.LENGTH_LONG).show();
+			EmailesValido = false;
 		} else if (email.equals(emailconfirm)) {
 			EmailesValido = true;
 		} else {
@@ -165,15 +184,15 @@ public class NewAccountActivity extends AppCompatActivity {
 
 	//Método para crear la nueva cuenta en firebase
 	private void crearNuevaCuenta() {
-		String emailCreate = EditTextEmail.getText().toString();
-		String passwordCreate = EditTextPassword.getText().toString();
+		String email = textoEmail.getText().toString();
+		String password = textoPassword.getText().toString();
 
-		validarIDfirebase(IDfirebase, IDdispositivo, emailCreate);
+		validarIDfirebase(IDfirebase, IDdispositivo, email);
 
-		if (!emailCreate.isEmpty() && !passwordCreate.isEmpty()) {
+		if (!email.isEmpty() && !password.isEmpty()) {
 			ProgressStatusVisible();
 			if (validacionDispositivo) {
-				mAuth.createUserWithEmailAndPassword(emailCreate, passwordCreate).addOnCompleteListener(this,
+				mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this,
 						new OnCompleteListener<AuthResult>() {
 							@Override
 							public void onComplete(@NonNull Task<AuthResult> task) {
@@ -187,18 +206,19 @@ public class NewAccountActivity extends AppCompatActivity {
 
 									firebaseUID = user.getUid();
 									Useremail = user.getEmail();
+									Username = user.getDisplayName();
 
 									RegistrarUsuario(firebaseUID, Username, Useremail, Departamento, IDdispositivo);
 
 									user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-											@Override
-											public void onComplete(@NonNull Task<Void> task) {
-												ProgressStatusGone();
-												if (task.isSuccessful()) {
-													goEmailVerificationScreen();
-												}
+										@Override
+										public void onComplete(@NonNull Task<Void> task) {
+											ProgressStatusGone();
+											if (task.isSuccessful()) {
+												goEmailVerificationScreen();
 											}
-										});
+										}
+									});
 								} else {
 									ProgressStatusGone();
 									Toast.makeText(NewAccountActivity.this, R.string.CreateNewAccountERROR,
@@ -235,18 +255,23 @@ public class NewAccountActivity extends AppCompatActivity {
 	}
 
 	private void validarIDfirebase(DataSnapshot dataSnapshot, String iddispositivo, String emailusuario) {
-		DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference().child(ReferenciasFirebase.NODO_ID_DISPOSITIVO);
+		DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
 
 		for (DataSnapshot iddispositivos : dataSnapshot.getChildren()) {
-			if (!iddispositivos.getKey().equals(iddispositivo)) {
-				referenceIDdispositivo.child(iddispositivo).setValue(emailusuario);
-				validacionDispositivo = true;
-				break;
+			if (iddispositivos != null) {
+				if (!iddispositivos.getKey().equals(iddispositivo)) {
+					referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).child(iddispositivo).setValue(emailusuario);
+					validacionDispositivo = true;
+					break;
+				} else {
+					Toast.makeText(NewAccountActivity.this,
+							R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
+					validacionDispositivo = false;
+					break;
+				}
 			} else {
-				Toast.makeText(NewAccountActivity.this,
-						R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
-				validacionDispositivo = false;
-				break;
+				referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).child(iddispositivo).setValue(emailusuario);
+				validacionDispositivo = true;
 			}
 
 		}
@@ -254,7 +279,7 @@ public class NewAccountActivity extends AppCompatActivity {
 
 	private void RegistrarUsuario(final String firebaseUID, String Username, String Useremail, String Departamento, final String IDdispositivo) {
 
-		Usuario usuario = new Usuario(Username, Useremail, Departamento, IDdispositivo, Constantes.VOTO_POR);
+		Usuario usuario = new Usuario(Username, Useremail, Departamento, IDdispositivo, Constantes.VALOR_VOTO_DEFAULT);
 
 		DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -264,8 +289,8 @@ public class NewAccountActivity extends AppCompatActivity {
 
 	//Método para ir al aviso para verificar el correo electrónico
 	private void goEmailVerificationScreen() {
-		String email = EditTextEmail.getText().toString();
-		String password = EditTextPassword.getText().toString();
+		String email = textoEmail.getText().toString();
+		String password = textoPassword.getText().toString();
 
 		Intent intent = new Intent(NewAccountActivity.this, EmailVerificationActivity.class);
 		intent.putExtra("email", email);

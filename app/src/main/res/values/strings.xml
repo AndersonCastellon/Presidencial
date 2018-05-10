@@ -65,6 +65,5 @@
     <string name="EmailInvalido">Ingresa un email válido</string>
     <string name="DispositivoYaUtilizado">Este dispositivo ya ha sido utilizado para crear una cuenta, el usuario ha sido eliminado</string>
     <string name="Usuario_nulo">El usuario es nulo</string>
-    <string name="DispositivoYaUtilizadoGoogle">En este dispositivo ya se ha creado una cuenta con un Email diferente al de tu cuenta Google</string>
     <string name="DispositivoYautilizadoPorOtraCuenta">Este dispositivo ya ha sido utilizado para crear otra cuenta</string>
 </resources>

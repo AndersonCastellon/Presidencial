@@ -7,5 +7,5 @@ public class ReferenciasFirebase {
 	public static final String NODO_UID = "UidUsuarios";
 	public static final String NODO_ID_DISPOSITIVO = "UIDDispositivo";
 	public static final String NODO_NOMBRE_USUARIO = "username" ;
-	public static final String NODO_DEPARTAMENTO = "false";
+	public static final String NODO_DEPARTAMENTO = "departamento";
 }
