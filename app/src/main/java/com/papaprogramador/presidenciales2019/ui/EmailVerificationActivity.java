@@ -37,26 +37,17 @@ public class EmailVerificationActivity extends AppCompatActivity {
     private String departamentoIntent;
     private TextView mTextView;
     private Button mButton;
-    private String IDdispositivo;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener Listener;
-    private DatabaseReference databaseReference;
-    private String firebaseUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_verification);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
         //Instancia de elementos de la UI
         mTextView = findViewById(R.id.TextViewConfirmationNotice);
         mButton = findViewById(R.id.EmailVerified);
-
-
-	    obtenerID();
-
 
         //Se rescatan los valores del Inten mediante el Bundle
         Bundle bundle = getIntent().getExtras();
@@ -109,9 +100,6 @@ public class EmailVerificationActivity extends AppCompatActivity {
                                             Toast.makeText(getApplicationContext(), R.string.EmailPasswordIncorrect,
                                                     Toast.LENGTH_LONG).show();
                                         }else {
-                                        	firebaseUID =  user.getUid();
-//                                        	Metodos metodos = new Metodos();
-//	                                        metodos.RegistrarUsuario(firebaseUID, usernameIntent, email, departamentoIntent, IDdispositivo);
                                             goMainScreen();
                                         }
                                     }
@@ -124,16 +112,6 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
         }
     }
-
-//	private void RegistrarUsuario(String firebaseUID, String email, String usernameIntent, String departamentoIntent, String IDdispositivo) {
-//		Usuario usuario = new Usuario(usernameIntent, email, departamentoIntent, IDdispositivo, Constantes.VALOR_VOTO_DEFAULT);
-//
-//		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
-//		databaseReference.child(ReferenciasFirebase.NODO_UID).setValue(firebaseUID);
-//		databaseReference.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).setValue(IDdispositivo);
-//	}
-
-
 	private void goMainScreen() {
         Intent intent = new Intent(EmailVerificationActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
@@ -155,35 +133,4 @@ public class EmailVerificationActivity extends AppCompatActivity {
         }
 
     }
-
-	//Método para solicitar el permiso de lectura de IMEI en cualquier version android
-	public String obtenerID(){
-
-		if(Build.VERSION.SDK_INT  < Build.VERSION_CODES.M){
-			//Menores a Android 6.0
-			IDdispositivo = getID();
-			return IDdispositivo;
-		} else {
-			// Mayores a Android 6.0
-			IDdispositivo ="";
-			if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
-					!= PackageManager.PERMISSION_GRANTED) {
-				requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},
-						225);
-				IDdispositivo ="";
-			} else {
-				IDdispositivo = getID();
-			}
-
-			return IDdispositivo;
-
-		}
-	}
-	//Método que obtiene el IMEI
-	private String getID() {
-
-		String ID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-		return ID;
-
-	}
 }

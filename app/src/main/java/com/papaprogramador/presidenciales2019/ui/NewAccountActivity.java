@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,7 +43,7 @@ public class NewAccountActivity extends AppCompatActivity {
 	private String Username;
 	private MaterialBetterSpinner spinnerDep;
 	private String Departamento;
-	private LinearLayout contenido;
+	private ScrollView contenido;
 	private String IDdispositivo;
 	private String Useremail;
 	private String firebaseUID;
@@ -61,8 +62,8 @@ public class NewAccountActivity extends AppCompatActivity {
 		mAuth = FirebaseAuth.getInstance();
 
 		obtenerIDfirebase();
-		obtenerID();
 		IniciarVista();
+		obtenerID();
 
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
 				android.R.layout.simple_dropdown_item_1line, Constantes.departamento);
@@ -124,10 +125,10 @@ public class NewAccountActivity extends AppCompatActivity {
 			foco = spinnerDep;
 			crearCuenta = false;
 		}
-		if (!crearCuenta){
+		if (!crearCuenta) {
 			foco.requestFocus();
 			return false;
-		}else {
+		} else {
 			return crearCuenta;
 		}
 
@@ -197,16 +198,11 @@ public class NewAccountActivity extends AppCompatActivity {
 							@Override
 							public void onComplete(@NonNull Task<AuthResult> task) {
 								if (task.isSuccessful()) {
-									//Implementar el método de registro de usuario desde aquí
-									//Si se obtiene el resultado esperado con el método
-									//Crear la cuenta normalmente y enviar el email de verificación de correo
-									//Si no, crear el método necesario para eliminar la cuenta y notificar al usuario
-									//En un futuro, inhabilitar las opciones para votar, permitir el resto de funciones de la app
 									FirebaseUser user = mAuth.getCurrentUser();
 
 									firebaseUID = user.getUid();
 									Useremail = user.getEmail();
-									Username = user.getDisplayName();
+									Username = textoUserName.getText().toString();
 
 									RegistrarUsuario(firebaseUID, Username, Useremail, Departamento, IDdispositivo);
 
@@ -236,9 +232,9 @@ public class NewAccountActivity extends AppCompatActivity {
 
 	private void obtenerIDfirebase() {
 
-		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference().child(ReferenciasFirebase.NODO_ID_DISPOSITIVO);
+		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
 
-		referenceIDdispositivo.addValueEventListener(new ValueEventListener() {
+		referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				almacenarIDfirebase(dataSnapshot);
@@ -255,25 +251,27 @@ public class NewAccountActivity extends AppCompatActivity {
 	}
 
 	private void validarIDfirebase(DataSnapshot dataSnapshot, String iddispositivo, String emailusuario) {
+
 		DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
 
-		for (DataSnapshot iddispositivos : dataSnapshot.getChildren()) {
-			if (iddispositivos != null) {
-				if (!iddispositivos.getKey().equals(iddispositivo)) {
-					referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).child(iddispositivo).setValue(emailusuario);
+		if (dataSnapshot.getValue() == null) {
+			referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
+					.child(iddispositivo).setValue(emailusuario);
+			validacionDispositivo = true;
+		} else {
+			for (DataSnapshot IDdataSnapshot :
+					dataSnapshot.getChildren()) {
+				if (!IDdataSnapshot.getKey().equals(iddispositivo)){
+					referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
+							.child(iddispositivo).setValue(emailusuario);
 					validacionDispositivo = true;
 					break;
-				} else {
+				}else {
+					validacionDispositivo = false;
 					Toast.makeText(NewAccountActivity.this,
 							R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
-					validacionDispositivo = false;
-					break;
 				}
-			} else {
-				referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).child(iddispositivo).setValue(emailusuario);
-				validacionDispositivo = true;
 			}
-
 		}
 	}
 

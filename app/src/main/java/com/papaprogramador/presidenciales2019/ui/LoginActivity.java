@@ -49,8 +49,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 	private TextInputEditText mTextEmail;
 	private TextInputEditText mTextPassword;
 	private ProgressBar mProgressBar;
-	private Button mBtnLogin;
-	private Button mBtnNewAccount;
+	private Button mBtnLogin, mBtnNewAccount, recuperarPass;
 	private LinearLayout Logincontenido;
 	private SignInButton mBtnLoginGoogle;
 	private String IDdispositivo;
@@ -117,13 +116,20 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 			}
 		});
+
+		recuperarPass.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+			}
+		});
 		//FIN DE BOTONES DE INICIO DE SESION Y CREACION DE NUEVA CUENTA
 
 		//INICIO AUTENTICACION CON GOOGLE
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestIdToken(getString(R.string.default_web_client_id))
 				.requestProfile()
-				.requestEmail() //TODO: INVESTIGAR COMOOBTENER EL EMAIL DE GOOGLE PARA VALIDARLO ANTES DE CREAR CUENTA EN FIREBASE
+				.requestEmail() //TODO: INVESTIGAR COMO OBTENER EL EMAIL DE GOOGLE PARA VALIDARLO ANTES DE CREAR CUENTA EN FIREBASE
 				.build();
 
 		googleApiClient = new GoogleApiClient.Builder(this)
@@ -150,6 +156,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
 		mProgressBar = findViewById(R.id.mProgressBar);
 		Logincontenido = findViewById(R.id.Logincontenido);
+		recuperarPass = findViewById(R.id.recuperarPassword);
 
 		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
 		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
@@ -229,7 +236,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 									crearNuevoUsuarioFirebase(UsuariosFirebase);
 								} else {
 									EliminarUsuarioGoogle(user);
-//									logOut();
 								}
 							} else {
 								Toast.makeText(LoginActivity.this, R.string.Usuario_nulo,
@@ -358,8 +364,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		String iDdispositivo = IDdispositivo;
 		String emailusuario = Useremail;
 
-		for (DataSnapshot iddispositivos : dataSnapshot.getChildren()) {
-			if (iddispositivos != null) {
+		if (dataSnapshot.getValue() == null) {
+			referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
+					.child(iDdispositivo).setValue(emailusuario);
+			validacionDispositivoConGoogle = true;
+		} else {
+			for (DataSnapshot iddispositivos :
+					dataSnapshot.getChildren()) {
 				if (iddispositivos.getKey().equals(iDdispositivo)) {
 					if (iddispositivos.getValue().equals(emailusuario)) {
 						validacionDispositivoConGoogle = true;
@@ -368,16 +379,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 						validacionDispositivoConGoogle = false;
 						break;
 					}
-				} else {
-					referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).child(iDdispositivo).setValue(emailusuario);
+				}else {
+					referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
+							.child(iDdispositivo).setValue(emailusuario);
 					validacionDispositivoConGoogle = true;
-					break;
 				}
-			} else {
-				referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).child(iDdispositivo).setValue(emailusuario);
-				validacionDispositivoConGoogle = true;
 			}
-
 		}
 	}
 
@@ -408,33 +415,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 		final DatabaseReference databaseReference;
 		databaseReference = FirebaseDatabase.getInstance().getReference();
-//TODO: INVESTIGAR PORQUE ESTE MÉTODO NO EJECUTA LAS SENTENCIAS IF DENTRO DEL FOR
-		for (DataSnapshot snapshot :
-				dataSnapshot.getChildren()) {
-			if (snapshot.getValue() != null) {
+
+		if (dataSnapshot.getValue() == null) {
+			databaseReference.child(ReferenciasFirebase.NODO_USUARIO)
+					.child(firebaseUID).setValue(usuario);
+		} else {
+			for (DataSnapshot snapshot :
+					dataSnapshot.getChildren()) {
 				if (snapshot.getKey().equals(firebaseUID)) {
-					databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).child(ReferenciasFirebase.NODO_NOMBRE_USUARIO).setValue(Username);
+					databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID)
+							.child(ReferenciasFirebase.NODO_NOMBRE_USUARIO).setValue(Username);
 					break;
 				} else {
-					databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
+					databaseReference.child(ReferenciasFirebase.NODO_USUARIO)
+							.child(firebaseUID).setValue(usuario);
 				}
-			} else {
-				databaseReference.child(ReferenciasFirebase.NODO_USUARIO).child(firebaseUID).setValue(usuario);
 			}
-
 		}
-	}
-
-	//Metodo que cierra la session en google
-	public void logOut() {
-		mAuth.signOut();
-		Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
-			@Override
-			public void onResult(@NonNull Status status) {
-				if (!status.isSuccess()) {
-					Toast.makeText(getApplicationContext(), R.string.not_close_session, Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
 	}
 }
