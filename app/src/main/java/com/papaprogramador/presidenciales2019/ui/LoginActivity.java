@@ -22,8 +22,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -74,10 +72,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		obtenerIDdeFirebase();
+		obtenerID();
+		obtenerIDdeFirebase(IDdispositivo);
 		obtenerUsuariosFirebase();
 		IniciarVista();
-		obtenerID();
 
 		//Inicializacion de la instancia de Firebase
 		mAuth = FirebaseAuth.getInstance();
@@ -120,7 +118,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		recuperarPass.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+				Intent resetpass = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+				startActivity(resetpass);
 			}
 		});
 		//FIN DE BOTONES DE INICIO DE SESION Y CREACION DE NUEVA CUENTA
@@ -194,10 +193,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 	//METODOS NECESARIOS PARA EL INICIO DE SESION CON GOOGLE
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// callbackManager.onActivityResult(requestCode, resultCode, data);
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == SIGN_IN_CODE) {
+		if (requestCode == SIGN_IN_CODE) { //TODO switch para validar el requies code
 
 			GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 			handleSingInResult(result);
@@ -230,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 								Useremail = user.getEmail();
 								firebaseUID = user.getUid();
 
-								validarDispositivoConGoogle(IDfirebase);
+								validarIDfirebase(IDfirebase);
 
 								if (validacionDispositivoConGoogle) {
 									crearNuevoUsuarioFirebase(UsuariosFirebase);
@@ -306,12 +304,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 	}
 
-	public String obtenerID() {
+	public void obtenerID() {
 
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 			//Menores a Android 6.0
 			IDdispositivo = getID();
-			return IDdispositivo;
 		} else {
 			// Mayores a Android 6.0
 			IDdispositivo = "";
@@ -323,9 +320,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 			} else {
 				IDdispositivo = getID();
 			}
-
-			return IDdispositivo;
-
 		}
 	}
 
@@ -337,14 +331,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 	}
 
-	public void obtenerIDdeFirebase() {
+	public void obtenerIDdeFirebase(String IDdispositivo) {
 
 		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
 
-		referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).addValueEventListener(new ValueEventListener() {
+		referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
+				.child(IDdispositivo).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				almacenarIDfirebase(dataSnapshot);
+				referenceIDdispositivo.removeEventListener(this);
 			}
 
 			@Override
@@ -357,36 +353,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		IDfirebase = dataSnapshot;
 	}
 
-	private void validarDispositivoConGoogle(DataSnapshot dataSnapshot) {
+	private void validarIDfirebase(DataSnapshot dataSnapshot) {
 
 		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
 
-		String iDdispositivo = IDdispositivo;
+		final DataSnapshot snapshotFirebase = dataSnapshot;
+		String ID = IDdispositivo;
 		String emailusuario = Useremail;
 
-		if (dataSnapshot.getValue() == null) {
+		if (snapshotFirebase.getValue() == null) {
 			referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
-					.child(iDdispositivo).setValue(emailusuario);
+					.child(ID).setValue(emailusuario);
 			validacionDispositivoConGoogle = true;
-		} else {
-			for (DataSnapshot iddispositivos :
-					dataSnapshot.getChildren()) {
-				if (iddispositivos.getKey().equals(iDdispositivo)) {
-					if (iddispositivos.getValue().equals(emailusuario)) {
-						validacionDispositivoConGoogle = true;
-						break;
-					} else {
-						validacionDispositivoConGoogle = false;
-						break;
-					}
-				}else {
-					referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
-							.child(iDdispositivo).setValue(emailusuario);
-					validacionDispositivoConGoogle = true;
-				}
-			}
+		} else
+			validacionDispositivoConGoogle = snapshotFirebase.getValue().toString().equals(emailusuario);
 		}
-	}
 
 	private void obtenerUsuariosFirebase() {
 

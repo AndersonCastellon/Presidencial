@@ -11,7 +11,6 @@
     <string name="TextPass">Contraseña</string>
     <string name="btnLogin">Iniciar sesion</string>
     <string name="btnNewAccount">Crear cuenta</string>
-    <string name="tvOpcionesInicio">O inicia con</string>
     <string name="btnLoginGoogle">Google</string>
     <string name="btnLoginFacebook">Facebook</string>
     <string name="EmailPasswordIncorrect">Email o contraseña incorrectos</string>
@@ -31,13 +30,9 @@
     <string name="EmailNoVerified">Primero verifica tu Email</string>
     <string name="IntoCredentials">Ingresa tus credenciales</string>
     <string name="EmailNotVerified">Aún no has verificado tu Email</string>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
     <string name="UserName">Nombre de usuario</string>
     <string name="FaltanDatos">Faltan algunos datos</string>
     <string name="Departamento">Departamento</string>
@@ -67,4 +62,8 @@
     <string name="Usuario_nulo">El usuario es nulo</string>
     <string name="DispositivoYautilizadoPorOtraCuenta">Este dispositivo ya ha sido utilizado para crear otra cuenta</string>
     <string name="RestablecerPass">Restablece tu contraseña</string>
+    <string name="btnResetPassword">Enviar correo de recuperación</string>
+    <string name="TextResetPassword">Escribe a continuación el email asociado a tu cuenta para que puedas recuperar tu contraseña</string>
+    <string name="EmailResetSend">Abre el email para resetear tu contraseña</string>
+    <string name="EmailSinCuenta">Este email no tiene una cuenta asociada</string>
 </resources>
