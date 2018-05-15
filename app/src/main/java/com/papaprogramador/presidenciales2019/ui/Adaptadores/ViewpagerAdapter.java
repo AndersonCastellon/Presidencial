@@ -1,12 +1,12 @@
-package com.papaprogramador.presidenciales2019.ui.adapter;
+package com.papaprogramador.presidenciales2019.ui.Adaptadores;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.papaprogramador.presidenciales2019.ui.Fragments.CandidatosFragment;
-import com.papaprogramador.presidenciales2019.ui.Fragments.OpinionesFragment;
-import com.papaprogramador.presidenciales2019.ui.Fragments.ResultadosFragment;
+import com.papaprogramador.presidenciales2019.ui.Fragmentos.CandidatosFragment;
+import com.papaprogramador.presidenciales2019.ui.Fragmentos.OpinionesFragment;
+import com.papaprogramador.presidenciales2019.ui.Fragmentos.ResultadosFragment;
 
 public class ViewpagerAdapter extends FragmentStatePagerAdapter {
 

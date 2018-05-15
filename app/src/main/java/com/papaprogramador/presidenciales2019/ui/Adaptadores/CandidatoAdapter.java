@@ -1,6 +1,7 @@
-package com.papaprogramador.presidenciales2019.ui.adapter;
+package com.papaprogramador.presidenciales2019.ui.Adaptadores;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales2019.R;
 import com.papaprogramador.presidenciales2019.model.Candidato;
-import com.papaprogramador.presidenciales2019.ui.Fragments.CandidatosFragment;
+import com.papaprogramador.presidenciales2019.ui.Actividades.DetalleCandidatoActivity;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		holder.textViewNombre.setText(candidato.getNombreCandidato());
 		holder.textViewPartido.setText(candidato.getPartidoCandidato());
 		holder.textViewVotos.setText(String.valueOf(candidato.getVotosCandidato()));
+		holder.idcandidato = candidato.getId();
 
 		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(candidato.getStringImagen());
@@ -52,6 +54,8 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.into(holder.imageViewCandidato);
 
+		holder.setOnClickListener();
+
 	}
 
 	@Override
@@ -59,18 +63,41 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		return candidatoList.size();
 	}
 
-	public static class CandidatoViewHolder extends RecyclerView.ViewHolder {
+	public static class CandidatoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 		ImageView imageViewCandidato;
 		TextView textViewNombre, textViewPartido, textViewVotos;
 
-		public CandidatoViewHolder(View itemView) {
+		Context context;//Variable del contexto
+
+		String idcandidato;
+
+		private CandidatoViewHolder(View itemView) {
 			super(itemView);
+
+			context = itemView.getContext();//Inicializacion del contexto
 
 			imageViewCandidato = itemView.findViewById(R.id.imagenCandidato);
 			textViewNombre = itemView.findViewById(R.id.nombreCandidato);
 			textViewPartido = itemView.findViewById(R.id.partidoCandidato);
 			textViewVotos = itemView.findViewById(R.id.votosCandidato);
+		}
+
+		void setOnClickListener(){
+			imageViewCandidato.setOnClickListener(this);
+		}
+
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()){
+				case R.id.imagenCandidato:
+					Intent detalleCandidato = new Intent(context, DetalleCandidatoActivity.class);
+					detalleCandidato.putExtra("idcandidato", idcandidato);
+					detalleCandidato.putExtra("nombrecandidato", textViewNombre.getText().toString());
+					context.startActivity(detalleCandidato);
+					break;
+
+			}
 		}
 	}
 }

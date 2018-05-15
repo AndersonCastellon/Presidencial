@@ -19,4 +19,6 @@
     <dimen name="header_height">192dp</dimen>
 
     <dimen name="perfil_image_size">64dp</dimen>
+    <dimen name="text_margin_very_small">4dp</dimen>
+    <dimen name="imageview_height">250dp</dimen>
 </resources>

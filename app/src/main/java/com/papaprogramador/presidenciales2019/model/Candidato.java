@@ -6,15 +6,25 @@ public class Candidato {
 	String partidoCandidato;
 	int votosCandidato;
 	String urlImagen;
+	String id;
 
 	public Candidato() {
 	}
 
-	public Candidato(String nombreCandidato, String partidoCandidato, int votosCandidato, String urlImagen) {
+	public Candidato(String nombreCandidato, String partidoCandidato, int votosCandidato, String urlImagen, String id) {
 		this.nombreCandidato = nombreCandidato;
 		this.partidoCandidato = partidoCandidato;
 		this.votosCandidato = votosCandidato;
 		this.urlImagen = urlImagen;
+		this.id = id;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getNombreCandidato() {

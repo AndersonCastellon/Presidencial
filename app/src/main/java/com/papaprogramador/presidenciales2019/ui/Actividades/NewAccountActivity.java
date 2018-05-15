@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ui;
+package com.papaprogramador.presidenciales2019.ui.Actividades;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -61,9 +60,9 @@ public class NewAccountActivity extends AppCompatActivity {
 
 		mAuth = FirebaseAuth.getInstance();
 
-		obtenerIDfirebase();
-		IniciarVista();
 		obtenerID();
+		obtenerIDfirebase(IDdispositivo);
+		IniciarVista();
 
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
 				android.R.layout.simple_dropdown_item_1line, Constantes.departamento);
@@ -222,6 +221,9 @@ public class NewAccountActivity extends AppCompatActivity {
 								}
 							}
 						});
+			}else {
+				Toast.makeText(NewAccountActivity.this,
+						R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
 			}
 			ProgressStatusGone();
 		} else {
@@ -230,14 +232,16 @@ public class NewAccountActivity extends AppCompatActivity {
 		}
 	}
 
-	private void obtenerIDfirebase() {
+	private void obtenerIDfirebase(String IDdispositivo) {
 
 		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
 
-		referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO).addValueEventListener(new ValueEventListener() {
+		referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
+				.child(IDdispositivo).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				almacenarIDfirebase(dataSnapshot);
+				referenceIDdispositivo.removeEventListener(this);
 			}
 
 			@Override
@@ -253,25 +257,14 @@ public class NewAccountActivity extends AppCompatActivity {
 	private void validarIDfirebase(DataSnapshot dataSnapshot, String iddispositivo, String emailusuario) {
 
 		DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
+		final DataSnapshot dataIDfirebase = dataSnapshot;
 
-		if (dataSnapshot.getValue() == null) {
+		if (dataIDfirebase.getValue() == null){
 			referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
 					.child(iddispositivo).setValue(emailusuario);
 			validacionDispositivo = true;
-		} else {
-			for (DataSnapshot IDdataSnapshot :
-					dataSnapshot.getChildren()) {
-				if (!IDdataSnapshot.getKey().equals(iddispositivo)){
-					referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
-							.child(iddispositivo).setValue(emailusuario);
-					validacionDispositivo = true;
-					break;
-				}else {
-					validacionDispositivo = false;
-					Toast.makeText(NewAccountActivity.this,
-							R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
-				}
-			}
+		}else {
+			validacionDispositivo = dataIDfirebase.getValue().toString().equals(emailusuario);
 		}
 	}
 

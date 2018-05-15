@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ui;
+package com.papaprogramador.presidenciales2019.ui.Actividades;
 
 import android.Manifest;
 import android.content.Intent;

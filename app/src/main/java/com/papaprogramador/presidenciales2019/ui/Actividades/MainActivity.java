@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ui;
+package com.papaprogramador.presidenciales2019.ui.Actividades;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,9 +29,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.papaprogramador.presidenciales2019.R;
-import com.papaprogramador.presidenciales2019.ui.adapter.ViewpagerAdapter;
-
-import de.hdodenhof.circleimageview.CircleImageView;
+import com.papaprogramador.presidenciales2019.ui.Adaptadores.ViewpagerAdapter;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 

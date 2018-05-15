@@ -1,15 +1,9 @@
-package com.papaprogramador.presidenciales2019.ui;
+package com.papaprogramador.presidenciales2019.ui.Actividades;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,13 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.papaprogramador.presidenciales2019.R;
-import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
-import com.papaprogramador.presidenciales2019.io.Utils.Metodos;
-import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
-import com.papaprogramador.presidenciales2019.model.Usuario;
 
 public class EmailVerificationActivity extends AppCompatActivity {
     private String emailIntent;

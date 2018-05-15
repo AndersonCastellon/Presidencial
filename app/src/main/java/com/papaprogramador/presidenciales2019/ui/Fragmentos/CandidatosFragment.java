@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ui.Fragments;
+package com.papaprogramador.presidenciales2019.ui.Fragmentos;
 
 
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales2019.R;
 import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
 import com.papaprogramador.presidenciales2019.model.Candidato;
-import com.papaprogramador.presidenciales2019.ui.adapter.CandidatoAdapter;
+import com.papaprogramador.presidenciales2019.ui.Adaptadores.CandidatoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

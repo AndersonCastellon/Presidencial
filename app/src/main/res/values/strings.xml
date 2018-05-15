@@ -1,7 +1,7 @@
 <resources>
 
     <!--INICIO Strings para todo el sistema de logIn de la aplicacion-->
-    <string name="app_name">Presidenciales 2019</string>
+    <string name="app_name">Presidenciales</string>
 
     <string name="facebook_app_id">610961275903455</string>
     <string name="fb_login_protocol_scheme">fb610961275903455</string>

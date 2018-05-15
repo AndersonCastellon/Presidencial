@@ -13,28 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
         <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.Actividades.LoginActivity"
             android:label="@string/LabelLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,10 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity" />
-        <activity android:name=".ui.NewAccountActivity" />
-        <activity android:name=".ui.EmailVerificationActivity" />
-        <activity android:name=".ui.ResetPasswordActivity"></activity>
+        <activity android:name=".ui.Actividades.MainActivity" />
+        <activity android:name=".ui.Actividades.NewAccountActivity" />
+        <activity android:name=".ui.Actividades.EmailVerificationActivity" />
+        <activity android:name=".ui.Actividades.ResetPasswordActivity" />
+        <activity android:name=".ui.Actividades.DetalleCandidatoActivity" android:parentActivityName=".ui.Actividades.MainActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".ui.Actividades.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>
