@@ -15,6 +15,7 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales2019.R;
+import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
 import com.papaprogramador.presidenciales2019.model.Candidato;
 import com.papaprogramador.presidenciales2019.ui.Actividades.DetalleCandidatoActivity;
 
@@ -42,6 +43,7 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		holder.textViewPartido.setText(candidato.getPartidoCandidato());
 		holder.textViewVotos.setText(String.valueOf(candidato.getVotosCandidato()));
 		holder.idcandidato = candidato.getId();
+		holder.Urlimagen = candidato.getStringImagen();
 
 		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(candidato.getStringImagen());
@@ -71,6 +73,7 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		Context context;//Variable del contexto
 
 		String idcandidato;
+		String Urlimagen;
 
 		private CandidatoViewHolder(View itemView) {
 			super(itemView);
@@ -92,8 +95,9 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 			switch (v.getId()){
 				case R.id.imagenCandidato:
 					Intent detalleCandidato = new Intent(context, DetalleCandidatoActivity.class);
-					detalleCandidato.putExtra("idcandidato", idcandidato);
-					detalleCandidato.putExtra("nombrecandidato", textViewNombre.getText().toString());
+					detalleCandidato.putExtra(Constantes.idcandidato, idcandidato);
+					detalleCandidato.putExtra(Constantes.nombrecandidato, textViewNombre.getText().toString());
+					detalleCandidato.putExtra(Constantes.urlimagencandidato, Urlimagen);
 					context.startActivity(detalleCandidato);
 					break;
 

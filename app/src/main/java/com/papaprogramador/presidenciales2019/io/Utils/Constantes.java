@@ -7,6 +7,10 @@ public class Constantes {
 			"La Unión", "Morazán", "San Miguel", "San Salvador", "San Vicente", "Santa Ana", "Sonsonate", "Usulután"};
 
 	public static final String VALOR_VOTO_DEFAULT = "false";
-	public static final String  VALOR_DEPARTAMENTO_DEFAULT = "false";
+	public static final String VALOR_DEPARTAMENTO_DEFAULT = "false";
 
+
+	public static String idcandidato = "idcandidato";
+	public static String nombrecandidato = "nombrecandidato";
+	public static String urlimagencandidato = "urlimagencandidato";
 }

@@ -149,9 +149,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 	private void CloseFullSession() {
 		mAuth.signOut();
 		logOut();
-		LoginManager.getInstance().logOut();
 		Toast.makeText(MainActivity.this, R.string.CloseFullSession, Toast.LENGTH_LONG).show();
-		//revoke();
 	}
 
 	//Metodo que cierra la session en google
