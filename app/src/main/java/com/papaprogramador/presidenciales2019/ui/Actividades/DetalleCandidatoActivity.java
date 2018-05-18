@@ -31,9 +31,9 @@ public class DetalleCandidatoActivity extends AppCompatActivity {
 
 		Bundle idcandidato = getIntent().getExtras();
 		if (idcandidato != null) {
-			idCandidato = idcandidato.getString(Constantes.idcandidato);
-			nombreCandidato = idcandidato.getString(Constantes.nombrecandidato);
-			urlImagen = idcandidato.getString(Constantes.urlimagencandidato);
+			idCandidato = idcandidato.getString(Constantes.ID_CANDIDATO);
+			nombreCandidato = idcandidato.getString(Constantes.NOMBRE_CANDIDATO);
+			urlImagen = idcandidato.getString(Constantes.URL_IMAGEN_CANDIDATO);
 		}
 
 		getToolbar();

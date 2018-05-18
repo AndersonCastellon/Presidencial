@@ -10,7 +10,7 @@ public class Constantes {
 	public static final String VALOR_DEPARTAMENTO_DEFAULT = "false";
 
 
-	public static String idcandidato = "idcandidato";
-	public static String nombrecandidato = "nombrecandidato";
-	public static String urlimagencandidato = "urlimagencandidato";
+	public static String ID_CANDIDATO = "ID_CANDIDATO";
+	public static String NOMBRE_CANDIDATO = "NOMBRE_CANDIDATO";
+	public static String URL_IMAGEN_CANDIDATO = "URL_IMAGEN_CANDIDATO";
 }
