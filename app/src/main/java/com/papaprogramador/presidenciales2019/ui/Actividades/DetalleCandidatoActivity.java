@@ -16,9 +16,9 @@ import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
 
 public class DetalleCandidatoActivity extends AppCompatActivity {
 
-	private String IdCandidato;
-	private String NombreCandidato;
-	private String UrlImagen;
+	private String idCandidato;
+	private String nombreCandidato;
+	private String urlImagen;
 
 
 	@Override
@@ -31,13 +31,13 @@ public class DetalleCandidatoActivity extends AppCompatActivity {
 
 		Bundle idcandidato = getIntent().getExtras();
 		if (idcandidato != null) {
-			IdCandidato = idcandidato.getString(Constantes.idcandidato);
-			NombreCandidato = idcandidato.getString(Constantes.nombrecandidato);
-			UrlImagen = idcandidato.getString(Constantes.urlimagencandidato);
+			idCandidato = idcandidato.getString(Constantes.idcandidato);
+			nombreCandidato = idcandidato.getString(Constantes.nombrecandidato);
+			urlImagen = idcandidato.getString(Constantes.urlimagencandidato);
 		}
 
 		getToolbar();
-		recuperarImagenCandidato(UrlImagen);
+		recuperarImagenCandidato(urlImagen);
 
 
 	}
@@ -67,6 +67,6 @@ public class DetalleCandidatoActivity extends AppCompatActivity {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);// Activar flecha atras
-		getSupportActionBar().setTitle(NombreCandidato);
+		getSupportActionBar().setTitle(nombreCandidato);
 	}
 }
