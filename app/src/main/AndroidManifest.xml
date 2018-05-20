@@ -25,7 +25,7 @@
         <activity android:name=".ui.Actividades.MainActivity" />
         <activity android:name=".ui.Actividades.NewAccountActivity" />
         <activity android:name=".ui.Actividades.EmailVerificationActivity" />
-        <activity android:name=".RessetPassword.ResetPasswordVista" />
+        <activity android:name=".ResetPassword.ResetPasswordVista" />
         <activity
             android:name=".ui.Actividades.DetalleCandidatoActivity"
             android:parentActivityName=".ui.Actividades.MainActivity"

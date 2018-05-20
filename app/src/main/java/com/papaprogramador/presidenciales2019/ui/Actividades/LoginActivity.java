@@ -36,7 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales2019.R;
-import com.papaprogramador.presidenciales2019.RessetPassword.ResetPasswordVista;
+import com.papaprogramador.presidenciales2019.ResetPassword.ResetPasswordVista;
 import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
 import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
 import com.papaprogramador.presidenciales2019.model.Usuario;

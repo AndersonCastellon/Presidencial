@@ -66,4 +66,5 @@
     <string name="TextResetPassword">Escribe a continuación el email asociado a tu cuenta para que puedas recuperar tu contraseña</string>
     <string name="EmailResetSend">Abre el email para resetear tu contraseña</string>
     <string name="EmailSinCuenta">Este email no tiene una cuenta asociada</string>
+    <string name="IngresarEmail">Ingresa tu email</string>
 </resources>
