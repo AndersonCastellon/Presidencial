@@ -36,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales2019.R;
+import com.papaprogramador.presidenciales2019.RessetPassword.ResetPasswordVista;
 import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
 import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
 import com.papaprogramador.presidenciales2019.model.Usuario;
@@ -118,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		recuperarPass.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent resetpass = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+				Intent resetpass = new Intent(LoginActivity.this, ResetPasswordVista.class);
 				startActivity(resetpass);
 			}
 		});
