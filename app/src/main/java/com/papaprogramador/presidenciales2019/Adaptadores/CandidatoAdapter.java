@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ui.Adaptadores;
+package com.papaprogramador.presidenciales2019.Adaptadores;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,8 +16,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales2019.R;
 import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
-import com.papaprogramador.presidenciales2019.model.Candidato;
-import com.papaprogramador.presidenciales2019.ui.Actividades.DetalleCandidatoActivity;
+import com.papaprogramador.presidenciales2019.Objetos.Candidato;
+import com.papaprogramador.presidenciales2019.Vista.Actividades.DetalleCandidatoActivity;
 
 import java.util.List;
 

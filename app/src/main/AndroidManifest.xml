@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.papaprogramador.presidenciales2019">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".model.Presidenciales2019App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,25 +14,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.Actividades.LoginActivity"
-            android:label="@string/LabelLoginActivity">
+            android:name=".Vista.Actividades.LoginActivity"
+            android:label="@string/LabelLoginActivity"
+            tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.Actividades.MainActivity" />
-        <activity android:name=".ui.Actividades.NewAccountActivity" />
-        <activity android:name=".ui.Actividades.EmailVerificationActivity" />
-        <activity android:name=".ResetPassword.ResetPasswordVista" />
+        <activity android:name=".Vista.Actividades.MainActivity" />
+        <activity android:name=".Vista.Actividades.NewAccountActivity" />
+        <activity android:name=".Vista.Actividades.EmailVerificationActivity" />
+        <activity android:name=".Vista.Actividades.ResetPasswordVista" />
         <activity
-            android:name=".ui.Actividades.DetalleCandidatoActivity"
-            android:parentActivityName=".ui.Actividades.MainActivity"
+            android:name=".Vista.Actividades.DetalleCandidatoActivity"
+            android:parentActivityName=".Vista.Actividades.MainActivity"
             android:theme="@style/AppthemeStatusBarTransparent">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.Actividades.MainActivity" />
+                android:value=".Vista.Actividades.MainActivity" />
         </activity>
     </application>
 

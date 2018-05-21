@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ResetPassword;
+package com.papaprogramador.presidenciales2019.InterfacesMVP;
 
 public interface ResetPassword {
 

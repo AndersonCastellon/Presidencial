@@ -1,10 +1,11 @@
-package com.papaprogramador.presidenciales2019.ResetPassword;
+package com.papaprogramador.presidenciales2019.Modelo;
 
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.papaprogramador.presidenciales2019.InterfacesMVP.ResetPassword;
 
 public class ResetPasswordModelo implements ResetPassword.Modelo {
 	private ResetPassword.Presentador presentador;

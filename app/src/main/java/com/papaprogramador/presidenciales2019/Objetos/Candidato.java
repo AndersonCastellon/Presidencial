@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.model;
+package com.papaprogramador.presidenciales2019.Objetos;
 
 
 public class Candidato {

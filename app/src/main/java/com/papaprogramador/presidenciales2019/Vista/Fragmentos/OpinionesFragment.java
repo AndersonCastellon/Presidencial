@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ui.Fragmentos;
+package com.papaprogramador.presidenciales2019.Vista.Fragmentos;
 
 
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import com.papaprogramador.presidenciales2019.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ResultadosFragment extends Fragment {
+public class OpinionesFragment extends Fragment {
 
 
-	public ResultadosFragment() {
+	public OpinionesFragment() {
 		// Required empty public constructor
 	}
 
@@ -24,10 +24,9 @@ public class ResultadosFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.fragment_resultados, container, false);
+		View view = inflater.inflate(R.layout.fragment_opiniones, container, false);
 
 		
-
 
 		return view;
 	}

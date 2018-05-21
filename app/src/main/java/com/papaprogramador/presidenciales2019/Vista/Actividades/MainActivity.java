@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ui.Actividades;
+package com.papaprogramador.presidenciales2019.Vista.Actividades;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -29,7 +28,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.papaprogramador.presidenciales2019.R;
-import com.papaprogramador.presidenciales2019.ui.Adaptadores.ViewpagerAdapter;
+import com.papaprogramador.presidenciales2019.Adaptadores.ViewpagerAdapter;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 

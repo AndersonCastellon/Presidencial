@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ui.Actividades;
+package com.papaprogramador.presidenciales2019.Vista.Actividades;
 
 import android.Manifest;
 import android.content.Intent;
@@ -31,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales2019.R;
 import com.papaprogramador.presidenciales2019.io.Utils.Constantes;
 import com.papaprogramador.presidenciales2019.io.Utils.ReferenciasFirebase;
-import com.papaprogramador.presidenciales2019.model.Usuario;
+import com.papaprogramador.presidenciales2019.Objetos.Usuario;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class NewAccountActivity extends AppCompatActivity {

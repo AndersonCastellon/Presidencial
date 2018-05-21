@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales2019.ui.Actividades;
+package com.papaprogramador.presidenciales2019.Vista.Actividades;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

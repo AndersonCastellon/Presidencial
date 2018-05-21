@@ -1,4 +1,7 @@
-package com.papaprogramador.presidenciales2019.ResetPassword;
+package com.papaprogramador.presidenciales2019.Presentador;
+
+import com.papaprogramador.presidenciales2019.Modelo.ResetPasswordModelo;
+import com.papaprogramador.presidenciales2019.InterfacesMVP.ResetPassword;
 
 public class ResetPasswordPresentador implements ResetPassword.Presentador {
 
