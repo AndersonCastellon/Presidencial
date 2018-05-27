@@ -49,7 +49,8 @@ public class ResetPasswordVista extends MvpActivity<ResetPassword.Vista, ResetPa
 
 	@Override
 	public void mostrarResultadoExitoso() {
-		Toast.makeText(ResetPasswordVista.this, R.string.EmailResetSend,
+		Toast.makeText(ResetPasswordVista.this,
+				R.string.EmailResetSend,
 				Toast.LENGTH_LONG).show();
 		goLoginActivity();
 	}
