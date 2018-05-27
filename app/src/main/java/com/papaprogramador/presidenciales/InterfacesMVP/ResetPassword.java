@@ -16,13 +16,13 @@ public interface ResetPassword {
 	}
 
 	interface Presentador extends MvpPresenter<ResetPassword.Vista>{
-		void enviarResultadoExitoso();
+		void emailEnviado();
 
-		void enviarEmailSinCuentaAsociada();
+		void emailSinCuentaAsociada();
 
-		void enviarErrorPorCampoVacio();
+		void campoEmailVacio();
 
-		void enviarErrorPorEmailInvalido();
+		void emailInvalido();
 
 		void procesarEmailUsuario(String emailUsuario);
 	}

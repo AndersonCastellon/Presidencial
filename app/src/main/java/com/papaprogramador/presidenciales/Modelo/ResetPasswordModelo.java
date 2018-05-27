@@ -19,9 +19,9 @@ public class ResetPasswordModelo implements ResetPassword.Modelo {
 	@Override
 	public void resetEmailUsuario(String emailUsuario) {
 		if (emailVacio(emailUsuario)) {
-			presentador.enviarErrorPorCampoVacio();
+			presentador.campoEmailVacio();
 		} else if (emailInvalido(emailUsuario)) {
-			presentador.enviarErrorPorEmailInvalido();
+			presentador.emailInvalido();
 		} else {
 			FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
@@ -30,9 +30,9 @@ public class ResetPasswordModelo implements ResetPassword.Modelo {
 						@Override
 						public void onComplete(@NonNull Task<Void> task) {
 							if (task.isSuccessful()){
-								presentador.enviarResultadoExitoso();
+								presentador.emailEnviado();
 							}else {
-								presentador.enviarEmailSinCuentaAsociada();
+								presentador.emailSinCuentaAsociada();
 							}
 						}
 					});
