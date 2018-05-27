@@ -14,7 +14,7 @@ import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.io.Utils.Constantes;
 
-public class DetalleCandidatoActivity extends AppCompatActivity {
+public class DetailCandidatoVista extends AppCompatActivity {
 
 	private String idCandidato;
 	private String nombreCandidato;

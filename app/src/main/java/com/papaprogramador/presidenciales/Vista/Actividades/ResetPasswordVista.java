@@ -70,7 +70,7 @@ public class ResetPasswordVista extends MvpActivity<ResetPassword.Vista, ResetPa
 	}
 
 	private void goLoginActivity() {
-		Intent login = new Intent(ResetPasswordVista.this, LoginActivity.class);
+		Intent login = new Intent(ResetPasswordVista.this, LoginVista.class);
 		startActivity(login);
 	}
 }

@@ -34,7 +34,7 @@ import com.papaprogramador.presidenciales.io.Utils.ReferenciasFirebase;
 import com.papaprogramador.presidenciales.Objetos.Usuario;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-public class NewAccountActivity extends AppCompatActivity {
+public class NewAccountVista extends AppCompatActivity {
 	private FirebaseAuth mAuth;
 	private TextInputEditText textoEmail, textoPassword, textoUserName, confirmarEmail, confirmarPassword;
 	private Button btnNewAccount;
@@ -216,18 +216,18 @@ public class NewAccountActivity extends AppCompatActivity {
 									});
 								} else {
 									ProgressStatusGone();
-									Toast.makeText(NewAccountActivity.this, R.string.CreateNewAccountERROR,
+									Toast.makeText(NewAccountVista.this, R.string.CreateNewAccountERROR,
 											Toast.LENGTH_LONG).show();
 								}
 							}
 						});
 			}else {
-				Toast.makeText(NewAccountActivity.this,
+				Toast.makeText(NewAccountVista.this,
 						R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
 			}
 			ProgressStatusGone();
 		} else {
-			Toast.makeText(NewAccountActivity.this, R.string.IntoEmailAndPasswordForNewAccount,
+			Toast.makeText(NewAccountVista.this, R.string.IntoEmailAndPasswordForNewAccount,
 					Toast.LENGTH_LONG).show();
 		}
 	}
@@ -283,7 +283,7 @@ public class NewAccountActivity extends AppCompatActivity {
 		String email = textoEmail.getText().toString();
 		String password = textoPassword.getText().toString();
 
-		Intent intent = new Intent(NewAccountActivity.this, EmailVerificationActivity.class);
+		Intent intent = new Intent(NewAccountVista.this, EmailVerifyVista.class);
 		intent.putExtra("email", email);
 		intent.putExtra("password", password);
 		intent.putExtra("username", Username);

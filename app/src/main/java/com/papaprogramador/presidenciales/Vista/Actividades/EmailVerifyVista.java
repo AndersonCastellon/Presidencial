@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.papaprogramador.presidenciales.R;
 
-public class EmailVerificationActivity extends AppCompatActivity {
+public class EmailVerifyVista extends AppCompatActivity {
     private String emailIntent;
     private String passwordIntent;
     private String usernameIntent;
@@ -80,7 +80,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if (user.isEmailVerified()){
                         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
-                        mAuth.signInWithCredential(credential).addOnCompleteListener(EmailVerificationActivity.this,
+                        mAuth.signInWithCredential(credential).addOnCompleteListener(EmailVerifyVista.this,
                                 new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -93,7 +93,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                                     }
                                 });
                     }else {
-                        Toast.makeText(EmailVerificationActivity.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
+                        Toast.makeText(EmailVerifyVista.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -101,7 +101,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
         }
     }
 	private void goMainScreen() {
-        Intent intent = new Intent(EmailVerificationActivity.this, MainActivity.class);
+        Intent intent = new Intent(EmailVerifyVista.this, ListaCandidatosVista.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

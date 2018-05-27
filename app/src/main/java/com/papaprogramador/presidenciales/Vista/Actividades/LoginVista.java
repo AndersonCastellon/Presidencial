@@ -41,7 +41,7 @@ import com.papaprogramador.presidenciales.io.Utils.ReferenciasFirebase;
 import com.papaprogramador.presidenciales.Objetos.Usuario;
 
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginVista extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 	//Declaracion de variables globales de este activity
 	private TextInputEditText mTextEmail;
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 					if (user.isEmailVerified()) {
 						goMainScreen();
 					} else {
-						Toast.makeText(LoginActivity.this, R.string.EmailNotVerified, Toast.LENGTH_LONG).show();
+						Toast.makeText(LoginVista.this, R.string.EmailNotVerified, Toast.LENGTH_LONG).show();
 					}
 
 				}
@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 			@Override
 			public void onClick(View v) {
 				//INTENT PARA IR A LA VISTA PARA CREAR UNA NUEVA CUENTA
-				startActivity(new Intent(LoginActivity.this, NewAccountActivity.class));
+				startActivity(new Intent(LoginVista.this, NewAccountVista.class));
 
 			}
 		});
@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		recuperarPass.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent resetpass = new Intent(LoginActivity.this, ResetPasswordVista.class);
+				Intent resetpass = new Intent(LoginVista.this, ResetPasswordVista.class);
 				startActivity(resetpass);
 			}
 		});
@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		if (!email.isEmpty() && !password.isEmpty()) {
 			onProgressbarVisible();
 			AuthCredential credential = EmailAuthProvider.getCredential(email, password);
-			mAuth.signInWithCredential(credential).addOnCompleteListener(LoginActivity.this,
+			mAuth.signInWithCredential(credential).addOnCompleteListener(LoginVista.this,
 					new OnCompleteListener<AuthResult>() {
 						@Override
 						public void onComplete(@NonNull Task<AuthResult> task) {
@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 							} else {
 								FirebaseUser user = mAuth.getCurrentUser();
 								if (!user.isEmailVerified()) {
-									Toast.makeText(LoginActivity.this, R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
+									Toast.makeText(LoginVista.this, R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
 								} else {
 									goMainScreen();
 								}
@@ -236,11 +236,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 									EliminarUsuarioGoogle(user);
 								}
 							} else {
-								Toast.makeText(LoginActivity.this, R.string.Usuario_nulo,
+								Toast.makeText(LoginVista.this, R.string.Usuario_nulo,
 										Toast.LENGTH_LONG).show();
 							}
 						} else {
-							Toast.makeText(LoginActivity.this, getString(R.string.ErrorAuthWithGoogle),
+							Toast.makeText(LoginVista.this, getString(R.string.ErrorAuthWithGoogle),
 									Toast.LENGTH_LONG).show();
 						}
 					}
@@ -251,7 +251,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 		user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
 			@Override
 			public void onComplete(@NonNull Task<Void> task) {
-				Toast.makeText(LoginActivity.this, R.string.DispositivoYautilizadoPorOtraCuenta,
+				Toast.makeText(LoginVista.this, R.string.DispositivoYautilizadoPorOtraCuenta,
 						Toast.LENGTH_LONG).show();
 			}
 		});
@@ -259,7 +259,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
 	//Metodo para ir a el activity principal en caso de session exitosa
 	protected void goMainScreen() {
-		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+		Intent intent = new Intent(LoginVista.this, ListaCandidatosVista.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
