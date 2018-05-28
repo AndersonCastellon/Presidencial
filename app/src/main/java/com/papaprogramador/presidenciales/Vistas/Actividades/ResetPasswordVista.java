@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Vista.Actividades;
+package com.papaprogramador.presidenciales.Vistas.Actividades;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.ResetPassword;
-import com.papaprogramador.presidenciales.Presentador.ResetPasswordPresentador;
+import com.papaprogramador.presidenciales.Presentadores.ResetPasswordPresentador;
 import com.papaprogramador.presidenciales.R;
 
 public class ResetPasswordVista extends MvpActivity<ResetPassword.Vista, ResetPassword.Presentador>

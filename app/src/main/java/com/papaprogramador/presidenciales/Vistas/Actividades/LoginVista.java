@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Vista.Actividades;
+package com.papaprogramador.presidenciales.Vistas.Actividades;
 
 import android.Manifest;
 import android.content.Intent;
@@ -36,8 +36,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.io.Utils.Constantes;
-import com.papaprogramador.presidenciales.io.Utils.ReferenciasFirebase;
+import com.papaprogramador.presidenciales.Utilidades.Constantes;
+import com.papaprogramador.presidenciales.Utilidades.ReferenciasFirebase;
 import com.papaprogramador.presidenciales.Objetos.Usuario;
 
 

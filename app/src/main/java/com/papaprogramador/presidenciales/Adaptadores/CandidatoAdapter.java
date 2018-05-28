@@ -15,9 +15,9 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.io.Utils.Constantes;
+import com.papaprogramador.presidenciales.Utilidades.Constantes;
 import com.papaprogramador.presidenciales.Objetos.Candidato;
-import com.papaprogramador.presidenciales.Vista.Actividades.DetailCandidatoVista;
+import com.papaprogramador.presidenciales.Vistas.Actividades.DetailCandidatoVista;
 
 import java.util.List;
 

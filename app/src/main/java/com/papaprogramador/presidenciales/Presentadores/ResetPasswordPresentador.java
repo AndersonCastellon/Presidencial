@@ -1,10 +1,10 @@
-package com.papaprogramador.presidenciales.Presentador;
+package com.papaprogramador.presidenciales.Presentadores;
 
 
 import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-import com.papaprogramador.presidenciales.Modelo.ResetPasswordModelo;
+import com.papaprogramador.presidenciales.Modelos.ResetPasswordModelo;
 import com.papaprogramador.presidenciales.InterfacesMVP.ResetPassword;
 
 public class ResetPasswordPresentador extends MvpBasePresenter<ResetPassword.Vista>

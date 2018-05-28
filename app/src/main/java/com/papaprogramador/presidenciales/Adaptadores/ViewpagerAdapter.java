@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.papaprogramador.presidenciales.Vista.Fragmentos.CandidatosFragment;
-import com.papaprogramador.presidenciales.Vista.Fragmentos.OpinionesFragment;
-import com.papaprogramador.presidenciales.Vista.Fragmentos.ResultadosFragment;
+import com.papaprogramador.presidenciales.Vistas.Fragmentos.CandidatosFragment;
+import com.papaprogramador.presidenciales.Vistas.Fragmentos.OpinionesFragment;
+import com.papaprogramador.presidenciales.Vistas.Fragmentos.ResultadosFragment;
 
 public class ViewpagerAdapter extends FragmentStatePagerAdapter {
 

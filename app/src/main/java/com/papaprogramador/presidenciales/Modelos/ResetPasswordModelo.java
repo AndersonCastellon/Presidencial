@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Modelo;
+package com.papaprogramador.presidenciales.Modelos;
 
 import android.support.annotation.NonNull;
 
@@ -6,7 +6,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.papaprogramador.presidenciales.InterfacesMVP.ResetPassword;
-import com.papaprogramador.presidenciales.Presentador.ResetPasswordPresentador;
+import com.papaprogramador.presidenciales.Presentadores.ResetPasswordPresentador;
 
 public class ResetPasswordModelo implements ResetPassword.Modelo {
 

@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Vista.Actividades;
+package com.papaprogramador.presidenciales.Vistas.Actividades;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;

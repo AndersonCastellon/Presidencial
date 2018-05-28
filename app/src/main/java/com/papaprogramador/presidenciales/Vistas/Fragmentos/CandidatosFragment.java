@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Vista.Fragmentos;
+package com.papaprogramador.presidenciales.Vistas.Fragmentos;
 
 
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.io.Utils.ReferenciasFirebase;
+import com.papaprogramador.presidenciales.Utilidades.ReferenciasFirebase;
 import com.papaprogramador.presidenciales.Objetos.Candidato;
 import com.papaprogramador.presidenciales.Adaptadores.CandidatoAdapter;
 

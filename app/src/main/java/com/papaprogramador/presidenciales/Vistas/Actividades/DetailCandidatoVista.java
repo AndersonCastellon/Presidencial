@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Vista.Actividades;
+package com.papaprogramador.presidenciales.Vistas.Actividades;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.io.Utils.Constantes;
+import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
 public class DetailCandidatoVista extends AppCompatActivity {
 

@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Vista.Actividades.LoginVista"
+            android:name=".Vistas.Actividades.LoginVista"
             android:label="@string/LabelLoginActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
@@ -23,17 +23,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Vista.Actividades.ListaCandidatosVista" />
-        <activity android:name=".Vista.Actividades.NewAccountVista" />
-        <activity android:name=".Vista.Actividades.EmailVerifyVista" />
-        <activity android:name=".Vista.Actividades.ResetPasswordVista" />
+        <activity android:name=".Vistas.Actividades.ListaCandidatosVista" />
+        <activity android:name=".Vistas.Actividades.NewAccountVista" />
+        <activity android:name=".Vistas.Actividades.EmailVerifyVista" />
+        <activity android:name=".Vistas.Actividades.ResetPasswordVista" />
         <activity
-            android:name=".Vista.Actividades.DetailCandidatoVista"
-            android:parentActivityName=".Vista.Actividades.ListaCandidatosVista"
+            android:name=".Vistas.Actividades.DetailCandidatoVista"
+            android:parentActivityName=".Vistas.Actividades.ListaCandidatosVista"
             android:theme="@style/AppthemeStatusBarTransparent">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Vista.Actividades.ListaCandidatosVista" />
+                android:value=".Vistas.Actividades.ListaCandidatosVista" />
         </activity>
     </application>
 

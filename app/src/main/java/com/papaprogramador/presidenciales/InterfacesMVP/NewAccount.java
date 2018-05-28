@@ -30,7 +30,7 @@ public interface NewAccount {
 		void validarCampos(String nombreUsuario, String emailUsuario, String emailUsuario2, String pass,
 		                   String pass2, String departamento);
 		void errorEnCampo(String error);
-		void errorAlCrearCuenta();
+		void idYaUtilizado();
 		void irAVerificarEmail(String emailUsuario, String pass);
 
 	}

@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Vista.Fragmentos;
+package com.papaprogramador.presidenciales.Vistas.Fragmentos;
 
 
 import android.os.Bundle;
