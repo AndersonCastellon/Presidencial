@@ -15,28 +15,41 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public interface NewAccount {
 	interface Vista extends MvpView {
 		void almacenarID(String idDispositivo);
-		void verificarEmail(String emailUsuario, String password);
-		void errorEnCampo(String error);
 		void idYaUtilizado();
+		void cuentaYaExiste();
 		void mostrarProgreso();
+		void nombreUsuarioVacio();
+		void emailUsuarioVacio();
+		void emailUsuario2Vacio();
+		void passwordVacio();
+		void password2Vacio();
+		void departamentoVacio();
+		void errorEmailNoCoincide();
+		void errorPassInvalido();
+		void errorPassNoCoincide();
+		void irAVerificarEmail(String emailUsuario, String pass);
 	}
 
 	interface Presentador extends MvpPresenter<NewAccount.Vista> {
 		void obtenerIdDispositivo(Context context);
 		void obtenerIdFirebase(String idDispositivo);
-		void validarCampos(String idDispositivo, String nombreUsuario, String emailUsuario, String emailUsuario2, String pass,
+		void validarCampos(Context context, String idDispositivo, String nombreUsuario, String emailUsuario, String emailUsuario2, String pass,
 		                   String pass2, String departamento);
+		void campoVacio(String campoVacio);
 		void errorEnCampo(String error);
+		void crearCuenta(Context context, String idDispositivo, String emailUsuario, String nombreUsuario,
+		                 String pass, String departamento);
 		void irAVerificarEmail(String emailUsuario, String pass);
 
 	}
 
 	interface Modelo {
-		void validarCampos(String idDispositivo, String nombreUsuario,
+		void validarCampos(Context context, String idDispositivo, String nombreUsuario,
 		                   String emailUsuario, String emailUsuario2, String pass,
 		                   String pass2, String departamento);
-		void crearCuenta(String emailUsuario, String nombreUsuario, String pass, String departamento);
-		void registrarUsuarioEnFirebase(String nombreUsuario, String emailUsuario,
-		                                String departamento, String idDispositivo, String voto);
+		void registrarUsuarioEnFirebaseRealTimeDataBase(String uidFirebase, String nombreUsuario,
+		                                                String emailUsuario, String departamento,
+		                                                String idDispositivo, String voto,
+		                                                String pass);
 	}
 }

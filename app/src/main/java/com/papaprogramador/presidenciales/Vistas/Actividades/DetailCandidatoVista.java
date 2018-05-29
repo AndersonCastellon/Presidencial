@@ -31,9 +31,9 @@ public class DetailCandidatoVista extends AppCompatActivity {
 
 		Bundle idCandidato = getIntent().getExtras();
 		if (idCandidato != null) {
-			this.idCandidato = idCandidato.getString(Constantes.ID_CANDIDATO);
-			nombreCandidato = idCandidato.getString(Constantes.NOMBRE_CANDIDATO);
-			urlImagen = idCandidato.getString(Constantes.URL_IMAGEN_CANDIDATO);
+			this.idCandidato = idCandidato.getString(Constantes.PUT_ID_CANDIDATO);
+			nombreCandidato = idCandidato.getString(Constantes.PUT_NOMBRE_CANDIDATO);
+			urlImagen = idCandidato.getString(Constantes.PUT_URL_IMAGEN_CANDIDATO);
 		}
 
 		getToolbar();

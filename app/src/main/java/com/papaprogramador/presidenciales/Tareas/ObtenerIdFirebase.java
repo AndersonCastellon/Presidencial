@@ -43,7 +43,7 @@ public class ObtenerIdFirebase {
 		final String id = idDispositivo;
 
 		if (idFirebase.getValue() == null){
-			listener.idObtenido(true, id);
+			listener.idObtenido(false, id);
 		}else {
 			listener.idObtenido(idFirebase.getKey().equals(id), id);
 		}

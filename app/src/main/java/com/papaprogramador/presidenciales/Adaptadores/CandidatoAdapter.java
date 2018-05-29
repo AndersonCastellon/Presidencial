@@ -95,9 +95,9 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 			switch (v.getId()){
 				case R.id.imagenCandidato:
 					Intent detalleCandidato = new Intent(context, DetailCandidatoVista.class);
-					detalleCandidato.putExtra(Constantes.ID_CANDIDATO, idcandidato);
-					detalleCandidato.putExtra(Constantes.NOMBRE_CANDIDATO, textViewNombre.getText().toString());
-					detalleCandidato.putExtra(Constantes.URL_IMAGEN_CANDIDATO, Urlimagen);
+					detalleCandidato.putExtra(Constantes.PUT_ID_CANDIDATO, idcandidato);
+					detalleCandidato.putExtra(Constantes.PUT_NOMBRE_CANDIDATO, textViewNombre.getText().toString());
+					detalleCandidato.putExtra(Constantes.PUT_URL_IMAGEN_CANDIDATO, Urlimagen);
 					context.startActivity(detalleCandidato);
 					break;
 
