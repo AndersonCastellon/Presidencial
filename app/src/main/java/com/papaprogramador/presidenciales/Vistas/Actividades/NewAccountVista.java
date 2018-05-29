@@ -1,21 +1,15 @@
 package com.papaprogramador.presidenciales.Vistas.Actividades;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,32 +18,31 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.hannesdorfmann.mosby3.mvp.MvpActivity;
+import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
+import com.papaprogramador.presidenciales.Presentadores.NewAccountPresentador;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 import com.papaprogramador.presidenciales.Utilidades.ReferenciasFirebase;
 import com.papaprogramador.presidenciales.Objetos.Usuario;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-public class NewAccountVista extends AppCompatActivity {
+public class NewAccountVista extends MvpActivity<NewAccount.Vista,
+		NewAccount.Presentador> implements NewAccount.Vista {
 	private FirebaseAuth mAuth;
-	private TextInputEditText textoEmail, textoPassword, textoUserName, confirmarEmail, confirmarPassword;
+	private TextInputEditText emailUsuario, pass, nombreUsuario, emailUsuario2, pass2;
 	private Button btnNewAccount;
 	private ProgressBar mProgressBar;
 	private String Username;
-	private MaterialBetterSpinner spinnerDep;
-	private String Departamento;
-	private ScrollView contenido;
-	private String IDdispositivo;
+	private MaterialBetterSpinner spinnerDepartamento;
+	private String departamento;
+	private LinearLayout contenido;
+	private String idDispositivo;
 	private String Useremail;
 	private String firebaseUID;
 	private DataSnapshot IDfirebase;
-	private boolean validacionDispositivo;
-
-	private TextInputLayout campoUserName, campoEmail, campoConfirmEmail, campoPassword, campoConfirmPassword;
 
 	boolean PasswordesValido = true;
 	boolean EmailesValido = true;
@@ -58,20 +51,12 @@ public class NewAccountVista extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_account);
 
-		mAuth = FirebaseAuth.getInstance();
+		onStartVista();
 
-		obtenerID();
-		obtenerIDfirebase(IDdispositivo);
-		IniciarVista();
-
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-				android.R.layout.simple_dropdown_item_1line, Constantes.departamento);
-		spinnerDep.setAdapter(arrayAdapter);
-
-		spinnerDep.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		spinnerDepartamento.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Departamento = spinnerDep.getText().toString();
+				departamento = spinnerDepartamento.getText().toString();
 			}
 		});
 
@@ -79,27 +64,87 @@ public class NewAccountVista extends AppCompatActivity {
 		btnNewAccount.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (validarCampos()) {
-					crearNuevaCuenta();
-				}
-			}
 
+				String nUsuario = nombreUsuario.getText().toString();
+				String eUsuario = emailUsuario.getText().toString();
+				String eUsuario2 = emailUsuario2.getText().toString();
+				String password = pass.getText().toString();
+				String password2 = pass2.getText().toString();
+				String departamento = spinnerDepartamento.getText().toString();
+
+				getPresenter().validarCampos(idDispositivo, nUsuario, eUsuario, eUsuario2,
+						password, password2, departamento);
+			}
 		});
+	}
+
+	private void onStartVista() {
+
+		getPresenter().obtenerIdDispositivo(NewAccountVista.this);
+
+		nombreUsuario = findViewById(R.id.nombreUsuario);
+		emailUsuario = findViewById(R.id.emailUsuario);
+		emailUsuario2 = findViewById(R.id.editTexEmailConfirm);
+		pass = findViewById(R.id.editTextPasswordCreate);
+		pass2 = findViewById(R.id.editTextPasswordConfirm);
+		mProgressBar = findViewById(R.id.ProgressBarNewAccount);
+		spinnerDepartamento = findViewById(R.id.spinnerDep);
+		contenido = findViewById(R.id.contenido);
+		btnNewAccount = findViewById(R.id.btnNewAccountCreate);
+
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
+				android.R.layout.simple_dropdown_item_1line, Constantes.departamento);
+		spinnerDepartamento.setAdapter(arrayAdapter);
+	}
+
+	@NonNull
+	@Override
+	public NewAccount.Presentador createPresenter() {
+		return new NewAccountPresentador();
+	}
+
+
+	@Override
+	public void almacenarID(String idDispositivo) {
+		this.idDispositivo = idDispositivo;
+	}
+
+	@Override
+	public void verificarEmail(String emailUsuario, String password) {
+
+	}
+
+	@Override
+	public void errorEnCampo(String error) {
+
+	}
+
+	@Override
+	public void idYaUtilizado() {
+		Toast.makeText(NewAccountVista.this,
+				R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
+
+		Intent intent = new Intent(NewAccountVista.this, LoginVista.class);
+		startActivity(intent);
+	}
+
+	@Override
+	public void mostrarProgreso() {
 
 	}
 
 	private boolean validarCampos() {
-		validarEmail(textoEmail, confirmarEmail);
-		validarPassword(textoPassword, confirmarPassword);
+		validarEmail(emailUsuario, emailUsuario2);
+		validarPassword(pass, pass2);
 
-		String departamento = spinnerDep.getText().toString();
-		String username = textoUserName.getText().toString();
+		String departamento = spinnerDepartamento.getText().toString();
+		String username = nombreUsuario.getText().toString();
 
 		campoUserName.setError(null);
 		campoEmail.setError(null);
 		campoConfirmEmail.setError(null);
 		campoPassword.setError(null);
-		confirmarPassword.setError(null);
+		pass2.setError(null);
 
 		boolean crearCuenta = true;
 		View foco = null;
@@ -115,13 +160,13 @@ public class NewAccountVista extends AppCompatActivity {
 		} else if (!PasswordesValido) {
 			campoPassword.setError(getString(R.string.PasswordDiferente));
 			campoConfirmPassword.setError(getString(R.string.PasswordDiferente));
-			textoPassword.setText("");
-			confirmarPassword.setText("");
+			pass.setText("");
+			pass2.setText("");
 			foco = campoPassword;
 			crearCuenta = false;
 		} else if (departamento.isEmpty()) {
-			spinnerDep.setError(getString(R.string.EligeDepartamento));
-			foco = spinnerDep;
+			spinnerDepartamento.setError(getString(R.string.EligeDepartamento));
+			foco = spinnerDepartamento;
 			crearCuenta = false;
 		}
 		if (!crearCuenta) {
@@ -133,24 +178,6 @@ public class NewAccountVista extends AppCompatActivity {
 
 	}
 
-	private void IniciarVista() {
-
-		textoEmail = findViewById(R.id.editTexEmailCreate);
-		textoPassword = findViewById(R.id.editTextPasswordCreate);
-		confirmarEmail = findViewById(R.id.editTexEmailConfirm);
-		confirmarPassword = findViewById(R.id.editTextPasswordConfirm);
-		btnNewAccount = findViewById(R.id.btnNewAccountCreate);
-		mProgressBar = findViewById(R.id.ProgressBarNewAccount);
-		textoUserName = findViewById(R.id.editTexUserName);
-		spinnerDep = findViewById(R.id.spinnerDep);
-		contenido = findViewById(R.id.contenido);
-
-		campoUserName = findViewById(R.id.campo_user_name);
-		campoEmail = findViewById(R.id.campo_email);
-		campoConfirmEmail = findViewById(R.id.campo_confirm_email);
-		campoPassword = findViewById(R.id.campo_password);
-		campoConfirmPassword = findViewById(R.id.campo_confirm_password);
-	}
 
 	private void validarPassword(TextInputEditText editTextPassword, TextInputEditText confirmarPassword) {
 
@@ -184,8 +211,8 @@ public class NewAccountVista extends AppCompatActivity {
 
 	//Método para crear la nueva cuenta en firebase
 	private void crearNuevaCuenta() {
-		String email = textoEmail.getText().toString();
-		String password = textoPassword.getText().toString();
+		String email = emailUsuario.getText().toString();
+		String password = pass.getText().toString();
 
 		validarIDfirebase(IDfirebase, IDdispositivo, email);
 
@@ -201,9 +228,9 @@ public class NewAccountVista extends AppCompatActivity {
 
 									firebaseUID = user.getUid();
 									Useremail = user.getEmail();
-									Username = textoUserName.getText().toString();
+									Username = nombreUsuario.getText().toString();
 
-									RegistrarUsuario(firebaseUID, Username, Useremail, Departamento, IDdispositivo);
+									RegistrarUsuario(firebaseUID, Username, Useremail, departamento, IDdispositivo);
 
 									user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
 										@Override
@@ -221,7 +248,7 @@ public class NewAccountVista extends AppCompatActivity {
 								}
 							}
 						});
-			}else {
+			} else {
 				Toast.makeText(NewAccountVista.this,
 						R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
 			}
@@ -234,20 +261,6 @@ public class NewAccountVista extends AppCompatActivity {
 
 	private void obtenerIDfirebase(String IDdispositivo) {
 
-		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
-
-		referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
-				.child(IDdispositivo).addValueEventListener(new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				almacenarIDfirebase(dataSnapshot);
-				referenceIDdispositivo.removeEventListener(this);
-			}
-
-			@Override
-			public void onCancelled(DatabaseError databaseError) {
-			}
-		});
 	}
 
 	private void almacenarIDfirebase(DataSnapshot dataSnapshot) {
@@ -259,13 +272,7 @@ public class NewAccountVista extends AppCompatActivity {
 		DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
 		final DataSnapshot dataIDfirebase = dataSnapshot;
 
-		if (dataIDfirebase.getValue() == null){
-			referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
-					.child(iddispositivo).setValue(emailusuario);
-			validacionDispositivo = true;
-		}else {
-			validacionDispositivo = dataIDfirebase.getValue().toString().equals(emailusuario);
-		}
+
 	}
 
 	private void RegistrarUsuario(final String firebaseUID, String Username, String Useremail, String Departamento, final String IDdispositivo) {
@@ -280,14 +287,14 @@ public class NewAccountVista extends AppCompatActivity {
 
 	//Método para ir al aviso para verificar el correo electrónico
 	private void goEmailVerificationScreen() {
-		String email = textoEmail.getText().toString();
-		String password = textoPassword.getText().toString();
+		String email = emailUsuario.getText().toString();
+		String password = pass.getText().toString();
 
 		Intent intent = new Intent(NewAccountVista.this, EmailVerifyVista.class);
 		intent.putExtra("email", email);
 		intent.putExtra("password", password);
 		intent.putExtra("username", Username);
-		intent.putExtra("departamento", Departamento);
+		intent.putExtra("departamento", departamento);
 
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -305,36 +312,5 @@ public class NewAccountVista extends AppCompatActivity {
 
 		mProgressBar.setVisibility(View.GONE);
 		contenido.setVisibility(View.VISIBLE);
-	}
-
-	public String obtenerID() {
-
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-			//Menores a Android 6.0
-			IDdispositivo = getID();
-			return IDdispositivo;
-		} else {
-			// Mayores a Android 6.0
-			IDdispositivo = "";
-			if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
-					!= PackageManager.PERMISSION_GRANTED) {
-				requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},
-						225);
-				IDdispositivo = "";
-			} else {
-				IDdispositivo = getID();
-			}
-
-			return IDdispositivo;
-
-		}
-	}
-
-	//Método que obtiene el IMEI
-	private String getID() {
-
-		String ID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-		return ID;
-
 	}
 }

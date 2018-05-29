@@ -1,8 +1,6 @@
 package com.papaprogramador.presidenciales.InterfacesMVP;
 
 import android.content.Context;
-
-import com.google.firebase.database.DataSnapshot;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
@@ -16,32 +14,27 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface NewAccount {
 	interface Vista extends MvpView {
+		void almacenarID(String idDispositivo);
 		void verificarEmail(String emailUsuario, String password);
 		void errorEnCampo(String error);
-		void errorAlCrearCuenta();
+		void idYaUtilizado();
 		void mostrarProgreso();
 	}
 
 	interface Presentador extends MvpPresenter<NewAccount.Vista> {
 		void obtenerIdDispositivo(Context context);
-		void almacenarIdDispositivo(String idDispositivo);
 		void obtenerIdFirebase(String idDispositivo);
-		void almacenarIdFirebase(DataSnapshot idFirebase);
-		void validarCampos(String nombreUsuario, String emailUsuario, String emailUsuario2, String pass,
+		void validarCampos(String idDispositivo, String nombreUsuario, String emailUsuario, String emailUsuario2, String pass,
 		                   String pass2, String departamento);
 		void errorEnCampo(String error);
-		void idYaUtilizado();
 		void irAVerificarEmail(String emailUsuario, String pass);
 
 	}
 
 	interface Modelo {
-		void almacenarIdDispositivo(String idDispositivo);
-		void almacenarIdFirebase(DataSnapshot idFirebase);
-		void validarCampos(String nombreUsuario, String emailUsuario, String emailUsuario2, String pass,
+		void validarCampos(String idDispositivo, String nombreUsuario,
+		                   String emailUsuario, String emailUsuario2, String pass,
 		                   String pass2, String departamento);
-		void validarIdEnFirebase(DataSnapshot idFirebase, String idDispositivo,
-		                         String emailUsuario, String nombreUsuario, String pass, String departamento);
 		void crearCuenta(String emailUsuario, String nombreUsuario, String pass, String departamento);
 		void registrarUsuarioEnFirebase(String nombreUsuario, String emailUsuario,
 		                                String departamento, String idDispositivo, String voto);

@@ -1,6 +1,5 @@
 package com.papaprogramador.presidenciales.Modelos;
 
-import com.google.firebase.database.DataSnapshot;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
 
 public class NewAccountModelo implements NewAccount.Modelo {
@@ -12,22 +11,9 @@ public class NewAccountModelo implements NewAccount.Modelo {
 	}
 
 	@Override
-	public void almacenarIdDispositivo(String idDispositivo) {
-
-	}
-
-	@Override
-	public void almacenarIdFirebase(DataSnapshot idFirebase) {
-
-	}
-
-	@Override
-	public void validarCampos(String nombreUsuario, String emailUsuario, String emailUsuario2, String pass, String pass2, String departamento) {
-
-	}
-
-	@Override
-	public void validarIdEnFirebase(DataSnapshot idFirebase, String idDispositivo, String emailUsuario, String nombreUsuario, String pass, String departamento) {
+	public void validarCampos(String idDispositivo, String nombreUsuario,
+	                          String emailUsuario, String emailUsuario2,
+	                          String pass, String pass2, String departamento) {
 
 	}
 
@@ -37,7 +23,8 @@ public class NewAccountModelo implements NewAccount.Modelo {
 	}
 
 	@Override
-	public void registrarUsuarioEnFirebase(String nombreUsuario, String emailUsuario, String departamento, String idDispositivo, String voto) {
+	public void registrarUsuarioEnFirebase(String nombreUsuario, String
+			emailUsuario, String departamento, String idDispositivo, String voto) {
 
 	}
 }
