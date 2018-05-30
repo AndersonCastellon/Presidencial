@@ -16,10 +16,8 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 		implements NewAccount.Presentador {
 
 	private NewAccount.Modelo modelo;
-	private Context context;
 
-	public NewAccountPresentador(Context context) {
-		this.context = context;
+	public NewAccountPresentador() {
 		this.modelo = new NewAccountModelo(this);
 	}
 
@@ -70,19 +68,66 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 	}
 
 	@Override
-	public void campoVacio(String campoVacio) {
-
+	public void campoVacio(final String campoVacio) {
+		ifViewAttached(new ViewAction<NewAccount.Vista>() {
+			@Override
+			public void run(@NonNull NewAccount.Vista view) {
+				switch (campoVacio) {
+					case Constantes.NOMBRE_USUARIO_VACIO:
+						view.nombreUsuarioVacio();
+						break;
+					case Constantes.EMAIL_USUARIO_VACIO:
+						view.emailUsuarioVacio();
+						break;
+					case Constantes.EMAIL_USUARIO2_VACIO:
+						view.emailUsuario2Vacio();
+						break;
+					case Constantes.PASS_VACIO:
+						view.passwordVacio();
+						break;
+					case Constantes.PASS2_VACIO:
+						view.password2Vacio();
+						break;
+					case Constantes.DEPARTAMENTO_VACIO:
+						view.departamentoVacio();
+						break;
+				}
+			}
+		});
 	}
 
 	@Override
-	public void errorEnCampo(String error) {
-
+	public void errorEnCampo(final String error) {
+		ifViewAttached(new ViewAction<NewAccount.Vista>() {
+			@Override
+			public void run(@NonNull NewAccount.Vista view) {
+				switch (error) {
+					case Constantes.EMAIL_INVALIDO:
+						view.errorEmailInvalido();
+						break;
+					case Constantes.EMAIL_NO_COINCIDE:
+						view.errorEmailNoCoincide();
+						break;
+					case Constantes.PASS_INVALIDO:
+						view.errorPassInvalido();
+						break;
+					case Constantes.PASS_NO_COINCIDE:
+						view.errorPassNoCoincide();
+				}
+			}
+		});
 	}
 
 	@Override
-	public void crearCuenta(Context context, final String idDispositivo, final String emailUsuario,
+	public void crearCuenta(final Context context, final String idDispositivo, final String emailUsuario,
 	                        final String nombreUsuario, final String pass, final String departamento) {
 
+		ifViewAttached(new ViewAction<NewAccount.Vista>() {
+			@Override
+			public void run(@NonNull NewAccount.Vista view) {
+				view.mostrarProgreso(true);
+			}
+		});
 		new CrearCuentaConEmail(context, emailUsuario, pass, new CrearCuentaConEmail.CuentaCreada() {
 			@Override
 			public void uidObtenido(boolean bool, String firebaseUID) {
@@ -90,6 +135,7 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 					ifViewAttached(new ViewAction<NewAccount.Vista>() {
 						@Override
 						public void run(@NonNull NewAccount.Vista view) {
+							view.mostrarProgreso(false);
 							view.cuentaYaExiste();
 						}
 					});
@@ -106,6 +152,7 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 		ifViewAttached(new ViewAction<NewAccount.Vista>() {
 			@Override
 			public void run(@NonNull NewAccount.Vista view) {
+				view.mostrarProgreso(false);
 				view.irAVerificarEmail(emailUsuario, pass);
 			}
 		});

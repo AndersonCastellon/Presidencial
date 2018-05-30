@@ -61,12 +61,12 @@ public class ResetPasswordVista extends MvpActivity<ResetPassword.Vista, ResetPa
 
 	@Override
 	public void errorPorCampoVacio() {
-		ResetEmail.setError(getString(R.string.EmailVacio));
+		ResetEmail.setError(getString(R.string.emailUsuarioVacio));
 	}
 
 	@Override
 	public void errorPorEmailInvalido() {
-		ResetEmail.setError(getString(R.string.EmailInvalido));
+		ResetEmail.setError(getString(R.string.emailInvalido));
 	}
 
 	private void goLoginActivity() {

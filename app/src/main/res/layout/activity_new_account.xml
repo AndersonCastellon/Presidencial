@@ -91,7 +91,7 @@
                         android:id="@+id/editTextPasswordConfirm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/TextPassConfirm"
+                        android:hint="@string/confirmarPass"
                         android:inputType="textPassword"
                         android:paddingTop="@dimen/icon_top_margin" />
 

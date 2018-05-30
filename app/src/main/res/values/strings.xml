@@ -49,15 +49,15 @@
     <string name="eliminar_cuenta">Eliminar cuenta</string>
     <string name="compartir_app">Compartir</string>
     <string name="TextEmailConfirm">Confirma tu email</string>
-    <string name="TextPassConfirm">Confirma tu contraseña</string>
-    <string name="EscribeNombreDeUsuario">Escribe un nombre de usuario</string>
-    <string name="EmailDiferente">El email no concuerda</string>
-    <string name="PasswordDiferente">La contraseña no concuerda</string>
-    <string name="EligeDepartamento">Escoge tu departamento</string>
+    <string name="confirmarPass">Confirma tu contraseña</string>
+    <string name="nombreUsuarioVacio">Escribe un nombre de usuario</string>
+    <string name="emailNoCoincide">El email no coincide</string>
+    <string name="passNoCoincide">La contraseña no coincide</string>
+    <string name="eligeTuDepartamento">Escoge tu departamento</string>
     <string name="PasswordVacio">Contraseña vacía</string>
-    <string name="EmailVacio">Escribe tu email</string>
+    <string name="emailUsuarioVacio">Escribe tu email</string>
     <string name="CompletaTusDatos">Completa tus datos</string>
-    <string name="EmailInvalido">Ingresa un email válido</string>
+    <string name="emailInvalido">Ingresa un email válido</string>
     <string name="DispositivoYaUtilizado">Este dispositivo ya ha sido utilizado para crear una cuenta, el usuario ha sido eliminado</string>
     <string name="Usuario_nulo">El usuario es nulo</string>
     <string name="DispositivoYautilizadoPorOtraCuenta">Este dispositivo ya ha sido utilizado para crear otra cuenta</string>
@@ -67,4 +67,9 @@
     <string name="EmailResetSend">Abre el email para resetear tu contraseña</string>
     <string name="EmailSinCuenta">Este email no tiene una cuenta asociada</string>
     <string name="IngresarEmail">Ingresa tu email</string>
+    <string name="emailConCuentaAsociada">Este email ya tiene cuenta asociada</string>
+    <string name="RESET_PASS">RESET PASS</string>
+    <string name="confirmaEmailUsuario">Confirma tu email</string>
+    <string name="passVacio">Escribe tu contraseña</string>
+    <string name="pass2Vacio">Confirma tu contraseña</string>
 </resources>

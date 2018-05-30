@@ -36,9 +36,11 @@ public class NewAccountModelo implements NewAccount.Modelo {
 			presentador.campoVacio(Constantes.PASS2_VACIO);
 		} else if (departamento.isEmpty()) {
 			presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
+		} else if (emailInvalido(emailUsuario)){
+			presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
 		} else if (!emailNoCoincide(emailUsuario, emailUsuario2)) {
 			presentador.errorEnCampo(Constantes.EMAIL_NO_COINCIDE);
-		} else if (!passwordCorto(pass)) {
+		} else if (passwordCorto(pass)) {
 			presentador.errorEnCampo(Constantes.PASS_INVALIDO);
 		} else if (!passwordNoCoincide(pass, pass2)) {
 			presentador.errorEnCampo(Constantes.PASS_NO_COINCIDE);
@@ -63,6 +65,12 @@ public class NewAccountModelo implements NewAccount.Modelo {
 				.child(idDispositivo).setValue(emailUsuario);
 
 		presentador.irAVerificarEmail(emailUsuario, pass);
+	}
+
+	private boolean emailInvalido(String emailUsuario) {
+		String arroba = "@";
+		String espacio = " ";
+		return !emailUsuario.contains(arroba) || emailUsuario.contains(espacio);
 	}
 
 	private boolean emailNoCoincide(String emailUsuario, String emailUsuario2) {

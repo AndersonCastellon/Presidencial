@@ -17,7 +17,7 @@ public interface NewAccount {
 		void almacenarID(String idDispositivo);
 		void idYaUtilizado();
 		void cuentaYaExiste();
-		void mostrarProgreso();
+		void mostrarProgreso(Boolean bool);
 		void nombreUsuarioVacio();
 		void emailUsuarioVacio();
 		void emailUsuario2Vacio();
@@ -25,6 +25,7 @@ public interface NewAccount {
 		void password2Vacio();
 		void departamentoVacio();
 		void errorEmailNoCoincide();
+		void errorEmailInvalido();
 		void errorPassInvalido();
 		void errorPassNoCoincide();
 		void irAVerificarEmail(String emailUsuario, String pass);

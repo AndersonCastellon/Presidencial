@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.view.View;
 import android.widget.AdapterView;
@@ -85,7 +86,7 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 	@NonNull
 	@Override
 	public NewAccount.Presentador createPresenter() {
-		return new NewAccountPresentador(NewAccountVista.this);
+		return new NewAccountPresentador();
 	}
 
 
@@ -100,19 +101,34 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 				R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
 
 		Intent intent = new Intent(NewAccountVista.this, LoginVista.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
 	}
 
 	@Override
 	public void cuentaYaExiste() {
 
+		Snackbar.make(btnNewAccount,getResources().getString(R.string.emailConCuentaAsociada),
+				Snackbar.LENGTH_LONG )
+				.setActionTextColor(getResources().getColor(R.color.accent))
+				.setAction(getResources().getText(R.string.RESET_PASS), new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(NewAccountVista.this,
+								ResetPasswordVista.class);
+						startActivity(intent);
+						finish();
+					}
+				})
+				.show();
+
 	}
 
 	@Override
-	public void mostrarProgreso() {
+	public void mostrarProgreso(Boolean bool) {
 
-		if (contenido.getVisibility() == View.VISIBLE &&
-				progressBar.getVisibility() == View.GONE){
+		if (bool){
 			contenido.setVisibility(View.GONE);
 			progressBar.setVisibility(View.VISIBLE);
 		} else {
@@ -123,47 +139,56 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 
 	@Override
 	public void nombreUsuarioVacio() {
-
+		nombreUsuario.setError(getResources().getString(R.string.nombreUsuarioVacio));
 	}
 
 	@Override
 	public void emailUsuarioVacio() {
-
+		emailUsuario.setError(getResources().getString(R.string.emailUsuarioVacio));
 	}
 
 	@Override
 	public void emailUsuario2Vacio() {
-
+		emailUsuario2.setError(getResources().getString(R.string.confirmaEmailUsuario));
 	}
 
 	@Override
 	public void passwordVacio() {
-
+		pass.setError(getResources().getString(R.string.passVacio));
 	}
 
 	@Override
 	public void password2Vacio() {
-
+		pass2.setError(getResources().getString(R.string.pass2Vacio));
 	}
 
 	@Override
 	public void departamentoVacio() {
-
+		spinnerDepartamento.setError(getResources().getString(R.string.eligeTuDepartamento));
 	}
 
 	@Override
 	public void errorEmailNoCoincide() {
+		emailUsuario.setError(getResources().getString(R.string.emailNoCoincide));
+		emailUsuario2.setError(getResources().getString(R.string.emailNoCoincide));
+	}
 
+	@Override
+	public void errorEmailInvalido() {
+		emailUsuario.setError(getResources().getString(R.string.emailInvalido));
 	}
 
 	@Override
 	public void errorPassInvalido() {
-
+		pass.setError(getResources().getString(R.string.emailInvalido));
+		pass2.setText("");
 	}
 
 	@Override
 	public void errorPassNoCoincide() {
-
+		pass.setError(getResources().getString(R.string.passNoCoincide));
+		pass.setText("");
+		pass2.setText("");
 	}
 
 	@Override
