@@ -176,11 +176,13 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 	@Override
 	public void errorEmailInvalido() {
 		emailUsuario.setError(getResources().getString(R.string.emailInvalido));
+		emailUsuario2.setError(getResources().getString(R.string.emailInvalido));
 	}
 
 	@Override
 	public void errorPassInvalido() {
 		pass.setError(getResources().getString(R.string.emailInvalido));
+		pass2.setError(getResources().getString(R.string.emailInvalido));
 		pass2.setText("");
 	}
 

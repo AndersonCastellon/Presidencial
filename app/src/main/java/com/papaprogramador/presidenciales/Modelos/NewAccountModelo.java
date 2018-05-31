@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
 import com.papaprogramador.presidenciales.Objetos.Usuario;
+import com.papaprogramador.presidenciales.Tareas.ValidarEmail;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 import com.papaprogramador.presidenciales.Utilidades.ReferenciasFirebase;
 
@@ -19,7 +20,7 @@ public class NewAccountModelo implements NewAccount.Modelo {
 
 	@Override
 	public void validarCampos(Context context, String idDispositivo, String nombreUsuario,
-	                          String emailUsuario, String emailUsuario2,
+	                          final String emailUsuario, final String emailUsuario2,
 	                          String pass, String pass2, String departamento) {
 		// Errores a controlar:
 		// Campo vacio, valor no es igual, contraseña muy corta,
@@ -36,11 +37,20 @@ public class NewAccountModelo implements NewAccount.Modelo {
 			presentador.campoVacio(Constantes.PASS2_VACIO);
 		} else if (departamento.isEmpty()) {
 			presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
-		} else if (emailInvalido(emailUsuario)){
-			presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
-		} else if (!emailNoCoincide(emailUsuario, emailUsuario2)) {
-			presentador.errorEnCampo(Constantes.EMAIL_NO_COINCIDE);
-		} else if (passwordCorto(pass)) {
+		}
+
+		new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
+			@Override
+			public void emailEsValido(Boolean esValido) {
+				if (!esValido){
+					presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
+				} else if (emailNoCoincide(emailUsuario, emailUsuario2)) {
+					presentador.errorEnCampo(Constantes.EMAIL_NO_COINCIDE);
+				}
+			}
+		});
+
+		if (!passwordCorto(pass)) {
 			presentador.errorEnCampo(Constantes.PASS_INVALIDO);
 		} else if (!passwordNoCoincide(pass, pass2)) {
 			presentador.errorEnCampo(Constantes.PASS_NO_COINCIDE);
@@ -67,14 +77,8 @@ public class NewAccountModelo implements NewAccount.Modelo {
 		presentador.irAVerificarEmail(emailUsuario, pass);
 	}
 
-	private boolean emailInvalido(String emailUsuario) {
-		String arroba = "@";
-		String espacio = " ";
-		return !emailUsuario.contains(arroba) || emailUsuario.contains(espacio);
-	}
-
 	private boolean emailNoCoincide(String emailUsuario, String emailUsuario2) {
-		return emailUsuario.equals(emailUsuario2);
+		return !emailUsuario.equals(emailUsuario2);
 	}
 
 	private boolean passwordCorto(String pass) {
