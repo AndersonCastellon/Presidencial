@@ -20,7 +20,7 @@ public class NewAccountModelo implements NewAccount.Modelo {
 
 	@Override
 	public void validarCampos(Context context, String idDispositivo, String nombreUsuario,
-	                          final String emailUsuario, final String emailUsuario2,
+	                          String emailUsuario, String emailUsuario2,
 	                          String pass, String pass2, String departamento) {
 		// Errores a controlar:
 		// Campo vacio, valor no es igual, contraseña muy corta,
@@ -35,22 +35,29 @@ public class NewAccountModelo implements NewAccount.Modelo {
 			presentador.campoVacio(Constantes.PASS_VACIO);
 		} else if (pass2.isEmpty()) {
 			presentador.campoVacio(Constantes.PASS2_VACIO);
-		} else if (departamento.isEmpty()) {
+		}
+//TODO: Corregir para que no intente crear cuenta si el departamento es vacio
+		try {
+			if (departamento.isEmpty()) {
+				presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
+			}
+		} catch (Exception e) {
 			presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
+			return;
 		}
 
 		new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
 			@Override
 			public void emailEsValido(Boolean esValido) {
-				if (!esValido){
+				if (!esValido) {
 					presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
-				} else if (emailNoCoincide(emailUsuario, emailUsuario2)) {
-					presentador.errorEnCampo(Constantes.EMAIL_NO_COINCIDE);
 				}
 			}
 		});
 
-		if (!passwordCorto(pass)) {
+		if (emailNoCoincide(emailUsuario, emailUsuario2)) {
+			presentador.errorEnCampo(Constantes.EMAIL_NO_COINCIDE);
+		} else if (!passwordCorto(pass)) {
 			presentador.errorEnCampo(Constantes.PASS_INVALIDO);
 		} else if (!passwordNoCoincide(pass, pass2)) {
 			presentador.errorEnCampo(Constantes.PASS_NO_COINCIDE);

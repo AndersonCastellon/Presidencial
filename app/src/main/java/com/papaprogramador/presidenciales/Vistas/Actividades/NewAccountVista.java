@@ -41,7 +41,6 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 		spinnerDepartamento.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
 			}
 		});
 
@@ -56,7 +55,7 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 				String password = pass.getText().toString();
 				String password2 = pass2.getText().toString();
 				String departamento = spinnerDepartamento.getText().toString();
-				Context context = getApplicationContext();
+				Context context = NewAccountVista.this;
 
 				getPresenter().validarCampos(context, idDispositivo, nUsuario, eUsuario, eUsuario2,
 						password, password2, departamento);
@@ -181,8 +180,8 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 
 	@Override
 	public void errorPassInvalido() {
-		pass.setError(getResources().getString(R.string.emailInvalido));
-		pass2.setError(getResources().getString(R.string.emailInvalido));
+		pass.setError(getResources().getString(R.string.passInvalido));
+		pass2.setError(getResources().getString(R.string.passInvalido));
 		pass2.setText("");
 	}
 

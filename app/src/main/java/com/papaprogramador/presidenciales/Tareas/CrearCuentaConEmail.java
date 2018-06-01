@@ -12,6 +12,8 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.concurrent.Executor;
+
 public class CrearCuentaConEmail {
 
 	public interface CuentaCreada {
@@ -35,7 +37,7 @@ public class CrearCuentaConEmail {
 					@Override
 					public void onComplete(@NonNull Task<AuthResult> task) {
 						if (task.isSuccessful()) {
-
+//TODO: Corregir: Siempre devuelve falso al intentar crear una cuenta, sera porque se crea con el metodo para credenciales?
 							FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 							String uidFirebase = user.getUid();
 

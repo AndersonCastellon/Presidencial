@@ -17,8 +17,9 @@ public class ValidarEmail {
 
 	private void validarEmailUsuario(String emailUsuario) {
 
-		Pattern pattern = Pattern
-				.compile("([a-z0-9]+(\\\\.?[a-z0-9])*)+@(([a-z]+)\\\\.([a-z]+))+");
+		String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+
+		Pattern pattern = Pattern.compile(regex);
 
 		Matcher mather = pattern.matcher(emailUsuario);
 
