@@ -37,7 +37,7 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 		new ObtenerIdFirebase(idDispositivo,
 				new ObtenerIdFirebase.IdObtenido() {
 					@Override
-					public void idObtenido(boolean bool, final String idFirebase) {
+					public void idObtenido(final boolean bool, final String idFirebase) {
 						if (!bool) {
 							ifViewAttached(new ViewAction<NewAccount.Vista>() {
 								@Override
@@ -130,7 +130,7 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 		});
 		new CrearCuentaConEmail(context, emailUsuario, pass, new CrearCuentaConEmail.CuentaCreada() {
 			@Override
-			public void uidObtenido(boolean bool, String firebaseUID) {
+			public void uidObtenido(final boolean bool, String firebaseUID) {
 				if (!bool) {
 					ifViewAttached(new ViewAction<NewAccount.Vista>() {
 						@Override

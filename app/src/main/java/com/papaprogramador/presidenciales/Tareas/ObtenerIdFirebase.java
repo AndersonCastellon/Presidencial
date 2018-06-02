@@ -10,7 +10,7 @@ import com.papaprogramador.presidenciales.Utilidades.ReferenciasFirebase;
 public class ObtenerIdFirebase {
 
 	public interface IdObtenido {
-		void idObtenido(boolean bool, String idFirebase);
+		void idObtenido(final boolean bool, String idFirebase);
 	}
 
 	private IdObtenido listener;

@@ -182,12 +182,16 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 	public void errorPassInvalido() {
 		pass.setError(getResources().getString(R.string.passInvalido));
 		pass2.setError(getResources().getString(R.string.passInvalido));
+
+		pass.setText("");
 		pass2.setText("");
 	}
 
 	@Override
 	public void errorPassNoCoincide() {
 		pass.setError(getResources().getString(R.string.passNoCoincide));
+		pass2.setError(getResources().getString(R.string.passNoCoincide));
+
 		pass.setText("");
 		pass2.setText("");
 	}

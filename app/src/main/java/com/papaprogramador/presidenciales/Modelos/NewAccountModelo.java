@@ -19,50 +19,71 @@ public class NewAccountModelo implements NewAccount.Modelo {
 	}
 
 	@Override
-	public void validarCampos(Context context, String idDispositivo, String nombreUsuario,
-	                          String emailUsuario, String emailUsuario2,
-	                          String pass, String pass2, String departamento) {
-		// Errores a controlar:
-		// Campo vacio, valor no es igual, contraseña muy corta,
+	public void validarCampos(final Context context, final String idDispositivo, final String nombreUsuario,
+	                          final String emailUsuario, String emailUsuario2,
+	                          final String pass, String pass2, final String departamento) {
+
+		boolean crearCuenta = true;
 
 		if (nombreUsuario.isEmpty()) {
 			presentador.campoVacio(Constantes.NOMBRE_USUARIO_VACIO);
-		} else if (emailUsuario.isEmpty()) {
-			presentador.campoVacio(Constantes.EMAIL_USUARIO_VACIO);
-		} else if (emailUsuario2.isEmpty()) {
-			presentador.campoVacio(Constantes.EMAIL_USUARIO2_VACIO);
-		} else if (pass.isEmpty()) {
-			presentador.campoVacio(Constantes.PASS_VACIO);
-		} else if (pass2.isEmpty()) {
-			presentador.campoVacio(Constantes.PASS2_VACIO);
-		}
-//TODO: Corregir para que no intente crear cuenta si el departamento es vacio
-		try {
-			if (departamento.isEmpty()) {
-				presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
-			}
-		} catch (Exception e) {
-			presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
-			return;
+			crearCuenta = false;
 		}
 
-		new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
-			@Override
-			public void emailEsValido(Boolean esValido) {
-				if (!esValido) {
-					presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
-				}
-			}
-		});
+		if (emailUsuario.isEmpty()) {
+			presentador.campoVacio(Constantes.EMAIL_USUARIO_VACIO);
+			crearCuenta = false;
+		}
+
+		if (emailUsuario2.isEmpty()) {
+			presentador.campoVacio(Constantes.EMAIL_USUARIO2_VACIO);
+			crearCuenta = false;
+		}
 
 		if (emailNoCoincide(emailUsuario, emailUsuario2)) {
 			presentador.errorEnCampo(Constantes.EMAIL_NO_COINCIDE);
-		} else if (!passwordCorto(pass)) {
+			crearCuenta = false;
+		}
+
+		if (pass.isEmpty()) {
+			presentador.campoVacio(Constantes.PASS_VACIO);
+			crearCuenta = false;
+		}
+
+		if (pass2.isEmpty()) {
+			presentador.campoVacio(Constantes.PASS2_VACIO);
+			crearCuenta = false;
+		}
+
+		if (!passwordCorto(pass) || !passwordCorto(pass2)) {
 			presentador.errorEnCampo(Constantes.PASS_INVALIDO);
-		} else if (!passwordNoCoincide(pass, pass2)) {
+			crearCuenta = false;
+		}
+
+		if (!passwordNoCoincide(pass, pass2)) {
 			presentador.errorEnCampo(Constantes.PASS_NO_COINCIDE);
-		} else {
-			presentador.crearCuenta(context, idDispositivo, emailUsuario, nombreUsuario, pass, departamento);
+			crearCuenta = false;
+		}
+
+		if (departamento == null) {
+			presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
+			crearCuenta = false;
+		} else if (departamento.isEmpty()) {
+			presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
+			crearCuenta = false;
+		}
+
+		if (crearCuenta){
+			new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
+				@Override
+				public void emailEsValido(Boolean esValido) {
+					if (!esValido) {
+						presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
+					} else {
+						presentador.crearCuenta(context, idDispositivo, emailUsuario, nombreUsuario, pass, departamento);
+					}
+				}
+			});
 		}
 	}
 

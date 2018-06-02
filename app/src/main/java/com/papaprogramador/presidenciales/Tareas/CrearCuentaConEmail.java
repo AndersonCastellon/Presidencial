@@ -17,7 +17,7 @@ import java.util.concurrent.Executor;
 public class CrearCuentaConEmail {
 
 	public interface CuentaCreada {
-		void uidObtenido(boolean bool, String firebaseUID);
+		void uidObtenido(final boolean bool, String firebaseUID);
 	}
 
 	private CuentaCreada listener;
@@ -29,19 +29,23 @@ public class CrearCuentaConEmail {
 
 	private void crearCuentaConCredencialesEmailYPassword(Context context, String emailUsuario, String pass) {
 
-		AuthCredential authCredential = EmailAuthProvider.getCredential(emailUsuario, pass);
-		FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+		final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-		firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener((Activity) context,
+		firebaseAuth.createUserWithEmailAndPassword(emailUsuario, pass).addOnCompleteListener((Activity) context,
 				new OnCompleteListener<AuthResult>() {
 					@Override
 					public void onComplete(@NonNull Task<AuthResult> task) {
 						if (task.isSuccessful()) {
-//TODO: Corregir: Siempre devuelve falso al intentar crear una cuenta, sera porque se crea con el metodo para credenciales?
-							FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-							String uidFirebase = user.getUid();
 
-							listener.uidObtenido(true, uidFirebase);
+							FirebaseUser user = firebaseAuth.getCurrentUser();
+							final String uidFirebase = user.getUid();
+
+							user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+								@Override
+								public void onComplete(@NonNull Task<Void> task) {
+									listener.uidObtenido(true, uidFirebase);
+								}
+							});
 						} else {
 							listener.uidObtenido(false, "");
 						}
