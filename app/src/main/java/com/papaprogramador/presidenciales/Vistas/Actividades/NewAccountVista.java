@@ -65,8 +65,6 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 
 	private void onStartVista() {
 
-		getPresenter().obtenerIdDispositivo(NewAccountVista.this);
-
 		nombreUsuario = findViewById(R.id.nombreUsuario);
 		emailUsuario = findViewById(R.id.emailUsuario);
 		emailUsuario2 = findViewById(R.id.editTexEmailConfirm);
@@ -80,29 +78,17 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
 				android.R.layout.simple_dropdown_item_1line, Constantes.departamento);
 		spinnerDepartamento.setAdapter(arrayAdapter);
+
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null){
+			idDispositivo = bundle.getString(Constantes.PUT_ID_DISPOSITIVO);
+		}
 	}
 
 	@NonNull
 	@Override
 	public NewAccount.Presentador createPresenter() {
 		return new NewAccountPresentador();
-	}
-
-
-	@Override
-	public void almacenarID(String idDispositivo) {
-		this.idDispositivo = idDispositivo;
-	}
-
-	@Override
-	public void idYaUtilizado() {
-		Toast.makeText(NewAccountVista.this,
-				R.string.DispositivoYautilizadoPorOtraCuenta, Toast.LENGTH_LONG).show();
-
-		Intent intent = new Intent(NewAccountVista.this, LoginVista.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
-				Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
 	}
 
 	@Override

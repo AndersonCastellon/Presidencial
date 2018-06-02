@@ -8,8 +8,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
 import com.papaprogramador.presidenciales.Modelos.NewAccountModelo;
 import com.papaprogramador.presidenciales.Tareas.CrearCuentaConEmail;
-import com.papaprogramador.presidenciales.Tareas.ObtenerIdDispositivo;
-import com.papaprogramador.presidenciales.Tareas.ObtenerIdFirebase;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
 public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
@@ -19,42 +17,6 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 
 	public NewAccountPresentador() {
 		this.modelo = new NewAccountModelo(this);
-	}
-
-	@Override
-	public void obtenerIdDispositivo(Context context) {
-		new ObtenerIdDispositivo(context,
-				new ObtenerIdDispositivo.OyenteTareaIdDispositivo() {
-					@Override
-					public void idGenerado(String idDispositivo) {
-						obtenerIdFirebase(idDispositivo);
-					}
-				});
-	}
-
-	@Override
-	public void obtenerIdFirebase(String idDispositivo) {
-		new ObtenerIdFirebase(idDispositivo,
-				new ObtenerIdFirebase.IdObtenido() {
-					@Override
-					public void idObtenido(final boolean bool, final String idFirebase) {
-						if (!bool) {
-							ifViewAttached(new ViewAction<NewAccount.Vista>() {
-								@Override
-								public void run(@NonNull NewAccount.Vista view) {
-									view.almacenarID(idFirebase);
-								}
-							});
-						} else {
-							ifViewAttached(new ViewAction<NewAccount.Vista>() {
-								@Override
-								public void run(@NonNull NewAccount.Vista view) {
-									view.idYaUtilizado();
-								}
-							});
-						}
-					}
-				});
 	}
 
 	@Override

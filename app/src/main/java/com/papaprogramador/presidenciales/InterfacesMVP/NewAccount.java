@@ -14,8 +14,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface NewAccount {
 	interface Vista extends MvpView {
-		void almacenarID(String idDispositivo);
-		void idYaUtilizado();
 		void cuentaYaExiste();
 		void mostrarProgreso(Boolean bool);
 		void nombreUsuarioVacio();
@@ -32,8 +30,6 @@ public interface NewAccount {
 	}
 
 	interface Presentador extends MvpPresenter<NewAccount.Vista> {
-		void obtenerIdDispositivo(Context context);
-		void obtenerIdFirebase(String idDispositivo);
 		void validarCampos(Context context, String idDispositivo, String nombreUsuario, String emailUsuario, String emailUsuario2, String pass,
 		                   String pass2, String departamento);
 		void campoVacio(String campoVacio);

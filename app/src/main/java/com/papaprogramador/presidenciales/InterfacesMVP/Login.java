@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface Login {
 	interface Vista extends MvpView {
-		void almacenarID(String idDispositivo);
+		void crearNuevaCuenta(String idDispositivo);
 		void idYaUtilizado();
 
 	}

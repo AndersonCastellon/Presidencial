@@ -13,6 +13,7 @@ import com.papaprogramador.presidenciales.Utilidades.ReferenciasFirebase;
 public class NewAccountModelo implements NewAccount.Modelo {
 
 	private NewAccount.Presentador presentador;
+	private boolean crearCuenta = true;
 
 	public NewAccountModelo(NewAccount.Presentador presentador) {
 		this.presentador = presentador;
@@ -23,8 +24,6 @@ public class NewAccountModelo implements NewAccount.Modelo {
 	                          final String emailUsuario, String emailUsuario2,
 	                          final String pass, String pass2, final String departamento) {
 
-		boolean crearCuenta = true;
-
 		if (nombreUsuario.isEmpty()) {
 			presentador.campoVacio(Constantes.NOMBRE_USUARIO_VACIO);
 			crearCuenta = false;
@@ -33,11 +32,31 @@ public class NewAccountModelo implements NewAccount.Modelo {
 		if (emailUsuario.isEmpty()) {
 			presentador.campoVacio(Constantes.EMAIL_USUARIO_VACIO);
 			crearCuenta = false;
+		} else {
+			new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
+				@Override
+				public void emailEsValido(Boolean esValido) {
+					if (!esValido) {
+						presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
+						crearCuenta = false;
+					}
+				}
+			});
 		}
 
 		if (emailUsuario2.isEmpty()) {
 			presentador.campoVacio(Constantes.EMAIL_USUARIO2_VACIO);
 			crearCuenta = false;
+		} else {
+			new ValidarEmail(emailUsuario2, new ValidarEmail.EmailValidado() {
+				@Override
+				public void emailEsValido(Boolean esValido) {
+					if (!esValido) {
+						presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
+						crearCuenta = false;
+					}
+				}
+			});
 		}
 
 		if (emailNoCoincide(emailUsuario, emailUsuario2)) {
@@ -55,7 +74,7 @@ public class NewAccountModelo implements NewAccount.Modelo {
 			crearCuenta = false;
 		}
 
-		if (!passwordCorto(pass) || !passwordCorto(pass2)) {
+		if (!passwordCorto(pass)) {
 			presentador.errorEnCampo(Constantes.PASS_INVALIDO);
 			crearCuenta = false;
 		}
@@ -73,17 +92,8 @@ public class NewAccountModelo implements NewAccount.Modelo {
 			crearCuenta = false;
 		}
 
-		if (crearCuenta){
-			new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
-				@Override
-				public void emailEsValido(Boolean esValido) {
-					if (!esValido) {
-						presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
-					} else {
-						presentador.crearCuenta(context, idDispositivo, emailUsuario, nombreUsuario, pass, departamento);
-					}
-				}
-			});
+		if (crearCuenta) {
+			presentador.crearCuenta(context, idDispositivo, emailUsuario, nombreUsuario, pass, departamento);
 		}
 	}
 

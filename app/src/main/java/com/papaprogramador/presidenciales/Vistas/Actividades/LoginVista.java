@@ -6,8 +6,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,13 +35,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hannesdorfmann.mosby3.mvp.MvpActivity;
+import com.papaprogramador.presidenciales.InterfacesMVP.Login;
+import com.papaprogramador.presidenciales.Presentadores.LoginPresentador;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 import com.papaprogramador.presidenciales.Utilidades.ReferenciasFirebase;
 import com.papaprogramador.presidenciales.Objetos.Usuario;
 
 
-public class LoginVista extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> implements Login.Vista {
 
 	//Declaracion de variables globales de este activity
 	private TextInputEditText mTextEmail;
@@ -75,7 +78,7 @@ public class LoginVista extends AppCompatActivity implements GoogleApiClient.OnC
 		obtenerID();
 		obtenerIDdeFirebase(IDdispositivo);
 		obtenerUsuariosFirebase();
-		IniciarVista();
+		onStartVista();
 
 		//Inicializacion de la instancia de Firebase
 		mAuth = FirebaseAuth.getInstance();
@@ -109,9 +112,7 @@ public class LoginVista extends AppCompatActivity implements GoogleApiClient.OnC
 		mBtnNewAccount.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//INTENT PARA IR A LA VISTA PARA CREAR UNA NUEVA CUENTA
-				startActivity(new Intent(LoginVista.this, NewAccountVista.class));
-
+				getPresenter().obtenerIdDispositivo(LoginVista.this);
 			}
 		});
 
@@ -146,7 +147,26 @@ public class LoginVista extends AppCompatActivity implements GoogleApiClient.OnC
 		//FIN DE AUTENTICACION CON GOOGLE
 	}
 
-	private void IniciarVista() {
+	@NonNull
+	@Override
+	public Login.Presentador createPresenter() {
+		return new LoginPresentador();
+	}
+
+	@Override
+	public void crearNuevaCuenta(String idDispositivo) {
+		Intent intent = new Intent(LoginVista.this, NewAccountVista.class);
+		intent.putExtra(Constantes.PUT_ID_DISPOSITIVO, idDispositivo);
+		startActivity(intent);
+	}
+
+	@Override
+	public void idYaUtilizado() {
+		Snackbar.make(mBtnNewAccount, getResources().getString(R.string.DispositivoYautilizadoPorOtraCuenta),
+				Snackbar.LENGTH_LONG).show();
+	}
+
+	private void onStartVista() {
 		//Innicializacion de los elementos de la UI
 		mTextEmail = findViewById(R.id.editTexEmail);
 		mTextPassword = findViewById(R.id.editTextPassword);
@@ -289,6 +309,7 @@ public class LoginVista extends AppCompatActivity implements GoogleApiClient.OnC
 
 	}
 
+
 	public void onProgressbarVisible() {
 
 		mProgressBar.setVisibility(View.VISIBLE);
@@ -414,4 +435,5 @@ public class LoginVista extends AppCompatActivity implements GoogleApiClient.OnC
 			}
 		}
 	}
+
 }

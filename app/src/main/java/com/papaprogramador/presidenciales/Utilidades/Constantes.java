@@ -23,6 +23,7 @@ public class Constantes {
 	public static final String PUT_EMAIL_USUARIO = "emailUsuario";
 	public static final String PUT_PASSWORD = "pass";
 	public static final String EMAIL_INVALIDO = "emailInvalido";
+	public static final String PUT_ID_DISPOSITIVO = "PUT_ID_DISPOSITIVO";
 
 
 	public static String PUT_ID_CANDIDATO = "PUT_ID_CANDIDATO";
