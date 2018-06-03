@@ -112,7 +112,7 @@ public class ListaCandidatosVista extends AppCompatActivity implements GoogleApi
 				} else {
 					if (!user.isEmailVerified()) {
 						goLogInScreen();
-						Toast.makeText(ListaCandidatosVista.this, R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
+						Toast.makeText(ListaCandidatosVista.this, R.string.emailNoVerificado, Toast.LENGTH_LONG).show();
 
 					}else {
 						datosUsuario(user);

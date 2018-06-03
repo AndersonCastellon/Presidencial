@@ -15,13 +15,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Vistas.Actividades.LoginVista"
-            android:label="@string/LabelLoginActivity"
+            android:label="@string/etiquetaLoginVista"
             tools:ignore="InnerclassSeparator">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Vistas.Actividades.ListaCandidatosVista" />
         <activity android:name=".Vistas.Actividades.NewAccountVista" />
@@ -31,6 +26,11 @@
             android:name=".Vistas.Actividades.DetailCandidatoVista"
             android:parentActivityName=".Vistas.Actividades.ListaCandidatosVista"
             android:theme="@style/AppthemeStatusBarTransparent">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Vistas.Actividades.ListaCandidatosVista" />

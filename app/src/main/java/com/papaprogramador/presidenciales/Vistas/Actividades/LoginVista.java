@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales.Vistas.Actividades;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -26,7 +27,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -47,12 +47,13 @@ import com.papaprogramador.presidenciales.Objetos.Usuario;
 public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> implements Login.Vista {
 
 	//Declaracion de variables globales de este activity
-	private TextInputEditText mTextEmail;
-	private TextInputEditText mTextPassword;
+	private TextInputEditText emailUsuario;
+	private TextInputEditText pass;
 	private ProgressBar mProgressBar;
-	private Button mBtnLogin, mBtnNewAccount, recuperarPass;
+	private Button mBtnLogin, mBtnNewAccount, resetPass;
 	private LinearLayout Logincontenido;
 	private SignInButton mBtnLoginGoogle;
+
 	private String IDdispositivo;
 	private String Username;
 	private String Useremail;
@@ -71,41 +72,20 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 	//VARIABLE PARA EL CLIENTE API DE GOOGLE
 	private GoogleApiClient googleApiClient;
 
+	private Context context = LoginVista.this;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		obtenerID();
-		obtenerIDdeFirebase(IDdispositivo);
-		obtenerUsuariosFirebase();
 		onStartVista();
 
-		//Inicializacion de la instancia de Firebase
-		mAuth = FirebaseAuth.getInstance();
-
-		//Inicializacion del escuchador
-		Listener = new FirebaseAuth.AuthStateListener() {
-			@Override
-			public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-				FirebaseUser user = mAuth.getCurrentUser();
-				if (user != null) {
-					if (user.isEmailVerified()) {
-						goMainScreen();
-					} else {
-						Toast.makeText(LoginVista.this, R.string.EmailNotVerified, Toast.LENGTH_LONG).show();
-					}
-
-				}
-			}
-		};
-
-		//BOTONES DE INICIO DE SESION Y CREACION DE NUEVA CUENTA
 		mBtnLogin.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				SignInWitchEmail(mTextEmail.getText().toString(), mTextPassword.getText().toString());
-
+				String emailU = emailUsuario.getText().toString();
+				String password = pass.getText().toString();
+				getPresenter().iniciarSesionConEmail(context, emailU, password);
 			}
 		});
 
@@ -116,7 +96,7 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 			}
 		});
 
-		recuperarPass.setOnClickListener(new View.OnClickListener() {
+		resetPass.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent resetpass = new Intent(LoginVista.this, ResetPasswordVista.class);
@@ -147,6 +127,22 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 		//FIN DE AUTENTICACION CON GOOGLE
 	}
 
+	private void onStartVista() {
+		//Innicializacion de los elementos de la UI
+		emailUsuario = findViewById(R.id.editTexEmail);
+		pass = findViewById(R.id.editTextPassword);
+		mBtnLogin = findViewById(R.id.btnLogin);
+		mBtnNewAccount = findViewById(R.id.btnNewAccount);
+		mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
+		mProgressBar = findViewById(R.id.mProgressBar);
+		Logincontenido = findViewById(R.id.Logincontenido);
+		resetPass = findViewById(R.id.recuperarPassword);
+
+		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
+		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
+
+	}
+
 	@NonNull
 	@Override
 	public Login.Presentador createPresenter() {
@@ -166,48 +162,24 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 				Snackbar.LENGTH_LONG).show();
 	}
 
-	private void onStartVista() {
-		//Innicializacion de los elementos de la UI
-		mTextEmail = findViewById(R.id.editTexEmail);
-		mTextPassword = findViewById(R.id.editTextPassword);
-		mBtnLogin = findViewById(R.id.btnLogin);
-		mBtnNewAccount = findViewById(R.id.btnNewAccount);
-		mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
-		mProgressBar = findViewById(R.id.mProgressBar);
-		Logincontenido = findViewById(R.id.Logincontenido);
-		recuperarPass = findViewById(R.id.recuperarPassword);
-
-		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
-		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
-
+	@Override
+	public void credencialesIncorrectas() {
+		Snackbar.make(mBtnLogin, getResources().getString(R.string.credencialesEmailIncorrectas),
+				Snackbar.LENGTH_LONG).show();
 	}
 
-	//METODO PARA INICIAR SESION CON EMAIL
-	private void SignInWitchEmail(final String email, final String password) {
+	@Override
+	public void emailNoVerificado() {
+		Snackbar.make(mBtnLogin, getResources().getString(R.string.emailNoVerificado),
+				Snackbar.LENGTH_LONG).show();
+	}
 
-		//Validar si los valores no estan vacios
-		if (!email.isEmpty() && !password.isEmpty()) {
-			onProgressbarVisible();
-			AuthCredential credential = EmailAuthProvider.getCredential(email, password);
-			mAuth.signInWithCredential(credential).addOnCompleteListener(LoginVista.this,
-					new OnCompleteListener<AuthResult>() {
-						@Override
-						public void onComplete(@NonNull Task<AuthResult> task) {
-							if (!task.isSuccessful()) {
-								Toast.makeText(getApplicationContext(), R.string.EmailPasswordIncorrect,
-										Toast.LENGTH_LONG).show();
-							} else {
-								FirebaseUser user = mAuth.getCurrentUser();
-								if (!user.isEmailVerified()) {
-									Toast.makeText(LoginVista.this, R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
-								} else {
-									goMainScreen();
-								}
-							}
-							onProgressbarGone();
-						}
-					});
-		}
+	@Override
+	public void irAVistaCandidatos() {
+		Intent intent = new Intent(LoginVista.this, ListaCandidatosVista.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
+				Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 
 	//METODOS NECESARIOS PARA EL INICIO DE SESION CON GOOGLE
@@ -275,14 +247,6 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 						Toast.LENGTH_LONG).show();
 			}
 		});
-	}
-
-	//Metodo para ir a el activity principal en caso de session exitosa
-	protected void goMainScreen() {
-		Intent intent = new Intent(LoginVista.this, ListaCandidatosVista.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
-				Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivity(intent);
 	}
 
 	@Override
@@ -388,7 +352,7 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 			validacionDispositivoConGoogle = true;
 		} else
 			validacionDispositivoConGoogle = snapshotFirebase.getValue().toString().equals(emailusuario);
-		}
+	}
 
 	private void obtenerUsuariosFirebase() {
 

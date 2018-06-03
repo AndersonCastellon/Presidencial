@@ -25,6 +25,10 @@ public class Constantes {
 	public static final String EMAIL_INVALIDO = "emailInvalido";
 	public static final String PUT_ID_DISPOSITIVO = "PUT_ID_DISPOSITIVO";
 
+	public static final String RESULT_NO_SUCCESSFUL = "NO_SUCCESSFUL";
+	public static final String RESULT_EMAIL_NO_VERIFY = "EMAIL_NO_VERIFY";
+	public static final String RESULT_IS_SUCCESSFUL = "IS_SUCCESSFUL";
+
 
 	public static String PUT_ID_CANDIDATO = "PUT_ID_CANDIDATO";
 	public static String PUT_NOMBRE_CANDIDATO = "PUT_NOMBRE_CANDIDATO";

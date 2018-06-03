@@ -13,7 +13,7 @@
     <string name="btnNewAccount">Crear cuenta</string>
     <string name="btnLoginGoogle">Google</string>
     <string name="btnLoginFacebook">Facebook</string>
-    <string name="EmailPasswordIncorrect">Email o contraseña incorrectos</string>
+    <string name="credencialesEmailIncorrectas">Email o contraseña incorrectos</string>
     <string name="ErrorSignInGoogle">Error al iniciar con Google</string>
     <string name="IniciasteComo">Iniciastes como:</string>
     <string name="CreateNewAccountERROR">Ha ocurrido un error</string>
@@ -27,7 +27,7 @@
     <string name="facebookErrorLogin">Error en inicio de sesion con Facebook</string>
     <string name="TextVerificationEmail">!!Genial!! Ahora verifica tu Email y luego da clic aquí abajo</string>
     <string name="Continue">Continuar</string>
-    <string name="EmailNoVerified">Primero verifica tu Email</string>
+    <string name="emailNoVerificado">Primero verifica tu Email</string>
     <string name="IntoCredentials">Ingresa tus credenciales</string>
     <string name="EmailNotVerified">Aún no has verificado tu Email</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -36,7 +36,7 @@
     <string name="UserName">Nombre de usuario</string>
     <string name="FaltanDatos">Faltan algunos datos</string>
     <string name="Departamento">Departamento</string>
-    <string name="LabelLoginActivity">@string/app_name</string>
+    <string name="etiquetaLoginVista">@string/app_name</string>
     <string name="RecuperarPassword">Recuperar contraseña</string>
     <string name="tabtextCandidatos">Candidatos</string>
     <string name="tabtextOpiniones">Opiniones</string>

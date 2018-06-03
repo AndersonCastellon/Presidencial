@@ -85,7 +85,7 @@ public class EmailVerifyVista extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (!task.isSuccessful()) {
-                                            Toast.makeText(getApplicationContext(), R.string.EmailPasswordIncorrect,
+                                            Toast.makeText(getApplicationContext(), R.string.credencialesEmailIncorrectas,
                                                     Toast.LENGTH_LONG).show();
                                         }else {
                                             goMainScreen();
@@ -93,7 +93,7 @@ public class EmailVerifyVista extends AppCompatActivity {
                                     }
                                 });
                     }else {
-                        Toast.makeText(EmailVerifyVista.this,R.string.EmailNoVerified, Toast.LENGTH_LONG).show();
+                        Toast.makeText(EmailVerifyVista.this,R.string.emailNoVerificado, Toast.LENGTH_LONG).show();
                     }
                 }
             });
