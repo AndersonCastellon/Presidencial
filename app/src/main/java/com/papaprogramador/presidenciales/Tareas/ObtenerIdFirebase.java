@@ -14,13 +14,23 @@ public class ObtenerIdFirebase {
 	}
 
 	private IdObtenido listener;
+	private String idDispositivo;
+	private String emailUsuario;
 
 	public ObtenerIdFirebase(String idDispositivo, IdObtenido listener) {
 		this.listener = listener;
-		obtenerIdFirebase(idDispositivo);
+		this.idDispositivo = idDispositivo;
+		obtenerIdFirebase();
 	}
 
-	private void obtenerIdFirebase(final String idDispositivo) {
+	public ObtenerIdFirebase(String idDispositivo, String emailUsuario, IdObtenido listener) {
+		this.listener = listener;
+		this.idDispositivo = idDispositivo;
+		this.emailUsuario = emailUsuario;
+		obtenerIdFirebase();
+	}
+
+	private void obtenerIdFirebase() {
 
 		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
 
@@ -28,7 +38,7 @@ public class ObtenerIdFirebase {
 				.child(idDispositivo).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
-				validarIDs(dataSnapshot, idDispositivo);
+				validarIDs(dataSnapshot, idDispositivo, emailUsuario);
 				referenceIDdispositivo.removeEventListener(this);
 			}
 
@@ -38,9 +48,30 @@ public class ObtenerIdFirebase {
 		});
 	}
 
-	private void validarIDs(DataSnapshot dataSnapshot, String idDispositivo) {
+	private void validarIDs(DataSnapshot dataSnapshot, String idDispositivo, String emailUsuario) {
+
 		final DataSnapshot idFirebase = dataSnapshot;
 		final String id = idDispositivo;
+		final String email = emailUsuario;
+
+		if (email.isEmpty()){
+			validarSinEmail(idFirebase, id);
+		} else {
+			validarConEmail(email, id, idFirebase);
+		}
+
+	}
+
+	private void validarConEmail(String email, String id, DataSnapshot idFirebase) {
+
+		if (idFirebase.getKey().equals(id)){
+			listener.idObtenido(idFirebase.getValue().toString().equals(email), id);
+		} else {
+			listener.idObtenido(false, "");
+		}
+	}
+
+	private void validarSinEmail(DataSnapshot idFirebase, String id) {
 
 		if (idFirebase.getValue() == null){
 			listener.idObtenido(false, id);

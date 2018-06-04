@@ -30,7 +30,10 @@ public class Constantes {
 	public static final String RESULT_IS_SUCCESSFUL = "IS_SUCCESSFUL";
 
 
-	public static String PUT_ID_CANDIDATO = "PUT_ID_CANDIDATO";
-	public static String PUT_NOMBRE_CANDIDATO = "PUT_NOMBRE_CANDIDATO";
-	public static String PUT_URL_IMAGEN_CANDIDATO = "PUT_URL_IMAGEN_CANDIDATO";
+	public static final String PUT_ID_CANDIDATO = "PUT_ID_CANDIDATO";
+	public static final String PUT_NOMBRE_CANDIDATO = "PUT_NOMBRE_CANDIDATO";
+	public static final String PUT_URL_IMAGEN_CANDIDATO = "PUT_URL_IMAGEN_CANDIDATO";
+
+	public static final int SIGN_IN_CODE = 777;
+
 }

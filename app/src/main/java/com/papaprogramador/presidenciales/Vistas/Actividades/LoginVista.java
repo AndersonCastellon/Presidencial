@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
@@ -49,9 +48,9 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 	//Declaracion de variables globales de este activity
 	private TextInputEditText emailUsuario;
 	private TextInputEditText pass;
-	private ProgressBar mProgressBar;
+	private ProgressBar progressBar;
 	private Button mBtnLogin, mBtnNewAccount, resetPass;
-	private LinearLayout Logincontenido;
+	private LinearLayout contenido;
 	private SignInButton mBtnLoginGoogle;
 
 	private String IDdispositivo;
@@ -61,7 +60,6 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 	private DataSnapshot IDfirebase;
 	private DataSnapshot UsuariosFirebase;
 	public boolean validacionDispositivoConGoogle;
-	public static final int SIGN_IN_CODE = 777;
 
 	//Variable para la autenticacion con Firebase
 	private FirebaseAuth mAuth;
@@ -92,36 +90,26 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 		mBtnNewAccount.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getPresenter().obtenerIdDispositivo(LoginVista.this);
+				getPresenter().obtenerIdFirebase();
 			}
 		});
 
 		resetPass.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent resetpass = new Intent(LoginVista.this, ResetPasswordVista.class);
-				startActivity(resetpass);
+				getPresenter().irAResetPassword();
 			}
 		});
 		//FIN DE BOTONES DE INICIO DE SESION Y CREACION DE NUEVA CUENTA
 
 		//INICIO AUTENTICACION CON GOOGLE
-		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestIdToken(getString(R.string.default_web_client_id))
-				.requestProfile()
-				.requestEmail() //TODO: INVESTIGAR COMO OBTENER EL EMAIL DE GOOGLE PARA VALIDARLO ANTES DE CREAR CUENTA EN FIREBASE
-				.build();
 
-		googleApiClient = new GoogleApiClient.Builder(this)
-				.enableAutoManage(this, this)
-				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-				.build();
 
 		mBtnLoginGoogle.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-				startActivityForResult(intent, SIGN_IN_CODE);
+				getPresenter().iniciarSesionConGoogle(v.getContext(),
+						getString(R.string.default_web_client_id));
 			}
 		});
 		//FIN DE AUTENTICACION CON GOOGLE
@@ -134,19 +122,21 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 		mBtnLogin = findViewById(R.id.btnLogin);
 		mBtnNewAccount = findViewById(R.id.btnNewAccount);
 		mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
-		mProgressBar = findViewById(R.id.mProgressBar);
-		Logincontenido = findViewById(R.id.Logincontenido);
+		progressBar = findViewById(R.id.mProgressBar);
+		contenido = findViewById(R.id.Logincontenido);
 		resetPass = findViewById(R.id.recuperarPassword);
 
 		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
 		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
+
+		getPresenter().obtenerIdDispositivo(context);
 
 	}
 
 	@NonNull
 	@Override
 	public Login.Presentador createPresenter() {
-		return new LoginPresentador();
+		return new LoginPresentador(context);
 	}
 
 	@Override
@@ -175,6 +165,18 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 	}
 
 	@Override
+	public void intentGoogle(GoogleApiClient googleApiClient) {
+		Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+		startActivityForResult(intent, Constantes.SIGN_IN_CODE);
+	}
+
+	@Override
+	public void errorSigInGoogle() {
+		Snackbar.make(mBtnLoginGoogle, getResources().getString(R.string.ErrorSignInGoogle),
+				Snackbar.LENGTH_LONG).show();
+	}
+
+	@Override
 	public void irAVistaCandidatos() {
 		Intent intent = new Intent(LoginVista.this, ListaCandidatosVista.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
@@ -182,26 +184,34 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 		startActivity(intent);
 	}
 
-	//METODOS NECESARIOS PARA EL INICIO DE SESION CON GOOGLE
+	@Override
+	public void irAResetPassword() {
+		Intent intent = new Intent(LoginVista.this, ResetPasswordVista.class);
+		startActivity(intent);
+	}
+
+	@Override
+	public void mostrarProgreso(Boolean bool) {
+		if (bool){
+			contenido.setVisibility(View.GONE);
+			progressBar.setVisibility(View.VISIBLE);
+		} else {
+			contenido.setVisibility(View.VISIBLE);
+			progressBar.setVisibility(View.GONE);
+		}
+	}
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == SIGN_IN_CODE) { //TODO switch para validar el requies code
-
-			GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-			handleSingInResult(result);
+		switch (requestCode){
+			case Constantes.SIGN_IN_CODE:
+				getPresenter().googleSingInFromResult(data);
+				break;
 		}
 	}
 
-	//Si el resultado de onActivityResult es exitoso se pasa el token a firebase aquí
-	private void handleSingInResult(GoogleSignInResult result) {
-		if (result.isSuccess()) {
-			FirebaseAuthWithGoogle(result.getSignInAccount());
-		} else {
-			Toast.makeText(this, R.string.ErrorSignInGoogle, Toast.LENGTH_LONG).show();
-		}
-	}
 
 	//Método para obtener las credenciales de Google y usarlas en FirebaseAuth
 	private void FirebaseAuthWithGoogle(GoogleSignInAccount signInAccount) {
@@ -249,12 +259,6 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 		});
 	}
 
-	@Override
-	public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-
-	}
-
 	//metodos onStart y onStop sobreescritos para vigilar el estado de la sesion
 	@Override
 	protected void onStart() {
@@ -271,108 +275,6 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 			mAuth.removeAuthStateListener(Listener);
 		}
 
-	}
-
-
-	public void onProgressbarVisible() {
-
-		mProgressBar.setVisibility(View.VISIBLE);
-		Logincontenido.setVisibility(View.GONE);
-
-
-	}
-
-	public void onProgressbarGone() {
-
-		mProgressBar.setVisibility(View.GONE);
-		Logincontenido.setVisibility(View.VISIBLE);
-
-	}
-
-	public void obtenerID() {
-
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-			//Menores a Android 6.0
-			IDdispositivo = getID();
-		} else {
-			// Mayores a Android 6.0
-			IDdispositivo = "";
-			if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE)
-					!= PackageManager.PERMISSION_GRANTED) {
-				requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},
-						225);
-				IDdispositivo = "";
-			} else {
-				IDdispositivo = getID();
-			}
-		}
-	}
-
-	//Método que obtiene el IMEI
-	private String getID() {
-
-		String ID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-		return ID;
-
-	}
-
-	public void obtenerIDdeFirebase(String IDdispositivo) {
-
-		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
-
-		referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
-				.child(IDdispositivo).addValueEventListener(new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				almacenarIDfirebase(dataSnapshot);
-				referenceIDdispositivo.removeEventListener(this);
-			}
-
-			@Override
-			public void onCancelled(DatabaseError databaseError) {
-			}
-		});
-	}
-
-	private void almacenarIDfirebase(DataSnapshot dataSnapshot) {
-		IDfirebase = dataSnapshot;
-	}
-
-	private void validarIDfirebase(DataSnapshot dataSnapshot) {
-
-		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
-
-		final DataSnapshot snapshotFirebase = dataSnapshot;
-		String ID = IDdispositivo;
-		String emailusuario = Useremail;
-
-		if (snapshotFirebase.getValue() == null) {
-			referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
-					.child(ID).setValue(emailusuario);
-			validacionDispositivoConGoogle = true;
-		} else
-			validacionDispositivoConGoogle = snapshotFirebase.getValue().toString().equals(emailusuario);
-	}
-
-	private void obtenerUsuariosFirebase() {
-
-		final DatabaseReference databaseReference;
-		databaseReference = FirebaseDatabase.getInstance().getReference();
-
-		databaseReference.child(ReferenciasFirebase.NODO_USUARIO).addValueEventListener(new ValueEventListener() {
-			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				almacenarUsuariosFirebase(dataSnapshot);
-			}
-
-			@Override
-			public void onCancelled(DatabaseError databaseError) {
-			}
-		});
-	}
-
-	private void almacenarUsuariosFirebase(DataSnapshot dataSnapshot) {
-		UsuariosFirebase = dataSnapshot;
 	}
 
 	private void crearNuevoUsuarioFirebase(DataSnapshot dataSnapshot) {
