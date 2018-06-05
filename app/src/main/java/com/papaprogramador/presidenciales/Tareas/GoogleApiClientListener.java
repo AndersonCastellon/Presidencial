@@ -9,15 +9,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class LoginGoogle implements GoogleApiClient.OnConnectionFailedListener {
+public class GoogleApiClientListener implements com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener {
 
 	public interface GoogleApi{
-		void apiClient(GoogleApiClient googleApiClient);
+		void apiClient(GoogleApiClient  googleApiClient);
 	}
 
 	private GoogleApi listener;
 
-	public LoginGoogle(Context context, String string, GoogleApi listener) {
+	public GoogleApiClientListener(Context context, String string, GoogleApi listener) {
 		this.listener = listener;
 		obtenerApiClient(context, string);
 	}

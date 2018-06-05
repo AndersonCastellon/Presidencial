@@ -38,6 +38,7 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 		setContentView(R.layout.activity_login);
 
 		onStartVista();
+		getPresenter().obtenerIdDispositivo(context);
 	}
 
 	private void onStartVista() {
@@ -57,9 +58,6 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 
 		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
 		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
-
-		getPresenter().obtenerIdDispositivo(context);
-
 	}
 
 	@Override

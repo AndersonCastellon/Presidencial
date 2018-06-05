@@ -187,7 +187,7 @@ public class ListaCandidatosVista extends AppCompatActivity implements GoogleApi
 		startActivity(intent);
 	}
 
-	//Sobreescritura de este metodo al implementar GoogleApiClient.OnConnectionFailedListener
+	//Sobreescritura de este metodo al implementar GoogleApiClientListener.OnConnectionFailedListener
 	@Override
 	public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 

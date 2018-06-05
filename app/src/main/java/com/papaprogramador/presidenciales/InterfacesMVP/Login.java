@@ -36,8 +36,4 @@ public interface Login {
 		void registrarUsuarioEnFirebase(FirebaseUser user);
 
 	}
-
-	interface Modelo {
-		void registrarUsuarioEnFirebaseRealTimeDataBase();
-	}
 }

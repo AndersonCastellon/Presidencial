@@ -7,12 +7,11 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.Login;
+import com.papaprogramador.presidenciales.Tareas.GoogleApiClientListener;
 import com.papaprogramador.presidenciales.Tareas.IniciarSesionConCredenciales;
-import com.papaprogramador.presidenciales.Tareas.LoginGoogle;
 import com.papaprogramador.presidenciales.Tareas.ObtenerIdDispositivo;
 import com.papaprogramador.presidenciales.Tareas.ObtenerIdFirebase;
 import com.papaprogramador.presidenciales.Tareas.RegistrarUsuarioRTDB;
@@ -67,6 +66,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 
 	@Override
 	public void iniciarSesionConEmail(Context context, String emailUsuario, String pass) {
+		vista.mostrarProgreso(true);
 		new IniciarSesionConCredenciales(context, emailUsuario, pass, new IniciarSesionConCredenciales.IniciarSesion() {
 			@Override
 			public void resultadoInicio(final String resultado, FirebaseUser user) {
@@ -75,9 +75,11 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 						vista.activityListaCandidatos();
 						break;
 					case Constantes.RESULT_EMAIL_NO_VERIFY:
+						vista.mostrarProgreso(false);
 						vista.emailNoVerificado();
 						break;
 					case Constantes.RESULT_NO_SUCCESSFUL:
+						vista.mostrarProgreso(false);
 						vista.credencialesIncorrectas();
 						break;
 				}
@@ -87,9 +89,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 
 	@Override
 	public void iniciarSesionConGoogle(Context context, String string) {
-		new LoginGoogle(context, string, new LoginGoogle.GoogleApi() {
+		new GoogleApiClientListener(context, string, new GoogleApiClientListener.GoogleApi() {
 			@Override
-			public void apiClient(final GoogleApiClient googleApiClient) {
+			public void apiClient(final com.google.android.gms.common.api.GoogleApiClient googleApiClient) {
 				vista.intentGoogle(googleApiClient);
 			}
 		});
@@ -102,6 +104,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 
 	@Override
 	public void googleSingInFromResult(Intent data) {
+		vista.mostrarProgreso(true);
 		GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 		resultGoogle(result);
 	}
@@ -111,6 +114,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 		if (result.isSuccess()) {
 			validarDispositivoConCuentaGoogle(result.getSignInAccount());
 		} else {
+			vista.mostrarProgreso(false);
 			vista.errorSigInGoogle();
 		}
 	}
@@ -132,12 +136,14 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 											registrarUsuarioEnFirebase(user);
 											break;
 										case Constantes.RESULT_NO_SUCCESSFUL:
+											vista.mostrarProgreso(false);
 											vista.errorSigInGoogle();
 											break;
 									}
 								}
 							});
 				} else {
+					vista.mostrarProgreso(false);
 					vista.idYaUtilizado();
 				}
 			}
