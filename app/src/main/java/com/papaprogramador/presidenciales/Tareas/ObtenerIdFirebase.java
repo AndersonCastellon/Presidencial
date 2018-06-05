@@ -35,7 +35,7 @@ public class ObtenerIdFirebase {
 		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
 
 		referenceIDdispositivo.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
-				.child(idDispositivo).addValueEventListener(new ValueEventListener() {
+				.child(idDispositivo).addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				validarIDs(dataSnapshot, idDispositivo, emailUsuario);

@@ -8,32 +8,43 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.Login;
-import com.papaprogramador.presidenciales.Modelos.LoginModelo;
 import com.papaprogramador.presidenciales.Tareas.IniciarSesionConCredenciales;
 import com.papaprogramador.presidenciales.Tareas.LoginGoogle;
 import com.papaprogramador.presidenciales.Tareas.ObtenerIdDispositivo;
 import com.papaprogramador.presidenciales.Tareas.ObtenerIdFirebase;
+import com.papaprogramador.presidenciales.Tareas.RegistrarUsuarioRTDB;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
 public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements Login.Presentador {
 
-	private Login.Modelo modelo;
 	private String ID;
 	private Context context;
+	private Login.Vista vista;
 
 	public LoginPresentador(Context context) {
 		this.context = context;
-		this.modelo = new LoginModelo(this);
+		viewAction();
 	}
+
+	private void viewAction() {
+		ifViewAttached(new ViewAction<Login.Vista>() {
+			@Override
+			public void run(@NonNull Login.Vista view) {
+				vista = view;
+			}
+		});
+	}
+
 
 	@Override
 	public void obtenerIdDispositivo(Context context) {
 		new ObtenerIdDispositivo(context,
 				new ObtenerIdDispositivo.OyenteTareaIdDispositivo() {
 					@Override
-					public void idGenerado(String idDispositivo) {
+					public void idGenerado(final String idDispositivo) {
 						ID = idDispositivo;
 					}
 				});
@@ -46,19 +57,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 					@Override
 					public void idObtenido(final boolean bool, final String idFirebase) {
 						if (!bool) {
-							ifViewAttached(new ViewAction<Login.Vista>() {
-								@Override
-								public void run(@NonNull Login.Vista view) {
-									view.idYaUtilizado();
-								}
-							});
+							vista.idYaUtilizado();
 						} else {
-							ifViewAttached(new ViewAction<Login.Vista>() {
-								@Override
-								public void run(@NonNull Login.Vista view) {
-									view.crearNuevaCuenta(ID);
-								}
-							});
+							vista.activityCrearNuevaCuenta(ID);
 						}
 					}
 				});
@@ -68,23 +69,18 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 	public void iniciarSesionConEmail(Context context, String emailUsuario, String pass) {
 		new IniciarSesionConCredenciales(context, emailUsuario, pass, new IniciarSesionConCredenciales.IniciarSesion() {
 			@Override
-			public void resultadoInicio(final String resultado, String uidFirebase) {
-				ifViewAttached(new ViewAction<Login.Vista>() {
-					@Override
-					public void run(@NonNull Login.Vista view) {
-						switch (resultado) {
-							case Constantes.RESULT_IS_SUCCESSFUL:
-								view.irAVistaCandidatos();
-								break;
-							case Constantes.RESULT_EMAIL_NO_VERIFY:
-								view.emailNoVerificado();
-								break;
-							case Constantes.RESULT_NO_SUCCESSFUL:
-								view.credencialesIncorrectas();
-								break;
-						}
-					}
-				});
+			public void resultadoInicio(final String resultado, FirebaseUser user) {
+				switch (resultado) {
+					case Constantes.RESULT_IS_SUCCESSFUL:
+						vista.activityListaCandidatos();
+						break;
+					case Constantes.RESULT_EMAIL_NO_VERIFY:
+						vista.emailNoVerificado();
+						break;
+					case Constantes.RESULT_NO_SUCCESSFUL:
+						vista.credencialesIncorrectas();
+						break;
+				}
 			}
 		});
 	}
@@ -94,24 +90,14 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 		new LoginGoogle(context, string, new LoginGoogle.GoogleApi() {
 			@Override
 			public void apiClient(final GoogleApiClient googleApiClient) {
-				ifViewAttached(new ViewAction<Login.Vista>() {
-					@Override
-					public void run(@NonNull Login.Vista view) {
-						view.intentGoogle(googleApiClient);
-					}
-				});
+				vista.intentGoogle(googleApiClient);
 			}
 		});
 	}
 
 	@Override
-	public void irAResetPassword() {
-		ifViewAttached(new ViewAction<Login.Vista>() {
-			@Override
-			public void run(@NonNull Login.Vista view) {
-				view.irAResetPassword();
-			}
-		});
+	public void activityResetPassword() {
+		vista.activityResetPassword();
 	}
 
 	@Override
@@ -125,62 +111,56 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 		if (result.isSuccess()) {
 			validarDispositivoConCuentaGoogle(result.getSignInAccount());
 		} else {
-			ifViewAttached(new ViewAction<Login.Vista>() {
-				@Override
-				public void run(@NonNull Login.Vista view) {
-					view.errorSigInGoogle();
-				}
-			});
+			vista.errorSigInGoogle();
 		}
 	}
 
 	@Override
 	public void validarDispositivoConCuentaGoogle(final GoogleSignInAccount signInAccount) {
+		String emailUsuario = signInAccount.getEmail();
 
-		new ObtenerIdFirebase(ID, signInAccount.getEmail(), new ObtenerIdFirebase.IdObtenido() {
+		new ObtenerIdFirebase(ID, emailUsuario, new ObtenerIdFirebase.IdObtenido() {
 			@Override
 			public void idObtenido(boolean bool, String idFirebase) {
 				if (bool) {
 					new IniciarSesionConCredenciales(context, signInAccount,
 							new IniciarSesionConCredenciales.IniciarSesion() {
 								@Override
-								public void resultadoInicio(final String resultado, final String uidFirebase) {
-									ifViewAttached(new ViewAction<Login.Vista>() {
-										@Override
-										public void run(@NonNull Login.Vista view) {
-											switch (resultado) {
-												case Constantes.RESULT_IS_SUCCESSFUL:
-													registrarUsuarioEnFirebase(signInAccount, uidFirebase);
-													break;
-												case Constantes.RESULT_NO_SUCCESSFUL:
-													view.errorSigInGoogle();
-													break;
-											}
-										}
-									});
+								public void resultadoInicio(final String resultado, final FirebaseUser user) {
+									switch (resultado) {
+										case Constantes.RESULT_IS_SUCCESSFUL:
+											registrarUsuarioEnFirebase(user);
+											break;
+										case Constantes.RESULT_NO_SUCCESSFUL:
+											vista.errorSigInGoogle();
+											break;
+									}
 								}
 							});
 				} else {
-					ifViewAttached(new ViewAction<Login.Vista>() {
-						@Override
-						public void run(@NonNull Login.Vista view) {
-							view.idYaUtilizado();
-						}
-					});
+					vista.idYaUtilizado();
 				}
 			}
 		});
 	}
 
 	@Override
-	public void registrarUsuarioEnFirebase(GoogleSignInAccount signInAccount, String uidFirebase) {
-		String nombreUsuario = signInAccount.getDisplayName();
-		String emailUsuario = signInAccount.getEmail();
+	public void registrarUsuarioEnFirebase(FirebaseUser user) {
+		String nombreUsuario = user.getDisplayName();
+		String emailUsuario = user.getEmail();
 		String departamento = Constantes.VALOR_DEPARTAMENTO_DEFAULT;
 		String idDispositivo = ID;
+		String uidFirebase = user.getUid();
 		String voto = Constantes.VALOR_VOTO_DEFAULT;
 
-
-
+		new RegistrarUsuarioRTDB(uidFirebase, nombreUsuario, emailUsuario, departamento, idDispositivo,
+				voto, new RegistrarUsuarioRTDB.RegistrarUsuarioFirebase() {
+			@Override
+			public void registroExitoso(boolean bool) {
+				if (bool){
+					vista.activityListaCandidatos();
+				}
+			}
+		});
 	}
 }

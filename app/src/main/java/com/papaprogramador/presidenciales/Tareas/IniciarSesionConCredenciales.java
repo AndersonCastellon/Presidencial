@@ -19,7 +19,7 @@ import com.papaprogramador.presidenciales.Utilidades.Constantes;
 public class IniciarSesionConCredenciales {
 
 	public interface IniciarSesion {
-		void resultadoInicio(String resultado, String uidFirebase);
+		void resultadoInicio(String resultado, FirebaseUser user);
 	}
 
 	private IniciarSesion listener;
@@ -63,21 +63,37 @@ public class IniciarSesionConCredenciales {
 					public void onComplete(@NonNull Task<AuthResult> task) {
 						FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 						if (signInAccount == null) {
-							if (!task.isSuccessful()) {
-								listener.resultadoInicio(Constantes.RESULT_NO_SUCCESSFUL,"");
-							} else if (!user.isEmailVerified()) {
-								listener.resultadoInicio(Constantes.RESULT_EMAIL_NO_VERIFY, user.getUid());
-							} else {
-								listener.resultadoInicio(Constantes.RESULT_IS_SUCCESSFUL, user.getUid());
+							if (user != null){
+								validarPorCredencialesEmail(user, task);
 							}
 						} else {
-							if (!task.isSuccessful()) {
-								listener.resultadoInicio(Constantes.RESULT_NO_SUCCESSFUL,"");
-							} else {
-								listener.resultadoInicio(Constantes.RESULT_IS_SUCCESSFUL, user.getUid());
+							if (user != null) {
+								validarPorCredencialesGoogle(user, task);
 							}
 						}
 
+					}
+
+					private void validarPorCredencialesGoogle(FirebaseUser user, Task<AuthResult> task) {
+
+
+						if (!task.isSuccessful()) {
+							listener.resultadoInicio(Constantes.RESULT_NO_SUCCESSFUL, user);
+						} else {
+							listener.resultadoInicio(Constantes.RESULT_IS_SUCCESSFUL, user);
+						}
+					}
+
+					private void validarPorCredencialesEmail(FirebaseUser user, Task<AuthResult> task) {
+
+
+						if (!task.isSuccessful()) {
+							listener.resultadoInicio(Constantes.RESULT_NO_SUCCESSFUL, user);
+						} else if (!user.isEmailVerified()) {
+							listener.resultadoInicio(Constantes.RESULT_EMAIL_NO_VERIFY, user);
+						} else {
+							listener.resultadoInicio(Constantes.RESULT_IS_SUCCESSFUL, user);
+						}
 					}
 				});
 	}
