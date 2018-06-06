@@ -13,29 +13,43 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".Vistas.Actividades.LoginVista"
             android:label="@string/etiquetaLoginVista"
             tools:ignore="InnerclassSeparator">
+
         </activity>
-        <activity android:name=".Vistas.Actividades.ListaCandidatosVista">
+
+        <activity android:name=".Vistas.Actividades.ListaCandidatosVista"
+            tools:ignore="InnerclassSeparator">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Vistas.Actividades.NewAccountVista" />
-        <activity android:name=".Vistas.Actividades.EmailVerifyVista" />
-        <activity android:name=".Vistas.Actividades.ResetPasswordVista" />
+
+        <activity android:name=".Vistas.Actividades.NewAccountVista"
+            tools:ignore="InnerclassSeparator" />
+
+        <activity android:name=".Vistas.Actividades.EmailVerifyVista"
+            tools:ignore="InnerclassSeparator" />
+
+        <activity android:name=".Vistas.Actividades.ResetPasswordVista"
+            tools:ignore="InnerclassSeparator" />
+
         <activity
             android:name=".Vistas.Actividades.DetailCandidatoVista"
             android:parentActivityName=".Vistas.Actividades.ListaCandidatosVista"
-            android:theme="@style/AppthemeStatusBarTransparent">
+            android:theme="@style/AppthemeStatusBarTransparent"
+            tools:ignore="InnerclassSeparator">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Vistas.Actividades.ListaCandidatosVista" />
         </activity>
+
     </application>
 
 </manifest>

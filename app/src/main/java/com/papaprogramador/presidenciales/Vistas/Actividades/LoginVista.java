@@ -21,7 +21,8 @@ import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
 
-public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> implements Login.Vista, View.OnClickListener {
+public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador>
+		implements Login.Vista, View.OnClickListener {
 
 	private TextInputEditText emailUsuario;
 	private TextInputEditText pass;
@@ -75,8 +76,9 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador> impl
 			case R.id.recuperarPassword:
 				getPresenter().activityResetPassword();
 				break;
-			case R.id.btnLoginGoogle:
-				getPresenter().iniciarSesionConGoogle(context,
+			case R.id.btnLoginGoogle: //TODO: Encontrar error: Iniciar sesion con Google despues
+				//de haber cancelado un inicio de sesion con Google
+				getPresenter().obtenerGoogleApliClient(context,
 						getString(R.string.default_web_client_id));
 				break;
 		}

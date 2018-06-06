@@ -28,11 +28,12 @@ public interface Login {
 		void obtenerIdDispositivo(Context context);
 		void obtenerIdFirebase();
 		void iniciarSesionConEmail(Context context, String emailUsuario, String pass);
-		void iniciarSesionConGoogle(Context context, String string);
+		void obtenerGoogleApliClient(Context context, String string);
 		void activityResetPassword();
 		void googleSingInFromResult(Intent data);
 		void resultGoogle(GoogleSignInResult result);
 		void validarDispositivoConCuentaGoogle(GoogleSignInAccount signInAccount);
+		void iniciarSesionConGoogle(Context context, GoogleSignInAccount signInAccount);
 		void registrarUsuarioEnFirebase(FirebaseUser user);
 
 	}

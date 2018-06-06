@@ -64,10 +64,10 @@ public class ObtenerIdFirebase {
 
 	private void validarConEmail(String email, String id, DataSnapshot idFirebase) {
 
-		if (idFirebase.getKey().equals(id)){
-			listener.idObtenido(idFirebase.getValue().toString().equals(email), id);
+		if (idFirebase.getValue() == null){
+			listener.idObtenido(true, "");
 		} else {
-			listener.idObtenido(false, "");
+			listener.idObtenido(idFirebase.getValue().toString().equals(email), id);
 		}
 	}
 
