@@ -54,9 +54,9 @@ public class ObtenerIdFirebase {
 		final String id = idDispositivo;
 		final String email = emailUsuario;
 
-		if (email.isEmpty()){
+		if (email == null) {
 			validarSinEmail(idFirebase, id);
-		} else {
+		}  else {
 			validarConEmail(email, id, idFirebase);
 		}
 
@@ -64,7 +64,7 @@ public class ObtenerIdFirebase {
 
 	private void validarConEmail(String email, String id, DataSnapshot idFirebase) {
 
-		if (idFirebase.getValue() == null){
+		if (idFirebase.getValue() == null) {
 			listener.idObtenido(true, "");
 		} else {
 			listener.idObtenido(idFirebase.getValue().toString().equals(email), id);
@@ -72,10 +72,10 @@ public class ObtenerIdFirebase {
 	}
 
 	private void validarSinEmail(DataSnapshot idFirebase, String id) {
-
-		if (idFirebase.getValue() == null){
+//TODO: Se abre NewAccountVista aunque el id ya exista en firebase, resolver el porque
+		if (idFirebase.getValue() == null) {
 			listener.idObtenido(false, id);
-		}else {
+		} else {
 			listener.idObtenido(idFirebase.getKey().equals(id), id);
 		}
 	}
