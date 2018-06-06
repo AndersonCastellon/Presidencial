@@ -60,7 +60,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 				});
 	}
 
-	@Override
+	@Override //TODO: implementar validacion de campos antes de intentar iniciar sesion con email
 	public void iniciarSesionConEmail(final Context context, final String emailUsuario, final String pass) {
 		ifViewAttached(new ViewAction<Login.Vista>() {
 			@Override
