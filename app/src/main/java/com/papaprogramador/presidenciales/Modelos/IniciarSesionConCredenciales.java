@@ -63,7 +63,7 @@ public class IniciarSesionConCredenciales {
 					public void onComplete(@NonNull Task<AuthResult> task) {
 						FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 						if (signInAccount == null) {
-							if (user != null){
+							if (user != null) {
 								validarPorCredencialesEmail(user, task);
 							}
 						} else {

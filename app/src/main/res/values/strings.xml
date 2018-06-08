@@ -15,7 +15,7 @@
     <string name="credencialesEmailIncorrectas">Email o contraseña incorrectos</string>
     <string name="ErrorSignInGoogle">Error al iniciar con Google</string>
     <string name="IniciasteComo">Iniciastes como:</string>
-    <string name="CreateNewAccountERROR">Ha ocurrido un error</string>
+    <string name="errorThis">Ha ocurrido un error</string>
     <string name="IntoEmailAndPasswordForNewAccount">Introduce Email y Contraseña</string>
     <string name="ErrorAuthWithGoogle">No se pudo autenticar con Google</string>
     <string name="not_close_session">No se pudo cerrar la sesion</string>
@@ -24,7 +24,7 @@
     <string name="CancelLoginFacebook">Has cancelado el inicio de sesion con Facebook</string>
     <string name="ErrorLoginFacebook">Ha ocurrido un error</string>
     <string name="facebookErrorLogin">Error en inicio de sesion con Facebook</string>
-    <string name="TextVerificationEmail">!!Genial!! Ahora verifica tu Email y luego da clic aquí abajo</string>
+    <string name="textVerifyEmailUser">!!Genial!! Ahora verifica tu Email y luego da clic aquí abajo</string>
     <string name="Continue">Continuar</string>
     <string name="emailNoVerificado">Primero verifica tu Email</string>
     <string name="IntoCredentials">Ingresa tus credenciales</string>

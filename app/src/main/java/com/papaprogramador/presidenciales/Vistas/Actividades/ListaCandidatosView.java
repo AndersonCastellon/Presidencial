@@ -47,7 +47,7 @@ public class ListaCandidatosView extends AppCompatActivity implements GoogleApiC
 
 		drawerLayout = findViewById(R.id.LayoutMain);
 
-		//Referencia al encabezado del menú lateral para pasar los datos de usuario
+		//Referencia al encabezado del menú lateral para pasar los datos de user
 		View header = ((NavigationView) findViewById(R.id.navview)).getHeaderView(0);
 		Username = header.findViewById(R.id.username);
 		Useremail = header.findViewById(R.id.email);
@@ -134,7 +134,7 @@ public class ListaCandidatosView extends AppCompatActivity implements GoogleApiC
 	private void datosUsuario(FirebaseUser user) {
 		Username.setText(user.getDisplayName());
 		Useremail.setText(user.getEmail());
-		//Carga de la imagen del perfil del usuario actual
+		//Carga de la imagen del perfil del user actual
 		Glide.with(this)
 				.load(user.getPhotoUrl())
 				.placeholder(R.drawable.im_userimgdefault)
