@@ -30,7 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Adaptadores.ViewpagerAdapter;
 
-public class ListaCandidatosVista extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class ListaCandidatosView extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 	private GoogleApiClient googleApiClient;
 	private FirebaseAuth mAuth;
@@ -112,7 +112,7 @@ public class ListaCandidatosVista extends AppCompatActivity implements GoogleApi
 				} else {
 					if (!user.isEmailVerified()) {
 						goLogInScreen();
-						Toast.makeText(ListaCandidatosVista.this, R.string.emailNoVerificado, Toast.LENGTH_LONG).show();
+						Toast.makeText(ListaCandidatosView.this, R.string.emailNoVerificado, Toast.LENGTH_LONG).show();
 
 					}else {
 						datosUsuario(user);
@@ -148,7 +148,7 @@ public class ListaCandidatosVista extends AppCompatActivity implements GoogleApi
 	private void CloseFullSession() {
 		mAuth.signOut();
 		logOut();
-		Toast.makeText(ListaCandidatosVista.this, R.string.CloseFullSession, Toast.LENGTH_LONG).show();
+		Toast.makeText(ListaCandidatosView.this, R.string.CloseFullSession, Toast.LENGTH_LONG).show();
 	}
 
 	//Metodo que cierra la session en google
@@ -181,7 +181,7 @@ public class ListaCandidatosVista extends AppCompatActivity implements GoogleApi
 
 	//Método para ir a la ventana de login
 	protected void goLogInScreen() {
-		Intent intent = new Intent(ListaCandidatosVista.this, LoginVista.class);
+		Intent intent = new Intent(ListaCandidatosView.this, LoginView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);

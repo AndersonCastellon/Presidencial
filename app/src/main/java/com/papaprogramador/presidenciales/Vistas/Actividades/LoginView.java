@@ -21,7 +21,7 @@ import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
 
-public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador>
+public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
 		implements Login.Vista, View.OnClickListener {
 
 	private TextInputEditText emailUsuario;
@@ -32,7 +32,7 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador>
 	private LinearLayout contenido;
 	private SignInButton mBtnLoginGoogle;
 
-	private Context context = LoginVista.this;
+	private Context context = LoginView.this;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,8 +76,7 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador>
 			case R.id.recuperarPassword:
 				getPresenter().activityResetPassword();
 				break;
-			case R.id.btnLoginGoogle: //TODO: Encontrar error: Iniciar sesion con Google despues
-				//de haber cancelado un inicio de sesion con Google
+			case R.id.btnLoginGoogle:
 				getPresenter().obtenerGoogleApliClient(context,
 						getString(R.string.default_web_client_id));
 				break;
@@ -92,7 +91,7 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador>
 
 	@Override
 	public void activityCrearNuevaCuenta(String idDispositivo) {
-		Intent intent = new Intent(LoginVista.this, NewAccountVista.class);
+		Intent intent = new Intent(LoginView.this, NewAccountView.class);
 		intent.putExtra(Constantes.PUT_ID_DISPOSITIVO, idDispositivo);
 		startActivity(intent);
 	}
@@ -101,6 +100,16 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador>
 	public void idYaUtilizado() {
 		Snackbar.make(mbtnNewAccount, getResources().getString(R.string.DispositivoYautilizadoPorOtraCuenta),
 				Snackbar.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void emailUsuarioVacio() {
+		emailUsuario.setError(getResources().getString(R.string.emailUsuarioVacio));
+	}
+
+	@Override
+	public void passVacio() {
+		pass.setError(getResources().getString(R.string.passVacio));
 	}
 
 	@Override
@@ -129,7 +138,7 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador>
 
 	@Override
 	public void activityListaCandidatos() {
-		Intent intent = new Intent(LoginVista.this, ListaCandidatosVista.class);
+		Intent intent = new Intent(LoginView.this, ListaCandidatosView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
@@ -137,7 +146,7 @@ public class LoginVista extends MvpActivity<Login.Vista, Login.Presentador>
 
 	@Override
 	public void activityResetPassword() {
-		Intent intent = new Intent(LoginVista.this, ResetPasswordVista.class);
+		Intent intent = new Intent(LoginView.this, ResetPasswordView.class);
 		startActivity(intent);
 	}
 

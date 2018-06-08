@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
@@ -22,7 +21,7 @@ import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-public class NewAccountVista extends MvpActivity<NewAccount.Vista,
+public class NewAccountView extends MvpActivity<NewAccount.Vista,
 		NewAccount.Presentador> implements NewAccount.Vista {
 
 	private TextInputEditText emailUsuario, pass, nombreUsuario, emailUsuario2, pass2;
@@ -55,7 +54,7 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 				String password = pass.getText().toString();
 				String password2 = pass2.getText().toString();
 				String departamento = spinnerDepartamento.getText().toString();
-				Context context = NewAccountVista.this;
+				Context context = NewAccountView.this;
 
 				getPresenter().validarCampos(context, idDispositivo, nUsuario, eUsuario, eUsuario2,
 						password, password2, departamento);
@@ -100,8 +99,8 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 				.setAction(getResources().getText(R.string.RESET_PASS), new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Intent intent = new Intent(NewAccountVista.this,
-								ResetPasswordVista.class);
+						Intent intent = new Intent(NewAccountView.this,
+								ResetPasswordView.class);
 						startActivity(intent);
 						finish();
 					}
@@ -185,7 +184,7 @@ public class NewAccountVista extends MvpActivity<NewAccount.Vista,
 	@Override
 	public void irAVerificarEmail(String emailUsuario, String pass) {
 
-		Intent intent = new Intent(NewAccountVista.this, EmailVerifyVista.class);
+		Intent intent = new Intent(NewAccountView.this, EmailVerifyVista.class);
 		intent.putExtra(Constantes.PUT_EMAIL_USUARIO, emailUsuario);
 		intent.putExtra(Constantes.PUT_PASSWORD, pass);
 

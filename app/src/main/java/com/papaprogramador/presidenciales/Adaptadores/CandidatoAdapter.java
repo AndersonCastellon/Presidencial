@@ -17,7 +17,7 @@ import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 import com.papaprogramador.presidenciales.Objetos.Candidato;
-import com.papaprogramador.presidenciales.Vistas.Actividades.DetailCandidatoVista;
+import com.papaprogramador.presidenciales.Vistas.Actividades.DetailCandidatoView;
 
 import java.util.List;
 
@@ -94,7 +94,7 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		public void onClick(View v) {
 			switch (v.getId()){
 				case R.id.imagenCandidato:
-					Intent detalleCandidato = new Intent(context, DetailCandidatoVista.class);
+					Intent detalleCandidato = new Intent(context, DetailCandidatoView.class);
 					detalleCandidato.putExtra(Constantes.PUT_ID_CANDIDATO, idcandidato);
 					detalleCandidato.putExtra(Constantes.PUT_NOMBRE_CANDIDATO, textViewNombre.getText().toString());
 					detalleCandidato.putExtra(Constantes.PUT_URL_IMAGEN_CANDIDATO, Urlimagen);

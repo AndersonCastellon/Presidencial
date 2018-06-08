@@ -1,6 +1,5 @@
 <resources>
 
-    <!--INICIO Strings para todo el sistema de logIn de la aplicacion-->
     <string name="app_name">Presidenciales</string>
 
     <string name="facebook_app_id">610961275903455</string>

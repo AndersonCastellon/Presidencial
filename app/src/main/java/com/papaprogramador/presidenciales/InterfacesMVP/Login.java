@@ -14,6 +14,8 @@ public interface Login {
 	interface Vista extends MvpView {
 		void activityCrearNuevaCuenta(String idDispositivo);
 		void idYaUtilizado();
+		void emailUsuarioVacio();
+		void passVacio();
 		void credencialesIncorrectas();
 		void emailNoVerificado();
 		void intentGoogle(GoogleApiClient googleApiClient);

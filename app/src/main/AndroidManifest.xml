@@ -15,13 +15,13 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".Vistas.Actividades.LoginVista"
+            android:name=".Vistas.Actividades.LoginView"
             android:label="@string/etiquetaLoginVista"
             tools:ignore="InnerclassSeparator">
 
         </activity>
 
-        <activity android:name=".Vistas.Actividades.ListaCandidatosVista"
+        <activity android:name=".Vistas.Actividades.ListaCandidatosView"
             tools:ignore="InnerclassSeparator">
 
             <intent-filter>
@@ -31,23 +31,23 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Vistas.Actividades.NewAccountVista"
+        <activity android:name=".Vistas.Actividades.NewAccountView"
             tools:ignore="InnerclassSeparator" />
 
         <activity android:name=".Vistas.Actividades.EmailVerifyVista"
             tools:ignore="InnerclassSeparator" />
 
-        <activity android:name=".Vistas.Actividades.ResetPasswordVista"
+        <activity android:name=".Vistas.Actividades.ResetPasswordView"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name=".Vistas.Actividades.DetailCandidatoVista"
-            android:parentActivityName=".Vistas.Actividades.ListaCandidatosVista"
+            android:name=".Vistas.Actividades.DetailCandidatoView"
+            android:parentActivityName=".Vistas.Actividades.ListaCandidatosView"
             android:theme="@style/AppthemeStatusBarTransparent"
             tools:ignore="InnerclassSeparator">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Vistas.Actividades.ListaCandidatosVista" />
+                android:value=".Vistas.Actividades.ListaCandidatosView" />
         </activity>
 
     </application>

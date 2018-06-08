@@ -13,7 +13,7 @@ import com.papaprogramador.presidenciales.InterfacesMVP.ResetPassword;
 import com.papaprogramador.presidenciales.Presentadores.ResetPasswordPresentador;
 import com.papaprogramador.presidenciales.R;
 
-public class ResetPasswordVista extends MvpActivity<ResetPassword.Vista, ResetPassword.Presentador>
+public class ResetPasswordView extends MvpActivity<ResetPassword.Vista, ResetPassword.Presentador>
 		implements ResetPassword.Vista {
 
 	private TextInputEditText ResetEmail;
@@ -48,7 +48,7 @@ public class ResetPasswordVista extends MvpActivity<ResetPassword.Vista, ResetPa
 
 	@Override
 	public void mostrarResultadoExitoso() {
-		Toast.makeText(ResetPasswordVista.this,
+		Toast.makeText(ResetPasswordView.this,
 				R.string.EmailResetSend,
 				Toast.LENGTH_LONG).show();
 		goLoginActivity();
@@ -70,7 +70,7 @@ public class ResetPasswordVista extends MvpActivity<ResetPassword.Vista, ResetPa
 	}
 
 	private void goLoginActivity() {
-		Intent login = new Intent(ResetPasswordVista.this, LoginVista.class);
+		Intent login = new Intent(ResetPasswordView.this, LoginView.class);
 		startActivity(login);
 	}
 }

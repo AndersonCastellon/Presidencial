@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Tareas;
+package com.papaprogramador.presidenciales.Modelos;
 
 import android.support.annotation.NonNull;
 

@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Tareas;
+package com.papaprogramador.presidenciales.Modelos;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -72,7 +72,7 @@ public class ObtenerIdFirebase {
 	}
 
 	private void validarSinEmail(DataSnapshot idFirebase, String id) {
-//TODO: Se abre NewAccountVista aunque el id ya exista en firebase, resolver el porque
+
 		if (idFirebase.getValue() == null) {
 			listener.idObtenido(false, id);
 		} else {

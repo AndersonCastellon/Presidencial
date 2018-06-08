@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
-import com.papaprogramador.presidenciales.Modelos.NewAccountModelo;
-import com.papaprogramador.presidenciales.Tareas.CrearCuentaConEmail;
+import com.papaprogramador.presidenciales.Models.NewAccountModelo;
+import com.papaprogramador.presidenciales.Modelos.CrearCuentaConEmail;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
 public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>

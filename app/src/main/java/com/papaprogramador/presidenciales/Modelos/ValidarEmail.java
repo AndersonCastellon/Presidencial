@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Tareas;
+package com.papaprogramador.presidenciales.Modelos;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

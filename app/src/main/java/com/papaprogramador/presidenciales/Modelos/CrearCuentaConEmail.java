@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Tareas;
+package com.papaprogramador.presidenciales.Modelos;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,13 +6,9 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.concurrent.Executor;
 
 public class CrearCuentaConEmail {
 

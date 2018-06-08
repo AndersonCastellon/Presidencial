@@ -3,6 +3,7 @@ package com.papaprogramador.presidenciales.Presentadores;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -11,16 +12,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.Login;
-import com.papaprogramador.presidenciales.Tareas.GoogleApiClientListener;
-import com.papaprogramador.presidenciales.Tareas.IniciarSesionConCredenciales;
-import com.papaprogramador.presidenciales.Tareas.ObtenerIdDispositivo;
-import com.papaprogramador.presidenciales.Tareas.ObtenerIdFirebase;
-import com.papaprogramador.presidenciales.Tareas.RegistrarUsuarioRTDB;
+import com.papaprogramador.presidenciales.Modelos.GoogleApiClientListener;
+import com.papaprogramador.presidenciales.Modelos.IniciarSesionConCredenciales;
+import com.papaprogramador.presidenciales.Modelos.ObtenerIdDispositivo;
+import com.papaprogramador.presidenciales.Modelos.ObtenerIdFirebase;
+import com.papaprogramador.presidenciales.Modelos.RegistrarUsuarioRTDB;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
 public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements Login.Presentador {
 
 	private String ID;
+	private GoogleApiClient apiClient;
 	private Context context;
 
 	public LoginPresentador(Context context) {
@@ -48,7 +50,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 						ifViewAttached(new ViewAction<Login.Vista>() {
 							@Override
 							public void run(@NonNull Login.Vista view) {
-								if (!bool) {
+								if (bool) {
 									view.idYaUtilizado();
 								} else {
 									view.activityCrearNuevaCuenta(ID);
@@ -60,31 +62,46 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 				});
 	}
 
-	@Override //TODO: implementar validacion de campos antes de intentar iniciar sesion con email
+
 	public void iniciarSesionConEmail(final Context context, final String emailUsuario, final String pass) {
+
 		ifViewAttached(new ViewAction<Login.Vista>() {
 			@Override
 			public void run(@NonNull final Login.Vista view) {
-				view.mostrarProgreso(true);
-				new IniciarSesionConCredenciales(context, emailUsuario, pass,
-						new IniciarSesionConCredenciales.IniciarSesion() {
-							@Override
-							public void resultadoInicio(final String resultado, FirebaseUser user) {
-								switch (resultado) {
-									case Constantes.RESULT_IS_SUCCESSFUL:
-										view.activityListaCandidatos();
-										break;
-									case Constantes.RESULT_EMAIL_NO_VERIFY:
-										view.mostrarProgreso(false);
-										view.emailNoVerificado();
-										break;
-									case Constantes.RESULT_NO_SUCCESSFUL:
-										view.mostrarProgreso(false);
-										view.credencialesIncorrectas();
-										break;
+				boolean bool = true;
+
+				if (emailUsuario.isEmpty()) {
+					view.emailUsuarioVacio();
+					bool = false;
+				}
+
+				if (pass.isEmpty()) {
+					view.passVacio();
+					bool = false;
+				}
+
+				if (bool) {
+					view.mostrarProgreso(true);
+					new IniciarSesionConCredenciales(context, emailUsuario, pass,
+							new IniciarSesionConCredenciales.IniciarSesion() {
+								@Override
+								public void resultadoInicio(final String resultado, FirebaseUser user) {
+									switch (resultado) {
+										case Constantes.RESULT_IS_SUCCESSFUL:
+											view.activityListaCandidatos();
+											break;
+										case Constantes.RESULT_EMAIL_NO_VERIFY:
+											view.mostrarProgreso(false);
+											view.emailNoVerificado();
+											break;
+										case Constantes.RESULT_NO_SUCCESSFUL:
+											view.mostrarProgreso(false);
+											view.credencialesIncorrectas();
+											break;
+									}
 								}
-							}
-						});
+							});
+				}
 			}
 		});
 	}
@@ -96,8 +113,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 			public void run(@NonNull final Login.Vista view) {
 				new GoogleApiClientListener(context, string, new GoogleApiClientListener.GoogleApi() {
 					@Override
-					public void apiClient(final GoogleApiClient googleApiClient) {
-						view.intentGoogle(googleApiClient);
+					public void apiClient(GoogleApiClient googleApiClient) {
+						apiClient = googleApiClient;
+						view.intentGoogle(apiClient);
 					}
 				});
 			}
@@ -130,10 +148,12 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 	public void resultGoogle(final GoogleSignInResult result) {
 		ifViewAttached(new ViewAction<Login.Vista>() {
 			@Override
-			public void run(@NonNull Login.Vista view) {
+			public void run(@NonNull final Login.Vista view) {
 				if (result.isSuccess()) {
 					validarDispositivoConCuentaGoogle(result.getSignInAccount());
 				} else {
+					apiClient.stopAutoManage((FragmentActivity) context);
+					apiClient.disconnect();
 					view.mostrarProgreso(false);
 					view.errorSigInGoogle();
 				}
