@@ -30,7 +30,7 @@ public class ResetPasswordView extends MvpActivity<ResetPassword.Vista, ResetPas
 			@Override
 			public void onClick(View v) {
 				String emailUsuario = ResetEmail.getText().toString();
-				getPresenter().procesarEmailUsuario(emailUsuario);
+				getPresenter().emailUserProcess(emailUsuario);
 			}
 		});
 	}
@@ -47,7 +47,7 @@ public class ResetPasswordView extends MvpActivity<ResetPassword.Vista, ResetPas
 	}
 
 	@Override
-	public void mostrarResultadoExitoso() {
+	public void resetIsSuccesful() {
 		Toast.makeText(ResetPasswordView.this,
 				R.string.EmailResetSend,
 				Toast.LENGTH_LONG).show();
@@ -55,17 +55,17 @@ public class ResetPasswordView extends MvpActivity<ResetPassword.Vista, ResetPas
 	}
 
 	@Override
-	public void errorPorEmailSinCuentaAsociada() {
+	public void emailNoExist() {
 		ResetEmail.setError(getString(R.string.EmailSinCuenta));
 	}
 
 	@Override
-	public void errorPorCampoVacio() {
+	public void emailIsEmpty() {
 		ResetEmail.setError(getString(R.string.emailUsuarioVacio));
 	}
 
 	@Override
-	public void errorPorEmailInvalido() {
+	public void emailIsInvalid() {
 		ResetEmail.setError(getString(R.string.emailInvalido));
 	}
 

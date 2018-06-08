@@ -4,61 +4,53 @@ package com.papaprogramador.presidenciales.Presentadores;
 import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-import com.papaprogramador.presidenciales.Models.ResetPasswordModelo;
+import com.papaprogramador.presidenciales.Modelos.ResetEmailUser;
+import com.papaprogramador.presidenciales.Modelos.ValidarEmail;
 import com.papaprogramador.presidenciales.InterfacesMVP.ResetPassword;
 
 public class ResetPasswordPresentador extends MvpBasePresenter<ResetPassword.Vista>
 		implements ResetPassword.Presentador {
 
-	private ResetPassword.Modelo modelo;
+	private boolean bool = true;
 
 
-	public ResetPasswordPresentador(){
-		modelo = new ResetPasswordModelo(this);
+	public ResetPasswordPresentador() {
 	}
 
 	@Override
-	public void emailEnviado() {
+	public void emailUserProcess(final String emailUsuario) {
 		ifViewAttached(new ViewAction<ResetPassword.Vista>() {
 			@Override
-			public void run(@NonNull ResetPassword.Vista view) {
-				view.mostrarResultadoExitoso();
+			public void run(@NonNull final ResetPassword.Vista view) {
+				if (emailUsuario.isEmpty()) {
+					bool = false;
+					view.emailIsEmpty();
+				} else {
+					new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
+						@Override
+						public void emailEsValido(Boolean esValido) {
+							if (!esValido) {
+								bool = false;
+								view.emailIsInvalid();
+							}
+						}
+					});
+				}
+
+				if (bool) {
+					new ResetEmailUser(emailUsuario, new ResetEmailUser.IsReset() {
+						@Override
+						public void resultReset(boolean isReset) {
+							if (isReset) {
+								view.resetIsSuccesful();
+							} else {
+								view.emailNoExist();
+							}
+						}
+					});
+				}
 			}
 		});
-	}
 
-	@Override
-	public void emailSinCuentaAsociada() {
-		ifViewAttached(new ViewAction<ResetPassword.Vista>() {
-			@Override
-			public void run(@NonNull ResetPassword.Vista view) {
-				view.errorPorEmailSinCuentaAsociada();
-			}
-		});
-	}
-
-	@Override
-	public void campoEmailVacio() {
-		ifViewAttached(new ViewAction<ResetPassword.Vista>() {
-			@Override
-			public void run(@NonNull ResetPassword.Vista view) {
-				view.errorPorCampoVacio();
-			}
-		});
-	}
-
-	@Override
-	public void emailInvalido() {
-		ifViewAttached(new ViewAction<ResetPassword.Vista>() {
-			@Override
-			public void run(@NonNull ResetPassword.Vista view) {
-				view.errorPorEmailInvalido();
-			}
-		});
-	}
-
-	@Override
-	public void procesarEmailUsuario(String emailUsuario) {
-		modelo.resetEmailUsuario(emailUsuario);
 	}
 }
