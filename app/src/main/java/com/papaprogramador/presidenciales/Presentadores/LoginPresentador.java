@@ -53,7 +53,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 								if (bool) {
 									view.idYaUtilizado();
 								} else {
-									view.activityCrearNuevaCuenta(ID);
+									view.goNewAccountView(ID);
 								}
 							}
 						});
@@ -71,32 +71,32 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 				boolean bool = true;
 
 				if (emailUsuario.isEmpty()) {
-					view.emailUsuarioVacio();
+					view.emailUserEmpty();
 					bool = false;
 				}
 
 				if (pass.isEmpty()) {
-					view.passVacio();
+					view.passEmpty();
 					bool = false;
 				}
 
 				if (bool) {
-					view.mostrarProgreso(true);
+					view.showProgressBar(true);
 					new IniciarSesionConCredenciales(context, emailUsuario, pass,
 							new IniciarSesionConCredenciales.IniciarSesion() {
 								@Override
 								public void resultadoInicio(final String resultado, FirebaseUser user) {
 									switch (resultado) {
 										case Constantes.RESULT_IS_SUCCESSFUL:
-											view.activityListaCandidatos();
+											view.goListaCandidatosView();
 											break;
 										case Constantes.RESULT_EMAIL_NO_VERIFY:
-											view.mostrarProgreso(false);
-											view.emailNoVerificado();
+											view.showProgressBar(false);
+											view.emailUserNoVerify();
 											break;
 										case Constantes.RESULT_NO_SUCCESSFUL:
-											view.mostrarProgreso(false);
-											view.credencialesIncorrectas();
+											view.showProgressBar(false);
+											view.noValidCredencials();
 											break;
 									}
 								}
@@ -127,7 +127,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 		ifViewAttached(new ViewAction<Login.Vista>() {
 			@Override
 			public void run(@NonNull Login.Vista view) {
-				view.activityResetPassword();
+				view.goResetPasswordView();
 			}
 		});
 	}
@@ -137,7 +137,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 		ifViewAttached(new ViewAction<Login.Vista>() {
 			@Override
 			public void run(@NonNull Login.Vista view) {
-				view.mostrarProgreso(true);
+				view.showProgressBar(true);
 				GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 				resultGoogle(result);
 			}
@@ -154,7 +154,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 				} else {
 					apiClient.stopAutoManage((FragmentActivity) context);
 					apiClient.disconnect();
-					view.mostrarProgreso(false);
+					view.showProgressBar(false);
 					view.errorSigInGoogle();
 				}
 			}
@@ -177,7 +177,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 						if (bool) {
 							iniciarSesionConGoogle(context, signInAccount);
 						} else {
-							view.mostrarProgreso(false);
+							view.showProgressBar(false);
 							view.idYaUtilizado();
 						}
 					}
@@ -203,7 +203,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 										registrarUsuarioEnFirebase(user);
 										break;
 									case Constantes.RESULT_NO_SUCCESSFUL:
-										view.mostrarProgreso(false);
+										view.showProgressBar(false);
 										view.errorSigInGoogle();
 										break;
 								}
@@ -231,7 +231,7 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 					@Override
 					public void registroExitoso(boolean bool) {
 						if (bool) {
-							view.activityListaCandidatos();
+							view.goListaCandidatosView();
 						}
 					}
 				});

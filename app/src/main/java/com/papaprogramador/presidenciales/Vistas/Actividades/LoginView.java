@@ -90,7 +90,7 @@ public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
 	}
 
 	@Override
-	public void activityCrearNuevaCuenta(String idDispositivo) {
+	public void goNewAccountView(String idDispositivo) {
 		Intent intent = new Intent(LoginView.this, NewAccountView.class);
 		intent.putExtra(Constantes.PUT_ID_DISPOSITIVO, idDispositivo);
 		startActivity(intent);
@@ -103,23 +103,23 @@ public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
 	}
 
 	@Override
-	public void emailUsuarioVacio() {
+	public void emailUserEmpty() {
 		emailUsuario.setError(getResources().getString(R.string.emailUsuarioVacio));
 	}
 
 	@Override
-	public void passVacio() {
+	public void passEmpty() {
 		pass.setError(getResources().getString(R.string.passVacio));
 	}
 
 	@Override
-	public void credencialesIncorrectas() {
+	public void noValidCredencials() {
 		Snackbar.make(mbtnLoginEmail, getResources().getString(R.string.credencialesEmailIncorrectas),
 				Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
-	public void emailNoVerificado() {
+	public void emailUserNoVerify() {
 		Snackbar.make(mbtnLoginEmail, getResources().getString(R.string.emailNoVerificado),
 				Snackbar.LENGTH_LONG).show();
 	}
@@ -137,7 +137,7 @@ public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
 	}
 
 	@Override
-	public void activityListaCandidatos() {
+	public void goListaCandidatosView() {
 		Intent intent = new Intent(LoginView.this, ListaCandidatosView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -145,14 +145,14 @@ public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
 	}
 
 	@Override
-	public void activityResetPassword() {
+	public void goResetPasswordView() {
 		Intent intent = new Intent(LoginView.this, ResetPasswordView.class);
 		startActivity(intent);
 	}
 
 	@Override
-	public void mostrarProgreso(Boolean bool) {
-		if (bool) {
+	public void showProgressBar(Boolean show) {
+		if (show) {
 			contenido.setVisibility(View.GONE);
 			progressBar.setVisibility(View.VISIBLE);
 		} else {

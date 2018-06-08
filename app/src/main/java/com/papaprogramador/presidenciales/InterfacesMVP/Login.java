@@ -12,17 +12,17 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface Login {
 	interface Vista extends MvpView {
-		void activityCrearNuevaCuenta(String idDispositivo);
+		void goNewAccountView(String idDispositivo);
 		void idYaUtilizado();
-		void emailUsuarioVacio();
-		void passVacio();
-		void credencialesIncorrectas();
-		void emailNoVerificado();
+		void emailUserEmpty();
+		void passEmpty();
+		void noValidCredencials();
+		void emailUserNoVerify();
 		void intentGoogle(GoogleApiClient googleApiClient);
 		void errorSigInGoogle();
-		void activityListaCandidatos();
-		void activityResetPassword();
-		void mostrarProgreso(Boolean bool);
+		void goListaCandidatosView();
+		void goResetPasswordView();
+		void showProgressBar(Boolean show);
 
 	}
 
