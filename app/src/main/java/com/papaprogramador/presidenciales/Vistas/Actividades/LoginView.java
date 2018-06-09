@@ -138,7 +138,7 @@ public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
 
 	@Override
 	public void goListaCandidatosView() {
-		Intent intent = new Intent(LoginView.this, ListaCandidatosView.class);
+		Intent intent = new Intent(LoginView.this, ListCandidatosView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);

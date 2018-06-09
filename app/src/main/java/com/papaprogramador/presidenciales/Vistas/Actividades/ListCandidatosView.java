@@ -30,47 +30,29 @@ import com.google.firebase.auth.FirebaseUser;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Adaptadores.ViewpagerAdapter;
 
-public class ListaCandidatosView extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class ListCandidatosView extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 	private GoogleApiClient googleApiClient;
 	private FirebaseAuth mAuth;
 	private FirebaseAuth.AuthStateListener Listener;
 	private DrawerLayout drawerLayout;
 
-	TextView Username;
-	TextView Useremail;
-	ImageView Userimagen;
+	private TextView userName;
+	private TextView userEmail;
+	private ImageView userImg;
+	private ViewPager viewPager;
+	private TabLayout tabs;
+
+	private Button mBtnLogout;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		drawerLayout = findViewById(R.id.LayoutMain);
-
-		//Referencia al encabezado del menú lateral para pasar los datos de user
-		View header = ((NavigationView) findViewById(R.id.navview)).getHeaderView(0);
-		Username = header.findViewById(R.id.username);
-		Useremail = header.findViewById(R.id.email);
-		Userimagen = header.findViewById(R.id.profile_image);
-
-		// Adding Toolbar to Main screen
+		onStartView();
 		setToolbar();
+		setTabs();
 
-		//Agregando tabs a la ventana principal
-		TabLayout tabs = findViewById(R.id.tabs);
-		tabs.addTab(tabs.newTab().setText(R.string.tabtextCandidatos));
-		tabs.addTab(tabs.newTab().setText(R.string.tabtextOpiniones));
-		tabs.addTab(tabs.newTab().setText(R.string.tabtextResultados));
-		tabs.setTabGravity(tabs.GRAVITY_FILL);
-
-		//Implementación de la vista de páginas
-		final ViewPager viewPager = findViewById(R.id.viewpagerMain);
-		ViewpagerAdapter viewpagerAdapter = new ViewpagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
-
-		viewPager.setAdapter(viewpagerAdapter);
-		viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
-
-		//Listener para el cambio entre TABS
 		tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 			@Override
 			public void onTabSelected(TabLayout.Tab tab) {
@@ -89,7 +71,6 @@ public class ListaCandidatosView extends AppCompatActivity implements GoogleApiC
 			}
 		});
 
-		Button mBtnLogout = findViewById(R.id.BtnLogout);
 		//Coneccion con la api de google para la autenticación
 		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestProfile()
@@ -112,9 +93,9 @@ public class ListaCandidatosView extends AppCompatActivity implements GoogleApiC
 				} else {
 					if (!user.isEmailVerified()) {
 						goLogInScreen();
-						Toast.makeText(ListaCandidatosView.this, R.string.emailNoVerificado, Toast.LENGTH_LONG).show();
+						Toast.makeText(ListCandidatosView.this, R.string.emailNoVerificado, Toast.LENGTH_LONG).show();
 
-					}else {
+					} else {
 						datosUsuario(user);
 					}
 				}
@@ -131,9 +112,37 @@ public class ListaCandidatosView extends AppCompatActivity implements GoogleApiC
 		});
 	}
 
+	private void setTabs() {
+		//Agregando tabs a la ventana principal
+		tabs = findViewById(R.id.tabs);
+		tabs.addTab(tabs.newTab().setText(R.string.tabtextCandidatos));
+		tabs.addTab(tabs.newTab().setText(R.string.tabtextOpiniones));
+		tabs.addTab(tabs.newTab().setText(R.string.tabtextResultados));
+		tabs.setTabGravity(tabs.GRAVITY_FILL);
+
+		//Implementación de la vista de páginas
+		viewPager = findViewById(R.id.viewpagerMain);
+		ViewpagerAdapter viewpagerAdapter = new ViewpagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
+
+		viewPager.setAdapter(viewpagerAdapter);
+		viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+	}
+
+	private void onStartView() {
+		drawerLayout = findViewById(R.id.LayoutMain);
+
+		//Referencia al encabezado del menú lateral para pasar los datos de user
+		View header = ((NavigationView) findViewById(R.id.navview)).getHeaderView(0);
+		userName = header.findViewById(R.id.username);
+		userEmail = header.findViewById(R.id.email);
+		userImg = header.findViewById(R.id.profile_image);
+
+		mBtnLogout = findViewById(R.id.BtnLogout);
+	}
+
 	private void datosUsuario(FirebaseUser user) {
-		Username.setText(user.getDisplayName());
-		Useremail.setText(user.getEmail());
+		userName.setText(user.getDisplayName());
+		userEmail.setText(user.getEmail());
 		//Carga de la imagen del perfil del user actual
 		Glide.with(this)
 				.load(user.getPhotoUrl())
@@ -141,14 +150,14 @@ public class ListaCandidatosView extends AppCompatActivity implements GoogleApiC
 				.error(R.drawable.im_userimgdefault)
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.dontAnimate()
-				.into(Userimagen);
+				.into(userImg);
 	}
 
 	//Metodo para cerrar la session completa en firebase, Facebook y Google
 	private void CloseFullSession() {
 		mAuth.signOut();
 		logOut();
-		Toast.makeText(ListaCandidatosView.this, R.string.CloseFullSession, Toast.LENGTH_LONG).show();
+		Toast.makeText(ListCandidatosView.this, R.string.CloseFullSession, Toast.LENGTH_LONG).show();
 	}
 
 	//Metodo que cierra la session en google
@@ -181,7 +190,7 @@ public class ListaCandidatosView extends AppCompatActivity implements GoogleApiC
 
 	//Método para ir a la ventana de login
 	protected void goLogInScreen() {
-		Intent intent = new Intent(ListaCandidatosView.this, LoginView.class);
+		Intent intent = new Intent(ListCandidatosView.this, LoginView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);

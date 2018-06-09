@@ -74,7 +74,7 @@ public class EmailVerifyVista extends MvpActivity<EmailVerify.Vista, EmailVerify
 
 	@Override
 	public void goMainActivity() {
-		Intent intent = new Intent(EmailVerifyVista.this, ListaCandidatosView.class);
+		Intent intent = new Intent(EmailVerifyVista.this, ListCandidatosView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
