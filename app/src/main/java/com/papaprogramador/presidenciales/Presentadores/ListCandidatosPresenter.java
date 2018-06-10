@@ -18,39 +18,48 @@ import com.papaprogramador.presidenciales.Modelos.GoogleApiClientListener;
 
 public class ListCandidatosPresenter extends MvpBasePresenter<ListCandidatos.Vista>
 		implements ListCandidatos.Presentador {
-//TODO: REPLANTEAR LA ESTRUCTURA MVP DE LISTCANDIDATOSPRESENTER
+//TODO: REPLANTEAR LA ESTRUCTURA MVP DE LISTCANDIDATOSPRESENTER- LISTENER FUNCIONANDO
 	private Context context;
 	private String string;
+	private FirebaseAuth firebaseAuth;
+
+	private FirebaseAuth.AuthStateListener listener = new FirebaseAuth.AuthStateListener() {
+		@Override
+		public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
+			ifViewAttached(new ViewAction<ListCandidatos.Vista>() {
+				@Override
+				public void run(@NonNull ListCandidatos.Vista view) {
+					FirebaseUser user = firebaseAuth.getCurrentUser();
+					if (user != null){
+						view.getDataUser(user);
+					} else {
+						view.goLoginView();
+					}
+				}
+			});
+		}
+	};
 
 	public ListCandidatosPresenter(Context context, String string) {
 		this.context = context;
 		this.string = string;
+		firebaseAuth = FirebaseAuth.getInstance();
 	}
 
 	@Override
-	public void userListener() { //TODO: LISTENER NO FUNCIONA, RESOLVER
-		ifViewAttached(new ViewAction<ListCandidatos.Vista>() {
-			@Override
-			public void run(@NonNull final ListCandidatos.Vista view) {
-				new FirebaseAuth.AuthStateListener() {
-					@Override
-					public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-						FirebaseUser user = firebaseAuth.getCurrentUser();
-						if (user != null) {
-							view.getDataUser(user);
-						} else {
-							view.goLoginView();
-						}
-					}
-				};
-			}
-		});
+	public void setAuthListener() {
+		firebaseAuth.addAuthStateListener(listener);
+	}
+
+	@Override
+	public void removeAuthListener() {
+		firebaseAuth.removeAuthStateListener(listener);
 	}
 
 	@Override
 	public void closeSesion() {
 		closeSesionFirebase();
-		getGoogleApiClient();
+//		getGoogleApiClient();
 	}
 
 	@Override

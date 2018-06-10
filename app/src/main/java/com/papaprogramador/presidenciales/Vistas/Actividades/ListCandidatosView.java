@@ -44,8 +44,6 @@ public class ListCandidatosView extends MvpActivity<ListCandidatos.Vista, ListCa
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		getPresenter().userListener();
-
 		onStartView();
 
 		setToolbar();
@@ -166,5 +164,15 @@ public class ListCandidatosView extends MvpActivity<ListCandidatos.Vista, ListCa
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		getPresenter().setAuthListener();
+	}
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		getPresenter().removeAuthListener();
+	}
 }

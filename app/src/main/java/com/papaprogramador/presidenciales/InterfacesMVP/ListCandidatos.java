@@ -16,7 +16,8 @@ public interface ListCandidatos {
 	}
 
 	interface Presentador extends MvpPresenter<ListCandidatos.Vista> {
-		void userListener();
+		void setAuthListener();
+		void removeAuthListener();
 		void closeSesion();
 		void closeSesionFirebase();
 		void getGoogleApiClient();
