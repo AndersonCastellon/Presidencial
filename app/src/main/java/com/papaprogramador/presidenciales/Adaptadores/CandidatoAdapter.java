@@ -2,6 +2,7 @@ package com.papaprogramador.presidenciales.Adaptadores;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,21 +30,22 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		this.candidatoList = candidatoList;
 	}
 
+	@NonNull
 	@Override
-	public CandidatoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public CandidatoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_candidatos, parent, false);
 		CandidatoViewHolder candidatoViewHolder = new CandidatoViewHolder(view);
 		return candidatoViewHolder;
 	}
 
 	@Override
-	public void onBindViewHolder(final CandidatoViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull final CandidatoViewHolder holder, int position) {
 		Candidato candidato = candidatoList.get(position);
 		holder.textViewNombre.setText(candidato.getNombreCandidato());
 		holder.textViewPartido.setText(candidato.getPartidoCandidato());
 		holder.textViewVotos.setText(String.valueOf(candidato.getVotosCandidato()));
 		holder.idcandidato = candidato.getId();
-		holder.Urlimagen = candidato.getStringImagen();
+		holder.urlImage = candidato.getStringImagen();
 
 		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(candidato.getStringImagen());
@@ -73,7 +75,7 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 		Context context;//Variable del contexto
 
 		String idcandidato;
-		String Urlimagen;
+		String urlImage;
 
 		private CandidatoViewHolder(View itemView) {
 			super(itemView);
@@ -86,21 +88,20 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 			textViewVotos = itemView.findViewById(R.id.votosCandidato);
 		}
 
-		void setOnClickListener(){
+		void setOnClickListener() {
 			imageViewCandidato.setOnClickListener(this);
 		}
 
 		@Override
 		public void onClick(View v) {
-			switch (v.getId()){
+			switch (v.getId()) {
 				case R.id.imagenCandidato:
 					Intent detalleCandidato = new Intent(context, DetailCandidatoView.class);
 					detalleCandidato.putExtra(Constantes.PUT_ID_CANDIDATO, idcandidato);
 					detalleCandidato.putExtra(Constantes.PUT_NOMBRE_CANDIDATO, textViewNombre.getText().toString());
-					detalleCandidato.putExtra(Constantes.PUT_URL_IMAGEN_CANDIDATO, Urlimagen);
+					detalleCandidato.putExtra(Constantes.PUT_URL_IMAGEN_CANDIDATO, urlImage);
 					context.startActivity(detalleCandidato);
 					break;
-
 			}
 		}
 	}

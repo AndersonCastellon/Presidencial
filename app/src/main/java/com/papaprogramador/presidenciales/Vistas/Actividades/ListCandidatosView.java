@@ -4,11 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,29 +19,24 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.hannesdorfmann.mosby3.mvp.MvpActivity;
+import com.papaprogramador.presidenciales.InterfacesMVP.ListCandidatos;
+import com.papaprogramador.presidenciales.Presentadores.ListCandidatosPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Adaptadores.ViewpagerAdapter;
 
-public class ListCandidatosView extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+import java.util.Objects;
 
-	private GoogleApiClient googleApiClient;
-	private FirebaseAuth mAuth;
-	private FirebaseAuth.AuthStateListener Listener;
+public class ListCandidatosView extends MvpActivity<ListCandidatos.Vista, ListCandidatos.Presentador>
+		implements TabLayout.OnTabSelectedListener, ListCandidatos.Vista {
+
 	private DrawerLayout drawerLayout;
 
 	private TextView userName;
 	private TextView userEmail;
 	private ImageView userImg;
 	private ViewPager viewPager;
-	private TabLayout tabs;
 
 	private Button mBtnLogout;
 
@@ -49,86 +44,39 @@ public class ListCandidatosView extends AppCompatActivity implements GoogleApiCl
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		getPresenter().userListener();
+
 		onStartView();
+
 		setToolbar();
+
 		setTabs();
 
-		tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-			@Override
-			public void onTabSelected(TabLayout.Tab tab) {
-				int position = tab.getPosition();
-				viewPager.setCurrentItem(position);
-			}
-
-			@Override
-			public void onTabUnselected(TabLayout.Tab tab) {
-
-			}
-
-			@Override
-			public void onTabReselected(TabLayout.Tab tab) {
-
-			}
-		});
-
-		//Coneccion con la api de google para la autenticación
-		GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-				.requestProfile()
-				.requestEmail()
-				.build();
-
-		googleApiClient = new GoogleApiClient.Builder(this)
-				.enableAutoManage(this, this)
-				.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-				.build();
-
-		mAuth = FirebaseAuth.getInstance();
-		//Escuchador para validar la session iniciada
-		Listener = new FirebaseAuth.AuthStateListener() {
-			@Override
-			public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-				FirebaseUser user = firebaseAuth.getCurrentUser();
-				if (user == null) {
-					goLogInScreen();
-				} else {
-					if (!user.isEmailVerified()) {
-						goLogInScreen();
-						Toast.makeText(ListCandidatosView.this, R.string.emailNoVerificado, Toast.LENGTH_LONG).show();
-
-					} else {
-						datosUsuario(user);
-					}
-				}
-			}
-		};
-
-
-		//Metodo del boton
 		mBtnLogout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CloseFullSession();
+				getPresenter().closeSesion();
 			}
 		});
 	}
 
-	private void setTabs() {
-		//Agregando tabs a la ventana principal
-		tabs = findViewById(R.id.tabs);
-		tabs.addTab(tabs.newTab().setText(R.string.tabtextCandidatos));
-		tabs.addTab(tabs.newTab().setText(R.string.tabtextOpiniones));
-		tabs.addTab(tabs.newTab().setText(R.string.tabtextResultados));
-		tabs.setTabGravity(tabs.GRAVITY_FILL);
-
-		//Implementación de la vista de páginas
-		viewPager = findViewById(R.id.viewpagerMain);
-		ViewpagerAdapter viewpagerAdapter = new ViewpagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
-
-		viewPager.setAdapter(viewpagerAdapter);
-		viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+	@Override
+	public void onTabSelected(TabLayout.Tab tab) {
+		int position = tab.getPosition();
+		viewPager.setCurrentItem(position);
 	}
 
-	private void onStartView() {
+	@Override
+	public void onTabUnselected(TabLayout.Tab tab) {
+
+	}
+
+	@Override
+	public void onTabReselected(TabLayout.Tab tab) {
+
+	}
+	@Override
+	public void onStartView() {
 		drawerLayout = findViewById(R.id.LayoutMain);
 
 		//Referencia al encabezado del menú lateral para pasar los datos de user
@@ -140,7 +88,29 @@ public class ListCandidatosView extends AppCompatActivity implements GoogleApiCl
 		mBtnLogout = findViewById(R.id.BtnLogout);
 	}
 
-	private void datosUsuario(FirebaseUser user) {
+	@Override
+	public void setTabs() {
+		//Agregando tabs a la ventana principal
+		TabLayout tabs = findViewById(R.id.tabs);
+		tabs.addTab(tabs.newTab().setText(R.string.tabtextCandidatos));
+		tabs.addTab(tabs.newTab().setText(R.string.tabtextOpiniones));
+		tabs.addTab(tabs.newTab().setText(R.string.tabtextResultados));
+		tabs.setTabGravity(TabLayout.GRAVITY_FILL);
+
+		tabs.addOnTabSelectedListener(this);
+
+		//Implementación de la vista de páginas
+		viewPager = findViewById(R.id.viewpagerMain);
+		ViewpagerAdapter viewpagerAdapter = new ViewpagerAdapter(getSupportFragmentManager(),
+				tabs.getTabCount());
+
+		viewPager.setAdapter(viewpagerAdapter);
+		viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+	}
+
+	@Override
+	public void getDataUser(FirebaseUser user) {
+
 		userName.setText(user.getDisplayName());
 		userEmail.setText(user.getEmail());
 		//Carga de la imagen del perfil del user actual
@@ -153,68 +123,48 @@ public class ListCandidatosView extends AppCompatActivity implements GoogleApiCl
 				.into(userImg);
 	}
 
-	//Metodo para cerrar la session completa en firebase, Facebook y Google
-	private void CloseFullSession() {
-		mAuth.signOut();
-		logOut();
-		Toast.makeText(ListCandidatosView.this, R.string.CloseFullSession, Toast.LENGTH_LONG).show();
-	}
-
-	//Metodo que cierra la session en google
-	public void logOut() {
-		Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
-			@Override
-			public void onResult(@NonNull Status status) {
-				if (status.isSuccess()) {
-					goLogInScreen();
-				} else {
-					Toast.makeText(getApplicationContext(), R.string.not_close_session, Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
-	}
-
 	@Override
-	protected void onStart() {
-		super.onStart();
-		mAuth.addAuthStateListener(Listener);
-	}
+	public void goLoginView() {
+		Toast.makeText(ListCandidatosView.this,
+				R.string.CloseFullSession, Toast.LENGTH_LONG).show();
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-		if (Listener != null) {
-			mAuth.removeAuthStateListener(Listener);
-		}
-	}
-
-	//Método para ir a la ventana de login
-	protected void goLogInScreen() {
 		Intent intent = new Intent(ListCandidatosView.this, LoginView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
+
 	}
 
-	//Sobreescritura de este metodo al implementar GoogleApiClientListener.OnConnectionFailedListener
 	@Override
-	public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+	public void errorCloseSesion() {
+		Snackbar.make(mBtnLogout, getResources().getString(R.string.errorThis),
+				Snackbar.LENGTH_LONG).show();
 	}
 
-	private void setToolbar() {//Método que inicializa el toolbar y agrega el menú de hamburguesa
+	@NonNull
+	@Override
+	public ListCandidatos.Presentador createPresenter() {
+		return new ListCandidatosPresenter(this,getResources()
+				.getString(R.string.default_web_client_id));
+	}
+
+	@Override
+	public void setToolbar() {
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);//Asignación del icono de hamburguesa
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);//Estado activado del menú
+		Objects.requireNonNull(getSupportActionBar())
+				.setHomeAsUpIndicator(R.drawable.ic_home);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {//Método que permite habrir el menú lateral con el icono de hamburguesa
+	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				drawerLayout.openDrawer(GravityCompat.START);
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+
 }
