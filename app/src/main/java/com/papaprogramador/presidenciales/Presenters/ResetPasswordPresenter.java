@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Presentadores;
+package com.papaprogramador.presidenciales.Presenters;
 
 
 import android.support.annotation.NonNull;
@@ -8,20 +8,20 @@ import com.papaprogramador.presidenciales.Modelos.ResetEmailUser;
 import com.papaprogramador.presidenciales.Modelos.ValidarEmail;
 import com.papaprogramador.presidenciales.InterfacesMVP.ResetPassword;
 
-public class ResetPasswordPresentador extends MvpBasePresenter<ResetPassword.Vista>
-		implements ResetPassword.Presentador {
+public class ResetPasswordPresenter extends MvpBasePresenter<ResetPassword.View>
+		implements ResetPassword.Presenter {
 
 	private boolean bool = true;
 
 
-	public ResetPasswordPresentador() {
+	public ResetPasswordPresenter() {
 	}
 
 	@Override
 	public void emailUserProcess(final String emailUsuario) {
-		ifViewAttached(new ViewAction<ResetPassword.Vista>() {
+		ifViewAttached(new ViewAction<ResetPassword.View>() {
 			@Override
-			public void run(@NonNull final ResetPassword.Vista view) {
+			public void run(@NonNull final ResetPassword.View view) {
 				if (emailUsuario.isEmpty()) {
 					bool = false;
 					view.emailIsEmpty();

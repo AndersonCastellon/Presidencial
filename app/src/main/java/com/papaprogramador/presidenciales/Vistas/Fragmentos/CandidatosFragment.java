@@ -2,6 +2,7 @@ package com.papaprogramador.presidenciales.Vistas.Fragmentos;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,15 +29,13 @@ public class CandidatosFragment extends Fragment {
 	CandidatoAdapter candidatoAdapter; //Adaptador para pasar los datos al recyclerview
 
 
-	public CandidatosFragment() {
-		// Required empty public constructor
-	}
+	public CandidatosFragment() {}
 
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
+
 		View view = inflater.inflate(R.layout.fragment_candidatos, container, false);
 
 		FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();//Instancia database
@@ -57,7 +56,8 @@ public class CandidatosFragment extends Fragment {
 
 		//Obtencion de los datos desde la base de datos firebase
 		//Referencia al nodo de los Candidatos
-		firebaseDatabase.getReference().child(ReferenciasFirebase.NODO_CANDIDATOS).addValueEventListener(new ValueEventListener() {
+		firebaseDatabase.getReference().child(ReferenciasFirebase.NODO_CANDIDATOS)
+				.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {//Método donde se reciben los datos
 				candidatoList.removeAll(candidatoList);//Limpieza total de la lista

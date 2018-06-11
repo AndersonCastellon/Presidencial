@@ -11,7 +11,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface Login {
-	interface Vista extends MvpView {
+	interface View extends MvpView {
 		void goNewAccountView(String idDispositivo);
 		void idYaUtilizado();
 		void emailUserEmpty();
@@ -26,7 +26,7 @@ public interface Login {
 
 	}
 
-	interface Presentador extends MvpPresenter<Login.Vista> {
+	interface Presenter extends MvpPresenter<View> {
 		void obtenerIdDispositivo(Context context);
 		void obtenerIdFirebase();
 		void iniciarSesionConEmail(Context context, String emailUsuario, String pass);

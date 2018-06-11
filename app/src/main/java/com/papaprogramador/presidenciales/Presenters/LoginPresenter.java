@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Presentadores;
+package com.papaprogramador.presidenciales.Presenters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,13 +19,13 @@ import com.papaprogramador.presidenciales.Modelos.ObtenerIdFirebase;
 import com.papaprogramador.presidenciales.Modelos.RegistrarUsuarioRTDB;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
-public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements Login.Presentador {
+public class LoginPresenter extends MvpBasePresenter<Login.View> implements Login.Presenter {
 
 	private String ID;
 	private GoogleApiClient apiClient;
 	private Context context;
 
-	public LoginPresentador(Context context) {
+	public LoginPresenter(Context context) {
 		this.context = context;
 	}
 
@@ -47,9 +47,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 				new ObtenerIdFirebase.IdObtenido() {
 					@Override
 					public void idObtenido(final boolean bool, final String idFirebase) {
-						ifViewAttached(new ViewAction<Login.Vista>() {
+						ifViewAttached(new ViewAction<Login.View>() {
 							@Override
-							public void run(@NonNull Login.Vista view) {
+							public void run(@NonNull Login.View view) {
 								if (bool) {
 									view.idYaUtilizado();
 								} else {
@@ -65,9 +65,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 
 	public void iniciarSesionConEmail(final Context context, final String emailUsuario, final String pass) {
 
-		ifViewAttached(new ViewAction<Login.Vista>() {
+		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
-			public void run(@NonNull final Login.Vista view) {
+			public void run(@NonNull final Login.View view) {
 				boolean bool = true;
 
 				if (emailUsuario.isEmpty()) {
@@ -108,9 +108,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 
 	@Override
 	public void obtenerGoogleApliClient(final Context context, final String string) {
-		ifViewAttached(new ViewAction<Login.Vista>() {
+		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
-			public void run(@NonNull final Login.Vista view) {
+			public void run(@NonNull final Login.View view) {
 				new GoogleApiClientListener(context, string, new GoogleApiClientListener.GoogleApi() {
 					@Override
 					public void apiClient(GoogleApiClient googleApiClient) {
@@ -124,9 +124,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 
 	@Override
 	public void activityResetPassword() {
-		ifViewAttached(new ViewAction<Login.Vista>() {
+		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
-			public void run(@NonNull Login.Vista view) {
+			public void run(@NonNull Login.View view) {
 				view.goResetPasswordView();
 			}
 		});
@@ -134,9 +134,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 
 	@Override
 	public void googleSingInFromResult(final Intent data) {
-		ifViewAttached(new ViewAction<Login.Vista>() {
+		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
-			public void run(@NonNull Login.Vista view) {
+			public void run(@NonNull Login.View view) {
 				view.showProgressBar(true);
 				GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 				resultGoogle(result);
@@ -146,9 +146,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 
 	@Override
 	public void resultGoogle(final GoogleSignInResult result) {
-		ifViewAttached(new ViewAction<Login.Vista>() {
+		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
-			public void run(@NonNull final Login.Vista view) {
+			public void run(@NonNull final Login.View view) {
 				if (result.isSuccess()) {
 					validarDispositivoConCuentaGoogle(result.getSignInAccount());
 				} else {
@@ -165,9 +165,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 	@Override
 	public void validarDispositivoConCuentaGoogle(final GoogleSignInAccount signInAccount) {
 
-		ifViewAttached(new ViewAction<Login.Vista>() {
+		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
-			public void run(@NonNull final Login.Vista view) {
+			public void run(@NonNull final Login.View view) {
 
 				String emailUsuario = signInAccount.getEmail();
 
@@ -189,9 +189,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 	@Override
 	public void iniciarSesionConGoogle(final Context context, final GoogleSignInAccount signInAccount) {
 
-		ifViewAttached(new ViewAction<Login.Vista>() {
+		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
-			public void run(@NonNull final Login.Vista view) {
+			public void run(@NonNull final Login.View view) {
 				new IniciarSesionConCredenciales(context, signInAccount,
 						new IniciarSesionConCredenciales.IniciarSesion() {
 							@Override
@@ -216,9 +216,9 @@ public class LoginPresentador extends MvpBasePresenter<Login.Vista> implements L
 	@Override
 	public void registrarUsuarioEnFirebase(final FirebaseUser user) {
 
-		ifViewAttached(new ViewAction<Login.Vista>() {
+		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
-			public void run(@NonNull final Login.Vista view) {
+			public void run(@NonNull final Login.View view) {
 				String nombreUsuario = user.getDisplayName();
 				String emailUsuario = user.getEmail();
 				String departamento = Constantes.VALOR_DEPARTAMENTO_DEFAULT;

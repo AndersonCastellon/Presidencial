@@ -10,13 +10,13 @@ import com.papaprogramador.presidenciales.Modelos.ValidarEmail;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 import com.papaprogramador.presidenciales.Utilidades.ReferenciasFirebase;
 
-public class NewAccountModelo implements NewAccount.Modelo {
+public class NewAccountModel implements NewAccount.Model {
 
-	private NewAccount.Presentador presentador;
+	private NewAccount.Presenter presenter;
 	private boolean crearCuenta = true;
 
-	public NewAccountModelo(NewAccount.Presentador presentador) {
-		this.presentador = presentador;
+	public NewAccountModel(NewAccount.Presenter presenter) {
+		this.presenter = presenter;
 	}
 
 	@Override
@@ -25,19 +25,19 @@ public class NewAccountModelo implements NewAccount.Modelo {
 	                          final String pass, String pass2, final String departamento) {
 
 		if (nombreUsuario.isEmpty()) {
-			presentador.campoVacio(Constantes.NOMBRE_USUARIO_VACIO);
+			presenter.campoVacio(Constantes.NOMBRE_USUARIO_VACIO);
 			crearCuenta = false;
 		}
 
 		if (emailUsuario.isEmpty()) {
-			presentador.campoVacio(Constantes.EMAIL_USUARIO_VACIO);
+			presenter.campoVacio(Constantes.EMAIL_USUARIO_VACIO);
 			crearCuenta = false;
 		} else {
 			new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
 				@Override
 				public void emailEsValido(Boolean esValido) {
 					if (!esValido) {
-						presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
+						presenter.errorEnCampo(Constantes.EMAIL_INVALIDO);
 						crearCuenta = false;
 					}
 				}
@@ -45,14 +45,14 @@ public class NewAccountModelo implements NewAccount.Modelo {
 		}
 
 		if (emailUsuario2.isEmpty()) {
-			presentador.campoVacio(Constantes.EMAIL_USUARIO2_VACIO);
+			presenter.campoVacio(Constantes.EMAIL_USUARIO2_VACIO);
 			crearCuenta = false;
 		} else {
 			new ValidarEmail(emailUsuario2, new ValidarEmail.EmailValidado() {
 				@Override
 				public void emailEsValido(Boolean esValido) {
 					if (!esValido) {
-						presentador.errorEnCampo(Constantes.EMAIL_INVALIDO);
+						presenter.errorEnCampo(Constantes.EMAIL_INVALIDO);
 						crearCuenta = false;
 					}
 				}
@@ -60,40 +60,40 @@ public class NewAccountModelo implements NewAccount.Modelo {
 		}
 
 		if (emailNoCoincide(emailUsuario, emailUsuario2)) {
-			presentador.errorEnCampo(Constantes.EMAIL_NO_COINCIDE);
+			presenter.errorEnCampo(Constantes.EMAIL_NO_COINCIDE);
 			crearCuenta = false;
 		}
 
 		if (pass.isEmpty()) {
-			presentador.campoVacio(Constantes.PASS_VACIO);
+			presenter.campoVacio(Constantes.PASS_VACIO);
 			crearCuenta = false;
 		}
 
 		if (pass2.isEmpty()) {
-			presentador.campoVacio(Constantes.PASS2_VACIO);
+			presenter.campoVacio(Constantes.PASS2_VACIO);
 			crearCuenta = false;
 		}
 
 		if (!passwordCorto(pass)) {
-			presentador.errorEnCampo(Constantes.PASS_INVALIDO);
+			presenter.errorEnCampo(Constantes.PASS_INVALIDO);
 			crearCuenta = false;
 		}
 
 		if (!passwordNoCoincide(pass, pass2)) {
-			presentador.errorEnCampo(Constantes.PASS_NO_COINCIDE);
+			presenter.errorEnCampo(Constantes.PASS_NO_COINCIDE);
 			crearCuenta = false;
 		}
 
 		if (departamento == null) {
-			presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
+			presenter.campoVacio(Constantes.DEPARTAMENTO_VACIO);
 			crearCuenta = false;
 		} else if (departamento.isEmpty()) {
-			presentador.campoVacio(Constantes.DEPARTAMENTO_VACIO);
+			presenter.campoVacio(Constantes.DEPARTAMENTO_VACIO);
 			crearCuenta = false;
 		}
 
 		if (crearCuenta) {
-			presentador.crearCuenta(context, idDispositivo, emailUsuario, nombreUsuario, pass, departamento);
+			presenter.crearCuenta(context, idDispositivo, emailUsuario, nombreUsuario, pass, departamento);
 		}
 	}
 
@@ -112,7 +112,7 @@ public class NewAccountModelo implements NewAccount.Modelo {
 		databaseReference.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
 				.child(idDispositivo).setValue(emailUsuario);
 
-		presentador.irAVerificarEmail(emailUsuario, pass);
+		presenter.irAVerificarEmail(emailUsuario, pass);
 	}
 
 	private boolean emailNoCoincide(String emailUsuario, String emailUsuario2) {

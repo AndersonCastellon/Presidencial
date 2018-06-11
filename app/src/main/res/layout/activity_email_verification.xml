@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context=".Vistas.Actividades.EmailVerifyVista">
+    tools:context=".Vistas.Actividades.EmailVerifyView">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/contenido"

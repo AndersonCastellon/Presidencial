@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -16,13 +15,13 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.Login;
-import com.papaprogramador.presidenciales.Presentadores.LoginPresentador;
+import com.papaprogramador.presidenciales.Presenters.LoginPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
 
-public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
-		implements Login.Vista, View.OnClickListener {
+public class LoginView extends MvpActivity<Login.View, Login.Presenter>
+		implements Login.View, android.view.View.OnClickListener {
 
 	private TextInputEditText emailUsuario;
 	private TextInputEditText pass;
@@ -62,7 +61,7 @@ public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
 	}
 
 	@Override
-	public void onClick(View v) {
+	public void onClick(android.view.View v) {
 
 		switch (v.getId()){
 			case R.id.btnLogin:
@@ -85,8 +84,8 @@ public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
 
 	@NonNull
 	@Override
-	public Login.Presentador createPresenter() {
-		return new LoginPresentador(context);
+	public Login.Presenter createPresenter() {
+		return new LoginPresenter(context);
 	}
 
 	@Override
@@ -153,11 +152,11 @@ public class LoginView extends MvpActivity<Login.Vista, Login.Presentador>
 	@Override
 	public void showProgressBar(Boolean show) {
 		if (show) {
-			contenido.setVisibility(View.GONE);
-			progressBar.setVisibility(View.VISIBLE);
+			contenido.setVisibility(android.view.View.GONE);
+			progressBar.setVisibility(android.view.View.VISIBLE);
 		} else {
-			contenido.setVisibility(View.VISIBLE);
-			progressBar.setVisibility(View.GONE);
+			contenido.setVisibility(android.view.View.VISIBLE);
+			progressBar.setVisibility(android.view.View.GONE);
 		}
 	}
 

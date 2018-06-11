@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Presentadores;
+package com.papaprogramador.presidenciales.Presenters;
 
 
 import android.content.Context;
@@ -6,17 +6,17 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
-import com.papaprogramador.presidenciales.Models.NewAccountModelo;
+import com.papaprogramador.presidenciales.Models.NewAccountModel;
 import com.papaprogramador.presidenciales.Modelos.CrearCuentaConEmail;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
-public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
-		implements NewAccount.Presentador {
+public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
+		implements NewAccount.Presenter {
 
-	private NewAccount.Modelo modelo;
+	private NewAccount.Model model;
 
-	public NewAccountPresentador() {
-		this.modelo = new NewAccountModelo(this);
+	public NewAccountPresenter() {
+		this.model = new NewAccountModel(this);
 	}
 
 	@Override
@@ -24,16 +24,16 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 	                          String emailUsuario, String emailUsuario2,
 	                          String pass, String pass2, String departamento) {
 
-		modelo.validarCampos(context, idDispositivo, nombreUsuario, emailUsuario, emailUsuario2,
+		model.validarCampos(context, idDispositivo, nombreUsuario, emailUsuario, emailUsuario2,
 				pass, pass2, departamento);
 
 	}
 
 	@Override
 	public void campoVacio(final String campoVacio) {
-		ifViewAttached(new ViewAction<NewAccount.Vista>() {
+		ifViewAttached(new ViewAction<NewAccount.View>() {
 			@Override
-			public void run(@NonNull NewAccount.Vista view) {
+			public void run(@NonNull NewAccount.View view) {
 				switch (campoVacio) {
 					case Constantes.NOMBRE_USUARIO_VACIO:
 						view.nombreUsuarioVacio();
@@ -60,9 +60,9 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 
 	@Override
 	public void errorEnCampo(final String error) {
-		ifViewAttached(new ViewAction<NewAccount.Vista>() {
+		ifViewAttached(new ViewAction<NewAccount.View>() {
 			@Override
-			public void run(@NonNull NewAccount.Vista view) {
+			public void run(@NonNull NewAccount.View view) {
 				switch (error) {
 					case Constantes.EMAIL_INVALIDO:
 						view.errorEmailInvalido();
@@ -84,9 +84,9 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 	public void crearCuenta(final Context context, final String idDispositivo, final String emailUsuario,
 	                        final String nombreUsuario, final String pass, final String departamento) {
 
-		ifViewAttached(new ViewAction<NewAccount.Vista>() {
+		ifViewAttached(new ViewAction<NewAccount.View>() {
 			@Override
-			public void run(@NonNull NewAccount.Vista view) {
+			public void run(@NonNull NewAccount.View view) {
 				view.mostrarProgreso(true);
 			}
 		});
@@ -94,16 +94,16 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 			@Override
 			public void uidObtenido(final boolean bool, String firebaseUID) {
 				if (!bool) {
-					ifViewAttached(new ViewAction<NewAccount.Vista>() {
+					ifViewAttached(new ViewAction<NewAccount.View>() {
 						@Override
-						public void run(@NonNull NewAccount.Vista view) {
+						public void run(@NonNull NewAccount.View view) {
 							view.mostrarProgreso(false);
 							view.cuentaYaExiste();
 						}
 					});
 				}
 
-				modelo.registrarUsuarioEnFirebaseRealTimeDataBase(firebaseUID, nombreUsuario, emailUsuario,
+				model.registrarUsuarioEnFirebaseRealTimeDataBase(firebaseUID, nombreUsuario, emailUsuario,
 						departamento, idDispositivo, Constantes.VALOR_VOTO_DEFAULT, pass);
 			}
 		});
@@ -111,9 +111,9 @@ public class NewAccountPresentador extends MvpBasePresenter<NewAccount.Vista>
 
 	@Override
 	public void irAVerificarEmail(final String emailUsuario, final String pass) {
-		ifViewAttached(new ViewAction<NewAccount.Vista>() {
+		ifViewAttached(new ViewAction<NewAccount.View>() {
 			@Override
-			public void run(@NonNull NewAccount.Vista view) {
+			public void run(@NonNull NewAccount.View view) {
 				view.mostrarProgreso(false);
 				view.irAVerificarEmail(emailUsuario, pass);
 			}

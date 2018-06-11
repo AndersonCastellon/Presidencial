@@ -4,17 +4,16 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.ResetPassword;
-import com.papaprogramador.presidenciales.Presentadores.ResetPasswordPresentador;
+import com.papaprogramador.presidenciales.Presenters.ResetPasswordPresenter;
 import com.papaprogramador.presidenciales.R;
 
-public class ResetPasswordView extends MvpActivity<ResetPassword.Vista, ResetPassword.Presentador>
-		implements ResetPassword.Vista {
+public class ResetPasswordView extends MvpActivity<ResetPassword.View, ResetPassword.Presenter>
+		implements ResetPassword.View {
 
 	private TextInputEditText ResetEmail;
 	private Button btnResetPass;
@@ -26,9 +25,9 @@ public class ResetPasswordView extends MvpActivity<ResetPassword.Vista, ResetPas
 
 		onStartVista();
 
-		btnResetPass.setOnClickListener(new View.OnClickListener() {
+		btnResetPass.setOnClickListener(new android.view.View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(android.view.View v) {
 				String emailUsuario = ResetEmail.getText().toString();
 				getPresenter().emailUserProcess(emailUsuario);
 			}
@@ -37,8 +36,8 @@ public class ResetPasswordView extends MvpActivity<ResetPassword.Vista, ResetPas
 
 	@NonNull
 	@Override
-	public ResetPassword.Presentador createPresenter() {
-		return new ResetPasswordPresentador();
+	public ResetPassword.Presenter createPresenter() {
+		return new ResetPasswordPresenter();
 	}
 
 	private void onStartVista() {

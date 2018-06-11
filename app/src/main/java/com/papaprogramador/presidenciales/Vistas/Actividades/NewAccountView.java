@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,13 +15,13 @@ import android.widget.ProgressBar;
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
-import com.papaprogramador.presidenciales.Presentadores.NewAccountPresentador;
+import com.papaprogramador.presidenciales.Presenters.NewAccountPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-public class NewAccountView extends MvpActivity<NewAccount.Vista,
-		NewAccount.Presentador> implements NewAccount.Vista {
+public class NewAccountView extends MvpActivity<NewAccount.View,
+		NewAccount.Presenter> implements NewAccount.View {
 
 	private TextInputEditText emailUsuario, pass, nombreUsuario, emailUsuario2, pass2;
 	private Button btnNewAccount;
@@ -39,14 +38,14 @@ public class NewAccountView extends MvpActivity<NewAccount.Vista,
 
 		spinnerDepartamento.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
 			}
 		});
 
 
-		btnNewAccount.setOnClickListener(new View.OnClickListener() {
+		btnNewAccount.setOnClickListener(new android.view.View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(android.view.View v) {
 
 				String nUsuario = nombreUsuario.getText().toString();
 				String eUsuario = emailUsuario.getText().toString();
@@ -86,8 +85,8 @@ public class NewAccountView extends MvpActivity<NewAccount.Vista,
 
 	@NonNull
 	@Override
-	public NewAccount.Presentador createPresenter() {
-		return new NewAccountPresentador();
+	public NewAccount.Presenter createPresenter() {
+		return new NewAccountPresenter();
 	}
 
 	@Override
@@ -96,9 +95,9 @@ public class NewAccountView extends MvpActivity<NewAccount.Vista,
 		Snackbar.make(btnNewAccount,getResources().getString(R.string.emailConCuentaAsociada),
 				Snackbar.LENGTH_LONG )
 				.setActionTextColor(getResources().getColor(R.color.accent))
-				.setAction(getResources().getText(R.string.RESET_PASS), new View.OnClickListener() {
+				.setAction(getResources().getText(R.string.RESET_PASS), new android.view.View.OnClickListener() {
 					@Override
-					public void onClick(View v) {
+					public void onClick(android.view.View v) {
 						Intent intent = new Intent(NewAccountView.this,
 								ResetPasswordView.class);
 						startActivity(intent);
@@ -113,11 +112,11 @@ public class NewAccountView extends MvpActivity<NewAccount.Vista,
 	public void mostrarProgreso(Boolean bool) {
 
 		if (bool){
-			contenido.setVisibility(View.GONE);
-			progressBar.setVisibility(View.VISIBLE);
+			contenido.setVisibility(android.view.View.GONE);
+			progressBar.setVisibility(android.view.View.VISIBLE);
 		} else {
-			contenido.setVisibility(View.VISIBLE);
-			progressBar.setVisibility(View.GONE);
+			contenido.setVisibility(android.view.View.VISIBLE);
+			progressBar.setVisibility(android.view.View.GONE);
 		}
 	}
 
@@ -184,7 +183,7 @@ public class NewAccountView extends MvpActivity<NewAccount.Vista,
 	@Override
 	public void irAVerificarEmail(String emailUsuario, String pass) {
 
-		Intent intent = new Intent(NewAccountView.this, EmailVerifyVista.class);
+		Intent intent = new Intent(NewAccountView.this, EmailVerifyView.class);
 		intent.putExtra(Constantes.PUT_EMAIL_USUARIO, emailUsuario);
 		intent.putExtra(Constantes.PUT_PASSWORD, pass);
 

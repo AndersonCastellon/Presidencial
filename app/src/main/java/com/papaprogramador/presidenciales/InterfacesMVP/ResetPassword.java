@@ -5,17 +5,14 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface ResetPassword {
 
-	interface Vista extends MvpView {
+	interface View extends MvpView {
 		void resetIsSuccesful();
-
 		void emailNoExist();
-
 		void emailIsEmpty();
-
 		void emailIsInvalid();
 	}
 
-	interface Presentador extends MvpPresenter<ResetPassword.Vista>{
+	interface Presenter extends MvpPresenter<View>{
 		void emailUserProcess(String emailUsuario);
 	}
 }

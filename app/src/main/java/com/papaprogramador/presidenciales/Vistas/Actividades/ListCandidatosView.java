@@ -22,14 +22,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.ListCandidatos;
-import com.papaprogramador.presidenciales.Presentadores.ListCandidatosPresenter;
+import com.papaprogramador.presidenciales.Presenters.ListCandidatosPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Adaptadores.ViewpagerAdapter;
 
 import java.util.Objects;
 
-public class ListCandidatosView extends MvpActivity<ListCandidatos.Vista, ListCandidatos.Presentador>
-		implements TabLayout.OnTabSelectedListener, ListCandidatos.Vista {
+public class ListCandidatosView extends MvpActivity<ListCandidatos.View, ListCandidatos.Presenter>
+		implements TabLayout.OnTabSelectedListener, ListCandidatos.View, View.OnClickListener {
 
 	private DrawerLayout drawerLayout;
 
@@ -44,18 +44,15 @@ public class ListCandidatosView extends MvpActivity<ListCandidatos.Vista, ListCa
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		onStartView();
+	}
 
-		setToolbar();
-
-		setTabs();
-
-		mBtnLogout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.BtnLogout:
 				getPresenter().closeSesion();
-			}
-		});
+				break;
+		}
 	}
 
 	@Override
@@ -73,17 +70,19 @@ public class ListCandidatosView extends MvpActivity<ListCandidatos.Vista, ListCa
 	public void onTabReselected(TabLayout.Tab tab) {
 
 	}
+
 	@Override
 	public void onStartView() {
 		drawerLayout = findViewById(R.id.LayoutMain);
 
 		//Referencia al encabezado del menú lateral para pasar los datos de user
-		View header = ((NavigationView) findViewById(R.id.navview)).getHeaderView(0);
+		android.view.View header = ((NavigationView) findViewById(R.id.navview)).getHeaderView(0);
 		userName = header.findViewById(R.id.username);
 		userEmail = header.findViewById(R.id.email);
 		userImg = header.findViewById(R.id.profile_image);
 
 		mBtnLogout = findViewById(R.id.BtnLogout);
+		mBtnLogout.setOnClickListener(this);
 	}
 
 	@Override
@@ -141,8 +140,8 @@ public class ListCandidatosView extends MvpActivity<ListCandidatos.Vista, ListCa
 
 	@NonNull
 	@Override
-	public ListCandidatos.Presentador createPresenter() {
-		return new ListCandidatosPresenter(this,getResources()
+	public ListCandidatos.Presenter createPresenter() {
+		return new ListCandidatosPresenter(this, getResources()
 				.getString(R.string.default_web_client_id));
 	}
 

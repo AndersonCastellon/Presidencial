@@ -1,9 +1,7 @@
-package com.papaprogramador.presidenciales.Presentadores;
+package com.papaprogramador.presidenciales.Presenters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,21 +14,26 @@ import com.papaprogramador.presidenciales.InterfacesMVP.ListCandidatos;
 import com.papaprogramador.presidenciales.Modelos.ConnectionCallbackGoogleApiClient;
 import com.papaprogramador.presidenciales.Modelos.GoogleApiClientListener;
 
-public class ListCandidatosPresenter extends MvpBasePresenter<ListCandidatos.Vista>
-		implements ListCandidatos.Presentador {
-//TODO: REPLANTEAR LA ESTRUCTURA MVP DE LISTCANDIDATOSPRESENTER- LISTENER FUNCIONANDO
+public class ListCandidatosPresenter extends MvpBasePresenter<ListCandidatos.View>
+		implements ListCandidatos.Presenter {
+
 	private Context context;
 	private String string;
 	private FirebaseAuth firebaseAuth;
+	private GoogleApiClient googleApiClientThis;
+	private GoogleApiClient.ConnectionCallbacks connectionCallbacksThis;
 
-	private FirebaseAuth.AuthStateListener listener = new FirebaseAuth.AuthStateListener() {
+	private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
 		@Override
 		public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
-			ifViewAttached(new ViewAction<ListCandidatos.Vista>() {
+			ifViewAttached(new ViewAction<ListCandidatos.View>() {
 				@Override
-				public void run(@NonNull ListCandidatos.Vista view) {
+				public void run(@NonNull ListCandidatos.View view) {
 					FirebaseUser user = firebaseAuth.getCurrentUser();
-					if (user != null){
+					if (user != null) {
+						view.onStartView();
+						view.setToolbar();
+						view.setTabs();
 						view.getDataUser(user);
 					} else {
 						view.goLoginView();
@@ -48,23 +51,19 @@ public class ListCandidatosPresenter extends MvpBasePresenter<ListCandidatos.Vis
 
 	@Override
 	public void setAuthListener() {
-		firebaseAuth.addAuthStateListener(listener);
+		firebaseAuth.addAuthStateListener(authStateListener);
 	}
 
 	@Override
 	public void removeAuthListener() {
-		firebaseAuth.removeAuthStateListener(listener);
+		firebaseAuth.removeAuthStateListener(authStateListener);
 	}
 
 	@Override
 	public void closeSesion() {
-		closeSesionFirebase();
-//		getGoogleApiClient();
-	}
-
-	@Override
-	public void closeSesionFirebase() {
 		FirebaseAuth.getInstance().signOut();
+
+//		getGoogleApiClient(); //TODO: implementacion pendiente, será completamente modificada
 	}
 
 	@Override
@@ -72,48 +71,51 @@ public class ListCandidatosPresenter extends MvpBasePresenter<ListCandidatos.Vis
 		new GoogleApiClientListener(context, string, new GoogleApiClientListener.GoogleApi() {
 			@Override
 			public void apiClient(GoogleApiClient googleApiClient) {
-				verifyGoogleApliClient(googleApiClient);
+				googleApiClientThis = googleApiClient;
+				getConnectionCallbacks();
 			}
 		});
 	}
 
 	@Override
-	public void verifyGoogleApliClient(final GoogleApiClient googleApiClient) {
+	public void getConnectionCallbacks() {
 		new ConnectionCallbackGoogleApiClient(new ConnectionCallbackGoogleApiClient.Callback() {
 			@Override
 			public void callbackGoogleApliClientConnection(GoogleApiClient.ConnectionCallbacks connectionCallbacks) {
-				if (!googleApiClient.isConnected()){
-
-					googleApiClient.connect();
-					googleApiClient.registerConnectionCallbacks(connectionCallbacks);
-
-					closeSesionGoogle(connectionCallbacks, googleApiClient);
-				} else {
-					closeSesionGoogle(connectionCallbacks, googleApiClient);
-				}
+				connectionCallbacksThis = connectionCallbacks;
+				closeSesion();
 			}
 		});
 	}
 
 	@Override
-	public void closeSesionGoogle(GoogleApiClient.ConnectionCallbacks connectionCallbacks,
-	                              GoogleApiClient googleApiClient) {
+	public void closeSesionGoogle() {
 
-		if (connectionCallbacks != null){
-			googleApiClient.unregisterConnectionCallbacks(connectionCallbacks);
+		if (!googleApiClientThis.isConnected()) {
+
+			googleApiClientThis.connect();
+			googleApiClientThis.registerConnectionCallbacks(connectionCallbacksThis);
+
 		}
 
-		Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+		if (connectionCallbacksThis != null) {
+
+			googleApiClientThis.unregisterConnectionCallbacks(connectionCallbacksThis);
+
+		}
+
+		Auth.GoogleSignInApi.signOut(googleApiClientThis).setResultCallback(new ResultCallback<Status>() {
 			@Override
 			public void onResult(@NonNull final Status status) {
 
-				ifViewAttached(new ViewAction<ListCandidatos.Vista>() {
+				ifViewAttached(new ViewAction<ListCandidatos.View>() {
 					@Override
-					public void run(@NonNull ListCandidatos.Vista view) {
-						if (status.isSuccess()){
-							view.goLoginView();
-						} else {
+					public void run(@NonNull ListCandidatos.View view) {
+
+						if (!status.isSuccess()) {
+
 							view.errorCloseSesion();
+
 						}
 					}
 				});

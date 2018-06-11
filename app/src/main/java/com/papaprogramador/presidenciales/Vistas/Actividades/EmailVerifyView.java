@@ -5,18 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.EmailVerify;
-import com.papaprogramador.presidenciales.Presentadores.EmailVerifyPresenter;
+import com.papaprogramador.presidenciales.Presenters.EmailVerifyPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
-public class EmailVerifyVista extends MvpActivity<EmailVerify.Vista, EmailVerify.Presentador>
-		implements EmailVerify.Vista {
+public class EmailVerifyView extends MvpActivity<EmailVerify.View, EmailVerify.Presenter>
+		implements EmailVerify.View {
 
 	private String emailUser;
 	private String pass;
@@ -31,9 +30,9 @@ public class EmailVerifyVista extends MvpActivity<EmailVerify.Vista, EmailVerify
 
 		onStartView();
 
-		mButton.setOnClickListener(new View.OnClickListener() {
+		mButton.setOnClickListener(new android.view.View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick(android.view.View v) {
 				getPresenter().startIsEmailIsVerify(emailUser, pass);
 			}
 		});
@@ -56,7 +55,7 @@ public class EmailVerifyVista extends MvpActivity<EmailVerify.Vista, EmailVerify
 
 	@NonNull
 	@Override
-	public EmailVerify.Presentador createPresenter() {
+	public EmailVerify.Presenter createPresenter() {
 		return new EmailVerifyPresenter(this);
 	}
 
@@ -74,7 +73,7 @@ public class EmailVerifyVista extends MvpActivity<EmailVerify.Vista, EmailVerify
 
 	@Override
 	public void goMainActivity() {
-		Intent intent = new Intent(EmailVerifyVista.this, ListCandidatosView.class);
+		Intent intent = new Intent(EmailVerifyView.this, ListCandidatosView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
@@ -83,11 +82,11 @@ public class EmailVerifyVista extends MvpActivity<EmailVerify.Vista, EmailVerify
 	@Override
 	public void showProgressBar(boolean show) {
 		if (show) {
-			contenido.setVisibility(View.GONE);
-			progressBar.setVisibility(View.VISIBLE);
+			contenido.setVisibility(android.view.View.GONE);
+			progressBar.setVisibility(android.view.View.VISIBLE);
 		} else {
-			contenido.setVisibility(View.VISIBLE);
-			progressBar.setVisibility(View.GONE);
+			contenido.setVisibility(android.view.View.VISIBLE);
+			progressBar.setVisibility(android.view.View.GONE);
 		}
 	}
 }

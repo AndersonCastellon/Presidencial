@@ -4,15 +4,15 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface DetailCandidato {
-	interface Vista extends MvpView {
+	interface View extends MvpView {
 
 	}
 
-	interface Presentador extends MvpPresenter<DetailCandidato.Vista> {
+	interface Presenter extends MvpPresenter<View> {
 
 	}
 
-	interface Modelo {
+	interface Model {
 
 	}
 }

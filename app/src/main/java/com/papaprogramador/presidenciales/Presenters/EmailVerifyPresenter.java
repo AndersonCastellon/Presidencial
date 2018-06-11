@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Presentadores;
+package com.papaprogramador.presidenciales.Presenters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,8 +9,8 @@ import com.papaprogramador.presidenciales.InterfacesMVP.EmailVerify;
 import com.papaprogramador.presidenciales.Modelos.IniciarSesionConCredenciales;
 import com.papaprogramador.presidenciales.Utilidades.Constantes;
 
-public class EmailVerifyPresenter extends MvpBasePresenter<EmailVerify.Vista>
-		implements EmailVerify.Presentador {
+public class EmailVerifyPresenter extends MvpBasePresenter<EmailVerify.View>
+		implements EmailVerify.Presenter {
 
 	private Context context;
 
@@ -20,9 +20,9 @@ public class EmailVerifyPresenter extends MvpBasePresenter<EmailVerify.Vista>
 
 	@Override
 	public void startIsEmailIsVerify(final String emailUser, final String pass) {
-		ifViewAttached(new ViewAction<EmailVerify.Vista>() {
+		ifViewAttached(new ViewAction<EmailVerify.View>() {
 			@Override
-			public void run(@NonNull final EmailVerify.Vista view) {
+			public void run(@NonNull final EmailVerify.View view) {
 
 				view.showProgressBar(true);
 
