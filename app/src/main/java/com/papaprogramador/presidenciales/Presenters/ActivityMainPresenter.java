@@ -14,7 +14,7 @@ import com.papaprogramador.presidenciales.InterfacesMVP.ListCandidatos;
 import com.papaprogramador.presidenciales.Modelos.ConnectionCallbackGoogleApiClient;
 import com.papaprogramador.presidenciales.Modelos.GoogleApiClientListener;
 
-public class ListCandidatosPresenter extends MvpBasePresenter<ListCandidatos.View>
+public class ActivityMainPresenter extends MvpBasePresenter<ListCandidatos.View>
 		implements ListCandidatos.Presenter {
 
 	private Context context;
@@ -43,7 +43,7 @@ public class ListCandidatosPresenter extends MvpBasePresenter<ListCandidatos.Vie
 		}
 	};
 
-	public ListCandidatosPresenter(Context context, String string) {
+	public ActivityMainPresenter(Context context, String string) {
 		this.context = context;
 		this.string = string;
 		firebaseAuth = FirebaseAuth.getInstance();

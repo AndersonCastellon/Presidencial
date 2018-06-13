@@ -3,13 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Vistas.Fragmentos.CandidatosFragment">
+    tools:context=".Vistas.Fragmentos.CandidateFragmentView">
+
+    <include layout="@layout/view_loading" />
+
+    <include layout="@layout/view_error" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/contentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
+            android:id="@+id/rv_ListCandidatos_CandidatosFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

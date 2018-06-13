@@ -8,7 +8,7 @@ public interface DetailCandidato {
 
 	}
 
-	interface Presenter extends MvpPresenter<View> {
+	interface Presenter extends MvpPresenter<DetailCandidato.View> {
 
 	}
 

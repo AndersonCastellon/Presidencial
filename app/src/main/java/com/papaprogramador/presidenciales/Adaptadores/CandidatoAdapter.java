@@ -26,8 +26,15 @@ public class CandidatoAdapter extends RecyclerView.Adapter<CandidatoAdapter.Cand
 
 	List<Candidato> candidatoList;
 
-	public CandidatoAdapter(List<Candidato> candidatoList) {
+	public CandidatoAdapter() {
+	}
+
+	public void setCandidatoList(List<Candidato> candidatoList) {
 		this.candidatoList = candidatoList;
+	}
+
+	public List<Candidato> getCandidatoList() {
+		return candidatoList;
 	}
 
 	@NonNull

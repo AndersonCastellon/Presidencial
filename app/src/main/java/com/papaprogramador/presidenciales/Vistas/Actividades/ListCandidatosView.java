@@ -22,7 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.ListCandidatos;
-import com.papaprogramador.presidenciales.Presenters.ListCandidatosPresenter;
+import com.papaprogramador.presidenciales.Presenters.ActivityMainPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Adaptadores.ViewpagerAdapter;
 
@@ -141,7 +141,7 @@ public class ListCandidatosView extends MvpActivity<ListCandidatos.View, ListCan
 	@NonNull
 	@Override
 	public ListCandidatos.Presenter createPresenter() {
-		return new ListCandidatosPresenter(this, getResources()
+		return new ActivityMainPresenter(this, getResources()
 				.getString(R.string.default_web_client_id));
 	}
 
