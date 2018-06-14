@@ -21,15 +21,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
-import com.papaprogramador.presidenciales.InterfacesMVP.ListCandidatos;
 import com.papaprogramador.presidenciales.Presenters.ActivityMainPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Adaptadores.ViewpagerAdapter;
 
 import java.util.Objects;
 
-public class ListCandidatosView extends MvpActivity<ListCandidatos.View, ListCandidatos.Presenter>
-		implements TabLayout.OnTabSelectedListener, ListCandidatos.View, View.OnClickListener {
+public class MainView extends MvpActivity<com.papaprogramador.presidenciales.InterfacesMVP.MainView.View, com.papaprogramador.presidenciales.InterfacesMVP.MainView.Presenter>
+		implements TabLayout.OnTabSelectedListener, com.papaprogramador.presidenciales.InterfacesMVP.MainView.View, View.OnClickListener {
 
 	private DrawerLayout drawerLayout;
 
@@ -122,10 +121,10 @@ public class ListCandidatosView extends MvpActivity<ListCandidatos.View, ListCan
 
 	@Override
 	public void goLoginView() {
-		Toast.makeText(ListCandidatosView.this,
+		Toast.makeText(MainView.this,
 				R.string.CloseFullSession, Toast.LENGTH_LONG).show();
 
-		Intent intent = new Intent(ListCandidatosView.this, LoginView.class);
+		Intent intent = new Intent(MainView.this, LoginView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
@@ -140,7 +139,7 @@ public class ListCandidatosView extends MvpActivity<ListCandidatos.View, ListCan
 
 	@NonNull
 	@Override
-	public ListCandidatos.Presenter createPresenter() {
+	public com.papaprogramador.presidenciales.InterfacesMVP.MainView.Presenter createPresenter() {
 		return new ActivityMainPresenter(this, getResources()
 				.getString(R.string.default_web_client_id));
 	}

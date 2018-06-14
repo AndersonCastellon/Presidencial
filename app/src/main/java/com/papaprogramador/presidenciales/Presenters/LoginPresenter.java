@@ -17,7 +17,7 @@ import com.papaprogramador.presidenciales.Modelos.IniciarSesionConCredenciales;
 import com.papaprogramador.presidenciales.Modelos.ObtenerIdDispositivo;
 import com.papaprogramador.presidenciales.Modelos.ObtenerIdFirebase;
 import com.papaprogramador.presidenciales.Modelos.RegistrarUsuarioRTDB;
-import com.papaprogramador.presidenciales.Utilidades.Constantes;
+import com.papaprogramador.presidenciales.Utils.Constantes;
 
 public class LoginPresenter extends MvpBasePresenter<Login.View> implements Login.Presenter {
 

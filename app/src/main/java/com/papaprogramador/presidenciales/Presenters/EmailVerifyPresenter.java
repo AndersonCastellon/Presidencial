@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.EmailVerify;
 import com.papaprogramador.presidenciales.Modelos.IniciarSesionConCredenciales;
-import com.papaprogramador.presidenciales.Utilidades.Constantes;
+import com.papaprogramador.presidenciales.Utils.Constantes;
 
 public class EmailVerifyPresenter extends MvpBasePresenter<EmailVerify.View>
 		implements EmailVerify.Presenter {

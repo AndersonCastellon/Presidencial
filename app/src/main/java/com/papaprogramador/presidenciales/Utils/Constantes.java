@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Utilidades;
+package com.papaprogramador.presidenciales.Utils;
 
 public class Constantes {
 

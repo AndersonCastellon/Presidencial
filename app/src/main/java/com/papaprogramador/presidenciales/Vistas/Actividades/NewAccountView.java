@@ -17,7 +17,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
 import com.papaprogramador.presidenciales.Presenters.NewAccountPresenter;
 import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.Utilidades.Constantes;
+import com.papaprogramador.presidenciales.Utils.Constantes;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 public class NewAccountView extends MvpActivity<NewAccount.View,

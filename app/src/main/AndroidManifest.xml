@@ -21,7 +21,7 @@
 
         </activity>
 
-        <activity android:name=".Vistas.Actividades.ListCandidatosView"
+        <activity android:name=".Vistas.Actividades.MainView"
             tools:ignore="InnerclassSeparator">
 
             <intent-filter>
@@ -42,12 +42,12 @@
 
         <activity
             android:name=".Vistas.Actividades.DetailCandidatoView"
-            android:parentActivityName=".Vistas.Actividades.ListCandidatosView"
+            android:parentActivityName=".Vistas.Actividades.MainView"
             android:theme="@style/AppthemeStatusBarTransparent"
             tools:ignore="InnerclassSeparator">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Vistas.Actividades.ListCandidatosView" />
+                android:value=".Vistas.Actividades.MainView" />
         </activity>
 
     </application>

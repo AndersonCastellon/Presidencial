@@ -8,7 +8,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
 import com.papaprogramador.presidenciales.Models.NewAccountModel;
 import com.papaprogramador.presidenciales.Modelos.CrearCuentaConEmail;
-import com.papaprogramador.presidenciales.Utilidades.Constantes;
+import com.papaprogramador.presidenciales.Utils.Constantes;
 
 public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 		implements NewAccount.Presenter {

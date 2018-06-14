@@ -17,7 +17,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.Login;
 import com.papaprogramador.presidenciales.Presenters.LoginPresenter;
 import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.Utilidades.Constantes;
+import com.papaprogramador.presidenciales.Utils.Constantes;
 
 
 public class LoginView extends MvpActivity<Login.View, Login.Presenter>
@@ -137,7 +137,7 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 
 	@Override
 	public void goListaCandidatosView() {
-		Intent intent = new Intent(LoginView.this, ListCandidatosView.class);
+		Intent intent = new Intent(LoginView.this, MainView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);

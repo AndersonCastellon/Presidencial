@@ -10,12 +10,12 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-import com.papaprogramador.presidenciales.InterfacesMVP.ListCandidatos;
+import com.papaprogramador.presidenciales.InterfacesMVP.MainView;
 import com.papaprogramador.presidenciales.Modelos.ConnectionCallbackGoogleApiClient;
 import com.papaprogramador.presidenciales.Modelos.GoogleApiClientListener;
 
-public class ActivityMainPresenter extends MvpBasePresenter<ListCandidatos.View>
-		implements ListCandidatos.Presenter {
+public class ActivityMainPresenter extends MvpBasePresenter<MainView.View>
+		implements MainView.Presenter {
 
 	private Context context;
 	private String string;
@@ -26,9 +26,9 @@ public class ActivityMainPresenter extends MvpBasePresenter<ListCandidatos.View>
 	private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
 		@Override
 		public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
-			ifViewAttached(new ViewAction<ListCandidatos.View>() {
+			ifViewAttached(new ViewAction<MainView.View>() {
 				@Override
-				public void run(@NonNull ListCandidatos.View view) {
+				public void run(@NonNull MainView.View view) {
 					FirebaseUser user = firebaseAuth.getCurrentUser();
 					if (user != null) {
 						view.onStartView();
@@ -108,9 +108,9 @@ public class ActivityMainPresenter extends MvpBasePresenter<ListCandidatos.View>
 			@Override
 			public void onResult(@NonNull final Status status) {
 
-				ifViewAttached(new ViewAction<ListCandidatos.View>() {
+				ifViewAttached(new ViewAction<MainView.View>() {
 					@Override
-					public void run(@NonNull ListCandidatos.View view) {
+					public void run(@NonNull MainView.View view) {
 
 						if (!status.isSuccess()) {
 

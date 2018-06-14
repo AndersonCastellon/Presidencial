@@ -5,7 +5,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.papaprogramador.presidenciales.Utilidades.ReferenciasFirebase;
+import com.papaprogramador.presidenciales.Utils.ReferenciasFirebase;
 
 public class ObtenerIdFirebase {
 

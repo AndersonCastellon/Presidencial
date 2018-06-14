@@ -12,7 +12,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.EmailVerify;
 import com.papaprogramador.presidenciales.Presenters.EmailVerifyPresenter;
 import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.Utilidades.Constantes;
+import com.papaprogramador.presidenciales.Utils.Constantes;
 
 public class EmailVerifyView extends MvpActivity<EmailVerify.View, EmailVerify.Presenter>
 		implements EmailVerify.View {
@@ -73,7 +73,7 @@ public class EmailVerifyView extends MvpActivity<EmailVerify.View, EmailVerify.P
 
 	@Override
 	public void goMainActivity() {
-		Intent intent = new Intent(EmailVerifyView.this, ListCandidatosView.class);
+		Intent intent = new Intent(EmailVerifyView.this, MainView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |
 				Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);

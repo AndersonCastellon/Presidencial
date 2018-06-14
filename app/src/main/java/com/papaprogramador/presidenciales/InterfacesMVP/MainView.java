@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
-public interface ListCandidatos {
+public interface MainView {
 	interface View extends MvpView {
 		void onStartView();
 		void setToolbar();

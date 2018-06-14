@@ -68,7 +68,7 @@ public class CandidateFragmentView extends MvpLceViewStateFragment<SwipeRefreshL
 	@NonNull
 	@Override
 	public CandidateFragment.Presenter createPresenter() {
-		return new ListCandidateFragmentPresenter();
+		return new ListCandidateFragmentPresenter(getActivity());
 	}
 
 	@NonNull
