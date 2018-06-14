@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.MvpLceViewStateFragment;
+import com.hannesdorfmann.mosby3.mvp.viewstate.lce.data.RetainingLceViewState;
 import com.papaprogramador.presidenciales.Adaptadores.CandidatoAdapter;
 import com.papaprogramador.presidenciales.InterfacesMVP.CandidateFragment;
 import com.papaprogramador.presidenciales.Objetos.Candidato;
@@ -30,34 +31,36 @@ public class CandidateFragmentView extends MvpLceViewStateFragment<SwipeRefreshL
 		implements CandidateFragment.View, SwipeRefreshLayout.OnRefreshListener {
 
 	CandidatoAdapter candidatoAdapter;
+
 	@BindView(R.id.rv_ListCandidatos_CandidatosFragment)
 	RecyclerView recyclerViewCandidate;
+
 	Unbinder unbinder;
 
-
+//TODO: Falta comprobación cuando no hay conexion a internet para obtener datos de firebase
 	public CandidateFragmentView() {
 	}
 
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-
+		setRetainInstance(true);
 		return inflater.inflate(R.layout.fragment_candidatos, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
 		unbinder = ButterKnife.bind(this, view);
 
 		contentView.setOnRefreshListener(this);
 
+		candidatoAdapter = new CandidatoAdapter();
+
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 		linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerViewCandidate.setLayoutManager(linearLayoutManager);
-
-		candidatoAdapter = new CandidatoAdapter();
-		recyclerViewCandidate.setAdapter(candidatoAdapter);
 
 		loadData(false);
 	}
@@ -71,28 +74,40 @@ public class CandidateFragmentView extends MvpLceViewStateFragment<SwipeRefreshL
 	@NonNull
 	@Override
 	public LceViewState<List<Candidato>, CandidateFragment.View> createViewState() {
-		return null;
-	}
-
-	@Override
-	public void setData(List<Candidato> data) {
-		candidatoAdapter.setCandidatoList(data);
-		candidatoAdapter.notifyDataSetChanged();
-	}
-
-	@Override
-	public List<Candidato> getData() {
-		return null;
+		return new RetainingLceViewState<>();
 	}
 
 	@Override
 	public void loadData(boolean pullToRefresh) {
-		getPresenter().getDataSnapshotCandidatosFirebase();
+		errorView.setVisibility(View.GONE);
+		loadingView.setVisibility(View.VISIBLE);
+
+		getPresenter().getListCandidateFromFirebase(pullToRefresh);
+	}
+
+
+	@Override
+	public void setData(List<Candidato> data) {
+
+		candidatoAdapter.setCandidatoList(data);
+
+		recyclerViewCandidate.setAdapter(candidatoAdapter);
+		candidatoAdapter.notifyDataSetChanged();
+
+		contentView.setRefreshing(false);
+
+		errorView.setVisibility(View.GONE);
+		loadingView.setVisibility(View.GONE);
+	}
+
+	@Override
+	public List<Candidato> getData() {
+		return candidatoAdapter == null ? null : candidatoAdapter.getCandidatoList();
 	}
 
 	@Override
 	protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-		return null;
+		return e.toString();
 	}
 
 

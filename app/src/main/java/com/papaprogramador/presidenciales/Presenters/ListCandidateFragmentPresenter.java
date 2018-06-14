@@ -16,14 +16,20 @@ public class ListCandidateFragmentPresenter extends MvpBasePresenter<CandidateFr
 	}
 
 	@Override
-	public void getDataSnapshotCandidatosFirebase() {
+	public void getListCandidateFromFirebase(final boolean pullToRefresh) {
 		ifViewAttached(new ViewAction<CandidateFragment.View>() {
 			@Override
 			public void run(@NonNull final CandidateFragment.View view) {
-				new CandidateListCallbackFirebase(new CandidateListCallbackFirebase.CallBackResult() {
+				new CandidateListCallbackFirebase(new CandidateListCallbackFirebase.ListCandidateListener() {
 					@Override
-					public void onListCandidateResult(List<Candidato> candidatoList) {
+					public void onSuccess(List<Candidato> candidatoList) {
 						view.setData(candidatoList);
+						view.showContent();
+					}
+
+					@Override
+					public void onError(Exception e) {
+						view.showError(e, pullToRefresh);
 					}
 				});
 			}

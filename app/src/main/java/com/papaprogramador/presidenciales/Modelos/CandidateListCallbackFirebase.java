@@ -12,14 +12,16 @@ import java.util.List;
 
 public class CandidateListCallbackFirebase {
 
-	public interface CallBackResult {
-		void onListCandidateResult(List<Candidato> candidatoList);
+	public interface ListCandidateListener {
+		void onSuccess(List<Candidato> candidatoList);
+
+		void onError(Exception e);
 	}
 
-	private CallBackResult listener;
+	private ListCandidateListener listener;
 	private List<Candidato> candidatoList;
 
-	public CandidateListCallbackFirebase(CallBackResult listener) {
+	public CandidateListCallbackFirebase(ListCandidateListener listener) {
 		this.listener = listener;
 		candidatoList = new ArrayList<>();
 		getListCandidateFirebase();
@@ -47,13 +49,17 @@ public class CandidateListCallbackFirebase {
 
 		candidatoList.removeAll(candidatoList);
 
-		for (DataSnapshot listCandidate :
-				dataSnapshot.getChildren()) {
-			Candidato candidato = listCandidate.getValue(Candidato.class);
-			candidatoList.add(candidato);
-		}
+		if (dataSnapshot.getChildren() == null) {
+			listener.onError(new Exception("DataSnapshotListCandidateFirebaseNullException"));
+		} else {
+			for (DataSnapshot listCandidate :
+					dataSnapshot.getChildren()) {
+				Candidato candidato = listCandidate.getValue(Candidato.class);
+				candidatoList.add(candidato);
+			}
 
-		listener.onListCandidateResult(candidatoList);
+			listener.onSuccess(candidatoList);
+		}
 	}
 
 }
