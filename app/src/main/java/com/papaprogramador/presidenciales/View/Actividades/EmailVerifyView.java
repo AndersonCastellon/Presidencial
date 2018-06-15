@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
@@ -14,43 +14,41 @@ import com.papaprogramador.presidenciales.Presenters.EmailVerifyPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 public class EmailVerifyView extends MvpActivity<EmailVerify.View, EmailVerify.Presenter>
 		implements EmailVerify.View {
 
+	@BindView(R.id.contentEmailVerifyView)
+	ConstraintLayout contentEmailVerifyView;
+	@BindView(R.id.mProgressBarEmailVerifyView)
+	ProgressBar mProgressBarEmailVerifyView;
+
 	private String emailUser;
-	private String pass;
-	private Button mButton;
-	private ConstraintLayout contenido;
-	private ProgressBar progressBar;
+	private String passUser;
+
+	Unbinder unbinder;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_email_verification);
 
-		onStartView();
-
-		mButton.setOnClickListener(new android.view.View.OnClickListener() {
-			@Override
-			public void onClick(android.view.View v) {
-				getPresenter().startIsEmailIsVerify(emailUser, pass);
-			}
-		});
-
-	}
-
-	private void onStartView() {
-
-		mButton = findViewById(R.id.EmailVerified);
-
-		contenido = findViewById(R.id.contenido);
-		progressBar = findViewById(R.id.progressBar);
+		unbinder = ButterKnife.bind(this);
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			emailUser = bundle.getString(Constans.PUT_EMAIL_USUARIO);
-			pass = bundle.getString(Constans.PUT_PASSWORD);
+			passUser = bundle.getString(Constans.PUT_PASSWORD);
 		}
+	}
+
+	@OnClick(R.id.mBtnButtonVerify)
+	public void onmBtnButtonVerifyClicked() {
+		getPresenter().startIsEmailIsVerify(emailUser, passUser);
 	}
 
 	@NonNull
@@ -61,13 +59,13 @@ public class EmailVerifyView extends MvpActivity<EmailVerify.View, EmailVerify.P
 
 	@Override
 	public void emailNoVerify() {
-		Snackbar.make(mButton, getResources().getString(R.string.emailNoVerificado),
+		Snackbar.make(contentEmailVerifyView, getResources().getString(R.string.emailNoVerificado),
 				Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void errorSession() {
-		Snackbar.make(mButton, getResources().getString(R.string.errorThis),
+		Snackbar.make(contentEmailVerifyView, getResources().getString(R.string.errorThis),
 				Snackbar.LENGTH_LONG).show();
 	}
 
@@ -82,11 +80,18 @@ public class EmailVerifyView extends MvpActivity<EmailVerify.View, EmailVerify.P
 	@Override
 	public void showProgressBar(boolean show) {
 		if (show) {
-			contenido.setVisibility(android.view.View.GONE);
-			progressBar.setVisibility(android.view.View.VISIBLE);
+			contentEmailVerifyView.setVisibility(View.GONE);
+			mProgressBarEmailVerifyView.setVisibility(View.VISIBLE);
 		} else {
-			contenido.setVisibility(android.view.View.VISIBLE);
-			progressBar.setVisibility(android.view.View.GONE);
+			contentEmailVerifyView.setVisibility(View.VISIBLE);
+			mProgressBarEmailVerifyView.setVisibility(View.GONE);
 		}
 	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbinder.unbind();
+	}
+
 }

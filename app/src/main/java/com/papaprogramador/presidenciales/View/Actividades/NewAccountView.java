@@ -70,7 +70,7 @@ public class NewAccountView extends MvpActivity<NewAccount.View,
 		pass2 = findViewById(R.id.editTextPasswordConfirm);
 		progressBar = findViewById(R.id.ProgressBarNewAccount);
 		spinnerDepartamento = findViewById(R.id.spinnerDep);
-		contenido = findViewById(R.id.contenido);
+		contenido = findViewById(R.id.contentEmailVerifyView);
 		btnNewAccount = findViewById(R.id.btnNewAccountCreate);
 
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
