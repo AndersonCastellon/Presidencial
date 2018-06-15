@@ -13,6 +13,7 @@
         android:layout_centerInParent="true"
         android:drawableTop="@drawable/ic_cloud_off"
         android:textSize="16sp"
+        android:textAlignment="center"
         android:padding="16dp"
         />
 

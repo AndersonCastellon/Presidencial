@@ -32,7 +32,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="UserName">Nombre de usuario</string>
+    <string name="UserName">Nombre de user</string>
     <string name="FaltanDatos">Faltan algunos datos</string>
     <string name="Departamento">Departamento</string>
     <string name="etiquetaLoginVista">@string/app_name</string>
@@ -49,7 +49,7 @@
     <string name="compartir_app">Compartir</string>
     <string name="TextEmailConfirm">Confirma tu email</string>
     <string name="confirmarPass">Confirma tu contraseña</string>
-    <string name="nombreUsuarioVacio">Escribe un nombre de usuario</string>
+    <string name="nombreUsuarioVacio">Escribe un nombre de user</string>
     <string name="emailNoCoincide">El email no coincide</string>
     <string name="passNoCoincide">La contraseña no coincide</string>
     <string name="eligeTuDepartamento">Escoge tu departamento</string>
@@ -57,8 +57,8 @@
     <string name="emailUsuarioVacio">Escribe tu email</string>
     <string name="CompletaTusDatos">Completa tus datos</string>
     <string name="emailInvalido">Ingresa un email válido</string>
-    <string name="DispositivoYaUtilizado">Este dispositivo ya ha sido utilizado para crear una cuenta, el usuario ha sido eliminado</string>
-    <string name="Usuario_nulo">El usuario es nulo</string>
+    <string name="DispositivoYaUtilizado">Este dispositivo ya ha sido utilizado para crear una cuenta, el user ha sido eliminado</string>
+    <string name="Usuario_nulo">El user es nulo</string>
     <string name="DispositivoYautilizadoPorOtraCuenta">Este dispositivo ya ha sido utilizado para crear otra cuenta</string>
     <string name="RestablecerPass">Restablece tu contraseña</string>
     <string name="btnResetPassword">Enviar correo de recuperación</string>
@@ -72,4 +72,7 @@
     <string name="passVacio">Escribe tu contraseña</string>
     <string name="pass2Vacio">Confirma tu contraseña</string>
     <string name="passInvalido">Debe de contener entre 8 y 30 caracteres</string>
+    <string name="null_Connection_Exception">Error al conectarse con el servidor.
+                                   \n Toca para intentarlo de nuevo.</string>
+
 </resources>

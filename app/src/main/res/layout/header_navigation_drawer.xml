@@ -17,7 +17,7 @@
             app:civ_border_color="@color/icons"
             app:civ_border_width="1dp" />
 
-        <!-- Nombre de Usuario -->
+        <!-- Nombre de User -->
         <TextView
             android:id="@+id/username"
             android:layout_width="match_parent"

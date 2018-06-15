@@ -12,12 +12,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.Login;
-import com.papaprogramador.presidenciales.Modelos.GoogleApiClientListener;
-import com.papaprogramador.presidenciales.Modelos.IniciarSesionConCredenciales;
-import com.papaprogramador.presidenciales.Modelos.ObtenerIdDispositivo;
-import com.papaprogramador.presidenciales.Modelos.ObtenerIdFirebase;
-import com.papaprogramador.presidenciales.Modelos.RegistrarUsuarioRTDB;
-import com.papaprogramador.presidenciales.Utils.Constantes;
+import com.papaprogramador.presidenciales.Cases.GoogleApiClientListener;
+import com.papaprogramador.presidenciales.Cases.IniciarSesionConCredenciales;
+import com.papaprogramador.presidenciales.Cases.ObtenerIdDispositivo;
+import com.papaprogramador.presidenciales.Cases.ObtenerIdFirebase;
+import com.papaprogramador.presidenciales.Cases.RegistrarUsuarioRTDB;
+import com.papaprogramador.presidenciales.Utils.Constans;
 
 public class LoginPresenter extends MvpBasePresenter<Login.View> implements Login.Presenter {
 
@@ -87,14 +87,14 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 								@Override
 								public void resultadoInicio(final String resultado, FirebaseUser user) {
 									switch (resultado) {
-										case Constantes.RESULT_IS_SUCCESSFUL:
+										case Constans.RESULT_IS_SUCCESSFUL:
 											view.goListaCandidatosView();
 											break;
-										case Constantes.RESULT_EMAIL_NO_VERIFY:
+										case Constans.RESULT_EMAIL_NO_VERIFY:
 											view.showProgressBar(false);
 											view.emailUserNoVerify();
 											break;
-										case Constantes.RESULT_NO_SUCCESSFUL:
+										case Constans.RESULT_NO_SUCCESSFUL:
 											view.showProgressBar(false);
 											view.noValidCredencials();
 											break;
@@ -199,10 +199,10 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 							                            final FirebaseUser user) {
 
 								switch (resultado) {
-									case Constantes.RESULT_IS_SUCCESSFUL:
+									case Constans.RESULT_IS_SUCCESSFUL:
 										registrarUsuarioEnFirebase(user);
 										break;
-									case Constantes.RESULT_NO_SUCCESSFUL:
+									case Constans.RESULT_NO_SUCCESSFUL:
 										view.showProgressBar(false);
 										view.errorSigInGoogle();
 										break;
@@ -221,10 +221,10 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 			public void run(@NonNull final Login.View view) {
 				String nombreUsuario = user.getDisplayName();
 				String emailUsuario = user.getEmail();
-				String departamento = Constantes.VALOR_DEPARTAMENTO_DEFAULT;
+				String departamento = Constans.VALOR_DEPARTAMENTO_DEFAULT;
 				String idDispositivo = ID;
 				String uidFirebase = user.getUid();
-				String voto = Constantes.VALOR_VOTO_DEFAULT;
+				String voto = Constans.VALOR_VOTO_DEFAULT;
 
 				new RegistrarUsuarioRTDB(uidFirebase, nombreUsuario, emailUsuario, departamento, idDispositivo,
 						voto, new RegistrarUsuarioRTDB.RegistrarUsuarioFirebase() {

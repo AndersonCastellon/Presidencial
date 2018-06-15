@@ -7,8 +7,8 @@ import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
 import com.papaprogramador.presidenciales.Models.NewAccountModel;
-import com.papaprogramador.presidenciales.Modelos.CrearCuentaConEmail;
-import com.papaprogramador.presidenciales.Utils.Constantes;
+import com.papaprogramador.presidenciales.Cases.CrearCuentaConEmail;
+import com.papaprogramador.presidenciales.Utils.Constans;
 
 public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 		implements NewAccount.Presenter {
@@ -35,22 +35,22 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 			@Override
 			public void run(@NonNull NewAccount.View view) {
 				switch (campoVacio) {
-					case Constantes.NOMBRE_USUARIO_VACIO:
+					case Constans.NOMBRE_USUARIO_VACIO:
 						view.nombreUsuarioVacio();
 						break;
-					case Constantes.EMAIL_USUARIO_VACIO:
+					case Constans.EMAIL_USUARIO_VACIO:
 						view.emailUsuarioVacio();
 						break;
-					case Constantes.EMAIL_USUARIO2_VACIO:
+					case Constans.EMAIL_USUARIO2_VACIO:
 						view.emailUsuario2Vacio();
 						break;
-					case Constantes.PASS_VACIO:
+					case Constans.PASS_VACIO:
 						view.passwordVacio();
 						break;
-					case Constantes.PASS2_VACIO:
+					case Constans.PASS2_VACIO:
 						view.password2Vacio();
 						break;
-					case Constantes.DEPARTAMENTO_VACIO:
+					case Constans.DEPARTAMENTO_VACIO:
 						view.departamentoVacio();
 						break;
 				}
@@ -64,16 +64,16 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 			@Override
 			public void run(@NonNull NewAccount.View view) {
 				switch (error) {
-					case Constantes.EMAIL_INVALIDO:
+					case Constans.EMAIL_INVALIDO:
 						view.errorEmailInvalido();
 						break;
-					case Constantes.EMAIL_NO_COINCIDE:
+					case Constans.EMAIL_NO_COINCIDE:
 						view.errorEmailNoCoincide();
 						break;
-					case Constantes.PASS_INVALIDO:
+					case Constans.PASS_INVALIDO:
 						view.errorPassInvalido();
 						break;
-					case Constantes.PASS_NO_COINCIDE:
+					case Constans.PASS_NO_COINCIDE:
 						view.errorPassNoCoincide();
 				}
 			}
@@ -104,7 +104,7 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 				}
 
 				model.registrarUsuarioEnFirebaseRealTimeDataBase(firebaseUID, nombreUsuario, emailUsuario,
-						departamento, idDispositivo, Constantes.VALOR_VOTO_DEFAULT, pass);
+						departamento, idDispositivo, Constans.VALOR_VOTO_DEFAULT, pass);
 			}
 		});
 	}

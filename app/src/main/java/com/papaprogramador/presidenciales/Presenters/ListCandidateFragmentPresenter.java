@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.CandidateFragment;
-import com.papaprogramador.presidenciales.Modelos.CandidateListCallbackFirebase;
-import com.papaprogramador.presidenciales.Objetos.Candidato;
+import com.papaprogramador.presidenciales.Cases.CandidateListCallbackFirebase;
+import com.papaprogramador.presidenciales.Obj.Candidate;
 import com.papaprogramador.presidenciales.Utils.Methods;
 
 import java.util.List;
@@ -36,8 +36,8 @@ public class ListCandidateFragmentPresenter extends MvpBasePresenter<CandidateFr
 				public void run(@NonNull final CandidateFragment.View view) {
 					new CandidateListCallbackFirebase(new CandidateListCallbackFirebase.ListCandidateListener() {
 						@Override
-						public void onSuccess(List<Candidato> candidatoList) {
-							view.setData(candidatoList);
+						public void onSuccess(List<Candidate> candidateList) {
+							view.setData(candidateList);
 							view.showContent();
 						}
 

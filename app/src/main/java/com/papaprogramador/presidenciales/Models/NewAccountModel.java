@@ -5,10 +5,10 @@ import android.content.Context;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
-import com.papaprogramador.presidenciales.Objetos.Usuario;
-import com.papaprogramador.presidenciales.Modelos.ValidarEmail;
-import com.papaprogramador.presidenciales.Utils.Constantes;
-import com.papaprogramador.presidenciales.Utils.ReferenciasFirebase;
+import com.papaprogramador.presidenciales.Obj.User;
+import com.papaprogramador.presidenciales.Cases.ValidarEmail;
+import com.papaprogramador.presidenciales.Utils.Constans;
+import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 
 public class NewAccountModel implements NewAccount.Model {
 
@@ -25,19 +25,19 @@ public class NewAccountModel implements NewAccount.Model {
 	                          final String pass, String pass2, final String departamento) {
 
 		if (nombreUsuario.isEmpty()) {
-			presenter.campoVacio(Constantes.NOMBRE_USUARIO_VACIO);
+			presenter.campoVacio(Constans.NOMBRE_USUARIO_VACIO);
 			crearCuenta = false;
 		}
 
 		if (emailUsuario.isEmpty()) {
-			presenter.campoVacio(Constantes.EMAIL_USUARIO_VACIO);
+			presenter.campoVacio(Constans.EMAIL_USUARIO_VACIO);
 			crearCuenta = false;
 		} else {
 			new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
 				@Override
 				public void emailEsValido(Boolean esValido) {
 					if (!esValido) {
-						presenter.errorEnCampo(Constantes.EMAIL_INVALIDO);
+						presenter.errorEnCampo(Constans.EMAIL_INVALIDO);
 						crearCuenta = false;
 					}
 				}
@@ -45,14 +45,14 @@ public class NewAccountModel implements NewAccount.Model {
 		}
 
 		if (emailUsuario2.isEmpty()) {
-			presenter.campoVacio(Constantes.EMAIL_USUARIO2_VACIO);
+			presenter.campoVacio(Constans.EMAIL_USUARIO2_VACIO);
 			crearCuenta = false;
 		} else {
 			new ValidarEmail(emailUsuario2, new ValidarEmail.EmailValidado() {
 				@Override
 				public void emailEsValido(Boolean esValido) {
 					if (!esValido) {
-						presenter.errorEnCampo(Constantes.EMAIL_INVALIDO);
+						presenter.errorEnCampo(Constans.EMAIL_INVALIDO);
 						crearCuenta = false;
 					}
 				}
@@ -60,35 +60,35 @@ public class NewAccountModel implements NewAccount.Model {
 		}
 
 		if (emailNoCoincide(emailUsuario, emailUsuario2)) {
-			presenter.errorEnCampo(Constantes.EMAIL_NO_COINCIDE);
+			presenter.errorEnCampo(Constans.EMAIL_NO_COINCIDE);
 			crearCuenta = false;
 		}
 
 		if (pass.isEmpty()) {
-			presenter.campoVacio(Constantes.PASS_VACIO);
+			presenter.campoVacio(Constans.PASS_VACIO);
 			crearCuenta = false;
 		}
 
 		if (pass2.isEmpty()) {
-			presenter.campoVacio(Constantes.PASS2_VACIO);
+			presenter.campoVacio(Constans.PASS2_VACIO);
 			crearCuenta = false;
 		}
 
 		if (!passwordCorto(pass)) {
-			presenter.errorEnCampo(Constantes.PASS_INVALIDO);
+			presenter.errorEnCampo(Constans.PASS_INVALIDO);
 			crearCuenta = false;
 		}
 
 		if (!passwordNoCoincide(pass, pass2)) {
-			presenter.errorEnCampo(Constantes.PASS_NO_COINCIDE);
+			presenter.errorEnCampo(Constans.PASS_NO_COINCIDE);
 			crearCuenta = false;
 		}
 
 		if (departamento == null) {
-			presenter.campoVacio(Constantes.DEPARTAMENTO_VACIO);
+			presenter.campoVacio(Constans.DEPARTAMENTO_VACIO);
 			crearCuenta = false;
 		} else if (departamento.isEmpty()) {
-			presenter.campoVacio(Constantes.DEPARTAMENTO_VACIO);
+			presenter.campoVacio(Constans.DEPARTAMENTO_VACIO);
 			crearCuenta = false;
 		}
 
@@ -102,14 +102,14 @@ public class NewAccountModel implements NewAccount.Model {
 	                                                       String emailUsuario, String departamento,
 	                                                       String idDispositivo, String voto, String pass) {
 
-		Usuario usuario = new Usuario(nombreUsuario, emailUsuario, departamento, idDispositivo, voto);
+		User user = new User(nombreUsuario, emailUsuario, departamento, idDispositivo, voto);
 
 		DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-		databaseReference.child(ReferenciasFirebase.NODO_USUARIO)
-				.child(uidFirebase).setValue(usuario);
+		databaseReference.child(FirebaseReference.NODO_USUARIO)
+				.child(uidFirebase).setValue(user);
 
-		databaseReference.child(ReferenciasFirebase.NODO_ID_DISPOSITIVO)
+		databaseReference.child(FirebaseReference.NODO_ID_DISPOSITIVO)
 				.child(idDispositivo).setValue(emailUsuario);
 
 		presenter.irAVerificarEmail(emailUsuario, pass);
