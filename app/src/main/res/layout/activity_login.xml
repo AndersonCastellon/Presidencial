@@ -7,7 +7,7 @@
     tools:context=".View.Actividades.LoginView">
 
     <LinearLayout
-        android:id="@+id/Logincontenido"
+        android:id="@+id/contentLoginView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/editTexEmail"
+                    android:id="@+id/emailUserLoginView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/TextEmail"
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/editTextPassword"
+                    android:id="@+id/passUserLoginView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/TextPass"
@@ -48,7 +48,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/mBtnLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnLogin"
@@ -84,7 +84,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/recuperarPassword"
+                android:id="@+id/mBtnResetPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/RecuperarPassword"
@@ -94,7 +94,7 @@
                 android:textSize="@dimen/textSizeBotonesDialogoLogin"/>
 
             <Button
-                android:id="@+id/btnNewAccount"
+                android:id="@+id/mBtnNewAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnNewAccount"

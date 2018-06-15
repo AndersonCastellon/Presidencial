@@ -18,6 +18,7 @@ public interface Login {
 		void passEmpty();
 		void noValidCredencials();
 		void emailUserNoVerify();
+		void emailNoValid();
 		void intentGoogle(GoogleApiClient googleApiClient);
 		void errorSigInGoogle();
 		void goListaCandidatosView();

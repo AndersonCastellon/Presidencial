@@ -2,11 +2,11 @@ package com.papaprogramador.presidenciales.View.Actividades;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
-import android.os.Bundle;
-import android.widget.Button;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
@@ -19,17 +19,25 @@ import com.papaprogramador.presidenciales.Presenters.LoginPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
 
 public class LoginView extends MvpActivity<Login.View, Login.Presenter>
-		implements Login.View, android.view.View.OnClickListener {
+		implements Login.View {
 
-	private TextInputEditText emailUsuario;
-	private TextInputEditText pass;
-	private ProgressBar progressBar;
-	private Button mbtnLoginEmail,
-			mbtnNewAccount, mbtnResetPass;
-	private LinearLayout contenido;
-	private SignInButton mBtnLoginGoogle;
+	Unbinder unbinder;
+
+	@BindView(R.id.emailUserLoginView)
+	TextInputEditText emailUserLoginView;
+	@BindView(R.id.passUserLoginView)
+	TextInputEditText passUserLoginView;
+	@BindView(R.id.contentLoginView)
+	LinearLayout contentLoginView;
+	@BindView(R.id.mProgressBar)
+	ProgressBar mProgressBar;
 
 	private Context context = LoginView.this;
 
@@ -37,47 +45,28 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
-		onStartVista();
+		unbinder = ButterKnife.bind(this);
+
 		getPresenter().obtenerIdDispositivo(context);
 	}
 
-	private void onStartVista() {
-		emailUsuario = findViewById(R.id.editTexEmail);
-		pass = findViewById(R.id.editTextPassword);
-		mbtnLoginEmail = findViewById(R.id.btnLogin);
-		mbtnNewAccount = findViewById(R.id.btnNewAccount);
-		mBtnLoginGoogle = findViewById(R.id.btnLoginGoogle);
-		progressBar = findViewById(R.id.mProgressBar);
-		contenido = findViewById(R.id.Logincontenido);
-		mbtnResetPass = findViewById(R.id.recuperarPassword);
-
-		mbtnLoginEmail.setOnClickListener(this);
-		mbtnNewAccount.setOnClickListener(this);
-		mbtnResetPass.setOnClickListener(this);
-		mBtnLoginGoogle.setOnClickListener(this);
-
-		mBtnLoginGoogle.setSize(SignInButton.SIZE_WIDE); //Tamaño del boton de Google
-		mBtnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK); //Estilo de color del boton de Google
-	}
-
-	@Override
-	public void onClick(android.view.View v) {
-
-		switch (v.getId()){
-			case R.id.btnLogin:
-				String emailU = emailUsuario.getText().toString();
-				String password = pass.getText().toString();
+	@OnClick({R.id.mBtnLoginEmail, R.id.btnLoginGoogle, R.id.mBtnResetPass, R.id.mBtnNewAccount})
+	public void loginButtonsClicked(View view) {
+		switch (view.getId()) {
+			case R.id.mBtnLoginEmail:
+				String emailU = emailUserLoginView.getText().toString();
+				String password = passUserLoginView.getText().toString();
 				getPresenter().iniciarSesionConEmail(context, emailU, password);
-				break;
-			case R.id.btnNewAccount:
-				getPresenter().obtenerIdFirebase();
-				break;
-			case R.id.recuperarPassword:
-				getPresenter().activityResetPassword();
 				break;
 			case R.id.btnLoginGoogle:
 				getPresenter().obtenerGoogleApliClient(context,
 						getString(R.string.default_web_client_id));
+				break;
+			case R.id.mBtnResetPass:
+				getPresenter().activityResetPassword();
+				break;
+			case R.id.mBtnNewAccount:
+				getPresenter().obtenerIdFirebase();
 				break;
 		}
 	}
@@ -97,29 +86,35 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 
 	@Override
 	public void idYaUtilizado() {
-		Snackbar.make(mbtnNewAccount, getResources().getString(R.string.DispositivoYautilizadoPorOtraCuenta),
+		Snackbar.make(emailUserLoginView, getResources().getString(R.string.DispositivoYautilizadoPorOtraCuenta),
 				Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void emailUserEmpty() {
-		emailUsuario.setError(getResources().getString(R.string.emailUsuarioVacio));
+		emailUserLoginView.setError(getResources().getString(R.string.emailUsuarioVacio));
 	}
 
 	@Override
 	public void passEmpty() {
-		pass.setError(getResources().getString(R.string.passVacio));
+		passUserLoginView.setError(getResources().getString(R.string.passVacio));
 	}
 
 	@Override
 	public void noValidCredencials() {
-		Snackbar.make(mbtnLoginEmail, getResources().getString(R.string.credencialesEmailIncorrectas),
+		Snackbar.make(emailUserLoginView, getResources().getString(R.string.credencialesEmailIncorrectas),
 				Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void emailUserNoVerify() {
-		Snackbar.make(mbtnLoginEmail, getResources().getString(R.string.emailNoVerificado),
+		Snackbar.make(emailUserLoginView, getResources().getString(R.string.emailNoVerificado),
+				Snackbar.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void emailNoValid() {
+		Snackbar.make(emailUserLoginView, getResources().getString(R.string.emailInvalido),
 				Snackbar.LENGTH_LONG).show();
 	}
 
@@ -131,7 +126,7 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 
 	@Override
 	public void errorSigInGoogle() {
-		Snackbar.make(mBtnLoginGoogle, getResources().getString(R.string.ErrorSignInGoogle),
+		Snackbar.make(emailUserLoginView, getResources().getString(R.string.ErrorSignInGoogle),
 				Snackbar.LENGTH_LONG).show();
 	}
 
@@ -152,11 +147,11 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 	@Override
 	public void showProgressBar(Boolean show) {
 		if (show) {
-			contenido.setVisibility(android.view.View.GONE);
-			progressBar.setVisibility(android.view.View.VISIBLE);
+			contentLoginView.setVisibility(View.GONE);
+			mProgressBar.setVisibility(View.VISIBLE);
 		} else {
-			contenido.setVisibility(android.view.View.VISIBLE);
-			progressBar.setVisibility(android.view.View.GONE);
+			contentLoginView.setVisibility(View.VISIBLE);
+			mProgressBar.setVisibility(View.GONE);
 		}
 	}
 
@@ -169,5 +164,11 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 				getPresenter().googleSingInFromResult(data);
 				break;
 		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbinder.unbind();
 	}
 }

@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.papaprogramador.presidenciales.Cases.ValidarEmail;
 import com.papaprogramador.presidenciales.InterfacesMVP.Login;
 import com.papaprogramador.presidenciales.Cases.GoogleApiClientListener;
 import com.papaprogramador.presidenciales.Cases.IniciarSesionConCredenciales;
@@ -24,6 +25,8 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 	private String ID;
 	private GoogleApiClient apiClient;
 	private Context context;
+
+	boolean bool = true;
 
 	public LoginPresenter(Context context) {
 		this.context = context;
@@ -68,11 +71,20 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
 			public void run(@NonNull final Login.View view) {
-				boolean bool = true;
 
 				if (emailUsuario.isEmpty()) {
 					view.emailUserEmpty();
 					bool = false;
+				} else {
+					new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
+						@Override
+						public void emailEsValido(Boolean esValido) {
+							if (!esValido){
+								bool = false;
+								view.emailNoValid();
+							}
+						}
+					});
 				}
 
 				if (pass.isEmpty()) {
