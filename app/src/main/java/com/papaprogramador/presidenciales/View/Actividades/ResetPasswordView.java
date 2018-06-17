@@ -51,7 +51,12 @@ public class ResetPasswordView extends MvpActivity<ResetPassword.View, ResetPass
 		Toast.makeText(ResetPasswordView.this,
 				R.string.EmailResetSend,
 				Toast.LENGTH_LONG).show();
-		goLoginActivity();
+	}
+
+	@Override
+	public void goLoginView() {
+		Intent login = new Intent(ResetPasswordView.this, LoginView.class);
+		startActivity(login);
 	}
 
 	@Override
@@ -67,11 +72,6 @@ public class ResetPasswordView extends MvpActivity<ResetPassword.View, ResetPass
 	@Override
 	public void emailIsInvalid() {
 		resetEmailUser.setError(getString(R.string.emailInvalido));
-	}
-
-	private void goLoginActivity() {
-		Intent login = new Intent(ResetPasswordView.this, LoginView.class);
-		startActivity(login);
 	}
 
 	@Override

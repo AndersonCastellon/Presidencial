@@ -10,12 +10,12 @@ public class Constans {
 	public static final String VALOR_VOTO_DEFAULT = "false";
 	public static final String VALOR_DEPARTAMENTO_DEFAULT = "false";
 
-	public static final String NOMBRE_USUARIO_VACIO = "nombreUsuarioVacio";
+	public static final String NOMBRE_USUARIO_VACIO = "nameUserIsEmpty";
 	public static final String EMAIL_USUARIO_VACIO = "emailUserEmpty";
-	public static final String EMAIL_USUARIO2_VACIO = "emailUsuario2Vacio";
+	public static final String EMAIL_USUARIO2_VACIO = "emailUser2IsEmpty";
 	public static final String PASS_VACIO = "passEmpty";
 	public static final String PASS2_VACIO = "pass2Vacio";
-	public static final String DEPARTAMENTO_VACIO = "departamentoVacio";
+	public static final String DEPARTAMENTO_VACIO = "departmentIsEmpty";
 	public static final String EMAIL_NO_COINCIDE = "emailNoCoincide";
 	public static final String PASS_INVALIDO = "passInvalido";
 	public static final String PASS_NO_COINCIDE = "passNoCoincide";

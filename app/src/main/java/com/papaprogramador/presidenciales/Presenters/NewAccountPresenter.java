@@ -36,22 +36,22 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 			public void run(@NonNull NewAccount.View view) {
 				switch (campoVacio) {
 					case Constans.NOMBRE_USUARIO_VACIO:
-						view.nombreUsuarioVacio();
+						view.nameUserIsEmpty();
 						break;
 					case Constans.EMAIL_USUARIO_VACIO:
-						view.emailUsuarioVacio();
+						view.emailUserIsEmpty();
 						break;
 					case Constans.EMAIL_USUARIO2_VACIO:
-						view.emailUsuario2Vacio();
+						view.emailUser2IsEmpty();
 						break;
 					case Constans.PASS_VACIO:
-						view.passwordVacio();
+						view.passUserIsEmpty();
 						break;
 					case Constans.PASS2_VACIO:
-						view.password2Vacio();
+						view.passUser2IsEmpty();
 						break;
 					case Constans.DEPARTAMENTO_VACIO:
-						view.departamentoVacio();
+						view.departmentIsEmpty();
 						break;
 				}
 			}
@@ -65,16 +65,16 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 			public void run(@NonNull NewAccount.View view) {
 				switch (error) {
 					case Constans.EMAIL_INVALIDO:
-						view.errorEmailInvalido();
+						view.emailUserIsInvalid();
 						break;
 					case Constans.EMAIL_NO_COINCIDE:
-						view.errorEmailNoCoincide();
+						view.emailUserIsDifferent();
 						break;
 					case Constans.PASS_INVALIDO:
-						view.errorPassInvalido();
+						view.passUserIsInvalid();
 						break;
 					case Constans.PASS_NO_COINCIDE:
-						view.errorPassNoCoincide();
+						view.passUserIsDifferent();
 				}
 			}
 		});
@@ -87,7 +87,7 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 		ifViewAttached(new ViewAction<NewAccount.View>() {
 			@Override
 			public void run(@NonNull NewAccount.View view) {
-				view.mostrarProgreso(true);
+				view.showProgressBar(true);
 			}
 		});
 		new CrearCuentaConEmail(context, emailUsuario, pass, new CrearCuentaConEmail.CuentaCreada() {
@@ -97,8 +97,8 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 					ifViewAttached(new ViewAction<NewAccount.View>() {
 						@Override
 						public void run(@NonNull NewAccount.View view) {
-							view.mostrarProgreso(false);
-							view.cuentaYaExiste();
+							view.showProgressBar(false);
+							view.accountAlreadyExists();
 						}
 					});
 				}
@@ -114,8 +114,8 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 		ifViewAttached(new ViewAction<NewAccount.View>() {
 			@Override
 			public void run(@NonNull NewAccount.View view) {
-				view.mostrarProgreso(false);
-				view.irAVerificarEmail(emailUsuario, pass);
+				view.showProgressBar(false);
+				view.goEmailVerifyView(emailUsuario, pass);
 			}
 		});
 	}

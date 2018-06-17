@@ -28,7 +28,6 @@ import butterknife.Unbinder;
 public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 		implements Login.View {
 
-	Unbinder unbinder;
 
 	@BindView(R.id.emailUserLoginView)
 	TextInputEditText emailUserLoginView;
@@ -39,11 +38,18 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 	@BindView(R.id.mProgressBar)
 	ProgressBar mProgressBar;
 
+	Unbinder unbinder;
+
 	private Context context = LoginView.this;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+
+		SignInButton btnLoginGoogle = findViewById(R.id.btnLoginGoogle);
+
+		btnLoginGoogle.setSize(SignInButton.SIZE_WIDE);
+		btnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK);
 
 		unbinder = ButterKnife.bind(this);
 

@@ -1,7 +1,7 @@
 package com.papaprogramador.presidenciales.View.Actividades;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -14,11 +14,22 @@ import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class DetailCandidatoView extends AppCompatActivity {
 
-	private String idCandidato;
-	private String nombreCandidato;
-	private String urlImagen;
+	@BindView(R.id.CandidateImg)
+	ImageView imgCandidate;
+	@BindView(R.id.toolbar)
+	Toolbar toolbar;
+
+	Unbinder unbinder;
+
+	private String idCandidate;
+	private String nameCandidate;
+	private String urlImgCandidate;
 
 
 	@Override
@@ -26,18 +37,20 @@ public class DetailCandidatoView extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detalle_candidato);
 
+		unbinder = ButterKnife.bind(this);
+
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
 
-		Bundle idCandidato = getIntent().getExtras();
-		if (idCandidato != null) {
-			this.idCandidato = idCandidato.getString(Constans.PUT_ID_CANDIDATO);
-			nombreCandidato = idCandidato.getString(Constans.PUT_NOMBRE_CANDIDATO);
-			urlImagen = idCandidato.getString(Constans.PUT_URL_IMAGEN_CANDIDATO);
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null) {
+			idCandidate = bundle.getString(Constans.PUT_ID_CANDIDATO);
+			nameCandidate = bundle.getString(Constans.PUT_NOMBRE_CANDIDATO);
+			urlImgCandidate = bundle.getString(Constans.PUT_URL_IMAGEN_CANDIDATO);
 		}
 
 		getToolbar();
-		recuperarImagenCandidato(urlImagen);
+		recuperarImagenCandidato(urlImgCandidate);
 
 
 	}
@@ -47,19 +60,16 @@ public class DetailCandidatoView extends AppCompatActivity {
 		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
 		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(urlImagen);
 
-		ImageView ImagenCandidato = findViewById(R.id.imagen_candidato);
-
 		//Obteniendo la imagen con Glide, mucho más optimo
 		//TODO: Implementar placeholder para Glide
 		Glide.with(this)
 				.using(new FirebaseImageLoader())
 				.load(storageReference)
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.into(ImagenCandidato);
+				.into(imgCandidate);
 	}
 
-	private void getToolbar() {//Método que inicializa el toolbar y agrega el menú de hamburguesa
-		Toolbar toolbar = findViewById(R.id.toolbar);
+	private void getToolbar() {
 
 		setSupportActionBar(toolbar);
 
@@ -67,6 +77,12 @@ public class DetailCandidatoView extends AppCompatActivity {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);// Activar flecha atras
-		getSupportActionBar().setTitle(nombreCandidato);
+		getSupportActionBar().setTitle(nameCandidate);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbinder.unbind();
 	}
 }

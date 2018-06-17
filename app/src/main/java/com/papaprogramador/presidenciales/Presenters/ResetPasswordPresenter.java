@@ -43,6 +43,7 @@ public class ResetPasswordPresenter extends MvpBasePresenter<ResetPassword.View>
 						public void resultReset(boolean isReset) {
 							if (isReset) {
 								view.resetIsSuccesful();
+								view.goLoginView();
 							} else {
 								view.emailNoExist();
 							}

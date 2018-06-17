@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/contentEmailVerifyView"
+            android:id="@+id/layoutContentNewAccount"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/nombreUsuario"
+                        android:id="@+id/nameUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/UserName"
@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/emailUsuario"
+                        android:id="@+id/emailUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/TextEmail"
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/editTexEmailConfirm"
+                        android:id="@+id/emailUser2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/TextEmailConfirm"
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/editTextPasswordCreate"
+                        android:id="@+id/passUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/TextPass"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/editTextPasswordConfirm"
+                        android:id="@+id/passUser2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/confirmarPass"
@@ -99,7 +99,7 @@
 
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                    android:id="@+id/spinnerDep"
+                    android:id="@+id/mSpinnerDepartament"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/Departamento"
@@ -117,7 +117,7 @@
 
 
                 <Button
-                    android:id="@+id/btnNewAccountCreate"
+                    android:id="@+id/mBtnCreateNewAccount"
                     style="@style/ThemeButtonsDefault"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
         </LinearLayout>
 
         <ProgressBar
-            android:id="@+id/ProgressBarNewAccount"
+            android:id="@+id/mProgressBarNewAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

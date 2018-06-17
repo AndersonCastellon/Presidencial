@@ -6,19 +6,19 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface NewAccount {
 	interface View extends MvpView {
-		void cuentaYaExiste();
-		void mostrarProgreso(Boolean bool);
-		void nombreUsuarioVacio();
-		void emailUsuarioVacio();
-		void emailUsuario2Vacio();
-		void passwordVacio();
-		void password2Vacio();
-		void departamentoVacio();
-		void errorEmailNoCoincide();
-		void errorEmailInvalido();
-		void errorPassInvalido();
-		void errorPassNoCoincide();
-		void irAVerificarEmail(String emailUsuario, String pass);
+		void accountAlreadyExists();
+		void showProgressBar(Boolean show);
+		void nameUserIsEmpty();
+		void emailUserIsEmpty();
+		void emailUser2IsEmpty();
+		void passUserIsEmpty();
+		void passUser2IsEmpty();
+		void departmentIsEmpty();
+		void emailUserIsDifferent();
+		void emailUserIsInvalid();
+		void passUserIsInvalid();
+		void passUserIsDifferent();
+		void goEmailVerifyView(String emailUser, String passUser);
 	}
 
 	interface Presenter extends MvpPresenter<View> {

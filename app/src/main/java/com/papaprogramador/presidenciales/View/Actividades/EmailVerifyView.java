@@ -22,7 +22,7 @@ import butterknife.Unbinder;
 public class EmailVerifyView extends MvpActivity<EmailVerify.View, EmailVerify.Presenter>
 		implements EmailVerify.View {
 
-	@BindView(R.id.contentEmailVerifyView)
+	@BindView(R.id.layoutContentNewAccount)
 	ConstraintLayout contentEmailVerifyView;
 	@BindView(R.id.mProgressBarEmailVerifyView)
 	ProgressBar mProgressBarEmailVerifyView;

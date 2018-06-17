@@ -7,6 +7,7 @@ public interface ResetPassword {
 
 	interface View extends MvpView {
 		void resetIsSuccesful();
+		void goLoginView();
 		void emailNoExist();
 		void emailIsEmpty();
 		void emailIsInvalid();
