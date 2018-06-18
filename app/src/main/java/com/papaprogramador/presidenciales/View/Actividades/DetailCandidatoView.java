@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -24,12 +25,15 @@ public class DetailCandidatoView extends AppCompatActivity {
 	ImageView imgCandidate;
 	@BindView(R.id.toolbar)
 	Toolbar toolbar;
+	@BindView(R.id.webViewDetailCandidate)
+	WebView webViewDetailCandidate;
 
 	Unbinder unbinder;
 
 	private String idCandidate;
 	private String nameCandidate;
 	private String urlImgCandidate;
+	private String urlHtmlCandidate;
 
 
 	@Override
@@ -38,16 +42,23 @@ public class DetailCandidatoView extends AppCompatActivity {
 		setContentView(R.layout.activity_detalle_candidato);
 
 		unbinder = ButterKnife.bind(this);
-
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
 
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-			idCandidate = bundle.getString(Constans.PUT_ID_CANDIDATO);
-			nameCandidate = bundle.getString(Constans.PUT_NOMBRE_CANDIDATO);
-			urlImgCandidate = bundle.getString(Constans.PUT_URL_IMAGEN_CANDIDATO);
+			idCandidate = bundle.getString(Constans.PUT_ID_CANDIDATE);
+			nameCandidate = bundle.getString(Constans.PUT_NOMBRE_CANDIDATE);
+			urlImgCandidate = bundle.getString(Constans.PUT_URL_IMAGEN_CANDIDATE);
+			urlHtmlCandidate = bundle.getString(Constans.PUT_URL_HTML_CANDIDATE);
 		}
+
+		webViewDetailCandidate.getSettings().setJavaScriptEnabled(true);
+		webViewDetailCandidate.getSettings().setDomStorageEnabled(true);
+		webViewDetailCandidate.getSettings().setBuiltInZoomControls(true);
+		webViewDetailCandidate.getSettings().setLoadWithOverviewMode(true);
+		webViewDetailCandidate.getSettings().setLoadsImagesAutomatically(true);
+		webViewDetailCandidate.loadUrl(urlHtmlCandidate);
 
 		getToolbar();
 		recuperarImagenCandidato(urlImgCandidate);
@@ -76,7 +87,7 @@ public class DetailCandidatoView extends AppCompatActivity {
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		}
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);// Activar flecha atras
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(nameCandidate);
 	}
 

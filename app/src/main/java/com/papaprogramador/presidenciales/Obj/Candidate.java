@@ -2,29 +2,36 @@ package com.papaprogramador.presidenciales.Obj;
 
 
 public class Candidate {
-	String nombreCandidato;
-	String partidoCandidato;
-	int votosCandidato;
-	String urlImagen;
-	String id;
+	private String nombreCandidato;
+	private String partidoCandidato;
+	private int votosCandidato;
+	private String urlImagen;
+	private String urlHtml;
+	private String id;
 
 	public Candidate() {
 	}
 
-	public Candidate(String nombreCandidato, String partidoCandidato, int votosCandidato, String urlImagen, String id) {
+	public Candidate(String nombreCandidato, String partidoCandidato, int votosCandidato,
+	                 String urlImagen, String urlHtml, String id) {
 		this.nombreCandidato = nombreCandidato;
 		this.partidoCandidato = partidoCandidato;
 		this.votosCandidato = votosCandidato;
 		this.urlImagen = urlImagen;
+		this.urlHtml = urlHtml;
 		this.id = id;
+	}
+
+	public String getUrlImagen() {
+		return urlImagen;
+	}
+
+	public String getUrlHtml() {
+		return urlHtml;
 	}
 
 	public String getId() {
 		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getNombreCandidato() {
@@ -49,13 +56,5 @@ public class Candidate {
 
 	public void setVotosCandidato(int votosCandidato) {
 		this.votosCandidato = votosCandidato;
-	}
-
-	public String getStringImagen() {
-		return urlImagen;
-	}
-
-	public void setStringImagen(String urlImagen) {
-		this.urlImagen = urlImagen;
 	}
 }

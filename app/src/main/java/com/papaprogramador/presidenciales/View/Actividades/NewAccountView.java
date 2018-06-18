@@ -55,11 +55,11 @@ public class NewAccountView extends MvpActivity<NewAccount.View,
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-			mIdDevice = bundle.getString(Constans.PUT_ID_DISPOSITIVO);
+			mIdDevice = bundle.getString(Constans.PUT_ID_DEVICE);
 		}
 
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-				android.R.layout.simple_dropdown_item_1line, Constans.departamento);
+				android.R.layout.simple_dropdown_item_1line, Constans.DEPARTAMENTO);
 
 		mSpinnerDepartment.setAdapter(arrayAdapter);
 

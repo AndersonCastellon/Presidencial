@@ -24,7 +24,7 @@ import java.util.List;
 
 public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.CandidatoViewHolder> {
 
-	List<Candidate> candidateList;
+	private List<Candidate> candidateList;
 
 	public CandidateAdapter() {
 	}
@@ -48,14 +48,16 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 	@Override
 	public void onBindViewHolder(@NonNull final CandidatoViewHolder holder, int position) {
 		Candidate candidate = candidateList.get(position);
+
 		holder.textViewNombre.setText(candidate.getNombreCandidato());
 		holder.textViewPartido.setText(candidate.getPartidoCandidato());
 		holder.textViewVotos.setText(String.valueOf(candidate.getVotosCandidato()));
 		holder.idcandidato = candidate.getId();
-		holder.urlImage = candidate.getStringImagen();
+		holder.urlImage = candidate.getUrlImagen();
+		holder.urlHtml = candidate.getUrlHtml();
 
 		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(candidate.getStringImagen());
+		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(candidate.getUrlImagen());
 
 		//Obteniendo la imagen con Glide, mucho más optimo
 		//TODO: Implementar placeholder para Glide
@@ -83,6 +85,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 
 		String idcandidato;
 		String urlImage;
+		String urlHtml;
 
 		private CandidatoViewHolder(View itemView) {
 			super(itemView);
@@ -104,9 +107,10 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 			switch (v.getId()) {
 				case R.id.imagenCandidato:
 					Intent detalleCandidato = new Intent(context, DetailCandidatoView.class);
-					detalleCandidato.putExtra(Constans.PUT_ID_CANDIDATO, idcandidato);
-					detalleCandidato.putExtra(Constans.PUT_NOMBRE_CANDIDATO, textViewNombre.getText().toString());
-					detalleCandidato.putExtra(Constans.PUT_URL_IMAGEN_CANDIDATO, urlImage);
+					detalleCandidato.putExtra(Constans.PUT_ID_CANDIDATE, idcandidato);
+					detalleCandidato.putExtra(Constans.PUT_NOMBRE_CANDIDATE, textViewNombre.getText().toString());
+					detalleCandidato.putExtra(Constans.PUT_URL_IMAGEN_CANDIDATE, urlImage);
+					detalleCandidato.putExtra(Constans.PUT_URL_HTML_CANDIDATE, urlHtml);
 					context.startActivity(detalleCandidato);
 					break;
 			}

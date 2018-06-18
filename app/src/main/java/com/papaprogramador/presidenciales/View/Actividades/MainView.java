@@ -35,8 +35,6 @@ import butterknife.Unbinder;
 public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.Presenter>
 		implements TabLayout.OnTabSelectedListener, MainViewContrat.View, View.OnClickListener {
 
-//	private DrawerLayout drawerLayout;
-
 	@BindView(R.id.LayoutMain)
 	DrawerLayout drawerLayout;
 

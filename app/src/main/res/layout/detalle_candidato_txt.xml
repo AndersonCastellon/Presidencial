@@ -8,16 +8,11 @@
     tools:context=".View.Actividades.DetailCandidatoView"
     tools:showIn="@layout/activity_detalle_candidato">
 
-    <TextView
-        android:id="@+id/tv_scrolling"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:lineSpacingExtra="@dimen/text_margin_very_small"
-        android:text="Funcionando"
-        android:textIsSelectable="true" />
+    <WebView
+        android:id="@+id/webViewDetailCandidate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </WebView>
 
 </android.support.v4.widget.NestedScrollView>

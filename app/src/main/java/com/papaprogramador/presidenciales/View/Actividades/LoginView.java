@@ -86,7 +86,7 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 	@Override
 	public void goNewAccountView(String idDispositivo) {
 		Intent intent = new Intent(LoginView.this, NewAccountView.class);
-		intent.putExtra(Constans.PUT_ID_DISPOSITIVO, idDispositivo);
+		intent.putExtra(Constans.PUT_ID_DEVICE, idDispositivo);
 		startActivity(intent);
 	}
 
