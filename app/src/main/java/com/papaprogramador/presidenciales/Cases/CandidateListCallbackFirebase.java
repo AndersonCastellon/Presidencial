@@ -32,7 +32,7 @@ public class CandidateListCallbackFirebase {
 		FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
 		firebaseDatabase.getReference().child(FirebaseReference.NODO_CANDIDATOS)
-				.addValueEventListener(new ValueEventListener() {
+				.addListenerForSingleValueEvent(new ValueEventListener() {
 					@Override
 					public void onDataChange(DataSnapshot dataSnapshot) {
 						onDataSnapshotCandidateResult(dataSnapshot);

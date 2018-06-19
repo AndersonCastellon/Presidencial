@@ -50,6 +50,6 @@
         app:layout_anchor="@id/app_bar_scrolling"
         app:layout_anchorGravity="bottom|end" />
 
-    <include layout="@layout/detalle_candidato_txt"/>
+    <include layout="@layout/detalle_candidato_txt" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -42,8 +42,6 @@ public class DetailCandidatoView extends AppCompatActivity {
 		setContentView(R.layout.activity_detalle_candidato);
 
 		unbinder = ButterKnife.bind(this);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-
 
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
@@ -68,14 +66,9 @@ public class DetailCandidatoView extends AppCompatActivity {
 
 	private void recuperarImagenCandidato(String urlImagen) {
 
-		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(urlImagen);
-
-		//Obteniendo la imagen con Glide, mucho más optimo
 		//TODO: Implementar placeholder para Glide
 		Glide.with(this)
-				.using(new FirebaseImageLoader())
-				.load(storageReference)
+				.load(urlImagen)
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.into(imgCandidate);
 	}

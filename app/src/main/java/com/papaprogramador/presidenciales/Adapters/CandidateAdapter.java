@@ -56,14 +56,9 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 		holder.urlImage = candidate.getUrlImagen();
 		holder.urlHtml = candidate.getUrlHtml();
 
-		FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-		StorageReference storageReference = firebaseStorage.getReferenceFromUrl(candidate.getUrlImagen());
-
-		//Obteniendo la imagen con Glide, mucho más optimo
 		//TODO: Implementar placeholder para Glide
 		Glide.with(holder.imageViewCandidato.getContext())
-				.using(new FirebaseImageLoader())
-				.load(storageReference)
+				.load(holder.urlImage)
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.into(holder.imageViewCandidato);
 
