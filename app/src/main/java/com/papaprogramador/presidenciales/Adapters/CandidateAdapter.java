@@ -59,7 +59,6 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 		//TODO: Implementar placeholder para Glide
 		Glide.with(holder.imageViewCandidato.getContext())
 				.load(holder.urlImage)
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.into(holder.imageViewCandidato);
 
 		holder.setOnClickListener();

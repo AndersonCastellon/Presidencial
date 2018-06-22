@@ -121,18 +121,15 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 
 		userName.setText(user.getDisplayName());
 		userEmail.setText(user.getEmail());
-		//Carga de la imagen del perfil del user actual
+
 		Glide.with(this)
 				.load(user.getPhotoUrl())
-				.placeholder(R.drawable.im_userimgdefault)
-				.error(R.drawable.im_userimgdefault)
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.dontAnimate()
 				.into(userImg);
 	}
 
 	@Override
 	public void goLoginView() {
+
 		Toast.makeText(MainView.this,
 				R.string.CloseFullSession, Toast.LENGTH_LONG).show();
 

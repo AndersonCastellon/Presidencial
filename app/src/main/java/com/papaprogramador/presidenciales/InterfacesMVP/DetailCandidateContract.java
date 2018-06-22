@@ -5,18 +5,15 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface DetailCandidateContract {
 	interface View extends MvpView {
-		void onWebViewSettings();
-		void getImgCandidate();
-		void getToolbar();
+		void onWebViewSettings(String urlHtmlCandidate);
+		void getImgCandidate(String urlImgCandidate);
+		void getToolbar(String nameCandidate);
 
 
 	}
 
 	interface Presenter extends MvpPresenter<DetailCandidateContract.View> {
-
-	}
-
-	interface Model {
-
+		void setAuthListener();
+		void removeAuthListener();
 	}
 }

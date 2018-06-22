@@ -88,6 +88,9 @@ public class CandidateFragmentView extends MvpLceViewStateFragment<SwipeRefreshL
 	@Override
 	public void setData(List<Candidate> data) {
 
+		errorView.setVisibility(View.GONE);
+		loadingView.setVisibility(View.GONE);
+
 		candidateAdapter.setCandidateList(data);
 
 		recyclerViewCandidate.setAdapter(candidateAdapter);
@@ -95,8 +98,6 @@ public class CandidateFragmentView extends MvpLceViewStateFragment<SwipeRefreshL
 
 		contentView.setRefreshing(false);
 
-		errorView.setVisibility(View.GONE);
-		loadingView.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -112,6 +113,7 @@ public class CandidateFragmentView extends MvpLceViewStateFragment<SwipeRefreshL
 
 	@Override
 	public void onRefresh() {
+		errorView.setVisibility(View.GONE);
 		loadData(true);
 	}
 
