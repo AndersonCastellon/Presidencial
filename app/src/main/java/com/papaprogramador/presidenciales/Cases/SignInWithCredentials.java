@@ -16,20 +16,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.papaprogramador.presidenciales.Utils.Constans;
 
-public class IniciarSesionConCredenciales {
+public class SignInWithCredentials {
 
-	public interface IniciarSesion {
-		void resultadoInicio(String resultado, FirebaseUser user);
+	public interface SignIn {
+		void onResult(String resultado, FirebaseUser user);
 	}
 
-	private IniciarSesion listener;
+	private SignIn listener;
 	private Context context;
 	private String emailUsuario;
 	private String pass;
 	private GoogleSignInAccount signInAccount;
 
-	public IniciarSesionConCredenciales(Context context, String emailUsuario, String pass,
-	                                    IniciarSesion listener) {
+	public SignInWithCredentials(Context context, String emailUsuario, String pass,
+	                             SignIn listener) {
 		this.listener = listener;
 		this.emailUsuario = emailUsuario;
 		this.pass = pass;
@@ -37,8 +37,8 @@ public class IniciarSesionConCredenciales {
 		iniciarSesionConEmail();
 	}
 
-	public IniciarSesionConCredenciales(Context context, GoogleSignInAccount signInAccount,
-	                                    IniciarSesion listener) {
+	public SignInWithCredentials(Context context, GoogleSignInAccount signInAccount,
+	                             SignIn listener) {
 		this.listener = listener;
 		this.signInAccount = signInAccount;
 		this.context = context;
@@ -78,9 +78,9 @@ public class IniciarSesionConCredenciales {
 
 
 						if (!task.isSuccessful()) {
-							listener.resultadoInicio(Constans.RESULT_NO_SUCCESSFUL, user);
+							listener.onResult(Constans.RESULT_NO_SUCCESSFUL, user);
 						} else {
-							listener.resultadoInicio(Constans.RESULT_IS_SUCCESSFUL, user);
+							listener.onResult(Constans.RESULT_IS_SUCCESSFUL, user);
 						}
 					}
 
@@ -88,11 +88,11 @@ public class IniciarSesionConCredenciales {
 
 
 						if (!task.isSuccessful()) {
-							listener.resultadoInicio(Constans.RESULT_NO_SUCCESSFUL, user);
+							listener.onResult(Constans.RESULT_NO_SUCCESSFUL, user);
 						} else if (!user.isEmailVerified()) {
-							listener.resultadoInicio(Constans.RESULT_EMAIL_NO_VERIFY, user);
+							listener.onResult(Constans.RESULT_EMAIL_NO_VERIFY, user);
 						} else {
-							listener.resultadoInicio(Constans.RESULT_IS_SUCCESSFUL, user);
+							listener.onResult(Constans.RESULT_IS_SUCCESSFUL, user);
 						}
 					}
 				});

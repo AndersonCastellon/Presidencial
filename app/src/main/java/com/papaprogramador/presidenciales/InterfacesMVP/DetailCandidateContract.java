@@ -13,6 +13,8 @@ public interface DetailCandidateContract {
 	}
 
 	interface Presenter extends MvpPresenter<DetailCandidateContract.View> {
+		void fabShare();
+		void goVote();
 		void setAuthListener();
 		void removeAuthListener();
 	}

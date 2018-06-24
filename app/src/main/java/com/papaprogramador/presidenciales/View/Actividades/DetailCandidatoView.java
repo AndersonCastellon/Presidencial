@@ -2,17 +2,13 @@ package com.papaprogramador.presidenciales.View.Actividades;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.WindowManager;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.DetailCandidateContract;
 import com.papaprogramador.presidenciales.Presenters.DetailCandidatePresenter;
@@ -21,10 +17,11 @@ import com.papaprogramador.presidenciales.Utils.Constans;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.View, DetailCandidateContract.Presenter>
-implements DetailCandidateContract.View{
+		implements DetailCandidateContract.View {
 
 	@BindView(R.id.CandidateImg)
 	ImageView imgCandidate;
@@ -41,7 +38,16 @@ implements DetailCandidateContract.View{
 		setContentView(R.layout.activity_detalle_candidato);
 
 		unbinder = ButterKnife.bind(this);
+	}
 
+	@OnClick({R.id.fab_vote, R.id.fab_share})
+	public void onFabButtonsClicked(View view) {
+		switch (view.getId()) {
+			case R.id.fab_vote:
+				break;
+			case R.id.fab_share:
+				break;
+		}
 	}
 
 	@NonNull
@@ -53,9 +59,9 @@ implements DetailCandidateContract.View{
 		assert bundle != null;
 
 		String idCandidate = bundle.getString(Constans.PUT_ID_CANDIDATE);
-			String nameCandidate = bundle.getString(Constans.PUT_NOMBRE_CANDIDATE);
-			String urlImgCandidate = bundle.getString(Constans.PUT_URL_IMAGEN_CANDIDATE);
-			String urlHtmlCandidate = bundle.getString(Constans.PUT_URL_HTML_CANDIDATE);
+		String nameCandidate = bundle.getString(Constans.PUT_NOMBRE_CANDIDATE);
+		String urlImgCandidate = bundle.getString(Constans.PUT_URL_IMAGEN_CANDIDATE);
+		String urlHtmlCandidate = bundle.getString(Constans.PUT_URL_HTML_CANDIDATE);
 
 		return new DetailCandidatePresenter(idCandidate, nameCandidate, urlImgCandidate, urlHtmlCandidate);
 	}
@@ -75,6 +81,9 @@ implements DetailCandidateContract.View{
 		//TODO: Implementar placeholder para Glide
 		Glide.with(this)
 				.load(urlImgCandidate)
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.centerCrop()
+				.crossFade()
 				.into(imgCandidate);
 	}
 
@@ -107,4 +116,5 @@ implements DetailCandidateContract.View{
 		super.onDestroy();
 		unbinder.unbind();
 	}
+
 }

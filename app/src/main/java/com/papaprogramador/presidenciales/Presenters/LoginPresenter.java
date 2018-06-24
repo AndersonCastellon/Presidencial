@@ -14,7 +14,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.Cases.ValidarEmail;
 import com.papaprogramador.presidenciales.InterfacesMVP.Login;
 import com.papaprogramador.presidenciales.Cases.GoogleApiClientListener;
-import com.papaprogramador.presidenciales.Cases.IniciarSesionConCredenciales;
+import com.papaprogramador.presidenciales.Cases.SignInWithCredentials;
 import com.papaprogramador.presidenciales.Cases.ObtenerIdDispositivo;
 import com.papaprogramador.presidenciales.Cases.ObtenerIdFirebase;
 import com.papaprogramador.presidenciales.Cases.RegistrarUsuarioRTDB;
@@ -94,10 +94,10 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 
 				if (bool) {
 					view.showProgressBar(true);
-					new IniciarSesionConCredenciales(context, emailUsuario, pass,
-							new IniciarSesionConCredenciales.IniciarSesion() {
+					new SignInWithCredentials(context, emailUsuario, pass,
+							new SignInWithCredentials.SignIn() {
 								@Override
-								public void resultadoInicio(final String resultado, FirebaseUser user) {
+								public void onResult(final String resultado, FirebaseUser user) {
 									switch (resultado) {
 										case Constans.RESULT_IS_SUCCESSFUL:
 											view.goListaCandidatosView();
@@ -204,11 +204,11 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 		ifViewAttached(new ViewAction<Login.View>() {
 			@Override
 			public void run(@NonNull final Login.View view) {
-				new IniciarSesionConCredenciales(context, signInAccount,
-						new IniciarSesionConCredenciales.IniciarSesion() {
+				new SignInWithCredentials(context, signInAccount,
+						new SignInWithCredentials.SignIn() {
 							@Override
-							public void resultadoInicio(final String resultado,
-							                            final FirebaseUser user) {
+							public void onResult(final String resultado,
+							                     final FirebaseUser user) {
 
 								switch (resultado) {
 									case Constans.RESULT_IS_SUCCESSFUL:
@@ -238,8 +238,8 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 				String uidFirebase = user.getUid();
 				String voto = Constans.VALOR_VOTO_DEFAULT;
 
-				new RegistrarUsuarioRTDB(uidFirebase, nombreUsuario, emailUsuario, departamento, idDispositivo,
-						voto, new RegistrarUsuarioRTDB.RegistrarUsuarioFirebase() {
+				new RegistrarUsuarioRTDB(uidFirebase, nombreUsuario, emailUsuario,
+						null, idDispositivo, null, new RegistrarUsuarioRTDB.RegistrarUsuarioFirebase() {
 					@Override
 					public void registroExitoso(boolean bool) {
 						if (bool) {

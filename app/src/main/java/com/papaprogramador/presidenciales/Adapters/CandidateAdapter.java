@@ -12,9 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Obj.Candidate;
@@ -57,8 +54,12 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 		holder.urlHtml = candidate.getUrlHtml();
 
 		//TODO: Implementar placeholder para Glide
+
 		Glide.with(holder.imageViewCandidato.getContext())
 				.load(holder.urlImage)
+				.centerCrop()
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.crossFade()
 				.into(holder.imageViewCandidato);
 
 		holder.setOnClickListener();
@@ -75,7 +76,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 		ImageView imageViewCandidato;
 		TextView textViewNombre, textViewPartido, textViewVotos;
 
-		Context context;//Variable del contexto
+		Context context;
 
 		String idcandidato;
 		String urlImage;

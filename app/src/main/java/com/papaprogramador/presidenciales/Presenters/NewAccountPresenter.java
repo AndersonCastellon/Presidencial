@@ -104,7 +104,7 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 				}
 
 				model.registrarUsuarioEnFirebaseRealTimeDataBase(firebaseUID, nombreUsuario, emailUsuario,
-						departamento, idDispositivo, Constans.VALOR_VOTO_DEFAULT, pass);
+						null, idDispositivo, null, pass);
 			}
 		});
 	}

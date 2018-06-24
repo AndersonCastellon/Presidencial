@@ -1,10 +1,13 @@
 package com.papaprogramador.presidenciales.Presenters;
 
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.papaprogramador.presidenciales.Cases.GetDepartmentUser;
 import com.papaprogramador.presidenciales.InterfacesMVP.DetailCandidateContract;
 
 public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateContract.View>
@@ -16,7 +19,10 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 		@Override
 		public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
 			FirebaseUser user = firebaseAuth.getCurrentUser();
-			if (user != null){
+			if (user != null) {
+
+				uidUser = user.getUid();
+
 				ifViewAttached(new ViewAction<DetailCandidateContract.View>() {
 					@Override
 					public void run(@NonNull DetailCandidateContract.View view) {
@@ -34,6 +40,8 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 	private String urlImgCandidate;
 	private String urlHtmlCandidate;
 
+	private String uidUser;
+
 	public DetailCandidatePresenter(String idCandidate, String nameCandidate,
 	                                String urlImgCandidate, String urlHtmlCandidate) {
 		this.idCandidate = idCandidate;
@@ -41,6 +49,30 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 		this.urlImgCandidate = urlImgCandidate;
 		this.urlHtmlCandidate = urlHtmlCandidate;
 		firebaseAuth = FirebaseAuth.getInstance();
+	}
+
+	@Override
+	public void fabShare() {
+
+	}
+
+	@Override
+	public void goVote() {
+		new GetDepartmentUser(uidUser, new GetDepartmentUser.DepartmentUserListener() {
+			@Override
+			public void onResult(DataSnapshot department) {
+				if (department.getValue() == null){
+
+				} else {
+
+				}
+			}
+
+			@Override
+			public void onError(String error) {
+
+			}
+		});
 	}
 
 	@Override
