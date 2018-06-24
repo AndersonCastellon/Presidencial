@@ -26,9 +26,9 @@ public class GetDepartmentUser {
 
 	private void getDepartmentUser() {
 
-		final DatabaseReference referenceIDdispositivo = FirebaseDatabase.getInstance().getReference();
+		final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-		referenceIDdispositivo.child(uidUser).child(FirebaseReference.NODO_DEPARTAMENTO)
+		databaseReference.child(uidUser).child(FirebaseReference.NODO_DEPARTAMENTO)
 				.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
