@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/imageview_height"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:layout_anchor="@+id/app_bar_scrolling"
+        app:layout_anchorGravity="right|center">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_layout"
@@ -41,14 +43,37 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_scrolling"
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fab_menu_detail_candidate"
+        style="@style/MenuButtonsStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/im_userimgdefault"
-        app:layout_anchor="@id/app_bar_scrolling"
-        app:layout_anchorGravity="bottom|end" />
+        android:layout_gravity="bottom|end"
+        android:elevation="6dp"
+        android:padding="@dimen/activity_horizontal_margin"
+        app:menu_animationDelayPerItem="0"
+        app:menu_icon="@drawable/ic_menu_fab"
+        app:menu_labels_ellipsize="end"
+        app:menu_labels_maxLines="1">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_vote"
+            style="@style/MenuButtonsStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_fab_vote"
+            app:fab_label="Votar" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_share"
+            style="@style/MenuButtonsStyleMini"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/primary_dark"
+            android:src="@drawable/ic_menu_fab_share"
+            app:fab_label="Compartir" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
     <include layout="@layout/detalle_candidato_txt" />
 

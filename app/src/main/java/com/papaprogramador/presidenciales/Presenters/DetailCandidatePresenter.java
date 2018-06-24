@@ -11,6 +11,7 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 		implements DetailCandidateContract.Presenter {
 
 	private FirebaseAuth firebaseAuth;
+
 	private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
 		@Override
 		public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {

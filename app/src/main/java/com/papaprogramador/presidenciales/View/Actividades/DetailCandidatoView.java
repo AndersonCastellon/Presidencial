@@ -64,7 +64,6 @@ implements DetailCandidateContract.View{
 	public void onWebViewSettings(String urlHtmlCandidate) {
 
 		webViewDetailCandidate.getSettings().setDomStorageEnabled(true);
-		webViewDetailCandidate.getSettings().setBuiltInZoomControls(true);
 		webViewDetailCandidate.getSettings().setLoadWithOverviewMode(true);
 		webViewDetailCandidate.getSettings().setLoadsImagesAutomatically(true);
 		webViewDetailCandidate.loadUrl(urlHtmlCandidate);
