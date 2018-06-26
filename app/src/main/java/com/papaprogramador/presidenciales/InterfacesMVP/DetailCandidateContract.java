@@ -8,13 +8,20 @@ public interface DetailCandidateContract {
 		void onWebViewSettings(String urlHtmlCandidate);
 		void getImgCandidate(String urlImgCandidate);
 		void getToolbar(String nameCandidate);
+		void existingVote();
+		void selectDepartmentToast();
+		void goSelectDepartmentDialogFragment();
+		void applyNewVoteIsSuccesful();
+		void showProgressFab(boolean show);
 
 
 	}
 
 	interface Presenter extends MvpPresenter<DetailCandidateContract.View> {
 		void fabShare();
-		void goVote();
+		void goCurrentVote();
+		void getDepartment();
+		void applyVotes();
 		void setAuthListener();
 		void removeAuthListener();
 	}

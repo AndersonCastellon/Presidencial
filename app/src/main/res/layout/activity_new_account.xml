@@ -97,12 +97,12 @@
 
                 </android.support.design.widget.TextInputLayout>
 
-
+                <!--TODO: Reemplazar por el nuevo spinner-->
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/mSpinnerDepartament"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/Departamento"
+                    android:hint="@string/department_list_hint"
                     android:textColorHint="@color/accent"
                     app:met_floatingLabel="normal" />
 

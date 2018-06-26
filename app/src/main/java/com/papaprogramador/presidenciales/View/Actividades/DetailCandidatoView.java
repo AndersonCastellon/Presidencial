@@ -2,13 +2,16 @@ package com.papaprogramador.presidenciales.View.Actividades;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.clans.fab.FloatingActionButton;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.DetailCandidateContract;
 import com.papaprogramador.presidenciales.Presenters.DetailCandidatePresenter;
@@ -29,6 +32,8 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 	Toolbar toolbar;
 	@BindView(R.id.webViewDetailCandidate)
 	WebView webViewDetailCandidate;
+	@BindView(R.id.fab_vote)
+	FloatingActionButton fabVote;
 
 	Unbinder unbinder;
 
@@ -97,6 +102,38 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 		}
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(nameCandidate);
+	}
+
+	@Override
+	public void existingVote() {
+		Snackbar.make(fabVote, getResources().getString(R.string.existingVote),
+				Snackbar.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void selectDepartmentToast() {
+		Toast.makeText(this, R.string.selectDepartment, Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void goSelectDepartmentDialogFragment() {
+
+	}
+
+	@Override
+	public void applyNewVoteIsSuccesful() {
+		Snackbar.make(fabVote, getResources().getString(R.string.applyNewVoteIsSuccesful),
+				Snackbar.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void showProgressFab(boolean show) {
+		if (show) {
+			fabVote.setShowProgressBackground(true);
+			fabVote.setIndeterminate(true);
+		} else {
+			fabVote.hideProgress();
+		}
 	}
 
 	@Override

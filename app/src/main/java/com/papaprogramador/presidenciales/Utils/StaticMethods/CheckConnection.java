@@ -1,10 +1,10 @@
-package com.papaprogramador.presidenciales.Utils;
+package com.papaprogramador.presidenciales.Utils.StaticMethods;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-public class Methods {
+public class CheckConnection {
 
 	//Método para verificar la conexion a internet
 	public static boolean checkConnection(Context context) {

@@ -34,7 +34,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="UserName">Nombre de user</string>
     <string name="FaltanDatos">Faltan algunos datos</string>
-    <string name="Departamento">Departamento</string>
+    <string name="department_list_hint">Departamento</string>
     <string name="etiquetaLoginVista">@string/app_name</string>
     <string name="RecuperarPassword">Recuperar contraseña</string>
     <string name="tabtextCandidatos">Candidatos</string>
@@ -74,5 +74,8 @@
     <string name="passInvalido">Debe de contener entre 8 y 30 caracteres</string>
     <string name="null_Connection_Exception">Error al conectarse con el servidor.
                                    \n Toca para intentarlo de nuevo.</string>
+    <string name="applyNewVoteIsSuccesful">Has votado correctamente</string>
+    <string name="existingVote">Ya has votado anteriormente</string>
+    <string name="selectDepartment">Primero selecciona tu departamento</string>
 
 </resources>

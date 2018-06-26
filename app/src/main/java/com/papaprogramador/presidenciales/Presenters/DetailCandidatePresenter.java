@@ -1,6 +1,5 @@
 package com.papaprogramador.presidenciales.Presenters;
 
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -8,7 +7,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.Cases.GetDepartmentUser;
+import com.papaprogramador.presidenciales.Cases.GetTotalVotes;
+import com.papaprogramador.presidenciales.Cases.GetVoteCurrentUser;
 import com.papaprogramador.presidenciales.InterfacesMVP.DetailCandidateContract;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.ApplyNewVote;
 
 public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateContract.View>
 		implements DetailCandidateContract.Presenter {
@@ -57,20 +59,59 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 	}
 
 	@Override
-	public void goVote() {
-		new GetDepartmentUser(uidUser, new GetDepartmentUser.DepartmentUserListener() {
+	public void goCurrentVote() {
+		ifViewAttached(new ViewAction<DetailCandidateContract.View>() {
 			@Override
-			public void onResult(DataSnapshot department) {
-				if (department.getValue() == null){
-
-				} else {
-
-				}
+			public void run(@NonNull final DetailCandidateContract.View view) {
+				view.showProgressFab(true);
+				new GetVoteCurrentUser(uidUser, new GetVoteCurrentUser.VoteCurrentUserListener() {
+					@Override
+					public void onResult(DataSnapshot vote) {
+						if (vote.getValue() != null){
+							view.showProgressFab(false);
+							view.existingVote();
+						} else {
+							getDepartment();
+						}
+					}
+				});
 			}
+		});
+	}
 
+	@Override
+	public void getDepartment() {
+		ifViewAttached(new ViewAction<DetailCandidateContract.View>() {
 			@Override
-			public void onError(String error) {
+			public void run(@NonNull final DetailCandidateContract.View view) {
+				new GetDepartmentUser(uidUser, new GetDepartmentUser.DepartmentUserListener() {
+					@Override
+					public void onResult(DataSnapshot department) {
+						if (department.getValue() == null){
+							view.showProgressFab(false);
+							view.selectDepartmentToast();
+							view.goSelectDepartmentDialogFragment();
+						} else {
+							applyVotes();
+						}
+					}
 
+					@Override
+					public void onError(String error) {
+
+					}
+				});
+			}
+		});
+	}
+
+	@Override
+	public void applyVotes() {
+		new GetTotalVotes(idCandidate, new GetTotalVotes.VotesListener() {
+			@Override
+			public void onResult(int votes) {
+				ApplyNewVote.applyNewVoteCandidate(votes, idCandidate);
+				ApplyNewVote.applyNewVoteUser(idCandidate, uidUser);
 			}
 		});
 	}

@@ -42,14 +42,6 @@ public class User {
 		this.departamento = departamento;
 	}
 
-	public String getUIDDispositivo() {
-		return UIDDispositivo;
-	}
-
-	public void setUIDDispositivo(String UIDDispositivo) {
-		this.UIDDispositivo = UIDDispositivo;
-	}
-
 	public String getVotopor() {
 		return votopor;
 	}

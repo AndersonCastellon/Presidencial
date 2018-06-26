@@ -7,7 +7,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.CandidateFragment;
 import com.papaprogramador.presidenciales.Cases.CandidateListCallbackFirebase;
 import com.papaprogramador.presidenciales.Obj.Candidate;
-import com.papaprogramador.presidenciales.Utils.Methods;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.CheckConnection;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class ListCandidateFragmentPresenter extends MvpBasePresenter<CandidateFr
 	@Override
 	public void getListCandidateFromFirebase(final boolean pullToRefresh) {
 
-		if (!Methods.checkConnection(context)){
+		if (!CheckConnection.checkConnection(context)){
 			ifViewAttached(new ViewAction<CandidateFragment.View>() {
 				@Override
 				public void run(@NonNull CandidateFragment.View view) {

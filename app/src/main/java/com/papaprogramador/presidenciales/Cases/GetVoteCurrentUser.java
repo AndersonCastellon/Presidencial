@@ -7,32 +7,31 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 
-public class GetTotalVotes {
+public class GetVoteCurrentUser {
 
-	public interface VotesListener{
-		void onResult(int votes);
+	public interface VoteCurrentUserListener{
+		void onResult(DataSnapshot vote);
 	}
 
-	private String idCandidate;
-	private VotesListener listener;
+	private String uidUser;
+	private VoteCurrentUserListener listener;
 
-	public GetTotalVotes(String idCandidate, VotesListener listener) {
-		this.idCandidate = idCandidate;
+	public GetVoteCurrentUser(String uidUser, VoteCurrentUserListener listener) {
+		this.uidUser = uidUser;
 		this.listener = listener;
-		getTotalVotes();
+		getVoteCurrentUser();
 	}
 
-	private void getTotalVotes() {
+	private void getVoteCurrentUser() {
 
-		final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+		DatabaseReference firebaseReference = FirebaseDatabase.getInstance().getReference();
 
-		databaseReference.child(FirebaseReference.NODO_CANDIDATOS).child(idCandidate)
-				.child(FirebaseReference.NODO_VOTOS_CANDIDATO)
+		firebaseReference.child(FirebaseReference.NODO_USUARIO).child(uidUser)
+				.child(FirebaseReference.NODO_VOTOPOR)
 				.addListenerForSingleValueEvent(new ValueEventListener() {
 					@Override
 					public void onDataChange(DataSnapshot dataSnapshot) {
-						int vote = Integer.parseInt(dataSnapshot.getValue().toString());
-						listener.onResult(vote);
+						listener.onResult(dataSnapshot);
 					}
 
 					@Override
