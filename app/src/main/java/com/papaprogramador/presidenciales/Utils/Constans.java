@@ -37,4 +37,5 @@ public class Constans {
 	public static final int SIGN_IN_CODE = 777;
 
 	public static final String PUT_URL_HTML_CANDIDATE = "PUT_URL_HTML_CANDIDATE";
+	public static final String PUT_UID_USER = "PUT_UID_USER";
 }

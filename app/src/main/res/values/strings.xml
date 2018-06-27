@@ -76,6 +76,9 @@
                                    \n Toca para intentarlo de nuevo.</string>
     <string name="applyNewVoteIsSuccesful">Has votado correctamente</string>
     <string name="existingVote">Ya has votado anteriormente</string>
-    <string name="selectDepartment">Primero selecciona tu departamento</string>
+    <string name="selectDepartment">Primero selecciona el departamento en donde vives</string>
+    <string name="textCompleteActionButtons">Exitoso</string>
+    <string name="textErrorActionButtos">Error</string>
+    <string name="textProgressActionButtons">En Proceso</string>
 
 </resources>
