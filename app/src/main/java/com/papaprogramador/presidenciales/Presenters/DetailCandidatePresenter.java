@@ -10,7 +10,7 @@ import com.papaprogramador.presidenciales.Cases.GetDepartmentUser;
 import com.papaprogramador.presidenciales.Cases.GetTotalVotes;
 import com.papaprogramador.presidenciales.Cases.GetVoteCurrentUser;
 import com.papaprogramador.presidenciales.InterfacesMVP.DetailCandidateContract;
-import com.papaprogramador.presidenciales.Utils.StaticMethods.ApplyNewVote;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.SetIntoFirebaseDatabase;
 
 public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateContract.View>
 		implements DetailCandidateContract.Presenter {
@@ -110,8 +110,8 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 		new GetTotalVotes(idCandidate, new GetTotalVotes.VotesListener() {
 			@Override
 			public void onResult(int votes) {
-				ApplyNewVote.applyNewVoteCandidate(votes, idCandidate);
-				ApplyNewVote.applyNewVoteUser(idCandidate, uidUser);
+				SetIntoFirebaseDatabase.applyNewVoteCandidate(votes, idCandidate);
+				SetIntoFirebaseDatabase.applyNewVoteUser(idCandidate, uidUser);
 			}
 		});
 	}

@@ -4,7 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 
-public class ApplyNewVote {
+public class SetIntoFirebaseDatabase {
 
 	private static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -19,5 +19,11 @@ public class ApplyNewVote {
 
 		databaseReference.child(FirebaseReference.NODO_USUARIO).child(uidUser)
 				.child(FirebaseReference.NODO_VOTOPOR).setValue(idCandidate);
+	}
+
+	public static void setDepartmentUser(String uidUser, String department) {
+
+		databaseReference.child(FirebaseReference.NODO_USUARIO).child(uidUser)
+				.child(FirebaseReference.NODO_DEPARTAMENTO).setValue(department);
 	}
 }
