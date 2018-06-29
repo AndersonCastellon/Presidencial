@@ -1,5 +1,6 @@
 package com.papaprogramador.presidenciales.View.Actividades;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import com.papaprogramador.presidenciales.InterfacesMVP.DetailCandidateContract;
 import com.papaprogramador.presidenciales.Presenters.DetailCandidatePresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
+import com.papaprogramador.presidenciales.View.Fragments.DialogFragment.SelectDepartmentDialogFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +51,7 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 	public void onFabButtonsClicked(View view) {
 		switch (view.getId()) {
 			case R.id.fab_vote:
+				getPresenter().goCurrentVote();
 				break;
 			case R.id.fab_share:
 				break;
@@ -116,8 +119,13 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 	}
 
 	@Override
-	public void goSelectDepartmentDialogFragment() {
+	public void goSelectDepartmentDialogFragment(String uidUser) {
 
+		Bundle bundle = new Bundle();
+		bundle.putString(Constans.PUT_UID_USER, uidUser);
+
+		SelectDepartmentDialogFragment dialogFragment = SelectDepartmentDialogFragment.newInstance(bundle);
+		dialogFragment.show(getSupportFragmentManager(), "SelectedDepartmentDialog");
 	}
 
 	@Override

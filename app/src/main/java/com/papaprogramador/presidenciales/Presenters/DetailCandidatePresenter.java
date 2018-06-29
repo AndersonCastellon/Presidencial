@@ -90,7 +90,7 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 						if (department.getValue() == null){
 							view.showProgressFab(false);
 							view.selectDepartmentToast();
-							view.goSelectDepartmentDialogFragment();
+							view.goSelectDepartmentDialogFragment(uidUser);
 						} else {
 							applyVotes();
 						}

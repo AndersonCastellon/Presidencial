@@ -21,9 +21,11 @@ public class SetIntoFirebaseDatabase {
 				.child(FirebaseReference.NODO_VOTOPOR).setValue(idCandidate);
 	}
 
-	public static void setDepartmentUser(String uidUser, String department) {
+	public static boolean setDepartmentUser(String uidUser, String department) {
 
 		databaseReference.child(FirebaseReference.NODO_USUARIO).child(uidUser)
 				.child(FirebaseReference.NODO_DEPARTAMENTO).setValue(department);
+
+		return true;
 	}
 }

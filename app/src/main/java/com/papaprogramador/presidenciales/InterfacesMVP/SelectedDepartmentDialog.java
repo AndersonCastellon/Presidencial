@@ -7,6 +7,7 @@ public interface SelectedDepartmentDialog {
 
 	interface View extends MvpView {
 		void SelectDepartmentPlease();
+		void TaskIsSuccesful();
 	}
 
 	interface Presenter extends MvpPresenter<SelectedDepartmentDialog.View> {
