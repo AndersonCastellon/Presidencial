@@ -56,6 +56,7 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 				getPresenter().goCurrentVote();
 				break;
 			case R.id.fab_share:
+				getPresenter().fabShare();
 				break;
 		}
 	}
@@ -136,8 +137,8 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-				builder.setMessage(getResources().getString(R.string.applyNewVoteIsSuccesful))
-				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		builder.setMessage(getResources().getString(R.string.applyNewVoteIsSuccesful))
+				.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();

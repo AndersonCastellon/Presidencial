@@ -81,5 +81,6 @@
     <string name="textErrorActionButtos">Error</string>
     <string name="textProgressActionButtons">En Proceso</string>
     <string name="interface_no_implement">La actividad no ha implementado la interfaz correspondiente</string>
+    <string name="ok">Ok</string>
 
 </resources>
