@@ -89,7 +89,6 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 					public void onResult(DataSnapshot department) {
 						if (department.getValue() == null){
 							view.showProgressFab(false);
-							view.selectDepartmentToast();
 							view.goSelectDepartmentDialogFragment(uidUser);
 						} else {
 							applyVotes();
@@ -110,8 +109,17 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 		new GetTotalVotes(idCandidate, new GetTotalVotes.VotesListener() {
 			@Override
 			public void onResult(int votes) {
+
 				SetIntoFirebaseDatabase.applyNewVoteCandidate(votes, idCandidate);
 				SetIntoFirebaseDatabase.applyNewVoteUser(idCandidate, uidUser);
+
+				ifViewAttached(new ViewAction<DetailCandidateContract.View>() {
+					@Override
+					public void run(@NonNull DetailCandidateContract.View view) {
+						view.showProgressFab(false);
+						view.applyNewVoteIsSuccesful();
+					}
+				});
 			}
 		});
 	}

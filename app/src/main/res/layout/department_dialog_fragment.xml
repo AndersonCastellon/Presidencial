@@ -16,8 +16,8 @@
 
     <include layout="@layout/spinner_department" />
 
-    <com.dd.processbutton.iml.ActionProcessButton
-        android:id="@+id/actionButtonSetDepartment"
+    <Button
+        android:id="@+id/btnSetDepartment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -25,13 +25,6 @@
         android:text="@string/Continue"
         android:textColor="@color/icons"
         android:textSize="@dimen/textSizeButton"
-        app:pb_colorComplete="@color/green_complete"
-        app:pb_colorError="@color/red_error"
-        app:pb_colorNormal="@color/primary"
-        app:pb_colorPressed="@color/primary_dark"
-        app:pb_colorProgress="@color/purple_progress"
-        app:pb_textComplete="@string/textCompleteActionButtons"
-        app:pb_textError="@string/textErrorActionButtos"
-        app:pb_textProgress="@string/textProgressActionButtons" />
+        style="@style/ThemeButtonsDefault"/>
 
 </LinearLayout>

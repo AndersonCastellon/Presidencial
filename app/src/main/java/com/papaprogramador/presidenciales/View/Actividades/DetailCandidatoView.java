@@ -26,7 +26,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.View, DetailCandidateContract.Presenter>
-		implements DetailCandidateContract.View {
+		implements DetailCandidateContract.View, SelectDepartmentDialogFragment.DialogFragmentSelectedDepartmentListener {
 
 	@BindView(R.id.CandidateImg)
 	ImageView imgCandidate;
@@ -79,7 +79,6 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 
 		webViewDetailCandidate.getSettings().setDomStorageEnabled(true);
 		webViewDetailCandidate.getSettings().setLoadWithOverviewMode(true);
-		webViewDetailCandidate.getSettings().setLoadsImagesAutomatically(true);
 		webViewDetailCandidate.loadUrl(urlHtmlCandidate);
 	}
 
@@ -114,8 +113,10 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 	}
 
 	@Override
-	public void selectDepartmentToast() {
-		Toast.makeText(this, R.string.selectDepartment, Toast.LENGTH_LONG).show();
+	public void onResult(boolean result) {
+		if (result){
+			getPresenter().goCurrentVote();
+		}
 	}
 
 	@Override
@@ -161,5 +162,4 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 		super.onDestroy();
 		unbinder.unbind();
 	}
-
 }

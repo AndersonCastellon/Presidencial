@@ -8,13 +8,12 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.dd.processbutton.iml.ActionProcessButton;
-import com.papaprogramador.presidenciales.InterfacesMVP.SelectedDepartmentDialog;
-import com.papaprogramador.presidenciales.Presenters.SelectedDepartmentPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
-import com.papaprogramador.presidenciales.Utils.MvpDialogFragment.MvpDialogFragment;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.SetIntoFirebaseDatabase;
 
 import org.angmarch.views.NiceSpinner;
 
@@ -22,21 +21,17 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+public class SelectDepartmentDialogFragment extends android.support.v4.app.DialogFragment {
 
-public class SelectDepartmentDialogFragment extends MvpDialogFragment<SelectedDepartmentDialog.View, SelectedDepartmentDialog.Presenter>
-		implements SelectedDepartmentDialog.View {
+	private NiceSpinner mSpinnerDepartment;
+	private DialogFragmentSelectedDepartmentListener listener = null;
 
-	@BindView(R.id.mSpinnerDepartment)
-	NiceSpinner mSpinnerDepartment;
+	public interface DialogFragmentSelectedDepartmentListener {
+		void onResult(boolean result);
+	}
 
-	@BindView(R.id.actionButtonSetDepartment)
-	ActionProcessButton actionButtonSetDepartment;
-
-	Unbinder unbinder;
+	public SelectDepartmentDialogFragment() {
+	}
 
 	public static SelectDepartmentDialogFragment newInstance(Bundle arguments) {
 
@@ -49,65 +44,59 @@ public class SelectDepartmentDialogFragment extends MvpDialogFragment<SelectedDe
 		return selectDepartmentDialogFragment;
 	}
 
-	public SelectDepartmentDialogFragment() {
-	}
-
 	@NonNull
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+
 		LayoutInflater inflater = (LayoutInflater) getActivity()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.department_dialog_fragment, null);
 
-		actionButtonSetDepartment.setMode(ActionProcessButton.Mode.ENDLESS);
+		mSpinnerDepartment = viewGroup.findViewById(R.id.mSpinnerDepartment);
+		Button actionButtonSetDepartment = viewGroup.findViewById(R.id.btnSetDepartment);
 
 		List<String> listDepartment = new LinkedList<>(Arrays.asList(Constans.DEPARTAMENTO));
 		mSpinnerDepartment.attachDataSource(listDepartment);
 
+		actionButtonSetDepartment.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				String uidUser = getArguments().getString(Constans.PUT_UID_USER);
+				String department = mSpinnerDepartment.getText().toString();
+
+				setDepartmentUserIntoFirebase(uidUser, department);
+			}
+		});
+
 		return new AlertDialog.Builder(getActivity()).setView(viewGroup).create();
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public void setDepartmentUserIntoFirebase(String uidUser, String department) {
 
-		View rootView = super.onCreateView(inflater, container, savedInstanceState);
-
-		unbinder = ButterKnife.bind(this, rootView);
-
-		return rootView;
+		if (department.isEmpty()) {
+			SelectDepartmentPlease();
+		} else {
+			if (SetIntoFirebaseDatabase.setDepartmentUser(uidUser, department)) {
+				listener.onResult(true);
+				TaskIsSuccesful();
+			}
+		}
 	}
 
-	@Override
-	public SelectedDepartmentDialog.Presenter createPresenter() {
-		return new SelectedDepartmentPresenter();
-	}
-
-	@OnClick(R.id.actionButtonSetDepartment)
-	public void onViewClicked() {
-
-		actionButtonSetDepartment.setProgress(1);
-
-		String uidUser = getArguments().getString(Constans.PUT_UID_USER);
-		String department = mSpinnerDepartment.getText().toString();
-
-		getPresenter().setDepartmentUserIntoFirebase(uidUser, department);
-	}
-
-	@Override
 	public void SelectDepartmentPlease() {
 		mSpinnerDepartment.setError(getString(R.string.selectDepartment));
 	}
 
-	@Override
 	public void TaskIsSuccesful() {
-		actionButtonSetDepartment.setProgress(0);
 		dismiss();
 	}
 
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		unbinder.unbind();
+	public void onAttach(Context context) {
+		super.onAttach(context);
+
+		listener = (DialogFragmentSelectedDepartmentListener) context;
 	}
 }

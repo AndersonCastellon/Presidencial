@@ -9,7 +9,6 @@ public interface DetailCandidateContract {
 		void getImgCandidate(String urlImgCandidate);
 		void getToolbar(String nameCandidate);
 		void existingVote();
-		void selectDepartmentToast();
 		void goSelectDepartmentDialogFragment(String uidUser);
 		void applyNewVoteIsSuccesful();
 		void showProgressFab(boolean show);

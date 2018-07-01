@@ -88,31 +88,6 @@ public abstract class MvpDialogFragment<V extends MvpView, P extends MvpPresente
 		getMvpDelegate().onCreate(savedInstanceState);
 	}
 
-	@Override public void onDestroy() {
-		super.onDestroy();
-		getMvpDelegate().onDestroy();
-	}
-
-	@Override public void onPause() {
-		super.onPause();
-		getMvpDelegate().onPause();
-	}
-
-	@Override public void onResume() {
-		super.onResume();
-		getMvpDelegate().onResume();
-	}
-
-	@Override public void onStart() {
-		super.onStart();
-		getMvpDelegate().onStart();
-	}
-
-	@Override public void onStop() {
-		super.onStop();
-		getMvpDelegate().onStop();
-	}
-
 	@Override public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		getMvpDelegate().onActivityCreated(savedInstanceState);
