@@ -1,9 +1,11 @@
 package com.papaprogramador.presidenciales.View.Actividades;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
@@ -114,7 +116,7 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 
 	@Override
 	public void onResult(boolean result) {
-		if (result){
+		if (result) {
 			getPresenter().goCurrentVote();
 		}
 	}
@@ -131,8 +133,18 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 
 	@Override
 	public void applyNewVoteIsSuccesful() {
-		Snackbar.make(fabVote, getResources().getString(R.string.applyNewVoteIsSuccesful),
-				Snackbar.LENGTH_LONG).show();
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+				builder.setMessage(getResources().getString(R.string.applyNewVoteIsSuccesful))
+				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+
+		builder.create().show();
 	}
 
 	@Override

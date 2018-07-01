@@ -80,5 +80,6 @@
     <string name="textCompleteActionButtons">Exitoso</string>
     <string name="textErrorActionButtos">Error</string>
     <string name="textProgressActionButtons">En Proceso</string>
+    <string name="interface_no_implement">La actividad no ha implementado la interfaz correspondiente</string>
 
 </resources>

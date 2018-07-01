@@ -97,6 +97,16 @@ public class SelectDepartmentDialogFragment extends android.support.v4.app.Dialo
 	public void onAttach(Context context) {
 		super.onAttach(context);
 
-		listener = (DialogFragmentSelectedDepartmentListener) context;
+		try {
+
+			listener = (DialogFragmentSelectedDepartmentListener) context;
+
+		} catch (ClassCastException e) {
+
+			throw new ClassCastException(
+					context.toString() +
+							getString(R.string.interface_no_implement));
+
+		}
 	}
 }
