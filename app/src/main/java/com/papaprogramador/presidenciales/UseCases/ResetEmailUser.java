@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Cases;
+package com.papaprogramador.presidenciales.UseCases;
 
 import android.support.annotation.NonNull;
 

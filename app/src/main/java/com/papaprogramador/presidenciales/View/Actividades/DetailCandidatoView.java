@@ -120,8 +120,8 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 		shareCandidateIntent.putExtra(Intent.EXTRA_TEXT, shareCandidateString);
 		shareCandidateIntent.setType("text/plain");
 
-//		shareCandidateIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(urlImgCandidate));
-//		shareCandidateIntent.setType("image/*");
+		shareCandidateIntent.putExtra(Intent.EXTRA_STREAM, urlImgCandidate);
+		shareCandidateIntent.setType("image/*");
 
 		String shooserTitle = getResources().getString(R.string.share);
 		Intent shooser = Intent.createChooser(shareCandidateIntent, shooserTitle);

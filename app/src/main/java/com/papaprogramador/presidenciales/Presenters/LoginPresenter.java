@@ -11,13 +11,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-import com.papaprogramador.presidenciales.Cases.ValidarEmail;
+import com.papaprogramador.presidenciales.UseCases.ValidarEmail;
 import com.papaprogramador.presidenciales.InterfacesMVP.Login;
-import com.papaprogramador.presidenciales.Cases.GoogleApiClientListener;
-import com.papaprogramador.presidenciales.Cases.SignInWithCredentials;
-import com.papaprogramador.presidenciales.Cases.ObtenerIdDispositivo;
-import com.papaprogramador.presidenciales.Cases.ObtenerIdFirebase;
-import com.papaprogramador.presidenciales.Cases.RegistrarUsuarioRTDB;
+import com.papaprogramador.presidenciales.UseCases.GoogleApiClientListener;
+import com.papaprogramador.presidenciales.UseCases.SignInWithCredentials;
+import com.papaprogramador.presidenciales.UseCases.ObtenerIdDispositivo;
+import com.papaprogramador.presidenciales.UseCases.ObtenerIdFirebase;
+import com.papaprogramador.presidenciales.UseCases.RegistrarUsuarioRTDB;
 import com.papaprogramador.presidenciales.Utils.Constans;
 
 public class LoginPresenter extends MvpBasePresenter<Login.View> implements Login.Presenter {

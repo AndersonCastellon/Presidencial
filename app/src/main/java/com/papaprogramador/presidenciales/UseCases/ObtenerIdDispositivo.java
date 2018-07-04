@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Cases;
+package com.papaprogramador.presidenciales.UseCases;
 
 import android.Manifest;
 import android.app.Activity;
@@ -9,6 +9,8 @@ import android.provider.Settings;
 
 import static android.support.v4.app.ActivityCompat.requestPermissions;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
+
+//TODO: Id dispositivo llega nulo cuando se quiere obtener idFirebase, validar la lógica actual
 
 public class ObtenerIdDispositivo {
 

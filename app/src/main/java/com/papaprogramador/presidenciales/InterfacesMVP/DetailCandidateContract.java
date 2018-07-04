@@ -1,7 +1,6 @@
 package com.papaprogramador.presidenciales.InterfacesMVP;
 
 import android.content.Context;
-import android.service.voice.VoiceInteractionService;
 
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;

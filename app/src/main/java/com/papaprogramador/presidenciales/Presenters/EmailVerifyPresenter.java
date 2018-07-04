@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.EmailVerify;
-import com.papaprogramador.presidenciales.Cases.SignInWithCredentials;
+import com.papaprogramador.presidenciales.UseCases.SignInWithCredentials;
 import com.papaprogramador.presidenciales.Utils.Constans;
 
 public class EmailVerifyPresenter extends MvpBasePresenter<EmailVerify.View>

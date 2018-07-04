@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Cases;
+package com.papaprogramador.presidenciales.UseCases;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

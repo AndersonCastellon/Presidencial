@@ -4,8 +4,8 @@ package com.papaprogramador.presidenciales.Presenters;
 import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-import com.papaprogramador.presidenciales.Cases.ResetEmailUser;
-import com.papaprogramador.presidenciales.Cases.ValidarEmail;
+import com.papaprogramador.presidenciales.UseCases.ResetEmailUser;
+import com.papaprogramador.presidenciales.UseCases.ValidarEmail;
 import com.papaprogramador.presidenciales.InterfacesMVP.ResetPassword;
 
 public class ResetPasswordPresenter extends MvpBasePresenter<ResetPassword.View>

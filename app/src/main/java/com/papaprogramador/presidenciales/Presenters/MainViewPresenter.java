@@ -11,8 +11,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.MainViewContrat;
-import com.papaprogramador.presidenciales.Cases.ConnectionCallbackGoogleApiClient;
-import com.papaprogramador.presidenciales.Cases.GoogleApiClientListener;
+import com.papaprogramador.presidenciales.UseCases.ConnectionCallbackGoogleApiClient;
+import com.papaprogramador.presidenciales.UseCases.GoogleApiClientListener;
 
 public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 		implements MainViewContrat.Presenter {
