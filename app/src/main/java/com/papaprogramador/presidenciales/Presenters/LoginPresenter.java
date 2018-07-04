@@ -12,17 +12,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.UseCases.ValidarEmail;
-import com.papaprogramador.presidenciales.InterfacesMVP.Login;
+import com.papaprogramador.presidenciales.InterfacesMVP.LoginContract;
 import com.papaprogramador.presidenciales.UseCases.GoogleApiClientListener;
 import com.papaprogramador.presidenciales.UseCases.SignInWithCredentials;
-import com.papaprogramador.presidenciales.UseCases.ObtenerIdDispositivo;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.GetIdDevice;
 import com.papaprogramador.presidenciales.UseCases.ObtenerIdFirebase;
 import com.papaprogramador.presidenciales.UseCases.RegistrarUsuarioRTDB;
 import com.papaprogramador.presidenciales.Utils.Constans;
 
-public class LoginPresenter extends MvpBasePresenter<Login.View> implements Login.Presenter {
+public class LoginPresenter extends MvpBasePresenter<LoginContract.View> implements LoginContract.Presenter {
 
-	private String ID;
+	private String idDevice;
 	private GoogleApiClient apiClient;
 	private Context context;
 
@@ -30,33 +30,22 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 
 	public LoginPresenter(Context context) {
 		this.context = context;
-	}
-
-
-	@Override
-	public void obtenerIdDispositivo(Context context) {
-		new ObtenerIdDispositivo(context,
-				new ObtenerIdDispositivo.OyenteTareaIdDispositivo() {
-					@Override
-					public void idGenerado(final String idDispositivo) {
-						ID = idDispositivo;
-					}
-				});
+		idDevice = GetIdDevice.getIdDevice(context);
 	}
 
 	@Override
 	public void obtenerIdFirebase() {
-		new ObtenerIdFirebase(ID,
+		new ObtenerIdFirebase(idDevice,
 				new ObtenerIdFirebase.IdObtenido() {
 					@Override
 					public void idObtenido(final boolean bool, final String idFirebase) {
-						ifViewAttached(new ViewAction<Login.View>() {
+						ifViewAttached(new ViewAction<LoginContract.View>() {
 							@Override
-							public void run(@NonNull Login.View view) {
+							public void run(@NonNull LoginContract.View view) {
 								if (bool) {
 									view.idYaUtilizado();
 								} else {
-									view.goNewAccountView(ID);
+									view.goNewAccountView(idDevice);
 								}
 							}
 						});
@@ -68,9 +57,9 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 
 	public void iniciarSesionConEmail(final Context context, final String emailUsuario, final String pass) {
 
-		ifViewAttached(new ViewAction<Login.View>() {
+		ifViewAttached(new ViewAction<LoginContract.View>() {
 			@Override
-			public void run(@NonNull final Login.View view) {
+			public void run(@NonNull final LoginContract.View view) {
 
 				if (emailUsuario.isEmpty()) {
 					view.emailUserEmpty();
@@ -120,9 +109,9 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 
 	@Override
 	public void obtenerGoogleApliClient(final Context context, final String string) {
-		ifViewAttached(new ViewAction<Login.View>() {
+		ifViewAttached(new ViewAction<LoginContract.View>() {
 			@Override
-			public void run(@NonNull final Login.View view) {
+			public void run(@NonNull final LoginContract.View view) {
 				new GoogleApiClientListener(context, string, new GoogleApiClientListener.GoogleApi() {
 					@Override
 					public void apiClient(GoogleApiClient googleApiClient) {
@@ -136,9 +125,9 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 
 	@Override
 	public void activityResetPassword() {
-		ifViewAttached(new ViewAction<Login.View>() {
+		ifViewAttached(new ViewAction<LoginContract.View>() {
 			@Override
-			public void run(@NonNull Login.View view) {
+			public void run(@NonNull LoginContract.View view) {
 				view.goResetPasswordView();
 			}
 		});
@@ -146,9 +135,9 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 
 	@Override
 	public void googleSingInFromResult(final Intent data) {
-		ifViewAttached(new ViewAction<Login.View>() {
+		ifViewAttached(new ViewAction<LoginContract.View>() {
 			@Override
-			public void run(@NonNull Login.View view) {
+			public void run(@NonNull LoginContract.View view) {
 				view.showProgressBar(true);
 				GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 				resultGoogle(result);
@@ -158,9 +147,9 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 
 	@Override
 	public void resultGoogle(final GoogleSignInResult result) {
-		ifViewAttached(new ViewAction<Login.View>() {
+		ifViewAttached(new ViewAction<LoginContract.View>() {
 			@Override
-			public void run(@NonNull final Login.View view) {
+			public void run(@NonNull final LoginContract.View view) {
 				if (result.isSuccess()) {
 					validarDispositivoConCuentaGoogle(result.getSignInAccount());
 				} else {
@@ -177,13 +166,13 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 	@Override
 	public void validarDispositivoConCuentaGoogle(final GoogleSignInAccount signInAccount) {
 
-		ifViewAttached(new ViewAction<Login.View>() {
+		ifViewAttached(new ViewAction<LoginContract.View>() {
 			@Override
-			public void run(@NonNull final Login.View view) {
+			public void run(@NonNull final LoginContract.View view) {
 
 				String emailUsuario = signInAccount.getEmail();
 
-				new ObtenerIdFirebase(ID, emailUsuario, new ObtenerIdFirebase.IdObtenido() {
+				new ObtenerIdFirebase(idDevice, emailUsuario, new ObtenerIdFirebase.IdObtenido() {
 					@Override
 					public void idObtenido(boolean bool, String idFirebase) {
 						if (bool) {
@@ -201,9 +190,9 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 	@Override
 	public void iniciarSesionConGoogle(final Context context, final GoogleSignInAccount signInAccount) {
 
-		ifViewAttached(new ViewAction<Login.View>() {
+		ifViewAttached(new ViewAction<LoginContract.View>() {
 			@Override
-			public void run(@NonNull final Login.View view) {
+			public void run(@NonNull final LoginContract.View view) {
 				new SignInWithCredentials(context, signInAccount,
 						new SignInWithCredentials.SignIn() {
 							@Override
@@ -228,13 +217,13 @@ public class LoginPresenter extends MvpBasePresenter<Login.View> implements Logi
 	@Override
 	public void registrarUsuarioEnFirebase(final FirebaseUser user) {
 
-		ifViewAttached(new ViewAction<Login.View>() {
+		ifViewAttached(new ViewAction<LoginContract.View>() {
 			@Override
-			public void run(@NonNull final Login.View view) {
+			public void run(@NonNull final LoginContract.View view) {
 				String nombreUsuario = user.getDisplayName();
 				String emailUsuario = user.getEmail();
 				String departamento = Constans.VALOR_DEPARTAMENTO_DEFAULT;
-				String idDispositivo = ID;
+				String idDispositivo = idDevice;
 				String uidFirebase = user.getUid();
 				String voto = Constans.VALOR_VOTO_DEFAULT;
 

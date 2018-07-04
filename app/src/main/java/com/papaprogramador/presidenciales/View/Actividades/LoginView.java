@@ -14,7 +14,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
-import com.papaprogramador.presidenciales.InterfacesMVP.Login;
+import com.papaprogramador.presidenciales.InterfacesMVP.LoginContract;
 import com.papaprogramador.presidenciales.Presenters.LoginPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
@@ -25,8 +25,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class LoginView extends MvpActivity<Login.View, Login.Presenter>
-		implements Login.View {
+public class LoginView extends MvpActivity<LoginContract.View, LoginContract.Presenter>
+		implements LoginContract.View {
 
 
 	@BindView(R.id.emailUserLoginView)
@@ -52,8 +52,6 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 		btnLoginGoogle.setColorScheme(SignInButton.COLOR_DARK);
 
 		unbinder = ButterKnife.bind(this);
-
-		getPresenter().obtenerIdDispositivo(context);
 	}
 
 	@OnClick({R.id.mBtnLoginEmail, R.id.btnLoginGoogle, R.id.mBtnResetPass, R.id.mBtnNewAccount})
@@ -79,7 +77,7 @@ public class LoginView extends MvpActivity<Login.View, Login.Presenter>
 
 	@NonNull
 	@Override
-	public Login.Presenter createPresenter() {
+	public LoginContract.Presenter createPresenter() {
 		return new LoginPresenter(context);
 	}
 

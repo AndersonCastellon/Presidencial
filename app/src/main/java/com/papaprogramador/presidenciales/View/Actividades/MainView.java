@@ -124,14 +124,13 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 
 		Glide.with(this)
 				.load(user.getPhotoUrl())
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.dontAnimate()
 				.into(userImg);
 	}
 
 	@Override
 	public void goLoginView() {
-
-		Toast.makeText(MainView.this,
-				R.string.CloseFullSession, Toast.LENGTH_LONG).show();
 
 		Intent intent = new Intent(MainView.this, LoginView.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK |

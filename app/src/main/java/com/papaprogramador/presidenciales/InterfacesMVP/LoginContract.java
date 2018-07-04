@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
-public interface Login {
+public interface LoginContract {
 	interface View extends MvpView {
 		void goNewAccountView(String idDispositivo);
 		void idYaUtilizado();
@@ -28,7 +28,6 @@ public interface Login {
 	}
 
 	interface Presenter extends MvpPresenter<View> {
-		void obtenerIdDispositivo(Context context);
 		void obtenerIdFirebase();
 		void iniciarSesionConEmail(Context context, String emailUsuario, String pass);
 		void obtenerGoogleApliClient(Context context, String string);
