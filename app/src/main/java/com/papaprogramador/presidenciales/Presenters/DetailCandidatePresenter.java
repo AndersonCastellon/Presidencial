@@ -1,5 +1,6 @@
 package com.papaprogramador.presidenciales.Presenters;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -10,6 +11,7 @@ import com.papaprogramador.presidenciales.Cases.GetDepartmentUser;
 import com.papaprogramador.presidenciales.Cases.GetTotalVotes;
 import com.papaprogramador.presidenciales.Cases.GetVoteCurrentUser;
 import com.papaprogramador.presidenciales.InterfacesMVP.DetailCandidateContract;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.GetString;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.SetIntoFirebaseDatabase;
 
 public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateContract.View>
@@ -54,8 +56,16 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 	}
 
 	@Override
-	public void fabShare() {
+	public void fabShare(Context context) {
 
+		final String shareCandidateString =  GetString.getStringShareCandidate(nameCandidate, context);
+
+		ifViewAttached(new ViewAction<DetailCandidateContract.View>() {
+			@Override
+			public void run(@NonNull DetailCandidateContract.View view) {
+				view.shareCandidate(shareCandidateString, urlImgCandidate);
+			}
+		});
 	}
 
 	@Override

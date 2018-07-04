@@ -2,6 +2,8 @@ package com.papaprogramador.presidenciales.View.Actividades;
 
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -56,7 +58,7 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 				getPresenter().goCurrentVote();
 				break;
 			case R.id.fab_share:
-				getPresenter().fabShare();
+				getPresenter().fabShare(this);
 				break;
 		}
 	}
@@ -107,6 +109,27 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 		}
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(nameCandidate);
+	}
+
+	@Override
+	public void shareCandidate(String shareCandidateString, String urlImgCandidate) {
+
+		Intent shareCandidateIntent = new Intent();
+		shareCandidateIntent.setAction(Intent.ACTION_SEND);
+
+		shareCandidateIntent.putExtra(Intent.EXTRA_TEXT, shareCandidateString);
+		shareCandidateIntent.setType("text/plain");
+
+//		shareCandidateIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(urlImgCandidate));
+//		shareCandidateIntent.setType("image/*");
+
+		String shooserTitle = getResources().getString(R.string.share);
+		Intent shooser = Intent.createChooser(shareCandidateIntent, shooserTitle);
+
+
+		if (shareCandidateIntent.resolveActivity(getPackageManager()) != null) {
+			startActivity(shooser);
+		}
 	}
 
 	@Override

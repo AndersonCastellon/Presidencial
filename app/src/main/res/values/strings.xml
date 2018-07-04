@@ -77,10 +77,13 @@
     <string name="applyNewVoteIsSuccesful">Has votado correctamente</string>
     <string name="existingVote">Ya has votado anteriormente</string>
     <string name="selectDepartment">Primero selecciona el departamento en donde vives</string>
-    <string name="textCompleteActionButtons">Exitoso</string>
-    <string name="textErrorActionButtos">Error</string>
-    <string name="textProgressActionButtons">En Proceso</string>
     <string name="interface_no_implement">La actividad no ha implementado la interfaz correspondiente</string>
     <string name="ok">Ok</string>
+    <string name="share">Compartir</string>
+
+
+    <string name="share_candidate_part1">Yo creo que </string>
+    <string name="share_candidate_part2"> será el mejor presidente en la historia de El Salvador,
+                                             \n y tú por cual votarás? </string>
 
 </resources>
