@@ -10,7 +10,7 @@ public interface DetailCandidateContract {
 		void onWebViewSettings(String urlHtmlCandidate);
 		void getImgCandidate(String urlImgCandidate);
 		void getToolbar(String nameCandidate);
-		void shareCandidate(String shareCandidateString, String urlImgCandidate);
+		void shareCandidate(String shareCandidateString);
 		void existingVote();
 		void goSelectDepartmentDialogFragment(String uidUser);
 		void applyNewVoteIsSuccesful();

@@ -63,7 +63,7 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 		ifViewAttached(new ViewAction<DetailCandidateContract.View>() {
 			@Override
 			public void run(@NonNull DetailCandidateContract.View view) {
-				view.shareCandidate(shareCandidateString, urlImgCandidate);
+				view.shareCandidate(shareCandidateString);
 			}
 		});
 	}

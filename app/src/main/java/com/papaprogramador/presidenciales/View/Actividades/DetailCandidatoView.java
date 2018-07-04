@@ -112,16 +112,13 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 	}
 
 	@Override
-	public void shareCandidate(String shareCandidateString, String urlImgCandidate) {
+	public void shareCandidate(String shareCandidateString) {
 
 		Intent shareCandidateIntent = new Intent();
 		shareCandidateIntent.setAction(Intent.ACTION_SEND);
 
 		shareCandidateIntent.putExtra(Intent.EXTRA_TEXT, shareCandidateString);
 		shareCandidateIntent.setType("text/plain");
-
-		shareCandidateIntent.putExtra(Intent.EXTRA_STREAM, urlImgCandidate);
-		shareCandidateIntent.setType("image/*");
 
 		String shooserTitle = getResources().getString(R.string.share);
 		Intent shooser = Intent.createChooser(shareCandidateIntent, shooserTitle);
