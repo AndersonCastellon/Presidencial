@@ -15,7 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Obj.Candidate;
-import com.papaprogramador.presidenciales.View.Actividades.DetailCandidatoView;
+import com.papaprogramador.presidenciales.View.Activity.DetailCandidatoView;
 
 import java.util.List;
 

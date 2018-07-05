@@ -60,10 +60,15 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 	}
 
 	@Override
-	public void closeSesion() {
+	public void signOff() {
 		FirebaseAuth.getInstance().signOut();
 
 //		getGoogleApiClient(); //TODO: implementacion pendiente, será completamente modificada
+	}
+
+	@Override
+	public void updatePassword() {
+
 	}
 
 	@Override
@@ -83,7 +88,7 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 			@Override
 			public void callbackGoogleApliClientConnection(GoogleApiClient.ConnectionCallbacks connectionCallbacks) {
 				connectionCallbacksThis = connectionCallbacks;
-				closeSesion();
+				signOff();
 			}
 		});
 	}

@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.View.Actividades;
+package com.papaprogramador.presidenciales.View.Activity;
 
 import android.content.Context;
 import android.content.Intent;

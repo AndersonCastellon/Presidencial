@@ -2,26 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <group android:checkableBehavior="single">
-
-        <item
-            android:id="@+id/menu_ver_graficos"
-            android:icon="@drawable/ic_chart"
-            android:title="@string/menu_ver_graficos" />
-    </group>
-
-
-
-    <item android:title="@string/opciones_de_cuenta">
+    <item android:title="@string/account_options">
         <menu>
             <item
-                android:id="@+id/cerrar_sesion"
-                android:icon="@drawable/ic_cerrar_sesion"
-                android:title="@string/menu_cerrar_sesion" />
+                android:id="@+id/sign_off"
+                android:icon="@drawable/ic_sign_off"
+                android:title="@string/menu_sign_off" />
             <item
-                android:id="@+id/eliminar_cuenta"
-                android:icon="@drawable/ic_eliminar_cuenta"
-                android:title="@string/eliminar_cuenta" />
+                android:id="@+id/update_pass"
+                android:icon="@drawable/update_pass"
+                android:title="@string/update_pass"/>
+            <item
+                android:id="@+id/delete_account"
+                android:icon="@drawable/ic_delete_account"
+                android:title="@string/delete_account" />
 
         </menu>
     </item>
@@ -30,13 +24,17 @@
 
         <menu>
             <item
-                android:id="@+id/enviar_comentarios"
-                android:icon="@drawable/ic_comentarios"
-                android:title="@string/menu_enviar_comentarios" />
+                android:id="@+id/post_comments"
+                android:icon="@drawable/ic_post_comments"
+                android:title="@string/menu_post_comments" />
             <item
-                android:id="@+id/compartir_app"
-                android:icon="@drawable/ic_compartir_app"
-                android:title="@string/compartir_app" />
+                android:id="@+id/report_error"
+                android:icon="@drawable/ic_menu_error_app"
+                android:title="@string/report_error"/>
+            <item
+                android:id="@+id/share_app"
+                android:icon="@drawable/ic_share_app"
+                android:title="@string/share_app" />
         </menu>
 
     </item>

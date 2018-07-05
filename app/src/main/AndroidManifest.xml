@@ -13,43 +13,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
-            android:name=".View.Actividades.LoginView"
+            android:name=".View.Activity.LoginView"
             android:label="@string/etiquetaLoginVista"
+            tools:ignore="InnerclassSeparator"></activity>
+        <activity
+            android:name=".View.Activity.MainView"
             tools:ignore="InnerclassSeparator">
-
-        </activity>
-
-        <activity android:name=".View.Actividades.MainView"
-            tools:ignore="InnerclassSeparator">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".View.Actividades.NewAccountView"
-            tools:ignore="InnerclassSeparator" />
-
-        <activity android:name=".View.Actividades.EmailVerifyView"
-            tools:ignore="InnerclassSeparator" />
-
-        <activity android:name=".View.Actividades.ResetPasswordView"
-            tools:ignore="InnerclassSeparator" />
-
         <activity
-            android:name=".View.Actividades.DetailCandidatoView"
-            android:parentActivityName=".View.Actividades.MainView"
+            android:name=".View.Activity.NewAccountView"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".View.Activity.EmailVerifyView"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".View.Activity.ResetPasswordView"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".View.Activity.DetailCandidatoView"
+            android:parentActivityName=".View.Activity.MainView"
             android:theme="@style/AppthemeStatusBarTransparent"
             tools:ignore="InnerclassSeparator">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".View.Actividades.MainView" />
+                android:value=".View.Activity.MainView" />
         </activity>
-
+        <activity android:name=".View.Activity.OptionsMenuView"></activity>
     </application>
 
 </manifest>

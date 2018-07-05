@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.View.Actividades;
+package com.papaprogramador.presidenciales.View.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,16 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -25,6 +24,7 @@ import com.papaprogramador.presidenciales.Adapters.ViewPageAdapter;
 import com.papaprogramador.presidenciales.InterfacesMVP.MainViewContrat;
 import com.papaprogramador.presidenciales.Presenters.MainViewPresenter;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.View.Fragments.UpdatePasswordFragment;
 
 import java.util.Objects;
 
@@ -33,10 +33,12 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.Presenter>
-		implements TabLayout.OnTabSelectedListener, MainViewContrat.View, View.OnClickListener {
+		implements TabLayout.OnTabSelectedListener, MainViewContrat.View {
 
 	@BindView(R.id.LayoutMain)
 	DrawerLayout drawerLayout;
+	@BindView(R.id.navview)
+	NavigationView navview;
 
 	Unbinder unbinder;
 
@@ -45,23 +47,53 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 	private ImageView userImg;
 	private ViewPager viewPage;
 
-	private Button mBtnLogout;
-
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		unbinder = ButterKnife.bind(this);
 
-	}
+		navview.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+			@Override
+			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-			case R.id.BtnLogout:
-				getPresenter().closeSesion();
-				break;
-		}
+				boolean fragmentTransaction = false;
+				Fragment fragment = null;
+
+				switch (item.getItemId()) {
+					case R.id.sign_off:
+						getPresenter().signOff();
+						break;
+					case R.id.update_pass:
+						fragment = new UpdatePasswordFragment();
+						fragmentTransaction = true;
+						break;
+					case R.id.delete_account:
+						break;
+					case R.id.post_comments:
+						break;
+					case R.id.report_error:
+						break;
+					case R.id.share_app:
+						break;
+				}
+
+				if (fragmentTransaction) {
+
+					getSupportFragmentManager()
+							.beginTransaction()
+							.replace(R.id.conten_main, fragment)
+							.commit();
+
+					item.setChecked(true);
+
+					getSupportActionBar().setTitle(item.getTitle());
+
+					drawerLayout.closeDrawers();
+				}
+				return true;
+			}
+		});
 	}
 
 	@Override
@@ -84,13 +116,10 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 	public void onStartView() {
 
 		//Referencia al encabezado del menú lateral para pasar los datos de user
-		android.view.View header = ((NavigationView) findViewById(R.id.navview)).getHeaderView(0);
+		View header = ((NavigationView) findViewById(R.id.navview)).getHeaderView(0);
 		userName = header.findViewById(R.id.username);
 		userEmail = header.findViewById(R.id.email);
 		userImg = header.findViewById(R.id.profile_image);
-
-		mBtnLogout = findViewById(R.id.BtnLogout);
-		mBtnLogout.setOnClickListener(this);
 	}
 
 	@Override
@@ -141,7 +170,7 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 
 	@Override
 	public void errorCloseSesion() {
-		Snackbar.make(mBtnLogout, getResources().getString(R.string.errorThis),
+		Snackbar.make(drawerLayout, getResources().getString(R.string.errorThis),
 				Snackbar.LENGTH_LONG).show();
 	}
 
@@ -154,6 +183,7 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 
 	@Override
 	public void setToolbar() {
+
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		Objects.requireNonNull(getSupportActionBar())

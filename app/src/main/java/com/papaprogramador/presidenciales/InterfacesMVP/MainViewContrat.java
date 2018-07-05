@@ -17,7 +17,8 @@ public interface MainViewContrat {
 	interface Presenter extends MvpPresenter<View> {
 		void setAuthListener();
 		void removeAuthListener();
-		void closeSesion();
+		void signOff();
+		void updatePassword();
 		void getGoogleApiClient();
 		void getConnectionCallbacks();
 		void closeSesionGoogle();

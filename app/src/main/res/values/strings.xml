@@ -41,12 +41,12 @@
     <string name="tabtextOpiniones">Opiniones</string>
     <string name="tabtextResultados">Resultados</string>
 
-    <string name="menu_ver_graficos">Ver gráficos</string>
-    <string name="menu_enviar_comentarios">Enviar comentarios</string>
-    <string name="opciones_de_cuenta">Opciones de cuenta</string>
-    <string name="menu_cerrar_sesion">Cerrar sesión</string>
-    <string name="eliminar_cuenta">Eliminar cuenta</string>
-    <string name="compartir_app">Compartir</string>
+    <string name="menu_view_chart">Ver gráficos</string>
+    <string name="menu_post_comments">Enviar comentarios</string>
+    <string name="account_options">Opciones de cuenta</string>
+    <string name="menu_sign_off">Cerrar sesión</string>
+    <string name="delete_account">Eliminar cuenta</string>
+    <string name="share_app">Compartir</string>
     <string name="TextEmailConfirm">Confirma tu email</string>
     <string name="confirmarPass">Confirma tu contraseña</string>
     <string name="nombreUsuarioVacio">Escribe un nombre de user</string>
@@ -85,5 +85,10 @@
     <string name="share_candidate_part1">Yo creo que </string>
     <string name="share_candidate_part2"> será el mejor presidente en la historia de El Salvador,
                                              \n y tú por cual votarás? </string>
+    <string name="report_error">Reportar un problema</string>
+    <string name="update_pass">Cambiar contraseña</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
