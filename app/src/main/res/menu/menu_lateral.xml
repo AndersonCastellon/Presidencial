@@ -2,6 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/home_app"
+            android:icon="@drawable/ic_home_view_app"
+            android:title="@string/go_home_view"/>
+
+    </group>
+
     <item android:title="@string/account_options">
         <menu>
             <item

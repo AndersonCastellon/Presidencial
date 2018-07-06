@@ -7,13 +7,16 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -39,6 +42,10 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 	DrawerLayout drawerLayout;
 	@BindView(R.id.navview)
 	NavigationView navview;
+	@BindView(R.id.layout_view_pager)
+	LinearLayout layoutViewPager;
+	@BindView(R.id.options_menu)
+	FrameLayout optionsMenu;
 
 	Unbinder unbinder;
 
@@ -60,7 +67,12 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 				boolean fragmentTransaction = false;
 				Fragment fragment = null;
 
+				boolean goHomeApp = false;
+
 				switch (item.getItemId()) {
+					case R.id.home_app:
+						goHomeApp = true;
+						break;
 					case R.id.sign_off:
 						getPresenter().signOff();
 						break;
@@ -80,14 +92,44 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 
 				if (fragmentTransaction) {
 
+					layoutViewPager.setVisibility(View.GONE);
+					optionsMenu.setVisibility(View.VISIBLE);
+
 					getSupportFragmentManager()
 							.beginTransaction()
-							.replace(R.id.conten_main, fragment)
+							.replace(R.id.options_menu, fragment)
+							.addToBackStack(null)
 							.commit();
 
-					item.setChecked(true);
+					if (item.isChecked()){
+						item.setChecked(false);
+					} else {
+						item.setChecked(true);
+					}
+
 
 					getSupportActionBar().setTitle(item.getTitle());
+
+					drawerLayout.closeDrawers();
+				}
+
+				if (goHomeApp) {
+
+					FragmentManager fragmentManager = getSupportFragmentManager();
+					Fragment currentFragment = fragmentManager.findFragmentById(R.id.options_menu);
+
+					fragmentManager.beginTransaction().remove(currentFragment).commit();
+
+					optionsMenu.setVisibility(View.GONE);
+					layoutViewPager.setVisibility(View.VISIBLE);
+
+					if (item.isChecked()){
+						item.setChecked(false);
+					} else {
+						item.setChecked(true);
+					}
+
+					getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
 
 					drawerLayout.closeDrawers();
 				}
