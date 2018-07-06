@@ -28,6 +28,7 @@ import com.papaprogramador.presidenciales.InterfacesMVP.MainViewContrat;
 import com.papaprogramador.presidenciales.Presenters.MainViewPresenter;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.View.Fragments.DeleteAccountFragment;
+import com.papaprogramador.presidenciales.View.Fragments.SuggestionsAndErrorsFragment;
 import com.papaprogramador.presidenciales.View.Fragments.UpdatePasswordFragment;
 
 import java.util.Objects;
@@ -85,11 +86,9 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 						fragment = new DeleteAccountFragment();
 						fragmentTransaction = true;
 						break;
-					case R.id.post_comments: //TODO: utilizar un fragment para comentarios, errores y otros asi como aliexpress app
-						getPresenter().getPostComments();
-						break;
-					case R.id.report_error:
-						getPresenter().getReportError();
+					case R.id.suggestions:
+						fragment = new SuggestionsAndErrorsFragment();
+						fragmentTransaction = true;
 						break;
 					case R.id.share_app:
 						getPresenter().getShareApp();
@@ -204,16 +203,6 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.dontAnimate()
 				.into(userImg);
-	}
-
-	@Override
-	public void postComments() {
-
-	}
-
-	@Override
-	public void reportError() {
-
 	}
 
 	@Override

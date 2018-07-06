@@ -10,16 +10,12 @@ public interface MainViewContrat {
 		void setToolbar();
 		void setTabs();
 		void getDataUser(FirebaseUser user);
-		void postComments();
-		void reportError();
 		void shareApp();
 		void goLoginView();
 		void errorCloseSesion();
 	}
 
 	interface Presenter extends MvpPresenter<View> {
-		void getPostComments();
-		void getReportError();
 		void getShareApp();
 		void setAuthListener();
 		void removeAuthListener();

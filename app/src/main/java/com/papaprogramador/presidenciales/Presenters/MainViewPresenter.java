@@ -50,16 +50,6 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 	}
 
 	@Override
-	public void getPostComments() {
-
-	}
-
-	@Override
-	public void getReportError() {
-
-	}
-
-	@Override
 	public void getShareApp() {
 
 	}

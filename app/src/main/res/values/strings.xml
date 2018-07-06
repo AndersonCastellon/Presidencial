@@ -98,5 +98,6 @@
         incluyendo tu email, tu votación, nombre de usuario e imagen de perfil. Sin embargo,
         todas las opiniones y comentarios realizados por ti no serán eliminados</string>
     <string name="delete_account_text_continue">Para continuar, por favor escribe a continuación las credenciales de la cuenta que deseas eliminar</string>
+    <string name="suggestions_and_errors">Sugerencias y errores</string>
 
 </resources>

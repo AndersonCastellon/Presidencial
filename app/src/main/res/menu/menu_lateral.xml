@@ -33,13 +33,9 @@
 
         <menu>
             <item
-                android:id="@+id/post_comments"
+                android:id="@+id/suggestions"
                 android:icon="@drawable/ic_post_comments"
-                android:title="@string/menu_post_comments" />
-            <item
-                android:id="@+id/report_error"
-                android:icon="@drawable/ic_menu_error_app"
-                android:title="@string/report_error"/>
+                android:title="@string/suggestions_and_errors" />
             <item
                 android:id="@+id/share_app"
                 android:icon="@drawable/ic_share_app"
