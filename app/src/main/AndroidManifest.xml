@@ -44,7 +44,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".View.Activity.MainView" />
         </activity>
-        <activity android:name=".View.Activity.OptionsMenuView"></activity>
     </application>
 
 </manifest>

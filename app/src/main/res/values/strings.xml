@@ -88,8 +88,15 @@
     <string name="report_error">Reportar un problema</string>
     <string name="update_pass">Cambiar contraseña</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="go_home_view">Inicio</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="update_password">Actualizar contraseña</string>
+    <string name="current_password">Contraseña actual</string>
+    <string name="repeat_new_password">Confirmar nueva contraseña</string>
+    <string name="delete_account_text">Al eliminar tu cuenta todos tus datos serán eliminados del sistema,
+        incluyendo tu email, tu votación, nombre de usuario e imagen de perfil. Sin embargo,
+        todas las opiniones y comentarios realizados por ti no serán eliminados</string>
+    <string name="delete_account_text_continue">Para continuar, por favor escribe a continuación las credenciales de la cuenta que deseas eliminar</string>
 
 </resources>
