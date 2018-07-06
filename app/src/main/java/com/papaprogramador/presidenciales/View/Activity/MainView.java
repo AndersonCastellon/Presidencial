@@ -96,46 +96,12 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 				}
 
 				if (fragmentTransaction) {
-
-					if (layoutViewPager.getVisibility() == View.VISIBLE) {
-						layoutViewPager.setVisibility(View.GONE);
-					}
-
-					if (optionsMenu.getVisibility() == View.GONE) {
-						optionsMenu.setVisibility(View.VISIBLE);
-					}
-
-					getSupportFragmentManager()
-							.beginTransaction()
-							.replace(R.id.options_menu, fragment)
-							.commit();
-
-					getSupportActionBar().setTitle(item.getTitle());
-
+					getPresenter().setNewFragment(fragment, item);
 					drawerLayout.closeDrawers();
 				}
 
 				if (goHomeApp) {
-
-					FragmentManager fragmentManager = getSupportFragmentManager();
-					Fragment currentFragment = fragmentManager.findFragmentById(R.id.options_menu);
-
-					if (currentFragment != null){
-						fragmentManager.beginTransaction().remove(currentFragment).commit();
-					}
-
-					if (optionsMenu.getVisibility() == View.VISIBLE) {
-						optionsMenu.setVisibility(View.GONE);
-					}
-
-					if (layoutViewPager.getVisibility() == View.GONE) {
-						layoutViewPager.setVisibility(View.VISIBLE);
-					}
-
-					item.setChecked(true);
-
-					getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
-
+					getPresenter().goHomeApp(item);
 					drawerLayout.closeDrawers();
 				}
 				return true;
@@ -156,6 +122,49 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 
 	@Override
 	public void onTabReselected(TabLayout.Tab tab) {
+
+	}
+
+	@Override
+	public void setNewFragment(Fragment fragment, CharSequence itemTitle) {
+
+		if (layoutViewPager.getVisibility() == View.VISIBLE) {
+			layoutViewPager.setVisibility(View.GONE);
+		}
+
+		if (optionsMenu.getVisibility() == View.GONE) {
+			optionsMenu.setVisibility(View.VISIBLE);
+		}
+
+		getSupportFragmentManager()
+				.beginTransaction()
+				.replace(R.id.options_menu, fragment)
+				.commit();
+
+		getSupportActionBar().setTitle(itemTitle);
+	}
+
+	@Override
+	public void goHomeApp(MenuItem item) {
+
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		Fragment currentFragment = fragmentManager.findFragmentById(R.id.options_menu);
+
+		if (currentFragment != null) {
+			fragmentManager.beginTransaction().remove(currentFragment).commit();
+		}
+
+		if (optionsMenu.getVisibility() == View.VISIBLE) {
+			optionsMenu.setVisibility(View.GONE);
+		}
+
+		if (layoutViewPager.getVisibility() == View.GONE) {
+			layoutViewPager.setVisibility(View.VISIBLE);
+		}
+
+		item.setChecked(true);
+
+		getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
 
 	}
 

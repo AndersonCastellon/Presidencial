@@ -2,6 +2,8 @@ package com.papaprogramador.presidenciales.Presenters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.view.MenuItem;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -47,6 +49,28 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 		this.context = context;
 		this.string = string;
 		firebaseAuth = FirebaseAuth.getInstance();
+	}
+
+	@Override
+	public void setNewFragment(final Fragment fragment, MenuItem item) {
+		final CharSequence itemTitle = item.getTitle();
+
+		ifViewAttached(new ViewAction<MainViewContrat.View>() {
+			@Override
+			public void run(@NonNull MainViewContrat.View view) {
+				view.setNewFragment(fragment, itemTitle);
+			}
+		});
+	}
+
+	@Override
+	public void goHomeApp(final MenuItem item) {
+		ifViewAttached(new ViewAction<MainViewContrat.View>() {
+			@Override
+			public void run(@NonNull MainViewContrat.View view) {
+				view.goHomeApp(item);
+			}
+		});
 	}
 
 	@Override
