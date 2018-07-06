@@ -11,7 +11,8 @@ public interface MainViewContrat {
 	interface View extends MvpView {
 		void setNewFragment(Fragment fragment, CharSequence itemTitle);
 		void goHomeApp(MenuItem item);
-		void onStartView();
+		void hideMainView(boolean hide);
+		void starNavView();
 		void setToolbar();
 		void setTabs();
 		void getDataUser(FirebaseUser user);

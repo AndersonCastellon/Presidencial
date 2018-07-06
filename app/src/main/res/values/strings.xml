@@ -99,5 +99,10 @@
         todas las opiniones y comentarios realizados por ti no serán eliminados</string>
     <string name="delete_account_text_continue">Para continuar, por favor escribe a continuación las credenciales de la cuenta que deseas eliminar</string>
     <string name="suggestions_and_errors">Sugerencias y errores</string>
+    <string name="suggestions_options_text">Primero selecciona que te gustaría hacer</string>
+    <string name="suggestions_and_errors_hint">Tú mensaje</string>
+    <string name="select_options_spinner">Selecciona una opción</string>
+    <string name="suggestions_email_text">Escribe aquí el email con el que enviarás tus sugerencias</string>
+    <string name="send_suggestions_and_errors">Enviar</string>
 
 </resources>

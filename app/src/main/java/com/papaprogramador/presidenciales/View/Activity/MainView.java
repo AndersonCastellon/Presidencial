@@ -128,14 +128,6 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 	@Override
 	public void setNewFragment(Fragment fragment, CharSequence itemTitle) {
 
-		if (layoutViewPager.getVisibility() == View.VISIBLE) {
-			layoutViewPager.setVisibility(View.GONE);
-		}
-
-		if (optionsMenu.getVisibility() == View.GONE) {
-			optionsMenu.setVisibility(View.VISIBLE);
-		}
-
 		getSupportFragmentManager()
 				.beginTransaction()
 				.replace(R.id.options_menu, fragment)
@@ -154,14 +146,6 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 			fragmentManager.beginTransaction().remove(currentFragment).commit();
 		}
 
-		if (optionsMenu.getVisibility() == View.VISIBLE) {
-			optionsMenu.setVisibility(View.GONE);
-		}
-
-		if (layoutViewPager.getVisibility() == View.GONE) {
-			layoutViewPager.setVisibility(View.VISIBLE);
-		}
-
 		item.setChecked(true);
 
 		getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
@@ -169,7 +153,18 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 	}
 
 	@Override
-	public void onStartView() {
+	public void hideMainView(boolean hide) {
+		if (hide){
+			layoutViewPager.setVisibility(View.GONE);
+			optionsMenu.setVisibility(View.VISIBLE);
+		} else {
+			layoutViewPager.setVisibility(View.VISIBLE);
+			optionsMenu.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public void starNavView() {
 
 		//Referencia al encabezado del menú lateral para pasar los datos de user
 		View header = ((NavigationView) findViewById(R.id.navview)).getHeaderView(0);

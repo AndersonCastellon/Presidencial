@@ -33,7 +33,7 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 				public void run(@NonNull MainViewContrat.View view) {
 					FirebaseUser user = firebaseAuth.getCurrentUser();
 					if (user != null) {
-						view.onStartView();
+						view.starNavView();
 						view.setToolbar();
 						view.setTabs();
 						view.getDataUser(user);
@@ -59,6 +59,7 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 			@Override
 			public void run(@NonNull MainViewContrat.View view) {
 				view.setNewFragment(fragment, itemTitle);
+				view.hideMainView(true);
 			}
 		});
 	}
@@ -69,6 +70,7 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 			@Override
 			public void run(@NonNull MainViewContrat.View view) {
 				view.goHomeApp(item);
+				view.hideMainView(false);
 			}
 		});
 	}

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.dd.processbutton.iml.ActionProcessButton;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.SetIntoFirebaseDatabase;
@@ -53,7 +52,7 @@ public class SelectDepartmentDialogFragment extends android.support.v4.app.Dialo
 
 		ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.department_dialog_fragment, null);
 
-		mSpinnerDepartment = viewGroup.findViewById(R.id.mSpinnerDepartment);
+		mSpinnerDepartment = viewGroup.findViewById(R.id.mSpinner);
 		Button actionButtonSetDepartment = viewGroup.findViewById(R.id.btnSetDepartment);
 
 		List<String> listDepartment = new LinkedList<>(Arrays.asList(Constans.DEPARTAMENTO));
