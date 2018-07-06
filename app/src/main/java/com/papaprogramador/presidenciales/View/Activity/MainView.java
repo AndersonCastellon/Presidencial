@@ -92,21 +92,18 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 
 				if (fragmentTransaction) {
 
-					layoutViewPager.setVisibility(View.GONE);
-					optionsMenu.setVisibility(View.VISIBLE);
+					if (layoutViewPager.getVisibility() == View.VISIBLE) {
+						layoutViewPager.setVisibility(View.GONE);
+					}
+
+					if (optionsMenu.getVisibility() == View.GONE) {
+						optionsMenu.setVisibility(View.VISIBLE);
+					}
 
 					getSupportFragmentManager()
 							.beginTransaction()
 							.replace(R.id.options_menu, fragment)
-							.addToBackStack(null)
 							.commit();
-
-					if (item.isChecked()){
-						item.setChecked(false);
-					} else {
-						item.setChecked(true);
-					}
-
 
 					getSupportActionBar().setTitle(item.getTitle());
 
@@ -118,16 +115,19 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 					FragmentManager fragmentManager = getSupportFragmentManager();
 					Fragment currentFragment = fragmentManager.findFragmentById(R.id.options_menu);
 
-					fragmentManager.beginTransaction().remove(currentFragment).commit();
-
-					optionsMenu.setVisibility(View.GONE);
-					layoutViewPager.setVisibility(View.VISIBLE);
-
-					if (item.isChecked()){
-						item.setChecked(false);
-					} else {
-						item.setChecked(true);
+					if (currentFragment != null){
+						fragmentManager.beginTransaction().remove(currentFragment).commit();
 					}
+
+					if (optionsMenu.getVisibility() == View.VISIBLE) {
+						optionsMenu.setVisibility(View.GONE);
+					}
+
+					if (layoutViewPager.getVisibility() == View.GONE) {
+						layoutViewPager.setVisibility(View.VISIBLE);
+					}
+
+					item.setChecked(true);
 
 					getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
 
