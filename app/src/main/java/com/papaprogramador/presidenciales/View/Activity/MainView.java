@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales.View.Activity;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -22,11 +23,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseUser;
-import com.hannesdorfmann.mosby3.mvp.MvpActivity;
+import com.hannesdorfmann.mosby3.mvp.viewstate.MvpViewStateActivity;
+import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import com.papaprogramador.presidenciales.Adapters.ViewPageAdapter;
 import com.papaprogramador.presidenciales.InterfacesMVP.MainViewContrat;
 import com.papaprogramador.presidenciales.Presenters.MainViewPresenter;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.Utils.ViewStateActivity.CustomViewStateActivity;
 import com.papaprogramador.presidenciales.View.Fragments.DeleteAccountFragment;
 import com.papaprogramador.presidenciales.View.Fragments.SuggestionsAndErrorsFragment;
 import com.papaprogramador.presidenciales.View.Fragments.UpdatePasswordFragment;
@@ -37,13 +40,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.Presenter>
+public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainViewContrat.Presenter, CustomViewStateActivity>
 		implements TabLayout.OnTabSelectedListener, MainViewContrat.View {
 
 	@BindView(R.id.LayoutMain)
 	DrawerLayout drawerLayout;
 	@BindView(R.id.navview)
-	NavigationView navview;
+	NavigationView navigationView;
 	@BindView(R.id.layout_view_pager)
 	LinearLayout layoutViewPager;
 	@BindView(R.id.options_menu)
@@ -62,7 +65,7 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 
 		unbinder = ButterKnife.bind(this);
 
-		navview.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
 			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -146,18 +149,29 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 			fragmentManager.beginTransaction().remove(currentFragment).commit();
 		}
 
-		item.setChecked(true);
+		if (item != null) {
+			item.setChecked(true);
+		}
 
-		getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+		try {
+			getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
 	public void hideMainView(boolean hide) {
+
+		CustomViewStateActivity customViewStateActivity = viewState;
+
 		if (hide){
+			customViewStateActivity.setHideCandidateView(true);
 			layoutViewPager.setVisibility(View.GONE);
 			optionsMenu.setVisibility(View.VISIBLE);
 		} else {
+			customViewStateActivity.setHideCandidateView(false);
 			layoutViewPager.setVisibility(View.VISIBLE);
 			optionsMenu.setVisibility(View.GONE);
 		}
@@ -254,6 +268,16 @@ public class MainView extends MvpActivity<MainViewContrat.View, MainViewContrat.
 				drawerLayout.openDrawer(GravityCompat.START);
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@NonNull
+	@Override
+	public CustomViewStateActivity createViewState() {
+		return new CustomViewStateActivity();
+	}
+
+	@Override
+	public void onNewViewStateInstance() {
 	}
 
 	@Override

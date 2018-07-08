@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/LayoutMain"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
@@ -22,8 +23,7 @@
 
         </FrameLayout>
 
-        <include
-            layout="@layout/contenido_principal"/>
+        <include layout="@layout/contenido_principal" />
 
     </LinearLayout>
 
@@ -35,6 +35,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header_navigation_drawer"
-        app:menu="@menu/menu_lateral"/>
+        app:menu="@menu/menu_lateral" />
 
 </android.support.v4.widget.DrawerLayout>
