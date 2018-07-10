@@ -19,6 +19,7 @@ import com.papaprogramador.presidenciales.Utils.StaticMethods.GetIdDevice;
 import com.papaprogramador.presidenciales.UseCases.ObtenerIdFirebase;
 import com.papaprogramador.presidenciales.UseCases.RegistrarUsuarioRTDB;
 import com.papaprogramador.presidenciales.Utils.Constans;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.SharedPreferencesMethods;
 
 public class LoginPresenter extends MvpBasePresenter<LoginContract.View> implements LoginContract.Presenter {
 
@@ -34,7 +35,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginContract.View> impleme
 	}
 
 	@Override
-	public void obtenerIdFirebase() {
+	public void getIdFirebase() {
 		new ObtenerIdFirebase(idDevice,
 				new ObtenerIdFirebase.IdObtenido() {
 					@Override
@@ -55,7 +56,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginContract.View> impleme
 	}
 
 
-	public void iniciarSesionConEmail(final Context context, final String emailUsuario, final String pass) {
+	public void logInWithEmailAndPassword(final Context context, final String emailUsuario, final String pass) {
 
 		ifViewAttached(new ViewAction<LoginContract.View>() {
 			@Override
@@ -89,6 +90,8 @@ public class LoginPresenter extends MvpBasePresenter<LoginContract.View> impleme
 								public void onResult(final String resultado, FirebaseUser user) {
 									switch (resultado) {
 										case Constans.RESULT_IS_SUCCESSFUL:
+											SharedPreferencesMethods.saveEmailAndPassword(context,
+													emailUsuario, pass);
 											view.goListaCandidatosView();
 											break;
 										case Constans.RESULT_EMAIL_NO_VERIFY:
@@ -201,6 +204,8 @@ public class LoginPresenter extends MvpBasePresenter<LoginContract.View> impleme
 
 								switch (resultado) {
 									case Constans.RESULT_IS_SUCCESSFUL:
+										SharedPreferencesMethods.saveEmailAndPassword(context,
+												signInAccount.getEmail(), null);
 										registrarUsuarioEnFirebase(user);
 										break;
 									case Constans.RESULT_NO_SUCCESSFUL:

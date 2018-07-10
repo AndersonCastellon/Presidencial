@@ -28,8 +28,8 @@ public interface LoginContract {
 	}
 
 	interface Presenter extends MvpPresenter<View> {
-		void obtenerIdFirebase();
-		void iniciarSesionConEmail(Context context, String emailUsuario, String pass);
+		void getIdFirebase();
+		void logInWithEmailAndPassword(Context context, String emailUsuario, String pass);
 		void obtenerGoogleApliClient(Context context, String string);
 		void activityResetPassword();
 		void googleSingInFromResult(Intent data);

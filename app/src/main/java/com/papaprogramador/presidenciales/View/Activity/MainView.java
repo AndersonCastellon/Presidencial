@@ -24,7 +24,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.viewstate.MvpViewStateActivity;
-import com.hannesdorfmann.mosby3.mvp.viewstate.ViewState;
 import com.papaprogramador.presidenciales.Adapters.ViewPageAdapter;
 import com.papaprogramador.presidenciales.InterfacesMVP.MainViewContrat;
 import com.papaprogramador.presidenciales.Presenters.MainViewPresenter;
@@ -32,7 +31,7 @@ import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.ViewStateActivity.CustomViewStateActivity;
 import com.papaprogramador.presidenciales.View.Fragments.DeleteAccountFragment;
 import com.papaprogramador.presidenciales.View.Fragments.SuggestionsAndErrorsFragment;
-import com.papaprogramador.presidenciales.View.Fragments.UpdatePasswordFragment;
+import com.papaprogramador.presidenciales.TreeMvp.UpdatePasswordFragment.UpdatePasswordFragment;
 
 import java.util.Objects;
 

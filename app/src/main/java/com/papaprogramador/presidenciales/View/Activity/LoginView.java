@@ -60,7 +60,7 @@ public class LoginView extends MvpActivity<LoginContract.View, LoginContract.Pre
 			case R.id.mBtnLoginEmail:
 				String emailU = emailUserLoginView.getText().toString();
 				String password = passUserLoginView.getText().toString();
-				getPresenter().iniciarSesionConEmail(context, emailU, password);
+				getPresenter().logInWithEmailAndPassword(context, emailU, password);
 				break;
 			case R.id.btnLoginGoogle:
 				getPresenter().obtenerGoogleApliClient(context,
@@ -70,7 +70,7 @@ public class LoginView extends MvpActivity<LoginContract.View, LoginContract.Pre
 				getPresenter().activityResetPassword();
 				break;
 			case R.id.mBtnNewAccount:
-				getPresenter().obtenerIdFirebase();
+				getPresenter().getIdFirebase();
 				break;
 		}
 	}

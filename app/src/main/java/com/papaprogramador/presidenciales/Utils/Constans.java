@@ -38,4 +38,7 @@ public class Constans {
 
 	public static final String PUT_URL_HTML_CANDIDATE = "PUT_URL_HTML_CANDIDATE";
 	public static final String PUT_UID_USER = "PUT_UID_USER";
+	public static final String SP_BLOCK_CREDENTIALS_USERS = "userCredentials";
+	public static final String SP_PUTSTRING_EMAILUSER = "emailUser";
+	public static final String SP_PUTSTRING_PASSWORDUSER = "passwordUser";
 }
