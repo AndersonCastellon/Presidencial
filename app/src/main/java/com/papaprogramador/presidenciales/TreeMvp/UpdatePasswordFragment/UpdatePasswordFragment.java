@@ -79,4 +79,39 @@ public class UpdatePasswordFragment extends MvpFragment<UpdatePasswordFragmentCo
 			loadingView.setVisibility(View.GONE);
 		}
 	}
+
+	@Override
+	public void currentPasswordIsEmpty() {
+
+	}
+
+	@Override
+	public void passwordPreferencesIsNull() {
+
+	}
+
+	@Override
+	public void currentPasswordDoesNotMatch() {
+
+	}
+
+	@Override
+	public void newPasswordIsEmpty() {
+
+	}
+
+	@Override
+	public void repeatNewPasswordIsEmpty() {
+
+	}
+
+	@Override
+	public void newPasswordDoesNotMatch() {
+
+	}
+
+	@Override
+	public void goResetPasswordView(String emailUser) {
+
+	}
 }

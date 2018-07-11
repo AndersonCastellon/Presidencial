@@ -22,12 +22,12 @@ public class SharedPreferencesMethods {
 	}
 
 	public static String getEmail(Context context){
-		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, 0);
+		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
 		return sharedPreferences.getString(Constans.SP_PUTSTRING_EMAILUSER, null);
 	}
 
 	public static String getPassword(Context context){
-		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, 0);
+		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
 		return sharedPreferences.getString(Constans.SP_PUTSTRING_PASSWORDUSER, null);
 	}
 }
