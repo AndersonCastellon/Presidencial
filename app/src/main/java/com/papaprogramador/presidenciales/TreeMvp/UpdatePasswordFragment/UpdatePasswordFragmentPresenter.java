@@ -4,7 +4,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.ReauthenticateUserFirebase;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.SharedPreferencesMethods;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.UpdatePassword;
 
 public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePasswordFragmentContract.View>
 		implements UpdatePasswordFragmentContract.Presenter {
@@ -12,8 +14,10 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 	private boolean passwordIsValid;
 	private String passCurrent;
 	private String currentEmail;
+	private Context context;
 
 	UpdatePasswordFragmentPresenter(Context context) {
+		this.context = context;
 		currentEmail = SharedPreferencesMethods.getEmail(context);
 		passCurrent = SharedPreferencesMethods.getPassword(context);
 		passwordIsValid = true;
@@ -88,8 +92,22 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 	}
 
 	@Override
-	public void updatePassword(String emailUser, String currentPassword, String newPassword) {
+	public void updatePassword(String emailUser, String currentPassword, final String newPassword) {
 
+		if (ReauthenticateUserFirebase.reauthenticateUser(emailUser, currentPassword)){
+			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+				@Override
+				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+					view.showProgress(true);
+					UpdatePassword.updatePasswordUser(newPassword);
+					SharedPreferencesMethods.setPassword(context, newPassword);
+					view.showProgress(false);
+					view.updatePasswordIsSuccessful();
+				}
+			});
+
+
+		}
 	}
 
 	@Override

@@ -14,6 +14,7 @@ public interface UpdatePasswordFragmentContract {
 		void repeatNewPasswordIsEmpty();
 		void newPasswordDoesNotMatch();
 		void goResetPasswordView(String emailUser);
+		void updatePasswordIsSuccessful();
 	}
 
 	interface Presenter extends MvpPresenter<UpdatePasswordFragmentContract.View> {

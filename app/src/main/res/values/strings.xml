@@ -104,5 +104,10 @@
     <string name="select_options_spinner">Selecciona una opción</string>
     <string name="suggestions_email_text">Escribe aquí el email con el que enviarás tus sugerencias</string>
     <string name="send_suggestions_and_errors">Enviar</string>
+    <string name="current_password_long_text">Escribe tu contraseña actual</string>
+    <string name="current_password_not_match">Contraseña actual incorrecta</string>
+    <string name="new_password_is_empty_text">Escribe tu nueva contraseña</string>
+    <string name="repeat_new_password_please_text">Confirma tu nueva contraseña</string>
+    <string name="new_password_not_match">La nueva contraseña no coincide</string>
 
 </resources>

@@ -12,7 +12,7 @@ public class SharedPreferencesMethods {
 
 	public static void saveEmailAndPassword(Context context, String emailUser, String password) {
 
-		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, 0);
+		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 
 		editor.putString(Constans.SP_PUTSTRING_EMAILUSER, emailUser);
@@ -21,12 +21,21 @@ public class SharedPreferencesMethods {
 		editor.apply();
 	}
 
-	public static String getEmail(Context context){
+	public static void setPassword(Context context, String newPassword) {
+
+		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+
+		editor.putString(Constans.SP_PUTSTRING_PASSWORDUSER, newPassword);
+		editor.apply();
+	}
+
+	public static String getEmail(Context context) {
 		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
 		return sharedPreferences.getString(Constans.SP_PUTSTRING_EMAILUSER, null);
 	}
 
-	public static String getPassword(Context context){
+	public static String getPassword(Context context) {
 		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
 		return sharedPreferences.getString(Constans.SP_PUTSTRING_PASSWORDUSER, null);
 	}

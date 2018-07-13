@@ -3,6 +3,7 @@ package com.papaprogramador.presidenciales.TreeMvp.UpdatePasswordFragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class UpdatePasswordFragment extends MvpFragment<UpdatePasswordFragmentCo
 	LinearLayout contentResetPassViewMain;
 	@BindView(R.id.loadingView)
 	ProgressBar loadingView;
+
 	Unbinder unbinder;
 
 	public UpdatePasswordFragment() {
@@ -64,12 +66,6 @@ public class UpdatePasswordFragment extends MvpFragment<UpdatePasswordFragmentCo
 	}
 
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		unbinder.unbind();
-	}
-
-	@Override
 	public void showProgress(boolean show) {
 		if (show) {
 			contentResetPassViewMain.setVisibility(View.GONE);
@@ -82,7 +78,7 @@ public class UpdatePasswordFragment extends MvpFragment<UpdatePasswordFragmentCo
 
 	@Override
 	public void currentPasswordIsEmpty() {
-
+		currentPassword.setError(getResources().getString(R.string.current_password_long_text));
 	}
 
 	@Override
@@ -92,26 +88,38 @@ public class UpdatePasswordFragment extends MvpFragment<UpdatePasswordFragmentCo
 
 	@Override
 	public void currentPasswordDoesNotMatch() {
-
+		currentPassword.setError(getResources().getString(R.string.current_password_not_match));
 	}
 
 	@Override
 	public void newPasswordIsEmpty() {
-
+		newPassword.setError(getResources().getString(R.string.new_password_is_empty_text));
 	}
 
 	@Override
 	public void repeatNewPasswordIsEmpty() {
-
+		repeatNewPassword.setError(getResources().getString(R.string.repeat_new_password_please_text));
 	}
 
 	@Override
 	public void newPasswordDoesNotMatch() {
-
+		repeatNewPassword.setError(getResources().getString(R.string.new_password_not_match));
 	}
 
 	@Override
 	public void goResetPasswordView(String emailUser) {
 
+	}
+
+	@Override
+	public void updatePasswordIsSuccessful() {
+
+
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		unbinder.unbind();
 	}
 }
