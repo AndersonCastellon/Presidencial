@@ -24,17 +24,19 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 	}
 
 	@Override
-	public void validatePassword(String currentPassword, String newPassword, String repeatNewPassword) {
-
+	public void passwordPreferencesIsNull() {
 		if (passCurrent == null) {
 			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
 				@Override
 				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
-					passwordIsValid = false;
 					view.passwordPreferencesIsNull();
 				}
 			});
 		}
+	}
+
+	@Override
+	public void validatePassword(String currentPassword, String newPassword, String repeatNewPassword) {
 
 		if (currentPassword.isEmpty()) {
 			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
@@ -62,6 +64,13 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 					view.newPasswordIsEmpty();
 				}
 			});
+		} else if (!UpdatePassword.validatePasswordLength(newPassword)) {
+			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+				@Override
+				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+					view.newPasswordNoValid();
+				}
+			});
 		}
 
 		if (repeatNewPassword.isEmpty()) {
@@ -70,6 +79,13 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
 					passwordIsValid = false;
 					view.repeatNewPasswordIsEmpty();
+				}
+			});
+		} else if (!UpdatePassword.validatePasswordLength(repeatNewPassword)) {
+			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+				@Override
+				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+					view.newPasswordNoValid();
 				}
 			});
 		}
@@ -94,30 +110,27 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 	@Override
 	public void updatePassword(String emailUser, String currentPassword, final String newPassword) {
 
-		if (ReauthenticateUserFirebase.reauthenticateUser(emailUser, currentPassword)){
+		if (ReauthenticateUserFirebase.reauthenticateUser(emailUser, currentPassword)) {
 			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
 				@Override
 				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
 					view.showProgress(true);
-					UpdatePassword.updatePasswordUser(newPassword);
-					SharedPreferencesMethods.setPassword(context, newPassword);
-					view.showProgress(false);
-					view.updatePasswordIsSuccessful();
+					if (UpdatePassword.updatePasswordUser(newPassword)){
+						SharedPreferencesMethods.setPassword(context, newPassword);
+						view.showProgress(false);
+						view.updatePasswordIsSuccessful();
+					} else {
+						ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+							@Override
+							public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+								view.updatePasswordError();
+							}
+						});
+					}
 				}
 			});
 
 
 		}
-	}
-
-	@Override
-	public void goResetPasswordView() {
-
-		ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
-			@Override
-			public void run(@NonNull UpdatePasswordFragmentContract.View view) {
-				view.goResetPasswordView(currentEmail);
-			}
-		});
 	}
 }

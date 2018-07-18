@@ -10,6 +10,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.ResetPassword;
 import com.papaprogramador.presidenciales.Presenters.ResetPasswordPresenter;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.Utils.Constans;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +32,12 @@ public class ResetPasswordView extends MvpActivity<ResetPassword.View, ResetPass
 		setContentView(R.layout.activity_reset_password);
 
 		unbinder = ButterKnife.bind(this);
+
+		//TODO: Verificar el contenido del bundle, aun no llega lo esperado
+		Bundle bundle = getIntent().getExtras();
+		if (bundle != null){
+			resetEmailUser.setText(bundle.getString(Constans.PUT_EMAIL_USUARIO));
+		}
 
 	}
 

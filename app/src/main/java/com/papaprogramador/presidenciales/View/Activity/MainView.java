@@ -28,10 +28,12 @@ import com.papaprogramador.presidenciales.Adapters.ViewPageAdapter;
 import com.papaprogramador.presidenciales.InterfacesMVP.MainViewContrat;
 import com.papaprogramador.presidenciales.Presenters.MainViewPresenter;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.TreeMvp.UpdatePasswordFragment.UpdatePasswordView;
+import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Utils.ViewStateActivity.CustomViewStateActivity;
 import com.papaprogramador.presidenciales.View.Fragments.DeleteAccountFragment;
+import com.papaprogramador.presidenciales.View.Fragments.DialogFragment.DialogOk;
 import com.papaprogramador.presidenciales.View.Fragments.SuggestionsAndErrorsFragment;
-import com.papaprogramador.presidenciales.TreeMvp.UpdatePasswordFragment.UpdatePasswordFragment;
 
 import java.util.Objects;
 
@@ -40,7 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainViewContrat.Presenter, CustomViewStateActivity>
-		implements TabLayout.OnTabSelectedListener, MainViewContrat.View {
+		implements TabLayout.OnTabSelectedListener, MainViewContrat.View, DialogOk.DialogOkListener {
 
 	@BindView(R.id.LayoutMain)
 	DrawerLayout drawerLayout;
@@ -81,7 +83,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 						getPresenter().signOff();
 						break;
 					case R.id.update_pass:
-						fragment = new UpdatePasswordFragment();
+						fragment = new UpdatePasswordView();
 						fragmentTransaction = true;
 						break;
 					case R.id.delete_account:
@@ -141,23 +143,18 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 	@Override
 	public void goHomeApp(MenuItem item) {
 
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		Fragment currentFragment = fragmentManager.findFragmentById(R.id.options_menu);
-
-		if (currentFragment != null) {
-			fragmentManager.beginTransaction().remove(currentFragment).commit();
-		}
-
 		if (item != null) {
 			item.setChecked(true);
 		}
+	}
 
+	@Override
+	public void setTitleActionBar() {
 		try {
 			getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
 		} catch (Resources.NotFoundException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
@@ -165,7 +162,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 
 		CustomViewStateActivity customViewStateActivity = viewState;
 
-		if (hide){
+		if (hide) {
 			customViewStateActivity.setHideCandidateView(true);
 			layoutViewPager.setVisibility(View.GONE);
 			optionsMenu.setVisibility(View.VISIBLE);
@@ -238,9 +235,27 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 	}
 
 	@Override
+	public void goResetPasswordView(String emailUser) {
+		//TODO: Verificar el valor enviado
+		Intent intent = new Intent(this, ResetPasswordView.class);
+		intent.putExtra(Constans.PUT_EMAIL_USUARIO, emailUser);
+		startActivityForResult(intent, Constans.REQUEST_CODE_RESET_PASSWORD_VIEW);
+	}
+
+	@Override
 	public void errorCloseSesion() {
 		Snackbar.make(drawerLayout, getResources().getString(R.string.errorThis),
 				Snackbar.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void removeCurrentFragment() {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		Fragment currentFragment = fragmentManager.findFragmentById(R.id.options_menu);
+
+		if (currentFragment != null) {
+			fragmentManager.beginTransaction().remove(currentFragment).commit();
+		}
 	}
 
 	@NonNull
@@ -276,7 +291,33 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 	}
 
 	@Override
+	public void onResultDialogOk(int requestCode) {
+
+		switch (requestCode) {
+			case Constans.UPDATE_PASSWORD_SUCCESSFUL_CODE:
+				removeCurrentFragment();
+				setTitleActionBar();
+				hideMainView(false);
+				break;
+			case Constans.CURRENT_PASSWORD_IS_NULL:
+				getPresenter().goResetPasswordView();
+				break;
+		}
+	}
+
+	@Override
 	public void onNewViewStateInstance() {
+		hideMainView(false);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+			case Constans.REQUEST_CODE_RESET_PASSWORD_VIEW:
+				onResultDialogOk(Constans.UPDATE_PASSWORD_SUCCESSFUL_CODE);
+				break;
+		}
 	}
 
 	@Override

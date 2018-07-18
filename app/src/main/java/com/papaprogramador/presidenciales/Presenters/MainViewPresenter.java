@@ -15,6 +15,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.MainViewContrat;
 import com.papaprogramador.presidenciales.UseCases.ConnectionCallbackGoogleApiClient;
 import com.papaprogramador.presidenciales.UseCases.GoogleApiClientListener;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.SharedPreferencesMethods;
 
 public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 		implements MainViewContrat.Presenter {
@@ -70,6 +71,8 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 			@Override
 			public void run(@NonNull MainViewContrat.View view) {
 				view.goHomeApp(item);
+				view.removeCurrentFragment();
+				view.setTitleActionBar();
 				view.hideMainView(false);
 			}
 		});
@@ -78,6 +81,18 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 	@Override
 	public void getShareApp() {
 
+	}
+
+	@Override
+	public void goResetPasswordView() {
+		final String emailUser = SharedPreferencesMethods.getEmail(context);
+
+		ifViewAttached(new ViewAction<MainViewContrat.View>() {
+			@Override
+			public void run(@NonNull MainViewContrat.View view) {
+				view.goResetPasswordView(emailUser);
+			}
+		});
 	}
 
 	@Override

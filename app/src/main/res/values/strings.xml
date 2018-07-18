@@ -71,7 +71,7 @@
     <string name="confirmaEmailUsuario">Confirma tu email</string>
     <string name="passVacio">Escribe tu contraseña</string>
     <string name="pass2Vacio">Confirma tu contraseña</string>
-    <string name="passInvalido">Debe de contener entre 8 y 30 caracteres</string>
+    <string name="password_length_is_invalid">Debe de contener entre 8 y 30 caracteres</string>
     <string name="null_Connection_Exception">Error al conectarse con el servidor.
                                    \n Toca para intentarlo de nuevo.</string>
     <string name="applyNewVoteIsSuccesful">Has votado correctamente</string>
@@ -109,5 +109,8 @@
     <string name="new_password_is_empty_text">Escribe tu nueva contraseña</string>
     <string name="repeat_new_password_please_text">Confirma tu nueva contraseña</string>
     <string name="new_password_not_match">La nueva contraseña no coincide</string>
+    <string name="update_password_successful">La contraseña ha sido actualizada correctamente</string>
+    <string name="cancel_dialog_text">Cancelar</string>
+    <string name="current_password_is_null_dialog_text">Has iniciado sesión con Google. Para establecer una contraseña a tu cuenta preciona Ok</string>
 
 </resources>

@@ -11,6 +11,7 @@ public interface MainViewContrat {
 	interface View extends MvpView {
 		void setNewFragment(Fragment fragment, CharSequence itemTitle);
 		void goHomeApp(MenuItem item);
+		void setTitleActionBar();
 		void hideMainView(boolean hide);
 		void starNavView();
 		void setToolbar();
@@ -18,13 +19,16 @@ public interface MainViewContrat {
 		void getDataUser(FirebaseUser user);
 		void shareApp();
 		void goLoginView();
+		void goResetPasswordView(String emailUser);
 		void errorCloseSesion();
+		void removeCurrentFragment();
 	}
 
 	interface Presenter extends MvpPresenter<View> {
 		void setNewFragment(Fragment fragment, MenuItem item);
 		void goHomeApp(MenuItem item);
 		void getShareApp();
+		void goResetPasswordView();
 		void setAuthListener();
 		void removeAuthListener();
 		void signOff();

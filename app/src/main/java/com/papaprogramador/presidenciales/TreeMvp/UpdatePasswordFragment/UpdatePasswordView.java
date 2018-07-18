@@ -3,7 +3,7 @@ package com.papaprogramador.presidenciales.TreeMvp.UpdatePasswordFragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +13,18 @@ import android.widget.ProgressBar;
 
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.Utils.Constans;
+import com.papaprogramador.presidenciales.View.Fragments.DialogFragment.DialogOk;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class UpdatePasswordFragment extends MvpFragment<UpdatePasswordFragmentContract.View, UpdatePasswordFragmentContract.Presenter>
+public class UpdatePasswordView extends MvpFragment<UpdatePasswordFragmentContract.View, UpdatePasswordFragmentContract.Presenter>
 		implements UpdatePasswordFragmentContract.View {
-
 
 	@BindView(R.id.current_password)
 	TextInputEditText currentPassword;
@@ -36,17 +39,23 @@ public class UpdatePasswordFragment extends MvpFragment<UpdatePasswordFragmentCo
 
 	Unbinder unbinder;
 
-	public UpdatePasswordFragment() {
+	public UpdatePasswordView() {
 	}
 
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_update_password, container, false);
 
 		unbinder = ButterKnife.bind(this, view);
 		return view;
+	}
+
+	@Override
+	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		getPresenter().passwordPreferencesIsNull();
 	}
 
 	@OnClick(R.id.update_password)
@@ -84,6 +93,13 @@ public class UpdatePasswordFragment extends MvpFragment<UpdatePasswordFragmentCo
 	@Override
 	public void passwordPreferencesIsNull() {
 
+		Bundle bundle = new Bundle();
+		bundle.putInt(Constans.PUT_DIALOG_OK_REQUEST_CODE, Constans.CURRENT_PASSWORD_IS_NULL);
+		bundle.putString(Constans.PUT_DIALOG_OK_MESSAGE,
+				getResources().getString(R.string.current_password_is_null_dialog_text));
+
+		DialogOk dialogOk = DialogOk.newInstance(bundle);
+		dialogOk.show(Objects.requireNonNull(getFragmentManager()), "DialogOk");
 	}
 
 	@Override
@@ -102,18 +118,34 @@ public class UpdatePasswordFragment extends MvpFragment<UpdatePasswordFragmentCo
 	}
 
 	@Override
+	public void newPasswordNoValid() {
+		newPassword.setError(getResources().getString(R.string.password_length_is_invalid));
+		repeatNewPassword.setError(getResources().getString(R.string.password_length_is_invalid));
+
+		newPassword.setText("");
+		repeatNewPassword.setText("");
+
+	}
+
+	@Override
 	public void newPasswordDoesNotMatch() {
 		repeatNewPassword.setError(getResources().getString(R.string.new_password_not_match));
 	}
 
 	@Override
-	public void goResetPasswordView(String emailUser) {
+	public void updatePasswordIsSuccessful() {
 
+		Bundle bundle = new Bundle();
+		bundle.putInt(Constans.PUT_DIALOG_OK_REQUEST_CODE, Constans.UPDATE_PASSWORD_SUCCESSFUL_CODE);
+		bundle.putString(Constans.PUT_DIALOG_OK_MESSAGE,
+				getResources().getString(R.string.update_password_successful));
+
+		DialogOk dialogOk = DialogOk.newInstance(bundle);
+		dialogOk.show(Objects.requireNonNull(getFragmentManager()), "DialogOk");
 	}
 
 	@Override
-	public void updatePasswordIsSuccessful() {
-
+	public void updatePasswordError() {
 
 	}
 

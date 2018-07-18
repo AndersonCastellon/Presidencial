@@ -41,4 +41,10 @@ public class Constans {
 	public static final String SP_BLOCK_CREDENTIALS_USERS = "userCredentials";
 	public static final String SP_PUTSTRING_EMAILUSER = "emailUser";
 	public static final String SP_PUTSTRING_PASSWORDUSER = "passwordUser";
+	public static final String PUT_DIALOG_OK_MESSAGE = "dialogText";
+	public static final String PUT_DIALOG_OK_REQUEST_CODE = "requestCodeDialog";
+
+	public static final int REQUEST_CODE_RESET_PASSWORD_VIEW = 1;
+	public static final int UPDATE_PASSWORD_SUCCESSFUL_CODE = 2;
+	public static final int CURRENT_PASSWORD_IS_NULL = 3;
 }

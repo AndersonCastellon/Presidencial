@@ -12,14 +12,15 @@ public interface UpdatePasswordFragmentContract {
 		void currentPasswordDoesNotMatch();
 		void newPasswordIsEmpty();
 		void repeatNewPasswordIsEmpty();
+		void newPasswordNoValid();
 		void newPasswordDoesNotMatch();
-		void goResetPasswordView(String emailUser);
 		void updatePasswordIsSuccessful();
+		void updatePasswordError();
 	}
 
 	interface Presenter extends MvpPresenter<UpdatePasswordFragmentContract.View> {
+		void passwordPreferencesIsNull();
 		void validatePassword(String currentPassword, String newPassword, String repeatNewPassword);
 		void updatePassword(String emailUser, String currentPassword, String newPassword);
-		void goResetPasswordView();
 	}
 }

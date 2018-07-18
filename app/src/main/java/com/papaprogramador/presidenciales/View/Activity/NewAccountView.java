@@ -161,8 +161,8 @@ public class NewAccountView extends MvpActivity<NewAccount.View,
 
 	@Override
 	public void passUserIsInvalid() {
-		passUser.setError(getResources().getString(R.string.passInvalido));
-		passUser2.setError(getResources().getString(R.string.passInvalido));
+		passUser.setError(getResources().getString(R.string.password_length_is_invalid));
+		passUser2.setError(getResources().getString(R.string.password_length_is_invalid));
 
 		passUser.setText("");
 		passUser2.setText("");
