@@ -1,9 +1,10 @@
-package com.papaprogramador.presidenciales.TreeMvp.UpdatePasswordFragment;
+package com.papaprogramador.presidenciales.TreeMvp.UpdatePassword;
 
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,8 @@ public class UpdatePasswordView extends MvpFragment<UpdatePasswordFragmentContra
 	ProgressBar loadingView;
 
 	Unbinder unbinder;
+
+	//TODO: Aun no cierra el teclado cuando un dialogo aparece
 
 	public UpdatePasswordView() {
 	}
@@ -146,7 +149,8 @@ public class UpdatePasswordView extends MvpFragment<UpdatePasswordFragmentContra
 
 	@Override
 	public void updatePasswordError() {
-
+		Snackbar.make(newPassword, getResources().getString(R.string.update_password_error),
+				Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override

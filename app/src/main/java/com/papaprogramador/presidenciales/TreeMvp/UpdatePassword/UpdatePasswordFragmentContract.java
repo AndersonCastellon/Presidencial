@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.TreeMvp.UpdatePasswordFragment;
+package com.papaprogramador.presidenciales.TreeMvp.UpdatePassword;
 
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;

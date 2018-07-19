@@ -28,10 +28,10 @@ import com.papaprogramador.presidenciales.Adapters.ViewPageAdapter;
 import com.papaprogramador.presidenciales.InterfacesMVP.MainViewContrat;
 import com.papaprogramador.presidenciales.Presenters.MainViewPresenter;
 import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.TreeMvp.UpdatePasswordFragment.UpdatePasswordView;
+import com.papaprogramador.presidenciales.TreeMvp.UpdatePassword.UpdatePasswordView;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Utils.ViewStateActivity.CustomViewStateActivity;
-import com.papaprogramador.presidenciales.View.Fragments.DeleteAccountFragment;
+import com.papaprogramador.presidenciales.TreeMvp.DeleteAccount.DeleteAccountFragment;
 import com.papaprogramador.presidenciales.View.Fragments.DialogFragment.DialogOk;
 import com.papaprogramador.presidenciales.View.Fragments.SuggestionsAndErrorsFragment;
 

@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.TreeMvp.UpdatePasswordFragment;
+package com.papaprogramador.presidenciales.TreeMvp.UpdatePassword;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
