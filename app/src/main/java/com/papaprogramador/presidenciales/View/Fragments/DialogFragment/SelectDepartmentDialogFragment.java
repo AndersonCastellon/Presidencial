@@ -12,7 +12,7 @@ import android.widget.Button;
 
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
-import com.papaprogramador.presidenciales.Utils.StaticMethods.SetIntoFirebaseDatabase;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.IntoFirebaseDatabase;
 
 import org.angmarch.views.NiceSpinner;
 
@@ -77,7 +77,7 @@ public class SelectDepartmentDialogFragment extends android.support.v4.app.Dialo
 		if (department.isEmpty()) {
 			SelectDepartmentPlease();
 		} else {
-			if (SetIntoFirebaseDatabase.setDepartmentUser(uidUser, department)) {
+			if (IntoFirebaseDatabase.setDepartmentUser(uidUser, department)) {
 				listener.onResult(true);
 				TaskIsSuccesful();
 			}

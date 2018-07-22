@@ -139,7 +139,7 @@ public class UpdatePasswordView extends MvpFragment<UpdatePasswordFragmentContra
 	public void updatePasswordIsSuccessful() {
 
 		Bundle bundle = new Bundle();
-		bundle.putInt(Constans.PUT_DIALOG_OK_REQUEST_CODE, Constans.UPDATE_PASSWORD_SUCCESSFUL_CODE);
+		bundle.putInt(Constans.PUT_DIALOG_OK_REQUEST_CODE, Constans.DIALOG_OK_SUCCESSFUL_CODE);
 		bundle.putString(Constans.PUT_DIALOG_OK_MESSAGE,
 				getResources().getString(R.string.update_password_successful));
 

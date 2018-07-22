@@ -31,7 +31,7 @@ import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.TreeMvp.UpdatePassword.UpdatePasswordView;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Utils.ViewStateActivity.CustomViewStateActivity;
-import com.papaprogramador.presidenciales.TreeMvp.DeleteAccount.DeleteAccountFragment;
+import com.papaprogramador.presidenciales.TreeMvp.DeleteAccount.DeleteAccountView;
 import com.papaprogramador.presidenciales.View.Fragments.DialogFragment.DialogOk;
 import com.papaprogramador.presidenciales.View.Fragments.SuggestionsAndErrorsFragment;
 
@@ -87,7 +87,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 						fragmentTransaction = true;
 						break;
 					case R.id.delete_account:
-						fragment = new DeleteAccountFragment();
+						fragment = new DeleteAccountView();
 						fragmentTransaction = true;
 						break;
 					case R.id.suggestions:
@@ -236,7 +236,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 
 	@Override
 	public void goResetPasswordView(String emailUser) {
-		//TODO: Verificar el valor enviado
+
 		Intent intent = new Intent(this, ResetPasswordView.class);
 		intent.putExtra(Constans.PUT_EMAIL_USUARIO, emailUser);
 		startActivityForResult(intent, Constans.REQUEST_CODE_RESET_PASSWORD_VIEW);
@@ -294,7 +294,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 	public void onResultDialogOk(int requestCode) {
 
 		switch (requestCode) {
-			case Constans.UPDATE_PASSWORD_SUCCESSFUL_CODE:
+			case Constans.DIALOG_OK_SUCCESSFUL_CODE:
 				removeCurrentFragment();
 				setTitleActionBar();
 				hideMainView(false);
@@ -315,7 +315,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
 			case Constans.REQUEST_CODE_RESET_PASSWORD_VIEW:
-				onResultDialogOk(Constans.UPDATE_PASSWORD_SUCCESSFUL_CODE);
+				onResultDialogOk(Constans.DIALOG_OK_SUCCESSFUL_CODE);
 				break;
 		}
 	}

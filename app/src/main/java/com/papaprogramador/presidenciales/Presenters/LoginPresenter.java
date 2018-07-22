@@ -227,10 +227,8 @@ public class LoginPresenter extends MvpBasePresenter<LoginContract.View> impleme
 			public void run(@NonNull final LoginContract.View view) {
 				String nombreUsuario = user.getDisplayName();
 				String emailUsuario = user.getEmail();
-				String departamento = Constans.VALOR_DEPARTAMENTO_DEFAULT;
 				String idDispositivo = idDevice;
 				String uidFirebase = user.getUid();
-				String voto = Constans.VALOR_VOTO_DEFAULT;
 
 				new RegistrarUsuarioRTDB(uidFirebase, nombreUsuario, emailUsuario,
 						null, idDispositivo, null, new RegistrarUsuarioRTDB.RegistrarUsuarioFirebase() {

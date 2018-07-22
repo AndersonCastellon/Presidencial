@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales.Utils.StaticMethods;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
 public class GetIdDevice {
 
+	@SuppressLint("HardwareIds")
 	public static String getIdDevice(Context context) {
 
 		String idDevice;

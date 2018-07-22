@@ -113,5 +113,7 @@
     <string name="cancel_dialog_text">Cancelar</string>
     <string name="current_password_is_null_dialog_text">Has iniciado sesión con Google. Para establecer una contraseña a tu cuenta preciona Ok</string>
     <string name="update_password_error">Error al actualizar tu contraseña</string>
+    <string name="delete_user_error">Error al eliminar la cuenta</string>
+    <string name="delete_user_successful">La cuenta ha sido eliminada correctamente</string>
 
 </resources>
