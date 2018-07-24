@@ -49,4 +49,6 @@ public class Constans {
 	public static final int CURRENT_PASSWORD_IS_NULL = 3;
 
 	public static final String[] TO = {"developer.anderson@hotmail.com"};
+	public static final String PACKAGE_NAME_GMAIL = "com.google.android.gm";
+	public static final String CLASS_NAME_GMAIL_COMPOSE_MAIL = "com.google.android.gm.ComposeActivityGmail";
 }

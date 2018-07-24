@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.Utils.Constans;
 
 import org.angmarch.views.NiceSpinner;
 
@@ -79,8 +80,8 @@ public class SuggestionsAndErrorsView extends MvpFragment<SuggestionsAndErrorsCo
 
 		emailIntent.setData(Uri.parse("mailto:"));
 		emailIntent.setType("text/plain");
-		emailIntent.setClassName("com.google.android.gm",
-				"com.google.android.gm.ComposeActivityGmail");
+		emailIntent.setClassName(Constans.PACKAGE_NAME_GMAIL,
+				Constans.CLASS_NAME_GMAIL_COMPOSE_MAIL);
 		emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
 		emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
 
