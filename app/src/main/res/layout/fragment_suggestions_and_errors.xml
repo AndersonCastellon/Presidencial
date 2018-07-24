@@ -1,9 +1,9 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context="com.papaprogramador.presidenciales.View.Fragments.SuggestionsAndErrorsFragment">
+    tools:context="com.papaprogramador.presidenciales.TreeMvp.SuggestionsAndErrors.SuggestionsAndErrorsView">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,47 +14,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:textAlignment="center"
             android:text="@string/suggestions_options_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textStyle="italic" />
 
         <include layout="@layout/spinner" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_horizontal_margin"
-            android:text="@string/suggestions_email_text"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textStyle="italic" />
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_horizontal_margin">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/suggestions_email_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/TextEmail"
-                android:inputType="textEmailAddress" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/activity_horizontal_margin">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/suggestions_text_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/suggestions_and_errors_hint"
-                android:inputType="textMultiLine" />
-
-        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/send_suggestions_and_errors"
@@ -66,4 +31,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</RelativeLayout>

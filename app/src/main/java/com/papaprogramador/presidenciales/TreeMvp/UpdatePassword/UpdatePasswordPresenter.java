@@ -8,15 +8,15 @@ import com.papaprogramador.presidenciales.Utils.StaticMethods.ReauthenticateUser
 import com.papaprogramador.presidenciales.Utils.StaticMethods.SharedPreferencesMethods;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.UpdatePassword;
 
-public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePasswordFragmentContract.View>
-		implements UpdatePasswordFragmentContract.Presenter {
+public class UpdatePasswordPresenter extends MvpBasePresenter<UpdatePasswordContract.View>
+		implements UpdatePasswordContract.Presenter {
 
 	private boolean passwordIsValid;
 	private String passCurrent;
 	private String currentEmail;
 	private Context context;
 
-	UpdatePasswordFragmentPresenter(Context context) {
+	UpdatePasswordPresenter(Context context) {
 		this.context = context;
 		currentEmail = SharedPreferencesMethods.getEmail(context);
 		passCurrent = SharedPreferencesMethods.getPassword(context);
@@ -26,9 +26,9 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 	@Override
 	public void passwordPreferencesIsNull() {
 		if (passCurrent == null) {
-			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+			ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 				@Override
-				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+				public void run(@NonNull UpdatePasswordContract.View view) {
 					view.passwordPreferencesIsNull();
 				}
 			});
@@ -39,17 +39,17 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 	public void validatePassword(String currentPassword, String newPassword, String repeatNewPassword) {
 
 		if (currentPassword.isEmpty()) {
-			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+			ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 				@Override
-				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+				public void run(@NonNull UpdatePasswordContract.View view) {
 					passwordIsValid = false;
 					view.currentPasswordIsEmpty();
 				}
 			});
 		} else if (!currentPassword.equals(passCurrent)) {
-			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+			ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 				@Override
-				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+				public void run(@NonNull UpdatePasswordContract.View view) {
 					passwordIsValid = false;
 					view.currentPasswordDoesNotMatch();
 				}
@@ -57,43 +57,43 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 		}
 
 		if (newPassword.isEmpty()) {
-			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+			ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 				@Override
-				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+				public void run(@NonNull UpdatePasswordContract.View view) {
 					passwordIsValid = false;
 					view.newPasswordIsEmpty();
 				}
 			});
 		} else if (!UpdatePassword.validatePasswordLength(newPassword)) {
-			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+			ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 				@Override
-				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+				public void run(@NonNull UpdatePasswordContract.View view) {
 					view.newPasswordNoValid();
 				}
 			});
 		}
 
 		if (repeatNewPassword.isEmpty()) {
-			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+			ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 				@Override
-				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+				public void run(@NonNull UpdatePasswordContract.View view) {
 					passwordIsValid = false;
 					view.repeatNewPasswordIsEmpty();
 				}
 			});
 		} else if (!UpdatePassword.validatePasswordLength(repeatNewPassword)) {
-			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+			ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 				@Override
-				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+				public void run(@NonNull UpdatePasswordContract.View view) {
 					view.newPasswordNoValid();
 				}
 			});
 		}
 
 		if (!newPassword.equals(repeatNewPassword)) {
-			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+			ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 				@Override
-				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+				public void run(@NonNull UpdatePasswordContract.View view) {
 					passwordIsValid = false;
 					view.newPasswordDoesNotMatch();
 				}
@@ -111,18 +111,18 @@ public class UpdatePasswordFragmentPresenter extends MvpBasePresenter<UpdatePass
 	public void updatePassword(String emailUser, String currentPassword, final String newPassword) {
 
 		if (ReauthenticateUserFirebase.reauthenticateUser(emailUser, currentPassword)) {
-			ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+			ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 				@Override
-				public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+				public void run(@NonNull UpdatePasswordContract.View view) {
 					view.showProgress(true);
 					if (UpdatePassword.updatePasswordUser(newPassword)){
 						SharedPreferencesMethods.setPassword(context, newPassword);
 						view.showProgress(false);
 						view.updatePasswordIsSuccessful();
 					} else {
-						ifViewAttached(new ViewAction<UpdatePasswordFragmentContract.View>() {
+						ifViewAttached(new ViewAction<UpdatePasswordContract.View>() {
 							@Override
-							public void run(@NonNull UpdatePasswordFragmentContract.View view) {
+							public void run(@NonNull UpdatePasswordContract.View view) {
 								view.updatePasswordError();
 							}
 						});

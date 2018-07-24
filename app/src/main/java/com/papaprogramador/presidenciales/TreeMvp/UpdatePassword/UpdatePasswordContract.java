@@ -3,7 +3,7 @@ package com.papaprogramador.presidenciales.TreeMvp.UpdatePassword;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
-public interface UpdatePasswordFragmentContract {
+public interface UpdatePasswordContract {
 
 	interface View extends MvpView {
 		void showProgress(boolean show);
@@ -18,7 +18,7 @@ public interface UpdatePasswordFragmentContract {
 		void updatePasswordError();
 	}
 
-	interface Presenter extends MvpPresenter<UpdatePasswordFragmentContract.View> {
+	interface Presenter extends MvpPresenter<UpdatePasswordContract.View> {
 		void passwordPreferencesIsNull();
 		void validatePassword(String currentPassword, String newPassword, String repeatNewPassword);
 		void updatePassword(String emailUser, String currentPassword, String newPassword);

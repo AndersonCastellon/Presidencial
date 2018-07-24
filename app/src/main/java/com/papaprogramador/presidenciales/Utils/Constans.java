@@ -39,12 +39,14 @@ public class Constans {
 	public static final String PUT_URL_HTML_CANDIDATE = "PUT_URL_HTML_CANDIDATE";
 	public static final String PUT_UID_USER = "PUT_UID_USER";
 	public static final String SP_BLOCK_CREDENTIALS_USERS = "userCredentials";
-	public static final String SP_PUTSTRING_EMAILUSER = "emailUser";
-	public static final String SP_PUTSTRING_PASSWORDUSER = "passwordUser";
+	public static final String SP_PUT_STRING_EMAIL_USER = "emailUser";
+	public static final String SP_PUT_STRING_PASSWORD_USER = "passwordUser";
 	public static final String PUT_DIALOG_OK_MESSAGE = "dialogText";
 	public static final String PUT_DIALOG_OK_REQUEST_CODE = "requestCodeDialog";
 
 	public static final int REQUEST_CODE_RESET_PASSWORD_VIEW = 1;
 	public static final int DIALOG_OK_SUCCESSFUL_CODE = 2;
 	public static final int CURRENT_PASSWORD_IS_NULL = 3;
+
+	public static final String[] TO = {"developer.anderson@hotmail.com"};
 }

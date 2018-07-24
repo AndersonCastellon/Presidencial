@@ -33,7 +33,7 @@ import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Utils.ViewStateActivity.CustomViewStateActivity;
 import com.papaprogramador.presidenciales.TreeMvp.DeleteAccount.DeleteAccountView;
 import com.papaprogramador.presidenciales.View.Fragments.DialogFragment.DialogOk;
-import com.papaprogramador.presidenciales.View.Fragments.SuggestionsAndErrorsFragment;
+import com.papaprogramador.presidenciales.TreeMvp.SuggestionsAndErrors.SuggestionsAndErrorsView;
 
 import java.util.Objects;
 
@@ -91,7 +91,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 						fragmentTransaction = true;
 						break;
 					case R.id.suggestions:
-						fragment = new SuggestionsAndErrorsFragment();
+						fragment = new SuggestionsAndErrorsView();
 						fragmentTransaction = true;
 						break;
 					case R.id.share_app:

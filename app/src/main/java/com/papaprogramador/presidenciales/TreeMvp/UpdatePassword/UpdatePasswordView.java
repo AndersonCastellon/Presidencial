@@ -24,8 +24,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class UpdatePasswordView extends MvpFragment<UpdatePasswordFragmentContract.View, UpdatePasswordFragmentContract.Presenter>
-		implements UpdatePasswordFragmentContract.View {
+public class UpdatePasswordView extends MvpFragment<UpdatePasswordContract.View, UpdatePasswordContract.Presenter>
+		implements UpdatePasswordContract.View {
 
 	@BindView(R.id.current_password)
 	TextInputEditText currentPassword;
@@ -73,8 +73,8 @@ public class UpdatePasswordView extends MvpFragment<UpdatePasswordFragmentContra
 
 	@NonNull
 	@Override
-	public UpdatePasswordFragmentContract.Presenter createPresenter() {
-		return new UpdatePasswordFragmentPresenter(getActivity());
+	public UpdatePasswordContract.Presenter createPresenter() {
+		return new UpdatePasswordPresenter(getActivity());
 	}
 
 	@Override

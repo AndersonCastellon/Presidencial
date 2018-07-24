@@ -15,8 +15,8 @@ public class SharedPreferencesMethods {
 		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 
-		editor.putString(Constans.SP_PUTSTRING_EMAILUSER, emailUser);
-		editor.putString(Constans.SP_PUTSTRING_PASSWORDUSER, password);
+		editor.putString(Constans.SP_PUT_STRING_EMAIL_USER, emailUser);
+		editor.putString(Constans.SP_PUT_STRING_PASSWORD_USER, password);
 
 		editor.apply();
 	}
@@ -26,17 +26,17 @@ public class SharedPreferencesMethods {
 		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 
-		editor.putString(Constans.SP_PUTSTRING_PASSWORDUSER, newPassword);
+		editor.putString(Constans.SP_PUT_STRING_PASSWORD_USER, newPassword);
 		editor.apply();
 	}
 
 	public static String getEmail(Context context) {
 		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
-		return sharedPreferences.getString(Constans.SP_PUTSTRING_EMAILUSER, null);
+		return sharedPreferences.getString(Constans.SP_PUT_STRING_EMAIL_USER, null);
 	}
 
 	public static String getPassword(Context context) {
 		sharedPreferences = context.getSharedPreferences(Constans.SP_BLOCK_CREDENTIALS_USERS, Context.MODE_PRIVATE);
-		return sharedPreferences.getString(Constans.SP_PUTSTRING_PASSWORDUSER, null);
+		return sharedPreferences.getString(Constans.SP_PUT_STRING_PASSWORD_USER, null);
 	}
 }

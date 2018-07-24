@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="suggestions_array">
+        <item>@string/suggestions_error_informations</item>
+        <item>@string/suggestions_new_function</item>
+        <item>@string/suggestions_new</item>
+    </string-array>
+</resources>
