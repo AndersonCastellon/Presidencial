@@ -15,7 +15,7 @@
     <string name="credencialesEmailIncorrectas">Email o contraseña incorrectos</string>
     <string name="ErrorSignInGoogle">Error al iniciar con Google</string>
     <string name="IniciasteComo">Iniciastes como:</string>
-    <string name="errorThis">Ha ocurrido un error</string>
+    <string name="error">Ha ocurrido un error</string>
     <string name="IntoEmailAndPasswordForNewAccount">Introduce Email y Contraseña</string>
     <string name="ErrorAuthWithGoogle">No se pudo autenticar con Google</string>
     <string name="not_close_session">No se pudo cerrar la sesion</string>
@@ -120,6 +120,9 @@
     <string name="suggestions_new_function">Solicitar una nueva función en la app</string>
     <string name="suggestions_new">Sugerencia específica</string>
     <string name="no_email_client">No tienes ningun cliente de email instalado</string>
+    <string name="url_download_app">https://www.urldeprueba.com</string>
+    <string name="share_app_text">Ahora ya puedes votar por tu candidato presidencial favorito
+        y exponer todas tus opiniones y conocer las de los demás. Descarga gratis la app en: </string>
 
 
 </resources>

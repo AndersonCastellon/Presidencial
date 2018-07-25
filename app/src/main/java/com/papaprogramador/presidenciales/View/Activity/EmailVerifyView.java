@@ -65,7 +65,7 @@ public class EmailVerifyView extends MvpActivity<EmailVerify.View, EmailVerify.P
 
 	@Override
 	public void errorSession() {
-		Snackbar.make(contentEmailVerifyView, getResources().getString(R.string.errorThis),
+		Snackbar.make(contentEmailVerifyView, getResources().getString(R.string.error),
 				Snackbar.LENGTH_LONG).show();
 	}
 

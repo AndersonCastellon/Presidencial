@@ -80,7 +80,12 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 
 	@Override
 	public void getShareApp() {
-
+		ifViewAttached(new ViewAction<MainViewContrat.View>() {
+			@Override
+			public void run(@NonNull MainViewContrat.View view) {
+				view.shareApp();
+			}
+		});
 	}
 
 	@Override

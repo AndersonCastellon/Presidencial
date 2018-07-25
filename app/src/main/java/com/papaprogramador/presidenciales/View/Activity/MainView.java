@@ -221,7 +221,22 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 
 	@Override
 	public void shareApp() {
+		String message = getResources().getString(R.string.share_app_text);
+		String URL = getResources().getString(R.string.url_download_app);
 
+		Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+		emailIntent.setType("text/plain");
+		emailIntent.putExtra(Intent.EXTRA_TEXT, message + " " + URL);
+
+		String shooserTitle = getResources().getString(R.string.share_app);
+
+		try {
+			startActivity(Intent.createChooser(emailIntent, shooserTitle));
+		} catch (android.content.ActivityNotFoundException e) {
+			Snackbar.make(drawerLayout, getResources().getString(R.string.error), Snackbar.LENGTH_LONG)
+					.show();
+		}
 	}
 
 	@Override
@@ -244,7 +259,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 
 	@Override
 	public void errorCloseSesion() {
-		Snackbar.make(drawerLayout, getResources().getString(R.string.errorThis),
+		Snackbar.make(drawerLayout, getResources().getString(R.string.error),
 				Snackbar.LENGTH_LONG).show();
 	}
 
