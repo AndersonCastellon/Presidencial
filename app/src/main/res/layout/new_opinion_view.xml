@@ -116,7 +116,7 @@
                 android:drawableTint="@color/accent"
                 android:text="@string/upload_opinion_image"
                 android:textAllCaps="false"
-                android:textColor="@color/accent" />
+                android:textColor="@color/secondary_text" />
 
             <view
                 android:layout_width="0dp"
@@ -134,7 +134,7 @@
                 android:drawableTint="@color/accent"
                 android:text="@string/upload_opinion_photo_camera"
                 android:textAllCaps="false"
-                android:textColor="@color/accent" />
+                android:textColor="@color/secondary_text" />
 
         </LinearLayout>
 
