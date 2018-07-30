@@ -63,8 +63,8 @@
 
             <ImageView
                 android:id="@+id/opinion_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/ic_menu_points"
                 android:backgroundTint="@color/accent"
@@ -91,9 +91,10 @@
         <ImageView
             android:id="@+id/image_opinion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@color/red_error" />
 
     </LinearLayout>
 

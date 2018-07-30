@@ -60,7 +60,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#d8d8d8"
+            android:background="@color/divider"
             android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
             <com.google.android.gms.common.SignInButton

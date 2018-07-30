@@ -123,6 +123,10 @@
     <string name="url_download_app">https://www.urldeprueba.com</string>
     <string name="share_app_text">Ahora ya puedes votar por tu candidato presidencial favorito
         y exponer todas tus opiniones y conocer las de los demás. Descarga gratis la app en: </string>
+    <string name="et_opinion_hint">Escribe aquí tu opinión</string>
+    <string name="upload_opinion_image">Cargar desde la galería</string>
+    <string name="upload_opinion_photo_camera">Cargar desde la cámara</string>
+    <string name="btn_upload_opinion_text">Publicar opinión</string>
 
 
 </resources>

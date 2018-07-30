@@ -16,7 +16,7 @@
         <activity
             android:name=".View.Activity.LoginView"
             android:label="@string/etiquetaLoginVista"
-            tools:ignore="InnerclassSeparator"></activity>
+            tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".View.Activity.MainView"
             tools:ignore="InnerclassSeparator">
@@ -44,6 +44,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".View.Activity.MainView" />
         </activity>
+        <activity android:name=".TreeMvp.Activities.NewOpinion.NewOpinionView"></activity>
     </application>
 
 </manifest>

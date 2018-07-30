@@ -11,7 +11,7 @@ import android.provider.Settings;
 import static android.support.v4.app.ActivityCompat.requestPermissions;
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
-//TODO: Id dispositivo llega nulo cuando se quiere obtener idFirebase, validar la lógica actual
+//TODO: soliciatar los permisos desde una clase diferente y mejorar ese codigo
 
 public class GetIdDevice {
 
