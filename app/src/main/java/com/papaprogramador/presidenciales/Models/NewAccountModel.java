@@ -102,7 +102,7 @@ public class NewAccountModel implements NewAccount.Model {
 	                                                       String emailUsuario, String departamento,
 	                                                       String idDispositivo, String voto, String pass) {
 
-		User user = new User(nombreUsuario, emailUsuario, departamento, idDispositivo, voto);
+		User user = new User(nombreUsuario, emailUsuario, departamento, voto);
 
 		DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 

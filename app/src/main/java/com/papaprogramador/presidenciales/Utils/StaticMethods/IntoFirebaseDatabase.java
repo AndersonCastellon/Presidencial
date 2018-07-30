@@ -24,10 +24,13 @@ public class IntoFirebaseDatabase {
 				.setValue(votesApply);
 	}
 
-	public static void applyNewVoteUser(String idCandidate, String uidUser) {
+	public static void applyNewVoteUser(String idCandidate,String urlPoliticalFlag, String uidUser) {
 
 		databaseReference.child(FirebaseReference.NODO_USUARIO).child(uidUser)
 				.child(FirebaseReference.NODO_VOTOPOR).setValue(idCandidate);
+
+		databaseReference.child(FirebaseReference.NODO_USUARIO).child(uidUser)
+				.child(FirebaseReference.POLITICAL_FLAG).setValue(urlPoliticalFlag);
 	}
 
 	public static boolean setDepartmentUser(String uidUser, String department) {

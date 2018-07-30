@@ -51,4 +51,5 @@ public class Constans {
 	public static final String[] TO = {"developer.anderson@hotmail.com"};
 	public static final String PACKAGE_NAME_GMAIL = "com.google.android.gm";
 	public static final String CLASS_NAME_GMAIL_COMPOSE_MAIL = "com.google.android.gm.ComposeActivityGmail";
+	public static final String PUT_POLITICAL_FLAG = "PUT_POLITICAL_FLAG";
 }

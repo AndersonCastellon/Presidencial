@@ -8,18 +8,13 @@ public class Candidate {
 	private String urlImagen;
 	private String urlHtml;
 	private String id;
+	private String politicalFlag;
 
 	public Candidate() {
 	}
 
-	public Candidate(String nombreCandidato, String partidoCandidato, int votosCandidato,
-	                 String urlImagen, String urlHtml, String id) {
-		this.nombreCandidato = nombreCandidato;
-		this.partidoCandidato = partidoCandidato;
-		this.votosCandidato = votosCandidato;
-		this.urlImagen = urlImagen;
-		this.urlHtml = urlHtml;
-		this.id = id;
+	public String getPoliticalFlag() {
+		return politicalFlag;
 	}
 
 	public String getUrlImagen() {
@@ -34,27 +29,19 @@ public class Candidate {
 		return id;
 	}
 
-	public String getNombreCandidato() {
-		return nombreCandidato;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public void setNombreCandidato(String nombreCandidato) {
-		this.nombreCandidato = nombreCandidato;
+	public String getNombreCandidato() {
+		return nombreCandidato;
 	}
 
 	public String getPartidoCandidato() {
 		return partidoCandidato;
 	}
 
-	public void setPartidoCandidato(String partidoCandidato) {
-		this.partidoCandidato = partidoCandidato;
-	}
-
 	public int getVotosCandidato() {
 		return votosCandidato;
-	}
-
-	public void setVotosCandidato(int votosCandidato) {
-		this.votosCandidato = votosCandidato;
 	}
 }

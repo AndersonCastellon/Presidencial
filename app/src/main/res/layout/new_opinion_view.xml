@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.papaprogramador.presidenciales.TreeMvp.Activities.NewOpinion.NewOpinionView">
+    tools:context="com.papaprogramador.presidenciales.TreeMvp.NewOpinion.NewOpinionView">
 
     <include
         android:id="@+id/toolbar"
@@ -102,15 +102,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/opinion_data"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingTop="@dimen/activity_horizontal_margin">
 
             <Button
                 android:id="@+id/btn_opinion_upload_image"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/ic_image"
                 android:drawableTint="@color/accent"
@@ -118,17 +117,17 @@
                 android:textAllCaps="false"
                 android:textColor="@color/secondary_text" />
 
-            <view
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.05" />
+            <ImageView
+                android:contentDescription="separator"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                tools:ignore="HardcodedText" />
 
             <Button
                 android:id="@+id/btn_opinion_upload_photo_camera"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:background="@drawable/edittext_background"
                 android:drawableStart="@drawable/ic_camera"
                 android:drawableTint="@color/accent"

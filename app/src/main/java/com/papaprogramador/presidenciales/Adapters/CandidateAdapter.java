@@ -52,6 +52,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 		holder.idcandidato = candidate.getId();
 		holder.urlImage = candidate.getUrlImagen();
 		holder.urlHtml = candidate.getUrlHtml();
+		holder.urlPoliticalFlag = candidate.getPoliticalFlag();
 
 		//TODO: Implementar placeholder para Glide
 
@@ -81,6 +82,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 		String idcandidato;
 		String urlImage;
 		String urlHtml;
+		String urlPoliticalFlag;
 
 		private CandidatoViewHolder(View itemView) {
 			super(itemView);
@@ -106,6 +108,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 					detalleCandidato.putExtra(Constans.PUT_NOMBRE_CANDIDATE, textViewNombre.getText().toString());
 					detalleCandidato.putExtra(Constans.PUT_URL_IMAGEN_CANDIDATE, urlImage);
 					detalleCandidato.putExtra(Constans.PUT_URL_HTML_CANDIDATE, urlHtml);
+					detalleCandidato.putExtra(Constans.PUT_POLITICAL_FLAG, urlPoliticalFlag);
 					context.startActivity(detalleCandidato);
 					break;
 			}

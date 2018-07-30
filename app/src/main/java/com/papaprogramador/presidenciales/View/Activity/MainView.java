@@ -328,10 +328,12 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		switch (requestCode) {
-			case Constans.REQUEST_CODE_RESET_PASSWORD_VIEW:
-				onResultDialogOk(Constans.DIALOG_OK_SUCCESSFUL_CODE);
-				break;
+		if (resultCode == RESULT_OK){
+			switch (requestCode) {
+				case Constans.REQUEST_CODE_RESET_PASSWORD_VIEW:
+					onResultDialogOk(Constans.DIALOG_OK_SUCCESSFUL_CODE);
+					break;
+			}
 		}
 	}
 

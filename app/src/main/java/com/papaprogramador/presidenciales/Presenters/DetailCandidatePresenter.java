@@ -43,22 +43,24 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 	private String nameCandidate;
 	private String urlImgCandidate;
 	private String urlHtmlCandidate;
+	private String urlPoliticalFlag;
 
 	private String uidUser;
 
 	public DetailCandidatePresenter(String idCandidate, String nameCandidate,
-	                                String urlImgCandidate, String urlHtmlCandidate) {
+	                                String urlImgCandidate, String urlHtmlCandidate, String urlPoliticalFlag) {
 		this.idCandidate = idCandidate;
 		this.nameCandidate = nameCandidate;
 		this.urlImgCandidate = urlImgCandidate;
 		this.urlHtmlCandidate = urlHtmlCandidate;
+		this.urlPoliticalFlag = urlPoliticalFlag;
 		firebaseAuth = FirebaseAuth.getInstance();
 	}
 
 	@Override
 	public void fabShare(Context context) {
 
-		final String shareCandidateString =  GetString.getStringShareCandidate(nameCandidate, context);
+		final String shareCandidateString = GetString.getStringShareCandidate(nameCandidate, context);
 
 		ifViewAttached(new ViewAction<DetailCandidateContract.View>() {
 			@Override
@@ -77,7 +79,7 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 				new GetVoteCurrentUser(uidUser, new GetVoteCurrentUser.VoteCurrentUserListener() {
 					@Override
 					public void onResult(DataSnapshot vote) {
-						if (vote.getValue() != null){
+						if (vote.getValue() != null) {
 							view.showProgressFab(false);
 							view.existingVote();
 						} else {
@@ -97,7 +99,7 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 				new GetDepartmentUser(uidUser, new GetDepartmentUser.DepartmentUserListener() {
 					@Override
 					public void onResult(DataSnapshot department) {
-						if (department.getValue() == null){
+						if (department.getValue() == null) {
 							view.showProgressFab(false);
 							view.goSelectDepartmentDialogFragment(uidUser);
 						} else {
@@ -121,7 +123,7 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 			public void onResult(int votes) {
 
 				IntoFirebaseDatabase.applyNewVoteCandidate(votes, idCandidate);
-				IntoFirebaseDatabase.applyNewVoteUser(idCandidate, uidUser);
+				IntoFirebaseDatabase.applyNewVoteUser(idCandidate, urlPoliticalFlag, uidUser);
 
 				ifViewAttached(new ViewAction<DetailCandidateContract.View>() {
 					@Override

@@ -72,8 +72,10 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 		String nameCandidate = bundle.getString(Constans.PUT_NOMBRE_CANDIDATE);
 		String urlImgCandidate = bundle.getString(Constans.PUT_URL_IMAGEN_CANDIDATE);
 		String urlHtmlCandidate = bundle.getString(Constans.PUT_URL_HTML_CANDIDATE);
+		String urlPoliticalFlag = bundle.getString(Constans.PUT_POLITICAL_FLAG);
 
-		return new DetailCandidatePresenter(idCandidate, nameCandidate, urlImgCandidate, urlHtmlCandidate);
+		return new DetailCandidatePresenter(idCandidate, nameCandidate, urlImgCandidate,
+				urlHtmlCandidate, urlPoliticalFlag);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales.TreeMvp.Opinions;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.TreeMvp.NewOpinion.NewOpinionView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +27,7 @@ import butterknife.Unbinder;
 public class OpinionsView extends Fragment {
 
 
+	private static final int RC_UPLOAD_OPINION = 255;
 	@BindView(R.id.loadingView)
 	ProgressBar loadingView;
 	@BindView(R.id.errorView)
@@ -51,6 +54,8 @@ public class OpinionsView extends Fragment {
 
 	@OnClick(R.id.fab_new_opinion)
 	public void onViewClicked() {
+		Intent intent = new Intent(getActivity(), NewOpinionView.class);
+		startActivityForResult(intent, RC_UPLOAD_OPINION);
 	}
 
 	@Override

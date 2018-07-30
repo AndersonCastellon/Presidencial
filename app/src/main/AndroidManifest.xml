@@ -38,13 +38,16 @@
         <activity
             android:name=".View.Activity.DetailCandidatoView"
             android:parentActivityName=".View.Activity.MainView"
-            android:theme="@style/AppthemeStatusBarTransparent"
+            android:theme="@style/AppThemeStatusBarTransparent"
             tools:ignore="InnerclassSeparator">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".View.Activity.MainView" />
         </activity>
-        <activity android:name=".TreeMvp.Activities.NewOpinion.NewOpinionView"></activity>
+        <activity
+            android:name=".TreeMvp.NewOpinion.NewOpinionView"
+            tools:ignore="InnerclassSeparator"
+            android:theme="@style/AppThemeStatusBarTransparent" />
     </application>
 
 </manifest>

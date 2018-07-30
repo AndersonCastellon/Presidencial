@@ -9,6 +9,7 @@ import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CandidateListCallbackFirebase {
 
@@ -55,6 +56,7 @@ public class CandidateListCallbackFirebase {
 			for (DataSnapshot listCandidate :
 					dataSnapshot.getChildren()) {
 				Candidate candidate = listCandidate.getValue(Candidate.class);
+				Objects.requireNonNull(candidate).setId(listCandidate.getKey());
 				candidateList.add(candidate);
 			}
 

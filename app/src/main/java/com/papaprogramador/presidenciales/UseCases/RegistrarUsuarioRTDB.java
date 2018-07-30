@@ -65,7 +65,7 @@ public class RegistrarUsuarioRTDB {
 
 	private void registrarUsuarioCompleto() {
 
-		User user = new User(nombreUsuario, emailUsuario, departamento, idDispositivo, voto);
+		User user = new User(nombreUsuario, emailUsuario, departamento, voto);
 
 		databaseReference.child(FirebaseReference.NODO_USUARIO)
 				.child(uidFirebase).setValue(user);
