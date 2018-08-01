@@ -1,5 +1,7 @@
 package com.papaprogramador.presidenciales.UseCases;
 
+import android.net.Uri;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,33 +17,24 @@ public class RegistrarUsuarioRTDB {
 	}
 
 	private RegistrarUsuarioFirebase listener;
-	private String uidFirebase;
-	private String nombreUsuario;
-	private String emailUsuario;
-	private String departamento;
 	private String idDispositivo;
-	private String voto;
+	private User user;
+	private String userId;
 
 	private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
 
-	public RegistrarUsuarioRTDB(String uidFirebase, String nombreUsuario,
-	                            String emailUsuario, String departamento,
-	                            String idDispositivo, String voto, RegistrarUsuarioFirebase listener) {
+	public RegistrarUsuarioRTDB(String userId, String idDispositivo, User user, RegistrarUsuarioFirebase listener) {
 		this.listener = listener;
-		this.uidFirebase = uidFirebase;
-		this.nombreUsuario = nombreUsuario;
-		this.emailUsuario = emailUsuario;
-		this.departamento = departamento;
+		this.userId = userId;
 		this.idDispositivo = idDispositivo;
-		this.voto = voto;
+		this.user = user;
 
-		buscarUidFirebase(uidFirebase);
+		buscarUidFirebase();
 	}
 
-	private void buscarUidFirebase(String uidFirebase) {
-
-		databaseReference.child(FirebaseReference.NODO_USUARIO).child(uidFirebase)
+	private void buscarUidFirebase() {
+		databaseReference.child(FirebaseReference.NODO_USUARIO).child(userId)
 				.addListenerForSingleValueEvent(new ValueEventListener() {
 					@Override
 					public void onDataChange(DataSnapshot dataSnapshot) {
@@ -64,23 +57,24 @@ public class RegistrarUsuarioRTDB {
 	}
 
 	private void registrarUsuarioCompleto() {
-
-		User user = new User(nombreUsuario, emailUsuario, departamento, voto);
+		String emailUser = user.getEmail();
 
 		databaseReference.child(FirebaseReference.NODO_USUARIO)
-				.child(uidFirebase).setValue(user);
+				.child(userId).setValue(user);
 
 		databaseReference.child(FirebaseReference.NODO_ID_DISPOSITIVO)
-				.child(idDispositivo).setValue(emailUsuario);
+				.child(idDispositivo).setValue(emailUser);
 
 		listener.registroExitoso(true);
 
 	}
 
 	private void registrarSoloNombreUsuario() {
+		String emailUser = user.getEmail();
+
 		databaseReference.child(FirebaseReference.NODO_USUARIO)
-				.child(uidFirebase).child(FirebaseReference.NODO_NOMBRE_USUARIO)
-				.setValue(nombreUsuario);
+				.child(userId).child(FirebaseReference.NODO_NOMBRE_USUARIO)
+				.setValue(emailUser);
 
 		listener.registroExitoso(true);
 	}

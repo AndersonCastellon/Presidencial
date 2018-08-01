@@ -2,6 +2,7 @@ package com.papaprogramador.presidenciales.Presenters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
@@ -11,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.papaprogramador.presidenciales.Obj.User;
 import com.papaprogramador.presidenciales.UseCases.ValidarEmail;
 import com.papaprogramador.presidenciales.InterfacesMVP.LoginContract;
 import com.papaprogramador.presidenciales.UseCases.GoogleApiClientListener;
@@ -21,13 +23,15 @@ import com.papaprogramador.presidenciales.UseCases.RegistrarUsuarioRTDB;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.SharedPreferencesMethods;
 
+import java.util.Objects;
+
 public class LoginPresenter extends MvpBasePresenter<LoginContract.View> implements LoginContract.Presenter {
 
 	private String idDevice;
 	private GoogleApiClient apiClient;
 	private Context context;
 
-	boolean bool = true;
+	private boolean bool = true;
 
 	public LoginPresenter(Context context) {
 		this.context = context;
@@ -69,7 +73,7 @@ public class LoginPresenter extends MvpBasePresenter<LoginContract.View> impleme
 					new ValidarEmail(emailUsuario, new ValidarEmail.EmailValidado() {
 						@Override
 						public void emailEsValido(Boolean esValido) {
-							if (!esValido){
+							if (!esValido) {
 								bool = false;
 								view.emailNoValid();
 							}
@@ -228,10 +232,13 @@ public class LoginPresenter extends MvpBasePresenter<LoginContract.View> impleme
 				String nombreUsuario = user.getDisplayName();
 				String emailUsuario = user.getEmail();
 				String idDispositivo = idDevice;
-				String uidFirebase = user.getUid();
+				String userUid = user.getUid();
+				String uriPhotoProfile = Objects.requireNonNull(user.getPhotoUrl()).toString();
 
-				new RegistrarUsuarioRTDB(uidFirebase, nombreUsuario, emailUsuario,
-						null, idDispositivo, null, new RegistrarUsuarioRTDB.RegistrarUsuarioFirebase() {
+				User user = new User(nombreUsuario, emailUsuario, null, null,
+						uriPhotoProfile);
+
+				new RegistrarUsuarioRTDB(userUid, idDispositivo, user, new RegistrarUsuarioRTDB.RegistrarUsuarioFirebase() {
 					@Override
 					public void registroExitoso(boolean bool) {
 						if (bool) {

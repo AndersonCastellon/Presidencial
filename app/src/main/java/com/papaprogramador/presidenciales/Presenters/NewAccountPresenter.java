@@ -2,13 +2,17 @@ package com.papaprogramador.presidenciales.Presenters;
 
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
 import com.papaprogramador.presidenciales.Models.NewAccountModel;
 import com.papaprogramador.presidenciales.UseCases.CrearCuentaConEmail;
 import com.papaprogramador.presidenciales.Utils.Constans;
+
+import java.util.Objects;
 
 public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 		implements NewAccount.Presenter {
@@ -92,7 +96,7 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 		});
 		new CrearCuentaConEmail(context, emailUsuario, pass, new CrearCuentaConEmail.CuentaCreada() {
 			@Override
-			public void uidObtenido(final boolean bool, String firebaseUID) {
+			public void uidObtenido(final boolean bool, FirebaseUser user) {
 				if (!bool) {
 					ifViewAttached(new ViewAction<NewAccount.View>() {
 						@Override
@@ -102,9 +106,11 @@ public class NewAccountPresenter extends MvpBasePresenter<NewAccount.View>
 						}
 					});
 				}
+				String userId = user.getUid();
+				String  uriPhotoProfile = Objects.requireNonNull(user.getPhotoUrl()).toString();
 
-				model.registrarUsuarioEnFirebaseRealTimeDataBase(firebaseUID, nombreUsuario, emailUsuario,
-						null, idDispositivo, null, pass);
+				model.registrarUsuarioEnFirebaseRealTimeDataBase(userId, nombreUsuario, emailUsuario,
+						null, idDispositivo, null, pass, uriPhotoProfile);
 			}
 		});
 	}

@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class CrearCuentaConEmail {
 
 	public interface CuentaCreada {
-		void uidObtenido(final boolean bool, String firebaseUID);
+		void uidObtenido(final boolean bool, FirebaseUser user);
 	}
 
 	private CuentaCreada listener;
@@ -33,17 +33,17 @@ public class CrearCuentaConEmail {
 					public void onComplete(@NonNull Task<AuthResult> task) {
 						if (task.isSuccessful()) {
 
-							FirebaseUser user = firebaseAuth.getCurrentUser();
+							final FirebaseUser user = firebaseAuth.getCurrentUser();
 							final String uidFirebase = user.getUid();
 
 							user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
 								@Override
 								public void onComplete(@NonNull Task<Void> task) {
-									listener.uidObtenido(true, uidFirebase);
+									listener.uidObtenido(true, user);
 								}
 							});
 						} else {
-							listener.uidObtenido(false, "");
+							listener.uidObtenido(false, null);
 						}
 					}
 				});

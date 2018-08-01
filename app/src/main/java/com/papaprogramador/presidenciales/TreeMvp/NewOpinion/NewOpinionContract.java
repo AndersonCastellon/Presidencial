@@ -6,10 +6,11 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public interface NewOpinionContract {
 
 	interface View extends MvpView {
-
+		void setUserProfile(String userName, String uriPhotoProfile, String urlPoliticalFlag);
 	}
 
 	interface Presenter extends MvpPresenter<NewOpinionContract.View> {
-
+		void setAuthListener();
+		void removeAuthListener();
 	}
 }

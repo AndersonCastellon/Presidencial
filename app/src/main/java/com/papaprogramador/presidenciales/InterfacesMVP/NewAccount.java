@@ -1,6 +1,8 @@
 package com.papaprogramador.presidenciales.InterfacesMVP;
 
 import android.content.Context;
+import android.net.Uri;
+
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
@@ -39,6 +41,6 @@ public interface NewAccount {
 		void registrarUsuarioEnFirebaseRealTimeDataBase(String uidFirebase, String nombreUsuario,
 		                                                String emailUsuario, String departamento,
 		                                                String idDispositivo, String voto,
-		                                                String pass);
+		                                                String pass, String uriPhotoProfile);
 	}
 }

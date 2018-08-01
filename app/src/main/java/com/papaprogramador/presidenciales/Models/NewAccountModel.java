@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales.Models;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -100,9 +101,9 @@ public class NewAccountModel implements NewAccount.Model {
 	@Override
 	public void registrarUsuarioEnFirebaseRealTimeDataBase(String uidFirebase, String nombreUsuario,
 	                                                       String emailUsuario, String departamento,
-	                                                       String idDispositivo, String voto, String pass) {
+	                                                       String idDispositivo, String voto, String pass, String uriPhotoProfile) {
 
-		User user = new User(nombreUsuario, emailUsuario, departamento, voto);
+		User user = new User(nombreUsuario, emailUsuario, departamento, voto, uriPhotoProfile);
 
 		DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 

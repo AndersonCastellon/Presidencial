@@ -1,21 +1,32 @@
 package com.papaprogramador.presidenciales.Obj;
 
+
 public class User {
 	private String userId;
 	private String username;
 	private String email;
 	private String departamento;
 	private String votopor;
+	private String uriPhotoProfile;
 	private String politicalFlag;
 
 	public User() {
 	}
 
-	public User(String username, String email, String departamento, String votopor) {
+	public User(String username, String email, String departamento, String votopor, String uriPhotoProfile) {
 		this.username = username;
 		this.email = email;
 		this.departamento = departamento;
 		this.votopor = votopor;
+		this.uriPhotoProfile = uriPhotoProfile;
+	}
+
+	public String getUriPhotoProfile() {
+		return uriPhotoProfile;
+	}
+
+	public void setUriPhotoProfile(String uriPhotoProfile) {
+		this.uriPhotoProfile = uriPhotoProfile;
 	}
 
 	public String getUserId() {
