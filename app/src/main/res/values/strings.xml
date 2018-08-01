@@ -127,6 +127,7 @@
     <string name="upload_opinion_image">Galería</string>
     <string name="upload_opinion_photo_camera">Cámara</string>
     <string name="btn_upload_opinion_text">Publicar opinión</string>
+    <string name="new_opinion">Nueva Opinión</string>
 
 
 </resources>

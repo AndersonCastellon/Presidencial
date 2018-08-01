@@ -6,6 +6,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView;
 public interface NewOpinionContract {
 
 	interface View extends MvpView {
+		void setToolbar();
 		void setUserProfile(String userName, String uriPhotoProfile, String urlPoliticalFlag);
 	}
 
