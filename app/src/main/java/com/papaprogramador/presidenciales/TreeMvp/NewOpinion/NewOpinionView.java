@@ -75,7 +75,17 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	public void setToolbar() {
 
 		setSupportActionBar(toolbar);
-		toolbar.setTitle(R.string.new_opinion);
+		if (toolbar != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			getSupportActionBar().setDisplayShowHomeEnabled(true);
+			toolbar.setTitle(R.string.new_opinion);
+		}
+	}
+
+	@Override
+	public boolean onSupportNavigateUp() {
+		onBackPressed();
+		return super.onSupportNavigateUp();
 	}
 
 	@Override

@@ -32,6 +32,7 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 						ifViewAttached(new ViewAction<NewOpinionContract.View>() {
 							@Override
 							public void run(@NonNull NewOpinionContract.View view) {
+								view.setToolbar();
 								view.setUserProfile(userName, urlPhotoProfile, urlPoliticalFlag);
 							}
 						});
