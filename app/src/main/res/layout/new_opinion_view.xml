@@ -108,6 +108,7 @@
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:clickable="false"
+                android:background="@drawable/upload_image_background"
                 android:visibility="gone"
                 tools:ignore="ContentDescription" />
 

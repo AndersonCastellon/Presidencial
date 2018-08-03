@@ -65,7 +65,6 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.Opinio
 		holder.likeClicked = opinions.isLikeClicked();
 
 		RequestOptions options = new RequestOptions()
-				.centerCrop()
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.centerCrop();
 

@@ -58,7 +58,6 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 		//TODO: Implementar placeholder para Glide
 
 		RequestOptions options = new RequestOptions()
-				.centerCrop()
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
 				.centerCrop();
 

@@ -64,7 +64,6 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	private Uri mPhotoSelectedUri;
 
 	RequestOptions options = new RequestOptions()
-			.centerCrop()
 			.diskCacheStrategy(DiskCacheStrategy.ALL)
 			.centerCrop();
 
@@ -159,13 +158,11 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 
 	@Override
 	public void setImageBitmapSelectedPhoto(Bitmap bitmap) {
-//		Glide.with(this)
-//				.asBitmap()
-//				.load(bitmap)
-//				.apply(options)
-//				.into(imageOpinionSelected);
-
-		imageOpinionSelected.setImageBitmap(bitmap);
+		Glide.with(this)
+				.asBitmap()
+				.load(bitmap)
+				.apply(options)
+				.into(imageOpinionSelected);
 	}
 
 	@Override
