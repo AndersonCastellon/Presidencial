@@ -94,7 +94,7 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/content_image_upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,19 +102,32 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/activity_horizontal_margin">
 
-            <Button
+            <ImageView
                 android:id="@+id/image_opinion_selected"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:text="X"
-                android:gravity="center" />
+                android:background="@drawable/edittext_background"
+                android:gravity="center"
+                android:visibility="gone"
+                tools:ignore="ContentDescription" />
+
+            <ImageButton
+                android:id="@+id/btn_delete_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/image_opinion_selected"
+                app:layout_constraintTop_toTopOf="@id/image_opinion_selected"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
-                android:layout_toEndOf="@id/image_opinion_selected"
                 android:id="@+id/opinion_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/image_opinion_selected"
                 android:orientation="horizontal">
 
                 <Button
@@ -157,7 +170,7 @@
 
             </LinearLayout>
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
 
 
     </RelativeLayout>

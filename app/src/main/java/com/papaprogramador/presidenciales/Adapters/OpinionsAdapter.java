@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.R;
 
@@ -63,28 +64,27 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.Opinio
 
 		holder.likeClicked = opinions.isLikeClicked();
 
+		RequestOptions options = new RequestOptions()
+				.centerCrop()
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.centerCrop();
+
 		//Foto del usuario
 		Glide.with(holder.context)
 				.load(holder.urlPhotoProfile)
-				.centerCrop()
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.crossFade()
+				.apply(options)
 				.into(holder.userPhotoProfile);
 
 		//Bandera politica del usuario
 		Glide.with(holder.context)
 				.load(holder.urlPoliticalFlag)
-				.centerCrop()
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.crossFade()
+				.apply(options)
 				.into(holder.flagPolitical);
 
 		//Imagen de la opinion cargada por el usuario
 		Glide.with(holder.context)
 				.load(holder.urlOpinionImage)
-				.centerCrop()
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.crossFade()
+				.apply(options)
 				.into(holder.imageOpinion);
 
 		holder.setOnClickListener();

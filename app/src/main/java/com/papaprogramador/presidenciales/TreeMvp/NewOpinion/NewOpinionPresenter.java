@@ -1,5 +1,6 @@
 package com.papaprogramador.presidenciales.TreeMvp.NewOpinion;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,6 +48,36 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	}
 
 
+	@Override
+	public void selectImageFromGallery() {
+		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+			@Override
+			public void run(@NonNull NewOpinionContract.View view) {
+				view.selectImageFromGallery();
+			}
+		});
+	}
+
+	@Override
+	public void createBitMap() {
+		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+			@Override
+			public void run(@NonNull NewOpinionContract.View view) {
+				view.createBitMap();
+			}
+		});
+	}
+
+	@Override
+	public void setImageBitmapSelectedPhoto(final Bitmap bitmap) {
+		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+			@Override
+			public void run(@NonNull NewOpinionContract.View view) {
+				view.showSelectedPhotoView(true);
+				view.setImageBitmapSelectedPhoto(bitmap);
+			}
+		});
+	}
 
 	@Override
 	public void setAuthListener() {

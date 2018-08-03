@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Obj.Candidate;
@@ -56,11 +57,14 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 
 		//TODO: Implementar placeholder para Glide
 
-		Glide.with(holder.context)
-				.load(holder.urlImage)
+		RequestOptions options = new RequestOptions()
 				.centerCrop()
 				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.crossFade()
+				.centerCrop();
+
+		Glide.with(holder.context)
+				.load(holder.urlImage)
+				.apply(options)
 				.into(holder.imageViewCandidato);
 
 		holder.setOnClickListener();

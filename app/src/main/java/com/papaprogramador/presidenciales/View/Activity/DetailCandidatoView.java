@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.github.clans.fab.FloatingActionButton;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.InterfacesMVP.DetailCandidateContract;
@@ -89,12 +90,15 @@ public class DetailCandidatoView extends MvpActivity<DetailCandidateContract.Vie
 	@Override
 	public void getImgCandidate(String urlImgCandidate) {
 
+		RequestOptions options = new RequestOptions()
+				.centerCrop()
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.centerCrop();
+
 		//TODO: Implementar placeholder para Glide
 		Glide.with(this)
 				.load(urlImgCandidate)
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.centerCrop()
-				.crossFade()
+				.apply(options)
 				.into(imgCandidate);
 	}
 
