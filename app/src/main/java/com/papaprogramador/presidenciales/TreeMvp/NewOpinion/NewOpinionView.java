@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales.TreeMvp.NewOpinion;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
+import com.papaprogramador.presidenciales.Manifest;
 import com.papaprogramador.presidenciales.R;
 
 import java.io.IOException;
@@ -59,6 +61,8 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	private static final int RP_STORAGE = 4;
 	private static final String IMAGE_STORAGE_DIRECTORY = "/PresidencialesApp";
 	private static final String PATH_IMAGE_OPINIONS = "OpinionsImages";
+	private static final String PERMISSION_GALLERY = android.Manifest.permission.READ_EXTERNAL_STORAGE;
+	private static final String PERMISSION_CAMERA = android.Manifest.permission.CAMERA;
 
 	private String mCurrentPhotoPath;
 	private Uri mPhotoSelectedUri;
@@ -78,7 +82,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	@NonNull
 	@Override
 	public NewOpinionContract.Presenter createPresenter() {
-		return new NewOpinionPresenter();
+		return new NewOpinionPresenter(this);
 	}
 
 	@OnClick({R.id.btn_opinion_upload_image, R.id.btn_opinion_upload_photo_camera, R.id.btn_upload_opinion,
@@ -86,13 +90,11 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	public void onViewClicked(View view) {
 		switch (view.getId()) {
 			case R.id.btn_opinion_upload_image:
-				getPresenter().selectImageFromGallery();
+				getPresenter().selectImageFromGallery(PERMISSION_GALLERY, RP_GALLERY);
 				break;
 			case R.id.btn_opinion_upload_photo_camera:
 				break;
 			case R.id.btn_upload_opinion:
-				break;
-			case R.id.image_opinion_selected:
 				break;
 			case R.id.btn_delete_image:
 				getPresenter().deleteSelectedImage();
@@ -197,6 +199,19 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+		if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+			switch (requestCode){
+				case RP_STORAGE:
+					break;
+				case RP_GALLERY:
+					break;
+			}
+		}
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 	}
 
 	@Override

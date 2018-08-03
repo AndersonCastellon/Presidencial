@@ -11,7 +11,7 @@ import com.papaprogramador.presidenciales.UseCases.GetDepartmentUser;
 import com.papaprogramador.presidenciales.UseCases.GetTotalVotes;
 import com.papaprogramador.presidenciales.UseCases.GetVoteCurrentUser;
 import com.papaprogramador.presidenciales.InterfacesMVP.DetailCandidateContract;
-import com.papaprogramador.presidenciales.Utils.StaticMethods.GetString;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.GetStringShareApp;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.IntoFirebaseDatabase;
 
 public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateContract.View>
@@ -60,7 +60,7 @@ public class DetailCandidatePresenter extends MvpBasePresenter<DetailCandidateCo
 	@Override
 	public void fabShare(Context context) {
 
-		final String shareCandidateString = GetString.getStringShareCandidate(nameCandidate, context);
+		final String shareCandidateString = GetStringShareApp.getStringShareCandidate(nameCandidate, context);
 
 		ifViewAttached(new ViewAction<DetailCandidateContract.View>() {
 			@Override

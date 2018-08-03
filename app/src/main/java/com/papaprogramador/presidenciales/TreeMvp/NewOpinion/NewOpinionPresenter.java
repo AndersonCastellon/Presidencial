@@ -1,5 +1,6 @@
 package com.papaprogramador.presidenciales.TreeMvp.NewOpinion;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
@@ -8,11 +9,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.Obj.User;
 import com.papaprogramador.presidenciales.UseCases.GetUserProfile;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.GetPermissions;
 
 public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.View>
 		implements NewOpinionContract.Presenter {
 
 	private FirebaseAuth firebaseAuth;
+	private Context context;
 	private String userId;
 
 	private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -43,19 +46,21 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 		}
 	};
 
-	NewOpinionPresenter() {
+	NewOpinionPresenter(Context context) {
+		this.context = context;
 		firebaseAuth = FirebaseAuth.getInstance();
 	}
 
-
 	@Override
-	public void selectImageFromGallery() {
-		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
-			@Override
-			public void run(@NonNull NewOpinionContract.View view) {
-				view.selectImageFromGallery();
-			}
-		});
+	public void selectImageFromGallery(String permission, int requestPermission) {
+		if (GetPermissions.checkPermissionToApp(context, permission, requestPermission)){
+			ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+				@Override
+				public void run(@NonNull NewOpinionContract.View view) {
+					view.selectImageFromGallery();
+				}
+			});
+		}
 	}
 
 	@Override

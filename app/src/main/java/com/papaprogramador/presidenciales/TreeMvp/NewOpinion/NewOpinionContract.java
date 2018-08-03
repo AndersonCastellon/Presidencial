@@ -18,7 +18,7 @@ public interface NewOpinionContract {
 	}
 
 	interface Presenter extends MvpPresenter<NewOpinionContract.View> {
-		void selectImageFromGallery();
+		void selectImageFromGallery(String permission, int requestPermission);
 		void createBitMap();
 		void setImageBitmapSelectedPhoto(Bitmap bitmap);
 		void deleteSelectedImage();

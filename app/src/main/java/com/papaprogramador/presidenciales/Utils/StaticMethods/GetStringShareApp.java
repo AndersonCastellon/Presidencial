@@ -5,7 +5,7 @@ import android.content.Context;
 
 import com.papaprogramador.presidenciales.R;
 
-public class GetString {
+public class GetStringShareApp {
 
 	public static String getStringShareCandidate(String nameCandidate, Context context) {
 

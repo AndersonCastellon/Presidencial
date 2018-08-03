@@ -128,6 +128,7 @@
     <string name="upload_opinion_photo_camera">Cámara</string>
     <string name="btn_upload_opinion_text">Publicar opinión</string>
     <string name="new_opinion">Nueva Opinión</string>
+    <string name="string_time_stamp">a las</string>
 
 
 </resources>

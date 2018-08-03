@@ -1,4 +1,4 @@
-package com.papaprogramador.presidenciales.Utils.StaticMethods;
+package com.papaprogramador.presidenciales.UseCases;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

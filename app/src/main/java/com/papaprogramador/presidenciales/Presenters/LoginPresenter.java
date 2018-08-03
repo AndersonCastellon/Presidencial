@@ -2,7 +2,6 @@ package com.papaprogramador.presidenciales.Presenters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
@@ -17,7 +16,7 @@ import com.papaprogramador.presidenciales.UseCases.ValidarEmail;
 import com.papaprogramador.presidenciales.InterfacesMVP.LoginContract;
 import com.papaprogramador.presidenciales.UseCases.GoogleApiClientListener;
 import com.papaprogramador.presidenciales.UseCases.SignInWithCredentials;
-import com.papaprogramador.presidenciales.Utils.StaticMethods.GetIdDevice;
+import com.papaprogramador.presidenciales.UseCases.GetIdDevice;
 import com.papaprogramador.presidenciales.UseCases.ObtenerIdFirebase;
 import com.papaprogramador.presidenciales.UseCases.RegistrarUsuarioRTDB;
 import com.papaprogramador.presidenciales.Utils.Constans;

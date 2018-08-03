@@ -9,7 +9,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.UseCases.GetTotalVotes;
 import com.papaprogramador.presidenciales.UseCases.GetVoteCurrentUser;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.GetFirebaseUser;
-import com.papaprogramador.presidenciales.Utils.StaticMethods.GetIdDevice;
+import com.papaprogramador.presidenciales.UseCases.GetIdDevice;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.IntoFirebaseDatabase;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.ReauthenticateUserFirebase;
 
