@@ -95,6 +95,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 			case R.id.image_opinion_selected:
 				break;
 			case R.id.btn_delete_image:
+				getPresenter().deleteSelectedImage();
 				break;
 		}
 	}
@@ -163,6 +164,11 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 				.load(bitmap)
 				.apply(options)
 				.into(imageOpinionSelected);
+	}
+
+	@Override
+	public void deleteSelectedImage() {
+		imageOpinionSelected.setImageBitmap(null);
 	}
 
 	@Override

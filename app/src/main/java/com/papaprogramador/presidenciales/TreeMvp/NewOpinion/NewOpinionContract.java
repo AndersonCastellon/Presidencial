@@ -13,6 +13,7 @@ public interface NewOpinionContract {
 		void selectImageFromGallery();
 		void createBitMap();
 		void setImageBitmapSelectedPhoto(Bitmap bitmap);
+		void deleteSelectedImage();
 		void showSelectedPhotoView(boolean show);
 	}
 
@@ -20,6 +21,7 @@ public interface NewOpinionContract {
 		void selectImageFromGallery();
 		void createBitMap();
 		void setImageBitmapSelectedPhoto(Bitmap bitmap);
+		void deleteSelectedImage();
 		void setAuthListener();
 		void removeAuthListener();
 	}

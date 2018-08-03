@@ -80,6 +80,17 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	}
 
 	@Override
+	public void deleteSelectedImage() {
+		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+			@Override
+			public void run(@NonNull NewOpinionContract.View view) {
+				view.deleteSelectedImage();
+				view.showSelectedPhotoView(false);
+			}
+		});
+	}
+
+	@Override
 	public void setAuthListener() {
 		firebaseAuth.addAuthStateListener(authStateListener);
 	}
