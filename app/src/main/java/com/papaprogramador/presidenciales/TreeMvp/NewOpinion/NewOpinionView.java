@@ -159,11 +159,13 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 
 	@Override
 	public void setImageBitmapSelectedPhoto(Bitmap bitmap) {
-		Glide.with(this)
-				.asBitmap()
-				.load(bitmap)
-				.apply(options)
-				.into(imageOpinionSelected);
+//		Glide.with(this)
+//				.asBitmap()
+//				.load(bitmap)
+//				.apply(options)
+//				.into(imageOpinionSelected);
+
+		imageOpinionSelected.setImageBitmap(bitmap);
 	}
 
 	@Override

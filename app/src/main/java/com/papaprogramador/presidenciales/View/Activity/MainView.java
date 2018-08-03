@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.viewstate.MvpViewStateActivity;
 import com.papaprogramador.presidenciales.Adapters.ViewPageAdapter;
@@ -212,10 +213,15 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 		userName.setText(user.getDisplayName());
 		userEmail.setText(user.getEmail());
 
+		RequestOptions options = new RequestOptions()
+				.centerCrop()
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.centerCrop()
+				.dontAnimate();
+
 		Glide.with(this)
 				.load(user.getPhotoUrl())
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.dontAnimate()
+				.apply(options)
 				.into(userImg);
 	}
 
