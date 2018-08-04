@@ -208,6 +208,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 				case RP_STORAGE:
 					break;
 				case RP_GALLERY:
+					getPresenter().selectImageFromGallery(PERMISSION_GALLERY, RP_GALLERY);
 					break;
 			}
 		}
