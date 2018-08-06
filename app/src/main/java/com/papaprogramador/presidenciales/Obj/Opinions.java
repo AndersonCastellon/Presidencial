@@ -39,7 +39,8 @@ public class Opinions implements Parcelable {
 	}
 
 	public Opinions(String userId, String userName, String urlPhotoProfile, long datePublication,
-	                String urlPoliticalFlag, String opinionText, String urlOpinionImage) {
+	                String urlPoliticalFlag, String opinionText, String urlOpinionImage, int countLike,
+	                int countComments, int countShare) {
 		this.userId = userId;
 		this.userName = userName;
 		this.urlPhotoProfile = urlPhotoProfile;
@@ -47,6 +48,9 @@ public class Opinions implements Parcelable {
 		this.urlPoliticalFlag = urlPoliticalFlag;
 		this.opinionText = opinionText;
 		this.urlOpinionImage = urlOpinionImage;
+		this.countLike = countLike;
+		this.countComments = countComments;
+		this.countShare = countShare;
 	}
 
 	public String getOpinionId() {
