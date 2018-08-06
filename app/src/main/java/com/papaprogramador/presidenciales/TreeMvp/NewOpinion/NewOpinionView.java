@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.Manifest;
 import com.papaprogramador.presidenciales.R;
 
+import java.io.File;
 import java.io.IOException;
 
 import butterknife.BindView;
@@ -93,6 +95,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 				getPresenter().selectImageFromGallery(PERMISSION_GALLERY, RP_GALLERY);
 				break;
 			case R.id.btn_opinion_upload_photo_camera:
+				getPresenter().selectImageFromCamera(PERMISSION_CAMERA, RP_STORAGE);
 				break;
 			case R.id.btn_upload_opinion:
 				break;
@@ -174,6 +177,27 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	}
 
 	@Override
+	public void takePictureIntent() {
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+			File photoFile;
+			photoFile = getPresenter().createImageFile();
+
+			if (photoFile != null){
+				Uri photoUri = FileProvider.getUriForFile(this,
+						"com.papaprogramador.presidenciales", photoFile);
+				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+				startActivityForResult(takePictureIntent, RC_CAMERA);
+			}
+		}
+	}
+
+	@Override
+	public void setCurrentPhotoPath(String photoPath) {
+		this.mCurrentPhotoPath = photoPath;
+	}
+
+	@Override
 	public void showSelectedPhotoView(boolean show) {
 		if (show) {
 			opinionButtons.setVisibility(View.GONE);
@@ -196,16 +220,35 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 						getPresenter().createBitMap();
 					}
 					break;
+				case RC_CAMERA:
+					mPhotoSelectedUri = addPictureFromGallery();
+					getPresenter().createBitMap();
+					break;
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	private Uri addPictureFromGallery() {
+
+		Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+
+		File file = new File(mCurrentPhotoPath);
+		Uri contentUri = Uri.fromFile(file);
+		mediaScanIntent.setData(contentUri);
+		this.sendBroadcast(mediaScanIntent);
+
+		mCurrentPhotoPath = null;
+		return contentUri;
+
+	}
+
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-		if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-			switch (requestCode){
+		if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+			switch (requestCode) {
 				case RP_STORAGE:
+					getPresenter().selectImageFromCamera(PERMISSION_CAMERA, RP_STORAGE);
 					break;
 				case RP_GALLERY:
 					getPresenter().selectImageFromGallery(PERMISSION_GALLERY, RP_GALLERY);

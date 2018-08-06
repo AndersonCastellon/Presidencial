@@ -9,7 +9,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.Obj.User;
 import com.papaprogramador.presidenciales.UseCases.GetUserProfile;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.CreatePhotoFile;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.GetPermissions;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.TimeStamp;
+
+import java.io.File;
 
 public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.View>
 		implements NewOpinionContract.Presenter {
@@ -53,11 +57,23 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 
 	@Override
 	public void selectImageFromGallery(String permission, int requestPermission) {
-		if (GetPermissions.checkPermissionToApp(context, permission, requestPermission)){
+		if (GetPermissions.checkPermissionToApp(context, permission, requestPermission)) {
 			ifViewAttached(new ViewAction<NewOpinionContract.View>() {
 				@Override
 				public void run(@NonNull NewOpinionContract.View view) {
 					view.selectImageFromGallery();
+				}
+			});
+		}
+	}
+
+	@Override
+	public void selectImageFromCamera(String permission, int requestPermission) {
+		if (GetPermissions.checkPermissionToApp(context, permission, requestPermission)) {
+			ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+				@Override
+				public void run(@NonNull NewOpinionContract.View view) {
+					view.takePictureIntent();
 				}
 			});
 		}
@@ -93,6 +109,22 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 				view.showSelectedPhotoView(false);
 			}
 		});
+	}
+
+	@Override
+	public File createImageFile() {
+
+		String timeStamp = TimeStamp.timeStamp();
+		final File file = CreatePhotoFile.getPhotoFile(context, timeStamp);
+
+		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+			@Override
+			public void run(@NonNull NewOpinionContract.View view) {
+				view.setCurrentPhotoPath(file.getAbsolutePath());
+			}
+		});
+
+		return file;
 	}
 
 	@Override

@@ -10,9 +10,8 @@ import java.util.Locale;
 
 public class TimeStamp {
 
-	public static String timeStamp(Context context) {
-		String string = context.getResources().getString(R.string.string_time_stamp);
-		return new SimpleDateFormat("dd-MM-yyyy" + " " + string + " " + "HH:mm:ss", Locale.ROOT)
+	public static String timeStamp() {
+		return new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss", Locale.ROOT)
 				.format(new Date());
 	}
 }

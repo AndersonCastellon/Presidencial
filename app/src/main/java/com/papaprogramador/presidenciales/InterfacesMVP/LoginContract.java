@@ -28,6 +28,7 @@ public interface LoginContract {
 	}
 
 	interface Presenter extends MvpPresenter<View> {
+		void getIdDevice(String permission, int requestPermission);
 		void getIdFirebase();
 		void logInWithEmailAndPassword(Context context, String emailUsuario, String pass);
 		void obtenerGoogleApliClient(Context context, String string);

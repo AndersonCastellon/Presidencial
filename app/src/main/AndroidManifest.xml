@@ -51,6 +51,15 @@
             android:name=".TreeMvp.NewOpinion.NewOpinionView"
             tools:ignore="InnerclassSeparator"
             android:theme="@style/AppTheme" />
+
+        <provider
+            android:authorities="com.papaprogramador.presidenciales"
+            android:name="android.support.v4.content.FileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+            </provider>
     </application>
 
 </manifest>

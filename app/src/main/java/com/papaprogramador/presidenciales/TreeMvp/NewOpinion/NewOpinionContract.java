@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
+import java.io.File;
+
 public interface NewOpinionContract {
 
 	interface View extends MvpView {
@@ -14,14 +16,18 @@ public interface NewOpinionContract {
 		void createBitMap();
 		void setImageBitmapSelectedPhoto(Bitmap bitmap);
 		void deleteSelectedImage();
+		void takePictureIntent();
+		void setCurrentPhotoPath(String photoPath);
 		void showSelectedPhotoView(boolean show);
 	}
 
 	interface Presenter extends MvpPresenter<NewOpinionContract.View> {
 		void selectImageFromGallery(String permission, int requestPermission);
+		void selectImageFromCamera(String permission, int requestPermission);
 		void createBitMap();
 		void setImageBitmapSelectedPhoto(Bitmap bitmap);
 		void deleteSelectedImage();
+		File createImageFile();
 		void setAuthListener();
 		void removeAuthListener();
 	}

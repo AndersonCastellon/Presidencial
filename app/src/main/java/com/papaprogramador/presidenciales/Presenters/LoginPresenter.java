@@ -1,9 +1,11 @@
 package com.papaprogramador.presidenciales.Presenters;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -20,6 +22,7 @@ import com.papaprogramador.presidenciales.UseCases.GetIdDevice;
 import com.papaprogramador.presidenciales.UseCases.ObtenerIdFirebase;
 import com.papaprogramador.presidenciales.UseCases.RegistrarUsuarioRTDB;
 import com.papaprogramador.presidenciales.Utils.Constans;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.GetPermissions;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.SharedPreferencesMethods;
 
 import java.util.Objects;
@@ -34,7 +37,13 @@ public class LoginPresenter extends MvpBasePresenter<LoginContract.View> impleme
 
 	public LoginPresenter(Context context) {
 		this.context = context;
-		idDevice = GetIdDevice.getIdDevice(context);
+	}
+
+	@Override
+	public void getIdDevice(String permission, int requestPermission) {
+		if (GetPermissions.checkPermissionToApp(context, permission, requestPermission)) {
+			idDevice = GetIdDevice.getIdDevice(context);
+		}
 	}
 
 	@Override
