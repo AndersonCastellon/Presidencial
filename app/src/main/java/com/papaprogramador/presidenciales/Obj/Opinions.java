@@ -11,7 +11,7 @@ public class Opinions implements Parcelable {
 	private String userId;
 	private String userName;
 	private String urlPhotoProfile;
-	private long datePublication;
+	private String datePublication;
 	private String urlPoliticalFlag;
 	private String opinionText;
 	private String urlOpinionImage;
@@ -28,7 +28,7 @@ public class Opinions implements Parcelable {
 		this.userId = source.readString();
 		this.userName = source.readString();
 		this.urlPhotoProfile = source.readString();
-		this.datePublication = source.readLong();
+		this.datePublication = source.readString();
 		this.urlPoliticalFlag = source.readString();
 		this.opinionText = source.readString();
 		this.urlOpinionImage = source.readString();
@@ -38,7 +38,7 @@ public class Opinions implements Parcelable {
 		this.likeClicked = source.readByte() == 1;
 	}
 
-	public Opinions(String userId, String userName, String urlPhotoProfile, long datePublication,
+	public Opinions(String userId, String userName, String urlPhotoProfile, String datePublication,
 	                String urlPoliticalFlag, String opinionText, String urlOpinionImage, int countLike,
 	                int countComments, int countShare) {
 		this.userId = userId;
@@ -85,11 +85,11 @@ public class Opinions implements Parcelable {
 		this.urlPhotoProfile = urlPhotoProfile;
 	}
 
-	public long getDatePublication() {
+	public String getDatePublication() {
 		return datePublication;
 	}
 
-	public void setDatePublication(long datePublication) {
+	public void setDatePublication(String datePublication) {
 		this.datePublication = datePublication;
 	}
 
@@ -158,7 +158,7 @@ public class Opinions implements Parcelable {
 				countComments == opinions.countComments &&
 				countShare == opinions.countShare &&
 				likeClicked == opinions.likeClicked &&
-				datePublication == opinions.datePublication &&
+				Objects.equals(datePublication, opinions.datePublication) &&
 				Objects.equals(opinionId, opinions.opinionId) &&
 				Objects.equals(userId, opinions.userId) &&
 				Objects.equals(userName, opinions.userName) &&
@@ -184,7 +184,7 @@ public class Opinions implements Parcelable {
 		dest.writeString(userId);
 		dest.writeString(userName);
 		dest.writeString(urlPhotoProfile);
-		dest.writeLong(datePublication);
+		dest.writeString(datePublication);
 		dest.writeString(urlPoliticalFlag);
 		dest.writeString(opinionText);
 		dest.writeString(urlOpinionImage);

@@ -52,4 +52,6 @@ public class Constans {
 	public static final String PACKAGE_NAME_GMAIL = "com.google.android.gm";
 	public static final String CLASS_NAME_GMAIL_COMPOSE_MAIL = "com.google.android.gm.ComposeActivityGmail";
 	public static final String PUT_POLITICAL_FLAG = "PUT_POLITICAL_FLAG";
+	public static final String PUT_ID_OPINION = "idOpinion";
+	public static final String PUT_URL_DOWNLOAD_IMAGE_OPINION = "downloadUri";
 }

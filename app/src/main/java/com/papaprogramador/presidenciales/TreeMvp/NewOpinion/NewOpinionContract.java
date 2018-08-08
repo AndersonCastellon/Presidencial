@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales.TreeMvp.NewOpinion;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
@@ -19,6 +20,8 @@ public interface NewOpinionContract {
 		void takePictureIntent();
 		void setCurrentPhotoPath(String photoPath);
 		void showSelectedPhotoView(boolean show);
+		void newOpinionPublished();
+		void opinionPublishedProgress(double progress);
 	}
 
 	interface Presenter extends MvpPresenter<NewOpinionContract.View> {
@@ -28,6 +31,8 @@ public interface NewOpinionContract {
 		void setImageBitmapSelectedPhoto(Bitmap bitmap);
 		void deleteSelectedImage();
 		File createImageFile();
+		void loadOpinionWithImage(Uri photoSelectedUri, String opinionText);
+		void loadOpinionWithoutImage(String opinionText);
 		void setAuthListener();
 		void removeAuthListener();
 	}

@@ -1,5 +1,6 @@
 package com.papaprogramador.presidenciales.TreeMvp.NewOpinion;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,13 +17,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
-import com.papaprogramador.presidenciales.Manifest;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.View.Activity.MainView;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +33,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.provider.ContactsContract.Directory.PACKAGE_NAME;
+
 public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpinionContract.Presenter>
 		implements NewOpinionContract.View {
 
+	private static final String PACKAGE_NAME_APP = "com.papaprogramador.presidenciales";
 	@BindView(R.id.img_user_profile)
 	ImageView imgUserProfile;
 	@BindView(R.id.user_name)
@@ -62,7 +67,6 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	private static final int RP_GALLERY = 3;
 	private static final int RP_STORAGE = 4;
 	private static final String IMAGE_STORAGE_DIRECTORY = "/PresidencialesApp";
-	private static final String PATH_IMAGE_OPINIONS = "OpinionsImages";
 	private static final String PERMISSION_GALLERY = android.Manifest.permission.READ_EXTERNAL_STORAGE;
 	private static final String PERMISSION_CAMERA = android.Manifest.permission.CAMERA;
 
@@ -98,10 +102,21 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 				getPresenter().selectImageFromCamera(PERMISSION_CAMERA, RP_STORAGE);
 				break;
 			case R.id.btn_upload_opinion:
+				getLoadNewOpinion();
 				break;
 			case R.id.btn_delete_image:
 				getPresenter().deleteSelectedImage();
 				break;
+		}
+	}
+
+	private void getLoadNewOpinion() {
+		String opinionText = etOpinionText.getText().toString();
+
+		if (mPhotoSelectedUri != null) {
+			getPresenter().loadOpinionWithImage(mPhotoSelectedUri, opinionText);
+		} else {
+			getPresenter().loadOpinionWithoutImage(opinionText);
 		}
 	}
 
@@ -174,6 +189,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	@Override
 	public void deleteSelectedImage() {
 		imageOpinionSelected.setImageBitmap(null);
+		mPhotoSelectedUri = null;
 	}
 
 	@Override
@@ -183,9 +199,9 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 			File photoFile;
 			photoFile = getPresenter().createImageFile();
 
-			if (photoFile != null){
+			if (photoFile != null) {
 				Uri photoUri = FileProvider.getUriForFile(this,
-						"com.papaprogramador.presidenciales", photoFile);
+						PACKAGE_NAME_APP, photoFile);
 				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
 				startActivityForResult(takePictureIntent, RC_CAMERA);
 			}
@@ -208,6 +224,38 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 			btnDeleteImage.setVisibility(View.GONE);
 			imageOpinionSelected.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void newOpinionPublished() {
+		Toast.makeText(this, getResources().getString(R.string.new_opinion_publiched), Toast.LENGTH_LONG).show();
+		Intent intent = new Intent(this, MainView.class);
+		startActivity(intent);
+		finish();
+	}
+
+	@Override
+	public void opinionPublishedProgress(final double progress) {
+
+		final ProgressDialog horizontalProgressDialog = new ProgressDialog(this);
+		horizontalProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		horizontalProgressDialog.setMessage(getString(R.string.opinion_published_progress_text));
+		horizontalProgressDialog.setCancelable(false);
+		horizontalProgressDialog.setMax(100);
+		horizontalProgressDialog.show();
+
+		new Thread(new Runnable() {
+			int prog = (int) progress;
+			@Override
+			public void run() {
+				while (prog <= 100) {
+					horizontalProgressDialog.setProgress(prog);
+					if (prog == 100) {
+						horizontalProgressDialog.dismiss();
+					}
+				}
+			}
+		}).start();
 	}
 
 	@Override

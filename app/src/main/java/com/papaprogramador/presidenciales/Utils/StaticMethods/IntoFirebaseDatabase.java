@@ -2,6 +2,7 @@ package com.papaprogramador.presidenciales.Utils.StaticMethods;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 
 public class IntoFirebaseDatabase {
@@ -47,4 +48,5 @@ public class IntoFirebaseDatabase {
 		databaseReference.child(FirebaseReference.NODO_ID_DISPOSITIVO).child(idDevice).removeValue();
 
 	}
+
 }

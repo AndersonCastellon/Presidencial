@@ -2,13 +2,17 @@ package com.papaprogramador.presidenciales.TreeMvp.NewOpinion;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.Obj.User;
 import com.papaprogramador.presidenciales.UseCases.GetUserProfile;
+import com.papaprogramador.presidenciales.UseCases.LoadImageOpinion;
+import com.papaprogramador.presidenciales.UseCases.PublicNewOpinion;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.CreatePhotoFile;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.GetPermissions;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.TimeStamp;
@@ -18,9 +22,13 @@ import java.io.File;
 public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.View>
 		implements NewOpinionContract.Presenter {
 
+	private static final String PATTERN = "dd/MM/yy hh:mm:ss";
 	private FirebaseAuth firebaseAuth;
 	private Context context;
 	private String userId;
+	private String userName;
+	private String urlPhotoProfile;
+	private String urlPoliticalFlag;
 
 	private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
 		@Override
@@ -33,9 +41,9 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 
 						userId = user.getUserId();
 
-						final String userName = user.getUsername();
-						final String urlPhotoProfile = user.getUriPhotoProfile();
-						final String urlPoliticalFlag = user.getPoliticalFlag();
+						userName = user.getUsername();
+						urlPhotoProfile = user.getUriPhotoProfile();
+						urlPoliticalFlag = user.getPoliticalFlag();
 
 						ifViewAttached(new ViewAction<NewOpinionContract.View>() {
 							@Override
@@ -114,7 +122,7 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	@Override
 	public File createImageFile() {
 
-		String timeStamp = TimeStamp.timeStamp();
+		String timeStamp = TimeStamp.timeStamp("ddmmyyyy_HHmmss");
 		final File file = CreatePhotoFile.getPhotoFile(context, timeStamp);
 
 		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
@@ -125,6 +133,74 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 		});
 
 		return file;
+	}
+
+	@Override
+	public void loadOpinionWithImage(Uri photoSelectedUri, final String opinionText) {
+
+		LoadImageOpinion loadImageOpinion = new LoadImageOpinion(photoSelectedUri, new LoadImageOpinion.UploadImageResult() {
+			@Override
+			public void onResult(String downloadUri) {
+
+				String datePublication = TimeStamp.timeStamp(PATTERN);
+
+				Opinions opinion = new Opinions(userId, userName, urlPhotoProfile, datePublication, urlPoliticalFlag,
+						opinionText, downloadUri, 0,0,0);
+
+				loadOpinion(opinion);
+			}
+
+			@Override
+			public void onProgress(final double progress) {
+				ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+					@Override
+					public void run(@NonNull NewOpinionContract.View view) {
+						view.opinionPublishedProgress(progress);
+					}
+				});
+			}
+
+			@Override
+			public void onFailure(Exception e) {
+
+			}
+		});
+
+		loadImageOpinion.loadImageOpinion();
+	}
+
+	@Override
+	public void loadOpinionWithoutImage(String opinionText) {
+		String datePublication = TimeStamp.timeStamp(PATTERN);
+
+		Opinions opinion = new Opinions(userId, userName, urlPhotoProfile, datePublication, urlPoliticalFlag,
+				opinionText, null, 0,0,0);
+
+		loadOpinion(opinion);
+	}
+
+	private void loadOpinion(Opinions opinion) {
+
+		PublicNewOpinion publicNewOpinion = new PublicNewOpinion(opinion, new PublicNewOpinion.PublicOpinionListener() {
+			@Override
+			public void onResult(boolean result) {
+				if (result){
+					ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+						@Override
+						public void run(@NonNull NewOpinionContract.View view) {
+							view.newOpinionPublished();
+						}
+					});
+				}
+			}
+
+			@Override
+			public void onFailure(Exception e) {
+
+			}
+		});
+
+		publicNewOpinion.publicNewOpinion();
 	}
 
 	@Override

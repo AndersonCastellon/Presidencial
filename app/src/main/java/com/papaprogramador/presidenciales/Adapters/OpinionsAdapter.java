@@ -49,7 +49,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.Opinio
 		Opinions opinions = opinionsList.get(position);
 
 		holder.userName.setText(opinions.getUserName());
-		holder.datePublication.setText((int) opinions.getDatePublication());
+		holder.datePublication.setText(opinions.getDatePublication());
 		holder.opinionText.setText(opinions.getOpinionText());
 		holder.btnLikeOpinion.setText(opinions.getCountLike());
 		holder.btnCommentOpinion.setText(opinions.getCountComments());

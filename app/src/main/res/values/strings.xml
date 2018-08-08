@@ -129,6 +129,8 @@
     <string name="btn_upload_opinion_text">Publicar opinión</string>
     <string name="new_opinion">Nueva Opinión</string>
     <string name="string_time_stamp">a las</string>
+    <string name="new_opinion_publiched">Tu opinión ha sido publicada</string>
+    <string name="opinion_published_progress_text">Publicando tu opinión</string>
 
 
 </resources>
