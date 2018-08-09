@@ -133,6 +133,8 @@
     <string name="opinion_published_progress_text">Publicando tu opinión</string>
     <string name="delete_selected_image_title">Eliminar imagen</string>
     <string name="delete_selected_image_message">Deseas eliminar la imagen seleccionada?</string>
+    <string name="opinion_cancel_title">Cancelar opinión</string>
+    <string name="opinion_cancel_message">Deseas cancelar la creación de tu opinión?</string>
 
 
 </resources>

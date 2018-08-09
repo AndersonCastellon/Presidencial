@@ -37,8 +37,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.provider.ContactsContract.Directory.PACKAGE_NAME;
-
 public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpinionContract.Presenter>
 		implements NewOpinionContract.View {
 
@@ -361,7 +359,23 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 
 	@Override
 	public boolean onSupportNavigateUp() {
-		onBackPressed();
+
+		new AlertDialog.Builder(this)
+				.setTitle(getString(R.string.opinion_cancel_title))
+				.setMessage(getString(R.string.opinion_cancel_message))
+				.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						onBackPressed();
+					}
+				})
+				.setNegativeButton(getString(R.string.cancel_dialog_text), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				})
+				.show();
 		return super.onSupportNavigateUp();
 	}
 
