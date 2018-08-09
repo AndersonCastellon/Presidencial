@@ -131,6 +131,8 @@
     <string name="string_time_stamp">a las</string>
     <string name="new_opinion_publiched">Tu opinión ha sido publicada</string>
     <string name="opinion_published_progress_text">Publicando tu opinión</string>
+    <string name="delete_selected_image_title">Eliminar imagen</string>
+    <string name="delete_selected_image_message">Deseas eliminar la imagen seleccionada?</string>
 
 
 </resources>

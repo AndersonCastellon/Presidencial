@@ -16,6 +16,7 @@ public interface NewOpinionContract {
 		void selectImageFromGallery();
 		void createBitMap();
 		void setImageBitmapSelectedPhoto(Bitmap bitmap);
+		void deleteSelectedImageDialog();
 		void deleteSelectedImage();
 		void takePictureIntent();
 		void setCurrentPhotoPath(String photoPath);

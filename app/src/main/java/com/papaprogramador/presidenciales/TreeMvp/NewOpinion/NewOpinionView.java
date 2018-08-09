@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales.TreeMvp.NewOpinion;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -85,6 +87,9 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 		setContentView(R.layout.new_opinion_view);
 		ButterKnife.bind(this);
 
+		btnUploadOpinion.setEnabled(false);
+		btnUploadOpinion.setBackgroundColor(getResources().getColor(R.color.divider));
+
 		etOpinionText.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -106,6 +111,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 
 			@Override
 			public void afterTextChanged(Editable s) {
+
 			}
 		});
 	}
@@ -130,7 +136,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 				getLoadNewOpinion();
 				break;
 			case R.id.btn_delete_image:
-				getPresenter().deleteSelectedImage();
+				deleteSelectedImageDialog();
 				break;
 		}
 	}
@@ -209,6 +215,27 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 				.load(bitmap)
 				.apply(options)
 				.into(imageOpinionSelected);
+	}
+
+	@Override
+	public void deleteSelectedImageDialog() {
+
+		new AlertDialog.Builder(this)
+				.setTitle(getString(R.string.delete_selected_image_title))
+				.setMessage(getString(R.string.delete_selected_image_message))
+				.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						getPresenter().deleteSelectedImage();
+					}
+				})
+				.setNegativeButton(getString(R.string.cancel_dialog_text), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				})
+				.show();
 	}
 
 	@Override
