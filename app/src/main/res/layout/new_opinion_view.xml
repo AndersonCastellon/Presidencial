@@ -183,7 +183,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/primary_dark"
         android:text="@string/btn_upload_opinion_text"
-        android:textColor="@color/icons" />
+        android:textColor="@color/icons"/>
 
 
 </RelativeLayout>

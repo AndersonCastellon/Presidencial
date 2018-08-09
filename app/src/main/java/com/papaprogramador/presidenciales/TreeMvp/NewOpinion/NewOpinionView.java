@@ -10,6 +10,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +40,6 @@ import static android.provider.ContactsContract.Directory.PACKAGE_NAME;
 public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpinionContract.Presenter>
 		implements NewOpinionContract.View {
 
-	private static final String PACKAGE_NAME_APP = "com.papaprogramador.presidenciales";
 	@BindView(R.id.img_user_profile)
 	ImageView imgUserProfile;
 	@BindView(R.id.user_name)
@@ -66,9 +67,9 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	private static final int RC_CAMERA = 2;
 	private static final int RP_GALLERY = 3;
 	private static final int RP_STORAGE = 4;
-	private static final String IMAGE_STORAGE_DIRECTORY = "/PresidencialesApp";
 	private static final String PERMISSION_GALLERY = android.Manifest.permission.READ_EXTERNAL_STORAGE;
 	private static final String PERMISSION_CAMERA = android.Manifest.permission.CAMERA;
+	private static final String PACKAGE_NAME_APP = "com.papaprogramador.presidenciales";
 
 	private String mCurrentPhotoPath;
 	private Uri mPhotoSelectedUri;
@@ -83,6 +84,30 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_opinion_view);
 		ButterKnife.bind(this);
+
+		etOpinionText.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				btnUploadOpinion.setEnabled(false);
+				btnUploadOpinion.setBackgroundColor(getResources().getColor(R.color.divider));
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+				if (s.toString().trim().length() == 0) {
+					btnUploadOpinion.setEnabled(false);
+					btnUploadOpinion.setBackgroundColor(getResources().getColor(R.color.divider));
+				} else {
+					btnUploadOpinion.setEnabled(true);
+					btnUploadOpinion.setBackgroundColor(getResources().getColor(R.color.primary_dark));
+				}
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
 	}
 
 	@NonNull
@@ -246,6 +271,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 
 		new Thread(new Runnable() {
 			int prog = (int) progress;
+
 			@Override
 			public void run() {
 				while (prog <= 100) {
