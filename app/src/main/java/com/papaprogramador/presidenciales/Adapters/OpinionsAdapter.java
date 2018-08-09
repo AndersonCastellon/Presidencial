@@ -51,9 +51,10 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.Opinio
 		holder.userName.setText(opinions.getUserName());
 		holder.datePublication.setText(opinions.getDatePublication());
 		holder.opinionText.setText(opinions.getOpinionText());
-		holder.btnLikeOpinion.setText(opinions.getCountLike());
-		holder.btnCommentOpinion.setText(opinions.getCountComments());
-		holder.btnShareOpinion.setText(opinions.getCountShare());
+
+		holder.btnLikeOpinion.setText(String.valueOf(opinions.getCountLike()));
+		holder.btnCommentOpinion.setText(String.valueOf(opinions.getCountComments()));
+		holder.btnShareOpinion.setText(String.valueOf(opinions.getCountShare()));
 
 		holder.urlPhotoProfile = opinions.getUrlPhotoProfile();
 		holder.urlPoliticalFlag = opinions.getUrlPoliticalFlag();
@@ -142,7 +143,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.Opinio
 
 		@Override
 		public void onClick(View v) {
-			switch (v.getId()){
+			switch (v.getId()) {
 				case R.id.btn_like_opinion:
 					break;
 				case R.id.btn_comment_opinion:

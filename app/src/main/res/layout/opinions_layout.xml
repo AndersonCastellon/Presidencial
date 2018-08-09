@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/upload_image_background"
     android:padding="@dimen/nav_header_vertical_spacing">
 
     <LinearLayout
@@ -26,7 +27,6 @@
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre de Usuario"
                 android:textColor="@color/accent"
                 android:textSize="@dimen/textSizeButton"
                 android:textStyle="bold|normal" />
@@ -36,7 +36,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
-                android:text="Fecha de publicacion"
                 android:textColor="@color/secondary_text"
                 android:textSize="@dimen/bottom_text_size"
                 android:textStyle="normal" />
@@ -113,7 +112,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableStart="@drawable/ic_like"
-            android:text="1000"
             android:textColor="@color/secondary_text" />
 
         <Button
@@ -123,7 +121,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableStart="@drawable/ic_post_comments"
-            android:text="50"
             android:textColor="@color/secondary_text" />
 
         <Button
@@ -133,7 +130,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableStart="@drawable/ic_share_app"
-            android:text="300"
             android:textColor="@color/secondary_text" />
 
     </LinearLayout>

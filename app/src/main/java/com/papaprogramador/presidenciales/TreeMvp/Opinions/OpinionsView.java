@@ -4,58 +4,127 @@ package com.papaprogramador.presidenciales.TreeMvp.Opinions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
+import com.hannesdorfmann.mosby3.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby3.mvp.viewstate.lce.MvpLceViewStateFragment;
+import com.hannesdorfmann.mosby3.mvp.viewstate.lce.data.RetainingLceViewState;
+import com.papaprogramador.presidenciales.Adapters.OpinionsAdapter;
+import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.TreeMvp.NewOpinion.NewOpinionView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class OpinionsView extends Fragment {
+public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, List<Opinions>,
+		OpinionsContract.View, OpinionsContract.Presenter> implements OpinionsContract.View,
+		SwipeRefreshLayout.OnRefreshListener {
 
+	//TODO: borde y separación entre opiniones
+	//TODO: Botón mostrar más en textos largos
+	//TODO: Juntar más el texto y los iconos de los botones inferiores
+	//TODO: Ordenar las opiniones, las más recientes arriba
+	//TODO: Botón flotante que notifique que hay nuevas opiniones
 
-	private static final int RC_UPLOAD_OPINION = 255;
-	@BindView(R.id.loadingView)
-	ProgressBar loadingView;
-	@BindView(R.id.errorView)
-	TextView errorView;
 	@BindView(R.id.rv_opinions)
 	RecyclerView rvOpinions;
-	@BindView(R.id.contentView)
-	SwipeRefreshLayout contentView;
 	Unbinder unbinder;
+
+	OpinionsAdapter opinionsAdapter;
 
 	public OpinionsView() {
 		// Required empty public constructor
 	}
 
-
 	@Override
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		View view = inflater.inflate(R.layout.opinions_fragment, container, false);
+		setRetainInstance(true);
+		return inflater.inflate(R.layout.opinions_fragment, container, false);
+	}
+
+	@Override
+	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+
 		unbinder = ButterKnife.bind(this, view);
-		return view;
+		contentView.setOnRefreshListener(this);
+		opinionsAdapter = new OpinionsAdapter();
+
+		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+		linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+		rvOpinions.setLayoutManager(linearLayoutManager);
+
+		loadData(false);
 	}
 
 	@OnClick(R.id.fab_new_opinion)
 	public void onViewClicked() {
 		Intent intent = new Intent(getActivity(), NewOpinionView.class);
-		startActivityForResult(intent, RC_UPLOAD_OPINION);
+		startActivity(intent);
+	}
+
+	@NonNull
+	@Override
+	public OpinionsContract.Presenter createPresenter() {
+		return new OpinionsPresenter(getActivity());
+	}
+
+	@Override
+	protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
+		loadData(pullToRefresh);
+		return getResources().getString(R.string.null_Connection_Exception);
+	}
+
+	@Override
+	public List<Opinions> getData() {
+		return opinionsAdapter == null ? null : opinionsAdapter.getOpinionsList();
+	}
+
+	@NonNull
+	@Override
+	public LceViewState<List<Opinions>, OpinionsContract.View> createViewState() {
+		return new RetainingLceViewState<>();
+	}
+
+	@Override
+	public void setData(List<Opinions> data) {
+
+		errorView.setVisibility(View.GONE);
+		loadingView.setVisibility(View.GONE);
+
+		opinionsAdapter.setOpinionsList(data);
+
+		rvOpinions.setAdapter(opinionsAdapter);
+		opinionsAdapter.notifyDataSetChanged();
+
+		contentView.setRefreshing(false);
+
+	}
+
+	@Override
+	public void loadData(boolean pullToRefresh) {
+		errorView.setVisibility(View.GONE);
+		loadingView.setVisibility(View.VISIBLE);
+
+		getPresenter().getOpinionsList(pullToRefresh);
+	}
+
+	@Override
+	public void onRefresh() {
+		errorView.setVisibility(View.GONE);
+		loadData(true);
 	}
 
 	@Override
