@@ -143,9 +143,10 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 			public void onResult(String downloadUri) {
 
 				String datePublication = TimeStamp.timeStamp(PATTERN);
+				long orderBy = Long.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
 
 				Opinions opinion = new Opinions(userId, userName, urlPhotoProfile, datePublication, urlPoliticalFlag,
-						opinionText, downloadUri, 0,0,0);
+						opinionText, downloadUri, 0,0,0, orderBy);
 
 				loadOpinion(opinion);
 			}
@@ -172,9 +173,11 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	@Override
 	public void loadOpinionWithoutImage(String opinionText) {
 		String datePublication = TimeStamp.timeStamp(PATTERN);
+		long orderBy = Long.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
+
 
 		Opinions opinion = new Opinions(userId, userName, urlPhotoProfile, datePublication, urlPoliticalFlag,
-				opinionText, null, 0,0,0);
+				opinionText, null, 0,0,0, orderBy);
 
 		loadOpinion(opinion);
 	}

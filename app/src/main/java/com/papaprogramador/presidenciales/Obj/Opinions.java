@@ -2,10 +2,11 @@ package com.papaprogramador.presidenciales.Obj;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.Objects;
 
-public class Opinions implements Parcelable {
+public class Opinions implements Parcelable, Comparable<Opinions> {
 
 	private String opinionId;
 	private String userId;
@@ -19,6 +20,8 @@ public class Opinions implements Parcelable {
 	private int countComments;
 	private int countShare;
 	private boolean likeClicked;
+
+	private long orderBy;
 
 	public Opinions() {
 	}
@@ -36,11 +39,13 @@ public class Opinions implements Parcelable {
 		this.countComments = source.readInt();
 		this.countShare = source.readInt();
 		this.likeClicked = source.readByte() == 1;
+		this.orderBy = source.readLong();
+
 	}
 
 	public Opinions(String userId, String userName, String urlPhotoProfile, String datePublication,
 	                String urlPoliticalFlag, String opinionText, String urlOpinionImage, int countLike,
-	                int countComments, int countShare) {
+	                int countComments, int countShare, long orderBy) {
 		this.userId = userId;
 		this.userName = userName;
 		this.urlPhotoProfile = urlPhotoProfile;
@@ -51,6 +56,11 @@ public class Opinions implements Parcelable {
 		this.countLike = countLike;
 		this.countComments = countComments;
 		this.countShare = countShare;
+		this.orderBy = orderBy;
+	}
+
+	public long getOrderBy() {
+		return orderBy;
 	}
 
 	public String getOpinionId() {
@@ -65,80 +75,40 @@ public class Opinions implements Parcelable {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	public String getUserName() {
 		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getUrlPhotoProfile() {
 		return urlPhotoProfile;
 	}
 
-	public void setUrlPhotoProfile(String urlPhotoProfile) {
-		this.urlPhotoProfile = urlPhotoProfile;
-	}
-
 	public String getDatePublication() {
 		return datePublication;
-	}
-
-	public void setDatePublication(String datePublication) {
-		this.datePublication = datePublication;
 	}
 
 	public String getUrlPoliticalFlag() {
 		return urlPoliticalFlag;
 	}
 
-	public void setUrlPoliticalFlag(String urlPoliticalFlag) {
-		this.urlPoliticalFlag = urlPoliticalFlag;
-	}
-
 	public String getOpinionText() {
 		return opinionText;
-	}
-
-	public void setOpinionText(String opinionText) {
-		this.opinionText = opinionText;
 	}
 
 	public String getUrlOpinionImage() {
 		return urlOpinionImage;
 	}
 
-	public void setUrlOpinionImage(String urlOpinionImage) {
-		this.urlOpinionImage = urlOpinionImage;
-	}
-
 	public int getCountLike() {
 		return countLike;
-	}
-
-	public void setCountLike(int countLike) {
-		this.countLike = countLike;
 	}
 
 	public int getCountComments() {
 		return countComments;
 	}
 
-	public void setCountComments(int countComments) {
-		this.countComments = countComments;
-	}
-
 	public int getCountShare() {
 		return countShare;
-	}
-
-	public void setCountShare(int countShare) {
-		this.countShare = countShare;
 	}
 
 	public boolean isLikeClicked() {
@@ -158,6 +128,7 @@ public class Opinions implements Parcelable {
 				countComments == opinions.countComments &&
 				countShare == opinions.countShare &&
 				likeClicked == opinions.likeClicked &&
+				orderBy == opinions.orderBy &&
 				Objects.equals(datePublication, opinions.datePublication) &&
 				Objects.equals(opinionId, opinions.opinionId) &&
 				Objects.equals(userId, opinions.userId) &&
@@ -191,6 +162,8 @@ public class Opinions implements Parcelable {
 		dest.writeInt(countLike);
 		dest.writeInt(countComments);
 		dest.writeInt(countShare);
+		dest.writeLong(orderBy);
+
 	}
 
 	public static final Parcelable.Creator<Opinions> CREATOR = new Parcelable.Creator<Opinions>() {
@@ -205,4 +178,11 @@ public class Opinions implements Parcelable {
 			return new Opinions[size];
 		}
 	};
+
+	@Override
+	public int compareTo(@NonNull Opinions o) {
+
+		return Long.compare(o.orderBy,orderBy);
+
+	}
 }

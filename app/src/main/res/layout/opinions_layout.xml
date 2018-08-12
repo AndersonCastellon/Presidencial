@@ -11,11 +11,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/img_user_profile"
             android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@color/red_error" />
+            android:layout_height="60dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -48,11 +47,10 @@
             android:orientation="horizontal"
             android:paddingLeft="@dimen/nav_header_vertical_spacing">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/flag_political"
                 android:layout_width="45dp"
-                android:layout_height="25dp"
-                android:src="@color/red_error" />
+                android:layout_height="25dp" />
 
         </LinearLayout>
 
@@ -87,13 +85,12 @@
             android:layout_height="wrap_content"
             android:textColor="@color/primary_text" />
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/image_opinion"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:paddingTop="@dimen/nav_header_vertical_spacing"
-            android:scaleType="centerCrop"
-            android:src="@color/red_error" />
+            android:scaleType="centerCrop" />
 
     </LinearLayout>
 

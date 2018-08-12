@@ -9,6 +9,8 @@ import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,15 +49,19 @@ public class GetOpinionsList {
 
 	private void createOpinionsList(DataSnapshot dataSnapshot) {
 
-		opinionsList.removeAll(opinionsList);
+//		opinionsList.removeAll(opinionsList);
 
-		for (DataSnapshot opinionList :
+		for (DataSnapshot data :
 				dataSnapshot.getChildren()) {
-			Opinions opinions = opinionList.getValue(Opinions.class);
-			Objects.requireNonNull(opinions).setOpinionId(opinionList.getKey());
-			opinionsList.add(opinions);
+			Opinions opinions = data.getValue(Opinions.class);
+			Objects.requireNonNull(opinions).setOpinionId(data.getKey());
+
+			if (!opinionsList.contains(opinions)) {
+				opinionsList.add(opinions);
+			}
 		}
 
+		Collections.sort(opinionsList);
 		listListener.onResult(opinionsList);
 	}
 }

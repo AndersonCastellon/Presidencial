@@ -31,11 +31,15 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 		OpinionsContract.View, OpinionsContract.Presenter> implements OpinionsContract.View,
 		SwipeRefreshLayout.OnRefreshListener {
 
+	//TODO: Ordenar las opiniones, las más recientes arriba -> COMPLETADO.
+
 	//TODO: borde y separación entre opiniones
 	//TODO: Botón mostrar más en textos largos
 	//TODO: Juntar más el texto y los iconos de los botones inferiores
-	//TODO: Ordenar las opiniones, las más recientes arriba
 	//TODO: Botón flotante que notifique que hay nuevas opiniones
+	//TODO: Detener listener de Opiniones al destruir la actividad contenedora
+	//TODO: Listener al dar clic en la imagen cargada en la opinión
+	//TODO: Resolver porqué la app se vuelve lenta al haber muchas opiniones
 
 	@BindView(R.id.rv_opinions)
 	RecyclerView rvOpinions;
@@ -65,6 +69,10 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 		linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 		rvOpinions.setLayoutManager(linearLayoutManager);
+
+		rvOpinions.setHasFixedSize(true);
+		rvOpinions.setItemViewCacheSize(20);
+		rvOpinions.setDrawingCacheEnabled(true);
 
 		loadData(false);
 	}

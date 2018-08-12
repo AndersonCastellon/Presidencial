@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:name=".Utils.MyApplication"
+        android:fullBackupContent="@xml/backup_descriptor"
+        tools:ignore="InnerclassSeparator">
         <activity
             android:name=".View.Activity.LoginView"
             tools:ignore="InnerclassSeparator" />

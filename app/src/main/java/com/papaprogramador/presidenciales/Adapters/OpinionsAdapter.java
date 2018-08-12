@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.R;
 
@@ -46,6 +47,10 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.Opinio
 	@Override
 	public void onBindViewHolder(@NonNull OpinionsViewHolder holder, int position) {
 
+		RequestOptions options = new RequestOptions()
+				.diskCacheStrategy(DiskCacheStrategy.ALL)
+				.centerCrop();
+
 		Opinions opinions = opinionsList.get(position);
 
 		holder.userName.setText(opinions.getUserName());
@@ -58,34 +63,40 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.Opinio
 
 		holder.urlPhotoProfile = opinions.getUrlPhotoProfile();
 		holder.urlPoliticalFlag = opinions.getUrlPoliticalFlag();
-		holder.urlOpinionImage = opinions.getUrlOpinionImage();
+
+		if (opinions.getUrlOpinionImage() != null) {
+			holder.urlOpinionImage = opinions.getUrlOpinionImage();
+
+			//Imagen de la opinion cargada por el usuario
+			holder.imageOpinion.setImageURI(holder.urlOpinionImage);
+
+//			Glide.with(holder.context)
+//					.load(holder.urlOpinionImage)
+//					.apply(options)
+//					.into(holder.imageOpinion);
+		} else {
+			holder.imageOpinion.setVisibility(View.GONE);
+		}
 
 		holder.opinionId = opinions.getOpinionId();
 		holder.userId = opinions.getUserId();
 
 		holder.likeClicked = opinions.isLikeClicked();
 
-		RequestOptions options = new RequestOptions()
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.centerCrop();
-
 		//Foto del usuario
-		Glide.with(holder.context)
-				.load(holder.urlPhotoProfile)
-				.apply(options)
-				.into(holder.userPhotoProfile);
+		holder.userPhotoProfile.setImageURI(holder.urlPhotoProfile);
+//		Glide.with(holder.context)
+//				.load(holder.urlPhotoProfile)
+//				.apply(options)
+//				.into(holder.userPhotoProfile);
 
 		//Bandera politica del usuario
-		Glide.with(holder.context)
-				.load(holder.urlPoliticalFlag)
-				.apply(options)
-				.into(holder.flagPolitical);
+		holder.flagPolitical.setImageURI(holder.urlPoliticalFlag);
+//		Glide.with(holder.context)
+//				.load(holder.urlPoliticalFlag)
+//				.apply(options)
+//				.into(holder.flagPolitical);
 
-		//Imagen de la opinion cargada por el usuario
-		Glide.with(holder.context)
-				.load(holder.urlOpinionImage)
-				.apply(options)
-				.into(holder.imageOpinion);
 
 		holder.setOnClickListener();
 	}
@@ -106,17 +117,17 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.Opinio
 		String urlOpinionImage;
 
 		@BindView(R.id.img_user_profile)
-		ImageView userPhotoProfile;
+		SimpleDraweeView userPhotoProfile;
 		@BindView(R.id.user_name)
 		TextView userName;
 		@BindView(R.id.date_publication)
 		TextView datePublication;
 		@BindView(R.id.flag_political)
-		ImageView flagPolitical;
+		SimpleDraweeView flagPolitical;
 		@BindView(R.id.opinion_text)
 		TextView opinionText;
 		@BindView(R.id.image_opinion)
-		ImageView imageOpinion;
+		SimpleDraweeView imageOpinion;
 		@BindView(R.id.btn_like_opinion)
 		Button btnLikeOpinion;
 		@BindView(R.id.btn_comment_opinion)
