@@ -13,6 +13,7 @@ import com.papaprogramador.presidenciales.Obj.User;
 import com.papaprogramador.presidenciales.UseCases.GetUserProfile;
 import com.papaprogramador.presidenciales.UseCases.LoadImageOpinion;
 import com.papaprogramador.presidenciales.UseCases.PublicNewOpinion;
+import com.papaprogramador.presidenciales.UseCases.ResizeBitmap;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.CreatePhotoFile;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.GetPermissions;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.TimeStamp;
@@ -99,6 +100,7 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 
 	@Override
 	public void setImageBitmapSelectedPhoto(final Bitmap bitmap) {
+
 		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
 			@Override
 			public void run(@NonNull NewOpinionContract.View view) {
@@ -136,9 +138,9 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	}
 
 	@Override
-	public void loadOpinionWithImage(Uri photoSelectedUri, final String opinionText) {
+	public void loadOpinionWithImage(Bitmap bitmap, final String opinionText) {
 
-		LoadImageOpinion loadImageOpinion = new LoadImageOpinion(photoSelectedUri, new LoadImageOpinion.UploadImageResult() {
+		LoadImageOpinion loadImageOpinion = new LoadImageOpinion(bitmap, new LoadImageOpinion.UploadImageResult() {
 			@Override
 			public void onResult(String downloadUri) {
 

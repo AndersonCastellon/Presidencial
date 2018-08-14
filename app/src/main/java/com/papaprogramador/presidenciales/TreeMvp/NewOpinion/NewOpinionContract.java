@@ -32,7 +32,7 @@ public interface NewOpinionContract {
 		void setImageBitmapSelectedPhoto(Bitmap bitmap);
 		void deleteSelectedImage();
 		File createImageFile();
-		void loadOpinionWithImage(Uri photoSelectedUri, String opinionText);
+		void loadOpinionWithImage(Bitmap bitmap, String opinionText);
 		void loadOpinionWithoutImage(String opinionText);
 		void setAuthListener();
 		void removeAuthListener();

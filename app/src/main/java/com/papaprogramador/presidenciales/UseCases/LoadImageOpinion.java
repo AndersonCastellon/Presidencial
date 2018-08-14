@@ -1,5 +1,7 @@
 package com.papaprogramador.presidenciales.UseCases;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -13,6 +15,7 @@ import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.GetFirebaseUser;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.TimeStamp;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 public class LoadImageOpinion {
@@ -25,14 +28,14 @@ public class LoadImageOpinion {
 		void onFailure(Exception e);
 	}
 
-	private Uri photoSelectedUri;
+	private Bitmap bitmap;
 	private String userId;
 	private UploadImageResult listener;
 	private StorageReference storageReference;
 
-	public LoadImageOpinion(Uri photoSelectedUri, UploadImageResult listener) {
+	public LoadImageOpinion(Bitmap bitmap, UploadImageResult listener) {
 		this.listener = listener;
-		this.photoSelectedUri = photoSelectedUri;
+		this.bitmap = bitmap;
 		this.userId = GetFirebaseUser.getFirebaseUser().getUid();
 
 		storageReference = FirebaseStorage.getInstance().getReference()
@@ -41,12 +44,22 @@ public class LoadImageOpinion {
 
 	public void loadImageOpinion() {
 
+		BitmapFactory.Options bmoptions = new BitmapFactory.Options();
+		bmoptions.inJustDecodeBounds = true;
+		bmoptions.inSampleSize = 1;
+		bmoptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
+		bmoptions.inJustDecodeBounds = false;
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
+		final byte[] imageBytes = baos.toByteArray();
+
 		String fileName = TimeStamp.timeStamp("dd-MM-yyyy_HHmmss");
 
 		StorageReference imageFolder = storageReference.child(userId);
 		StorageReference imageName = imageFolder.child(fileName);
 
-		UploadTask uploadTask = imageName.putFile(photoSelectedUri);
+		UploadTask uploadTask = imageName.putBytes(imageBytes);
 
 		uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
 			@Override

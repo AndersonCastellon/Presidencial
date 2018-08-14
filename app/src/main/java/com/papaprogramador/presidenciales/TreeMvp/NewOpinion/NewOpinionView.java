@@ -73,6 +73,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 
 	private String mCurrentPhotoPath;
 	private Uri mPhotoSelectedUri;
+	private Bitmap bitmap;
 
 	RequestOptions options = new RequestOptions()
 			.diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -142,8 +143,8 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	private void getLoadNewOpinion() {
 		String opinionText = etOpinionText.getText().toString();
 
-		if (mPhotoSelectedUri != null) {
-			getPresenter().loadOpinionWithImage(mPhotoSelectedUri, opinionText);
+		if (bitmap != null) {
+			getPresenter().loadOpinionWithImage(bitmap, opinionText);
 		} else {
 			getPresenter().loadOpinionWithoutImage(opinionText);
 		}
@@ -199,7 +200,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	@Override
 	public void createBitMap() {
 		try {
-			Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mPhotoSelectedUri);
+			bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mPhotoSelectedUri);
 			getPresenter().setImageBitmapSelectedPhoto(bitmap);
 		} catch (IOException e) {
 			e.printStackTrace();
