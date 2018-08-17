@@ -33,6 +33,7 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 
 	//TODO: Ordenar las opiniones, las más recientes arriba -> COMPLETADO.
 
+	//TODO: Utilizar RxFirebase para usar hilos de fondo en la obtención de la lista de opiniones
 	//TODO: borde y separación entre opiniones
 	//TODO: Botón mostrar más en textos largos
 	//TODO: Juntar más el texto y los iconos de los botones inferiores

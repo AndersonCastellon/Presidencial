@@ -2,23 +2,35 @@ package com.papaprogramador.presidenciales.TreeMvp.NewOpinion;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.Obj.User;
 import com.papaprogramador.presidenciales.UseCases.GetUserProfile;
-import com.papaprogramador.presidenciales.UseCases.LoadImageOpinion;
 import com.papaprogramador.presidenciales.UseCases.PublicNewOpinion;
-import com.papaprogramador.presidenciales.UseCases.ResizeBitmap;
+import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.CreatePhotoFile;
+import com.papaprogramador.presidenciales.Utils.StaticMethods.GetByteImage;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.GetPermissions;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.TimeStamp;
 
 import java.io.File;
+import java.util.Objects;
+
+import durdinapps.rxfirebase2.RxFirebaseDatabase;
+import durdinapps.rxfirebase2.RxFirebaseStorage;
+import io.reactivex.CompletableObserver;
+import io.reactivex.SingleObserver;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 
 public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.View>
 		implements NewOpinionContract.Presenter {
@@ -30,6 +42,8 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	private String userName;
 	private String urlPhotoProfile;
 	private String urlPoliticalFlag;
+	private StorageReference referenceStoraOpinionsImages;
+	private DatabaseReference referenceDatabaseOpinions;
 
 	private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
 		@Override
@@ -62,6 +76,12 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	NewOpinionPresenter(Context context) {
 		this.context = context;
 		firebaseAuth = FirebaseAuth.getInstance();
+
+		referenceStoraOpinionsImages = FirebaseStorage.getInstance().getReference()
+				.child(FirebaseReference.OPINIONS_IMAGES);
+
+		referenceDatabaseOpinions = FirebaseDatabase.getInstance()
+				.getReference(FirebaseReference.NODE_OPINIONS).push();
 	}
 
 	@Override
@@ -140,36 +160,39 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	@Override
 	public void loadOpinionWithImage(Bitmap bitmap, final String opinionText) {
 
-		LoadImageOpinion loadImageOpinion = new LoadImageOpinion(bitmap, new LoadImageOpinion.UploadImageResult() {
-			@Override
-			public void onResult(String downloadUri) {
+		String fileName = TimeStamp.timeStamp("dd-MM-yyyy_HHmmss");
 
-				String datePublication = TimeStamp.timeStamp(PATTERN);
-				long orderBy = Long.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
+		StorageReference imageFolder = referenceStoraOpinionsImages.child(userId);
+		StorageReference imageName = imageFolder.child(fileName);
 
-				Opinions opinion = new Opinions(userId, userName, urlPhotoProfile, datePublication, urlPoliticalFlag,
-						opinionText, downloadUri, 0,0,0, orderBy);
+		byte[] bytes = GetByteImage.getImageBytes(bitmap);
 
-				loadOpinion(opinion);
-			}
-
-			@Override
-			public void onProgress(final double progress) {
-				ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+		RxFirebaseStorage.putBytes(imageName, bytes)
+				.subscribe(new SingleObserver<UploadTask.TaskSnapshot>() {
 					@Override
-					public void run(@NonNull NewOpinionContract.View view) {
-						view.opinionPublishedProgress(progress);
+					public void onSubscribe(Disposable d) {
+
+					}
+
+					@Override
+					public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+						String downloadUri = Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString();
+
+						String datePublication = TimeStamp.timeStamp(PATTERN);
+						long orderBy = Long.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
+
+						Opinions opinion = new Opinions(userId, userName, urlPhotoProfile, datePublication, urlPoliticalFlag,
+								opinionText, downloadUri, 0, 0, 0, orderBy);
+
+						loadOpinion(opinion);
+					}
+
+					@Override
+					public void onError(Throwable e) {
+						e.printStackTrace();
 					}
 				});
-			}
-
-			@Override
-			public void onFailure(Exception e) {
-
-			}
-		});
-
-		loadImageOpinion.loadImageOpinion();
 	}
 
 	@Override
@@ -179,33 +202,35 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 
 
 		Opinions opinion = new Opinions(userId, userName, urlPhotoProfile, datePublication, urlPoliticalFlag,
-				opinionText, null, 0,0,0, orderBy);
+				opinionText, null, 0, 0, 0, orderBy);
 
 		loadOpinion(opinion);
 	}
 
 	private void loadOpinion(Opinions opinion) {
 
-		PublicNewOpinion publicNewOpinion = new PublicNewOpinion(opinion, new PublicNewOpinion.PublicOpinionListener() {
-			@Override
-			public void onResult(boolean result) {
-				if (result){
-					ifViewAttached(new ViewAction<NewOpinionContract.View>() {
-						@Override
-						public void run(@NonNull NewOpinionContract.View view) {
-							view.newOpinionPublished();
-						}
-					});
-				}
-			}
+		RxFirebaseDatabase.setValue(referenceDatabaseOpinions, opinion)
+				.subscribe(new CompletableObserver() {
+					@Override
+					public void onSubscribe(Disposable d) {
 
-			@Override
-			public void onFailure(Exception e) {
+					}
 
-			}
-		});
+					@Override
+					public void onComplete() {
+						ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+							@Override
+							public void run(@NonNull NewOpinionContract.View view) {
+								view.newOpinionPublished();
+							}
+						});
+					}
 
-		publicNewOpinion.publicNewOpinion();
+					@Override
+					public void onError(Throwable e) {
+						e.printStackTrace();
+					}
+				});
 	}
 
 	@Override
