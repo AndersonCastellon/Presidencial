@@ -4,13 +4,11 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.Obj.Opinions;
-import com.papaprogramador.presidenciales.UseCases.GetOpinionsList;
 import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.CheckConnection;
 
@@ -23,10 +21,8 @@ import java.util.Objects;
 
 import durdinapps.rxfirebase2.RxFirebaseChildEvent;
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.FlowableSubscriber;
 
-import static io.reactivex.BackpressureStrategy.BUFFER;
 import static io.reactivex.BackpressureStrategy.DROP;
 
 public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View> implements OpinionsContract.Presenter {
@@ -62,7 +58,7 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View> i
 					.subscribe(new FlowableSubscriber<RxFirebaseChildEvent<DataSnapshot>>() {
 						@Override
 						public void onSubscribe(Subscription s) {
-
+							s.request(Long.MAX_VALUE);
 						}
 
 						@Override

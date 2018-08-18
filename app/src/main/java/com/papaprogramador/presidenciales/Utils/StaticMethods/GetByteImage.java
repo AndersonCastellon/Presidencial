@@ -4,10 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class GetByteImage {
 
-	public static byte[] getImageBytes(Bitmap bitmap) {
+	public static byte[] getImageBytes(Bitmap bitmap) throws IOException {
 
 		BitmapFactory.Options bmoptions = new BitmapFactory.Options();
 		bmoptions.inJustDecodeBounds = true;
@@ -16,7 +17,8 @@ public class GetByteImage {
 		bmoptions.inJustDecodeBounds = false;
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+		baos.close();
 
 		return baos.toByteArray();
 	}

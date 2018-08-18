@@ -32,15 +32,16 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 		SwipeRefreshLayout.OnRefreshListener {
 
 	//TODO: Ordenar las opiniones, las más recientes arriba -> COMPLETADO.
+	//TODO: Utilizar RxFirebase para usar hilos de fondo en la obtención de la lista de opiniones -> COMPLETADO
+	//TODO: Resolver porqué la app se vuelve lenta al haber muchas opiniones -> COMPLETADO
 
-	//TODO: Utilizar RxFirebase para usar hilos de fondo en la obtención de la lista de opiniones
+	//TODO: Implementar paginación para no sobrecargar la memoria
+	//TODO: Resolver java.lang.OutOfMemoryError: Failed to allocate a 31961100 byte allocation with 16776768 free bytes and 23MB until OOM
 	//TODO: borde y separación entre opiniones
 	//TODO: Botón mostrar más en textos largos
 	//TODO: Juntar más el texto y los iconos de los botones inferiores
 	//TODO: Botón flotante que notifique que hay nuevas opiniones
-	//TODO: Detener listener de Opiniones al destruir la actividad contenedora
 	//TODO: Listener al dar clic en la imagen cargada en la opinión
-	//TODO: Resolver porqué la app se vuelve lenta al haber muchas opiniones
 
 	@BindView(R.id.rv_opinions)
 	RecyclerView rvOpinions;

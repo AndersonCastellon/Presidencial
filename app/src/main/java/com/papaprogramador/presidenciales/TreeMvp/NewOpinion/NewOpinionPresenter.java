@@ -23,6 +23,7 @@ import com.papaprogramador.presidenciales.Utils.StaticMethods.GetPermissions;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.TimeStamp;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
@@ -165,7 +166,13 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 		StorageReference imageFolder = referenceStoraOpinionsImages.child(userId);
 		StorageReference imageName = imageFolder.child(fileName);
 
-		byte[] bytes = GetByteImage.getImageBytes(bitmap);
+		byte[] bytes = new byte[0];
+
+		try {
+			bytes = GetByteImage.getImageBytes(bitmap);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		RxFirebaseStorage.putBytes(imageName, bytes)
 				.subscribe(new SingleObserver<UploadTask.TaskSnapshot>() {

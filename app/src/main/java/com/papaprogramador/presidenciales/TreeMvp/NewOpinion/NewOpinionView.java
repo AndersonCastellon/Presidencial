@@ -199,9 +199,11 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 
 	@Override
 	public void createBitMap() {
+
 		try {
 			bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mPhotoSelectedUri);
 			getPresenter().setImageBitmapSelectedPhoto(bitmap);
+			mPhotoSelectedUri = null;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -240,7 +242,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	@Override
 	public void deleteSelectedImage() {
 		imageOpinionSelected.setImageBitmap(null);
-		mPhotoSelectedUri = null;
+		bitmap = null;
 	}
 
 	@Override
