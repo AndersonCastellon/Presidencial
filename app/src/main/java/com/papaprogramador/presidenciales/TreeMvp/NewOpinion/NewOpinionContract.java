@@ -22,7 +22,7 @@ public interface NewOpinionContract {
 		void setCurrentPhotoPath(String photoPath);
 		void showSelectedPhotoView(boolean show);
 		void newOpinionPublished();
-		void opinionPublishedProgress(double progress);
+		void showProgress(boolean show);
 	}
 
 	interface Presenter extends MvpPresenter<NewOpinionContract.View> {

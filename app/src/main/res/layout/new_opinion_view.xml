@@ -173,17 +173,19 @@
         </android.support.constraint.ConstraintLayout>
 
 
+        <Button
+            android:id="@+id/btn_upload_opinion"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/primary_dark"
+            android:text="@string/btn_upload_opinion_text"
+            android:textColor="@color/icons"/>
+
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn_upload_opinion"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/primary_dark"
-        android:text="@string/btn_upload_opinion_text"
-        android:textColor="@color/icons"/>
+    <include layout="@layout/view_loading"/>
 
 
 </RelativeLayout>

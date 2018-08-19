@@ -15,7 +15,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.Obj.User;
 import com.papaprogramador.presidenciales.UseCases.GetUserProfile;
-import com.papaprogramador.presidenciales.UseCases.PublicNewOpinion;
 import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.CreatePhotoFile;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.GetByteImage;
@@ -31,7 +30,6 @@ import durdinapps.rxfirebase2.RxFirebaseStorage;
 import io.reactivex.CompletableObserver;
 import io.reactivex.SingleObserver;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 
 public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.View>
 		implements NewOpinionContract.Presenter {
@@ -161,6 +159,13 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	@Override
 	public void loadOpinionWithImage(Bitmap bitmap, final String opinionText) {
 
+		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+			@Override
+			public void run(@NonNull NewOpinionContract.View view) {
+				view.showProgress(true);
+			}
+		});
+
 		String fileName = TimeStamp.timeStamp("dd-MM-yyyy_HHmmss");
 
 		StorageReference imageFolder = referenceStoraOpinionsImages.child(userId);
@@ -197,6 +202,14 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 
 					@Override
 					public void onError(Throwable e) {
+
+						ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+							@Override
+							public void run(@NonNull NewOpinionContract.View view) {
+								view.showProgress(true);
+							}
+						});
+
 						e.printStackTrace();
 					}
 				});
@@ -204,6 +217,14 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 
 	@Override
 	public void loadOpinionWithoutImage(String opinionText) {
+
+		ifViewAttached(new ViewAction<NewOpinionContract.View>() {
+			@Override
+			public void run(@NonNull NewOpinionContract.View view) {
+				view.showProgress(true);
+			}
+		});
+
 		String datePublication = TimeStamp.timeStamp(PATTERN);
 		long orderBy = Long.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
 
@@ -228,6 +249,7 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 						ifViewAttached(new ViewAction<NewOpinionContract.View>() {
 							@Override
 							public void run(@NonNull NewOpinionContract.View view) {
+								view.showProgress(false);
 								view.newOpinionPublished();
 							}
 						});

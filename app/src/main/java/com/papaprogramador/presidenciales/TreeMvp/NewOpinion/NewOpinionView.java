@@ -1,6 +1,6 @@
 package com.papaprogramador.presidenciales.TreeMvp.NewOpinion;
 
-import android.app.ProgressDialog;
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,13 +64,17 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	Toolbar toolbar;
 	@BindView(R.id.btn_delete_image)
 	ImageButton btnDeleteImage;
+	@BindView(R.id.loadingView)
+	ProgressBar loadingView;
+	@BindView(R.id.headboard_user_data)
+	RelativeLayout headboardUserData;
 
 	private static final int RC_GALLERY = 1;
 	private static final int RC_CAMERA = 2;
 	private static final int RP_GALLERY = 3;
 	private static final int RP_STORAGE = 4;
-	private static final String PERMISSION_GALLERY = android.Manifest.permission.READ_EXTERNAL_STORAGE;
-	private static final String PERMISSION_CAMERA = android.Manifest.permission.CAMERA;
+	private static final String PERMISSION_GALLERY = Manifest.permission.READ_EXTERNAL_STORAGE;
+	private static final String PERMISSION_CAMERA = Manifest.permission.CAMERA;
 	private static final String PACKAGE_NAME_APP = "com.papaprogramador.presidenciales";
 
 	private String mCurrentPhotoPath;
@@ -288,28 +294,14 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	}
 
 	@Override
-	public void opinionPublishedProgress(final double progress) {
-
-		final ProgressDialog horizontalProgressDialog = new ProgressDialog(this);
-		horizontalProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		horizontalProgressDialog.setMessage(getString(R.string.opinion_published_progress_text));
-		horizontalProgressDialog.setCancelable(false);
-		horizontalProgressDialog.setMax(100);
-		horizontalProgressDialog.show();
-
-		new Thread(new Runnable() {
-			int prog = (int) progress;
-
-			@Override
-			public void run() {
-				while (prog <= 100) {
-					horizontalProgressDialog.setProgress(prog);
-					if (prog == 100) {
-						horizontalProgressDialog.dismiss();
-					}
-				}
-			}
-		}).start();
+	public void showProgress(boolean show) {
+		if (show) {
+			headboardUserData.setVisibility(View.GONE);
+			loadingView.setVisibility(View.VISIBLE);
+		} else {
+			headboardUserData.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
