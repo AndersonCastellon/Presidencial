@@ -22,6 +22,7 @@ public interface NewOpinionContract {
 		void setCurrentPhotoPath(String photoPath);
 		void showSelectedPhotoView(boolean show);
 		void newOpinionPublished();
+		void setResultIntent();
 		void showProgress(boolean show);
 	}
 

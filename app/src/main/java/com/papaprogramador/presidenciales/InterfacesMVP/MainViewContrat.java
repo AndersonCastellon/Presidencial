@@ -15,7 +15,6 @@ public interface MainViewContrat {
 		void hideMainView(boolean hide);
 		void starNavView();
 		void setToolbar();
-		void setTabs();
 		void getDataUser(FirebaseUser user);
 		void shareApp();
 		void goLoginView();
@@ -31,8 +30,9 @@ public interface MainViewContrat {
 		void goResetPasswordView();
 		void setAuthListener();
 		void removeAuthListener();
+		void setTabPosition(int position);
+		int getTabPosition();
 		void signOff();
-		void updatePassword();
 		void getGoogleApiClient();
 		void getConnectionCallbacks();
 		void closeSesionGoogle();

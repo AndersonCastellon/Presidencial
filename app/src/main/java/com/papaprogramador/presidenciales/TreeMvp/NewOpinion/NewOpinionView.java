@@ -30,6 +30,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.View.Activity.MainView;
 
 import java.io.File;
@@ -288,6 +289,10 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	@Override
 	public void newOpinionPublished() {
 		Toast.makeText(this, getResources().getString(R.string.new_opinion_publiched), Toast.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void setResultIntent() {
 		Intent intent = new Intent(this, MainView.class);
 		startActivity(intent);
 		finish();
@@ -361,7 +366,7 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 				.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						onBackPressed();
+						setResultIntent();
 					}
 				})
 				.setNegativeButton(getString(R.string.cancel_dialog_text), new DialogInterface.OnClickListener() {

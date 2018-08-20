@@ -41,7 +41,7 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 	private String userName;
 	private String urlPhotoProfile;
 	private String urlPoliticalFlag;
-	private StorageReference referenceStoraOpinionsImages;
+	private StorageReference referenceStorageOpinionsImages;
 	private DatabaseReference referenceDatabaseOpinions;
 
 	private FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -76,7 +76,7 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 		this.context = context;
 		firebaseAuth = FirebaseAuth.getInstance();
 
-		referenceStoraOpinionsImages = FirebaseStorage.getInstance().getReference()
+		referenceStorageOpinionsImages = FirebaseStorage.getInstance().getReference()
 				.child(FirebaseReference.OPINIONS_IMAGES);
 
 		referenceDatabaseOpinions = FirebaseDatabase.getInstance()
@@ -168,7 +168,7 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 
 		String fileName = TimeStamp.timeStamp("dd-MM-yyyy_HHmmss");
 
-		StorageReference imageFolder = referenceStoraOpinionsImages.child(userId);
+		StorageReference imageFolder = referenceStorageOpinionsImages.child(userId);
 		StorageReference imageName = imageFolder.child(fileName);
 
 		byte[] bytes = new byte[0];
@@ -251,6 +251,7 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 							public void run(@NonNull NewOpinionContract.View view) {
 								view.showProgress(false);
 								view.newOpinionPublished();
+								view.setResultIntent();
 							}
 						});
 					}

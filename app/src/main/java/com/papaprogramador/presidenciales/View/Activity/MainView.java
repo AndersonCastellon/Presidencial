@@ -1,5 +1,6 @@
 package com.papaprogramador.presidenciales.View.Activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -29,12 +30,12 @@ import com.papaprogramador.presidenciales.Adapters.ViewPageAdapter;
 import com.papaprogramador.presidenciales.InterfacesMVP.MainViewContrat;
 import com.papaprogramador.presidenciales.Presenters.MainViewPresenter;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.TreeMvp.DeleteAccount.DeleteAccountView;
+import com.papaprogramador.presidenciales.TreeMvp.SuggestionsAndErrors.SuggestionsAndErrorsView;
 import com.papaprogramador.presidenciales.TreeMvp.UpdatePassword.UpdatePasswordView;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Utils.ViewStateActivity.CustomViewStateActivity;
-import com.papaprogramador.presidenciales.TreeMvp.DeleteAccount.DeleteAccountView;
 import com.papaprogramador.presidenciales.View.Fragments.DialogFragment.DialogOk;
-import com.papaprogramador.presidenciales.TreeMvp.SuggestionsAndErrors.SuggestionsAndErrorsView;
 
 import java.util.Objects;
 
@@ -55,17 +56,41 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 	FrameLayout optionsMenu;
 
 	Unbinder unbinder;
+	@BindView(R.id.tabs)
+	TabLayout tabs;
+	@BindView(R.id.viewPageMain)
+	ViewPager viewPage;
 
 	private TextView userName;
 	private TextView userEmail;
 	private ImageView userImg;
-	private ViewPager viewPage;
+	private int position;
+	private ViewPageAdapter viewpageAdapter;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		unbinder = ButterKnife.bind(this);
+
+		viewpageAdapter = new ViewPageAdapter(getSupportFragmentManager(), 2);
+		viewPage.setAdapter(viewpageAdapter);
+
+		tabs.setupWithViewPager(viewPage);
+
+		tabs.removeAllTabs();
+
+		tabs.addTab(tabs.newTab().setText(R.string.tabtextCandidatos));
+		tabs.addTab(tabs.newTab().setText(R.string.tabtextOpiniones));
+
+		tabs.setTabGravity(TabLayout.GRAVITY_FILL);
+
+		tabs.addOnTabSelectedListener(this);
+
+		Objects.requireNonNull(tabs.getTabAt(getPresenter().getTabPosition())).select();
+		viewPage.setCurrentItem(getPresenter().getTabPosition());
+
+		viewPage.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
 
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			@Override
@@ -116,7 +141,8 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 
 	@Override
 	public void onTabSelected(TabLayout.Tab tab) {
-		int position = tab.getPosition();
+		position = tab.getPosition();
+		getPresenter().setTabPosition(position);
 		viewPage.setCurrentItem(position);
 	}
 
@@ -138,7 +164,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 				.replace(R.id.options_menu, fragment)
 				.commit();
 
-		getSupportActionBar().setTitle(itemTitle);
+		Objects.requireNonNull(getSupportActionBar()).setTitle(itemTitle);
 	}
 
 	@Override
@@ -152,7 +178,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 	@Override
 	public void setTitleActionBar() {
 		try {
-			getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+			Objects.requireNonNull(getSupportActionBar()).setTitle(getResources().getString(R.string.app_name));
 		} catch (Resources.NotFoundException e) {
 			e.printStackTrace();
 		}
@@ -182,29 +208,6 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 		userName = header.findViewById(R.id.username);
 		userEmail = header.findViewById(R.id.email);
 		userImg = header.findViewById(R.id.profile_image);
-	}
-
-	@Override
-	public void setTabs() {
-		//Agregando tabs a la ventana principal
-		TabLayout tabs = findViewById(R.id.tabs);
-
-		tabs.removeAllTabs();
-
-		tabs.addTab(tabs.newTab().setText(R.string.tabtextCandidatos));
-		tabs.addTab(tabs.newTab().setText(R.string.tabtextOpiniones));
-		tabs.addTab(tabs.newTab().setText(R.string.tabtextResultados));
-
-		tabs.setTabGravity(TabLayout.GRAVITY_FILL);
-
-		tabs.addOnTabSelectedListener(this);
-
-		viewPage = findViewById(R.id.viewPageMain);
-		ViewPageAdapter viewpageAdapter = new ViewPageAdapter(getSupportFragmentManager(),
-				tabs.getTabCount());
-
-		viewPage.setAdapter(viewpageAdapter);
-		viewPage.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
 	}
 
 	@Override
@@ -239,7 +242,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 
 		try {
 			startActivity(Intent.createChooser(emailIntent, shooserTitle));
-		} catch (android.content.ActivityNotFoundException e) {
+		} catch (ActivityNotFoundException e) {
 			Snackbar.make(drawerLayout, getResources().getString(R.string.error), Snackbar.LENGTH_LONG)
 					.show();
 		}
@@ -334,7 +337,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK){
+		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
 				case Constans.REQUEST_CODE_RESET_PASSWORD_VIEW:
 					onResultDialogOk(Constans.DIALOG_OK_SUCCESSFUL_CODE);

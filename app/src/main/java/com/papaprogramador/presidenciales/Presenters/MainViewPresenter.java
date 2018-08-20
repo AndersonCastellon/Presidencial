@@ -36,7 +36,6 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 					if (user != null) {
 						view.starNavView();
 						view.setToolbar();
-						view.setTabs();
 						view.getDataUser(user);
 					} else {
 						view.goLoginView();
@@ -111,15 +110,20 @@ public class MainViewPresenter extends MvpBasePresenter<MainViewContrat.View>
 	}
 
 	@Override
+	public void setTabPosition(int position) {
+		SharedPreferencesMethods.setTabPosition(context, position);
+	}
+
+	@Override
+	public int getTabPosition() {
+		return SharedPreferencesMethods.getTabPosition(context);
+	}
+
+	@Override
 	public void signOff() {
 		FirebaseAuth.getInstance().signOut();
 
 //		getGoogleApiClient(); //TODO: implementacion pendiente, será completamente modificada
-	}
-
-	@Override
-	public void updatePassword() {
-
 	}
 
 	@Override

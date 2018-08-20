@@ -54,4 +54,7 @@ public class Constans {
 	public static final String PUT_POLITICAL_FLAG = "PUT_POLITICAL_FLAG";
 	public static final String PUT_ID_OPINION = "idOpinion";
 	public static final String PUT_URL_DOWNLOAD_IMAGE_OPINION = "downloadUri";
+	public static final int RC_NEW_OPINION = 2;
+	public static final String SP_BLOCK_TAB_POSITION = "CurrentTabPosition";
+	public static final String SP_PUT_TAB_POSITION = "tabPosition";
 }

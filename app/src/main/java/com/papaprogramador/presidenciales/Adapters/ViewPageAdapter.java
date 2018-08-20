@@ -24,11 +24,8 @@ public class ViewPageAdapter extends FragmentStatePagerAdapter {
 			return new CandidateFragmentView();
 			case 1:
 			return  new OpinionsView();
-			case 2:
-			return  new ResultadosFragment();
 			default:
 				return new CandidateFragmentView();
-
 		}
 	}
 

@@ -19,6 +19,7 @@ import com.papaprogramador.presidenciales.Adapters.OpinionsAdapter;
 import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.TreeMvp.NewOpinion.NewOpinionView;
+import com.papaprogramador.presidenciales.Utils.Constans;
 
 import java.util.List;
 
@@ -34,16 +35,18 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 	//TODO: Ordenar las opiniones, las más recientes arriba -> COMPLETADO.
 	//TODO: Utilizar RxFirebase para usar hilos de fondo en la obtención de la lista de opiniones -> COMPLETADO
 	//TODO: Resolver porqué la app se vuelve lenta al haber muchas opiniones -> COMPLETADO
+	//TODO: Retornar a el tab de las opiniones al publicar o cancelar una opinión con onActivityResult en MainView -> COMPLETADO
 
-	//TODO: Retornar a el tab de las opiniones al publicar o cancelar una opinión con onActivityResult en MainView
-	//TODO: Implementar paginación para no sobrecargar la memoria
-	//TODO: Resolver java.lang.OutOfMemoryError: Failed to allocate a 31961100 byte allocation with 16776768 free bytes and 23MB until OOM
-	//TODO: borde y separación entre opiniones
-	//TODO: Botón mostrar más en textos largos
-	//TODO: Botón flotante debe ocultarse al hacer scroll hacia abajo
-	//TODO: Juntar más el texto y los iconos de los botones inferiores
-	//TODO: Botón flotante que notifique que hay nuevas opiniones
+
 	//TODO: Listener al dar clic en la imagen cargada en la opinión
+	//TODO: Botón flotante que notifique que hay nuevas opiniones
+	//TODO: Juntar más el texto y los iconos de los botones inferiores
+	//TODO: Botón flotante debe ocultarse al hacer scroll hacia abajo
+	//TODO: Botón mostrar más en textos largos
+	//TODO: borde y separación entre opiniones
+	//TODO: Resolver java.lang.OutOfMemoryError: Failed to allocate a 31961100 byte allocation with 16776768 free bytes and 23MB until OOM
+	//TODO: Implementar paginación para no sobrecargar la memoria
+
 
 	@BindView(R.id.rv_opinions)
 	RecyclerView rvOpinions;
