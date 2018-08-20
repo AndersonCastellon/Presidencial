@@ -35,7 +35,7 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 	//TODO: Ordenar las opiniones, las más recientes arriba -> COMPLETADO.
 	//TODO: Utilizar RxFirebase para usar hilos de fondo en la obtención de la lista de opiniones -> COMPLETADO
 	//TODO: Resolver porqué la app se vuelve lenta al haber muchas opiniones -> COMPLETADO
-	//TODO: Retornar a el tab de las opiniones al publicar o cancelar una opinión con onActivityResult en MainView -> COMPLETADO
+	//TODO: Retornar a el tab de las opiniones al publicar o cancelar una opinión MainView -> COMPLETADO
 
 
 	//TODO: Listener al dar clic en la imagen cargada en la opinión
