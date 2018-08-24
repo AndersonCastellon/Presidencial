@@ -19,13 +19,13 @@ import butterknife.ButterKnife;
 
 public class OpinionsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-	Context context;
+	private Context context;
 
-	String opinionId;
-	String userId;
-	String urlPhotoProfile;
-	String urlPoliticalFlag;
-	String urlOpinionImage;
+	private String opinionId;
+	private String userId;
+	private String urlPhotoProfile;
+	private String urlPoliticalFlag;
+	private String urlOpinionImage;
 
 	@BindView(R.id.img_user_profile)
 	SimpleDraweeView userPhotoProfile;
