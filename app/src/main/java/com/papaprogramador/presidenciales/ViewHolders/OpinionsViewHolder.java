@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.R;
 
@@ -28,17 +27,17 @@ public class OpinionsViewHolder extends RecyclerView.ViewHolder implements View.
 	private String urlOpinionImage;
 
 	@BindView(R.id.img_user_profile)
-	SimpleDraweeView userPhotoProfile;
+	ImageView userPhotoProfile;
 	@BindView(R.id.user_name)
 	TextView userName;
 	@BindView(R.id.date_publication)
 	TextView datePublication;
 	@BindView(R.id.flag_political)
-	SimpleDraweeView flagPolitical;
+	ImageView flagPolitical;
 	@BindView(R.id.opinion_text)
 	TextView opinionText;
 	@BindView(R.id.image_opinion)
-	SimpleDraweeView imageOpinion;
+	ImageView imageOpinion;
 	@BindView(R.id.btn_like_opinion)
 	Button btnLikeOpinion;
 	@BindView(R.id.btn_comment_opinion)
@@ -48,9 +47,9 @@ public class OpinionsViewHolder extends RecyclerView.ViewHolder implements View.
 	@BindView(R.id.opinion_menu)
 	ImageView opinionMenu;
 
-	boolean likeClicked;
+	private boolean likeClicked;
 
-	RequestOptions options;
+	private RequestOptions options;
 
 	public OpinionsViewHolder(View itemView) {
 		super(itemView);
@@ -101,6 +100,16 @@ public class OpinionsViewHolder extends RecyclerView.ViewHolder implements View.
 				.load(urlPoliticalFlag)
 				.apply(options)
 				.into(flagPolitical);
+
+		setOnClickListener();
+	}
+
+	private void setOnClickListener() {
+		imageOpinion.setOnClickListener(this);
+		opinionMenu.setOnClickListener(this);
+		btnLikeOpinion.setOnClickListener(this);
+		btnCommentOpinion.setOnClickListener(this);
+		btnCommentOpinion.setOnClickListener(this);
 	}
 
 	@Override
