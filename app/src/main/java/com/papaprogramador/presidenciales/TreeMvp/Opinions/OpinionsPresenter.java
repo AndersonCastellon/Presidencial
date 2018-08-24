@@ -9,6 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.Obj.Opinions;
+import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Utils.FirebaseReference;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.CheckConnection;
 
@@ -22,8 +23,11 @@ import java.util.Objects;
 import durdinapps.rxfirebase2.RxFirebaseChildEvent;
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import io.reactivex.FlowableSubscriber;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-import static io.reactivex.BackpressureStrategy.DROP;
+import static io.reactivex.BackpressureStrategy.BUFFER;
+import static io.reactivex.BackpressureStrategy.LATEST;
 
 public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View> implements OpinionsContract.Presenter {
 
@@ -41,7 +45,7 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View> i
 
 
 	@Override
-	public void getOpinionsList(final boolean pullToRefresh) {
+	public void getOpinions(String opinionId, final boolean pullToRefresh) {
 
 		if (!CheckConnection.checkConnection(context)) {
 			ifViewAttached(new ViewAction<OpinionsContract.View>() {
@@ -51,74 +55,104 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View> i
 				}
 			});
 		} else {
-
-			Query query = firebaseReference;
-
-			RxFirebaseDatabase.observeChildEvent(query, DROP)
-					.subscribe(new FlowableSubscriber<RxFirebaseChildEvent<DataSnapshot>>() {
-						@Override
-						public void onSubscribe(Subscription s) {
-							s.request(Long.MAX_VALUE);
-						}
-
-						@Override
-						public void onNext(RxFirebaseChildEvent<DataSnapshot> dataSnapshotRxFirebaseChildEvent) {
-							switch (dataSnapshotRxFirebaseChildEvent.getEventType()) {
-								case ADDED:
-									getListItem(dataSnapshotRxFirebaseChildEvent.getValue());
-									break;
-								case MOVED:
-									break;
-								case CHANGED:
-									break;
-								case REMOVED:
-									break;
-								default:
-									getListItem(dataSnapshotRxFirebaseChildEvent.getValue());
-							}
-						}
-
-						@Override
-						public void onError(final Throwable t) {
-							ifViewAttached(new ViewAction<OpinionsContract.View>() {
-								@Override
-								public void run(@NonNull OpinionsContract.View view) {
-									view.showError(t, pullToRefresh);
-								}
-							});
-						}
-
-						@Override
-						public void onComplete() {
-							ifViewAttached(new ViewAction<OpinionsContract.View>() {
-								@Override
-								public void run(@NonNull OpinionsContract.View view) {
-									view.showContent();
-								}
-							});
-						}
-					});
+			getDataOpinions(opinionId, pullToRefresh);
 		}
 	}
 
-	private void getListItem(DataSnapshot value) {
+	@Override
+	public void getDataOpinions(String opinionId, final boolean pullToRefresh) {
 
-		Opinions opinions = value.getValue(Opinions.class);
-		Objects.requireNonNull(opinions)
-				.setOpinionId(value.getKey());
+		Query query;
 
-		if (!opinionsList.contains(opinions)) {
-			opinionsList.add(opinions);
+		if (opinionId == null) {
+			query = firebaseReference
+					.limitToLast(Constans.OPINIONS_PER_PAGE);
+		} else {
+			query = firebaseReference
+					.startAt(opinionId)
+					.limitToLast(Constans.OPINIONS_PER_PAGE);
 		}
 
-		Collections.sort(opinionsList);
 
-		ifViewAttached(new ViewAction<OpinionsContract.View>() {
-			@Override
-			public void run(@NonNull OpinionsContract.View view) {
-				view.setData(opinionsList);
-				view.showContent();
-			}
-		});
+		RxFirebaseDatabase.observeChildEvent(query, BUFFER)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new FlowableSubscriber<RxFirebaseChildEvent<DataSnapshot>>() {
+					@Override
+					public void onSubscribe(Subscription s) {
+						s.request(Long.MAX_VALUE);
+						ifViewAttached(new ViewAction<OpinionsContract.View>() {
+							@Override
+							public void run(@NonNull OpinionsContract.View view) {
+								view.showContent();
+								view.setRefreshing();
+							}
+						});
+					}
+
+					@Override
+					public void onNext(RxFirebaseChildEvent<DataSnapshot> dataSnapshotRxFirebaseChildEvent) {
+						switch (dataSnapshotRxFirebaseChildEvent.getEventType()) {
+							case ADDED:
+								getListOpinions(dataSnapshotRxFirebaseChildEvent.getValue());
+								break;
+							case MOVED:
+								break;
+							case CHANGED:
+								break;
+							case REMOVED:
+								break;
+						}
+					}
+
+					@Override
+					public void onError(final Throwable t) {
+						ifViewAttached(new ViewAction<OpinionsContract.View>() {
+							@Override
+							public void run(@NonNull OpinionsContract.View view) {
+								view.showError(t, pullToRefresh);
+							}
+						});
+					}
+
+					@Override
+					public void onComplete() {
+						ifViewAttached(new ViewAction<OpinionsContract.View>() {
+							@Override
+							public void run(@NonNull OpinionsContract.View view) {
+								view.showContent();
+							}
+						});
+					}
+				});
+	}
+
+	@Override
+	public void getListOpinions(DataSnapshot dataSnapshot) {
+
+		Opinions opinions = dataSnapshot.getValue(Opinions.class);
+		Objects.requireNonNull(opinions)
+				.setOpinionId(dataSnapshot.getKey());
+
+		if (!opinionsList.contains(opinions)) {
+			opinionsList.clear();
+			opinionsList.add(opinions);
+
+			ifViewAttached(new ViewAction<OpinionsContract.View>() {
+				@Override
+				public void run(@NonNull OpinionsContract.View view) {
+					view.setData(opinionsList);
+					view.showContent();
+				}
+			});
+		} else {
+			ifViewAttached(new ViewAction<OpinionsContract.View>() {
+				@Override
+				public void run(@NonNull OpinionsContract.View view) {
+					view.showContent();
+				}
+			});
+		}
+
 	}
 }

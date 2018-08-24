@@ -360,6 +360,8 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 	@Override
 	public boolean onSupportNavigateUp() {
 
+		//TODO: Implementar este mismo comportamiento con el botón hacia atrás de Android
+
 		new AlertDialog.Builder(this)
 				.setTitle(getString(R.string.opinion_cancel_title))
 				.setMessage(getString(R.string.opinion_cancel_message))

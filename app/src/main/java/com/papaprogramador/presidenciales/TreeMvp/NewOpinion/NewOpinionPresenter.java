@@ -80,7 +80,7 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 				.child(FirebaseReference.OPINIONS_IMAGES);
 
 		referenceDatabaseOpinions = FirebaseDatabase.getInstance()
-				.getReference(FirebaseReference.NODE_OPINIONS).push();
+				.getReference(FirebaseReference.NODE_OPINIONS);
 	}
 
 	@Override
@@ -237,7 +237,9 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 
 	private void loadOpinion(Opinions opinion) {
 
-		RxFirebaseDatabase.setValue(referenceDatabaseOpinions, opinion)
+		String key = String.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
+
+		RxFirebaseDatabase.setValue(referenceDatabaseOpinions.child(key), opinion)
 				.subscribe(new CompletableObserver() {
 					@Override
 					public void onSubscribe(Disposable d) {

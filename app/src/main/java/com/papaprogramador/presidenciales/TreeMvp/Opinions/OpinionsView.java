@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.MvpLceViewStateFragment;
@@ -50,9 +52,17 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 
 	@BindView(R.id.rv_opinions)
 	RecyclerView rvOpinions;
-	Unbinder unbinder;
 
+	@BindView(R.id.contentView)
+	SwipeRefreshLayout contentView;
+
+	Unbinder unbinder;
 	OpinionsAdapter opinionsAdapter;
+
+	private LinearLayoutManager layoutManager;
+	private int totalItemCount = 0;
+	private int lastVisibleItemPosition;
+	private boolean mIsLoading;
 
 	public OpinionsView() {
 		// Required empty public constructor
@@ -62,7 +72,9 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 	public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		setRetainInstance(true);
-		return inflater.inflate(R.layout.opinions_fragment, container, false);
+		View view = inflater.inflate(R.layout.opinions_fragment, container, false);
+		unbinder = ButterKnife.bind(this, view);
+		return view;
 	}
 
 	@Override
@@ -71,17 +83,41 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 
 		unbinder = ButterKnife.bind(this, view);
 		contentView.setOnRefreshListener(this);
+
 		opinionsAdapter = new OpinionsAdapter();
+		rvOpinions.setAdapter(opinionsAdapter);
 
-		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-		linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-		rvOpinions.setLayoutManager(linearLayoutManager);
+		layoutManager = new LinearLayoutManager(getActivity());
+		layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+		rvOpinions.setLayoutManager(layoutManager);
 
-		rvOpinions.setHasFixedSize(true);
+		contentView.setColorSchemeResources(R.color.google_blue, R.color.google_green, R.color.google_red, R.color.google_yellow);
+
+/*		rvOpinions.setHasFixedSize(true);
 		rvOpinions.setItemViewCacheSize(20);
-		rvOpinions.setDrawingCacheEnabled(true);
+		rvOpinions.setDrawingCacheEnabled(true);*/
 
-		loadData(false);
+		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvOpinions.getContext(),
+				layoutManager.getOrientation());
+		rvOpinions.addItemDecoration(dividerItemDecoration);
+
+//		loadData(false);
+
+		rvOpinions.addOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+				super.onScrolled(recyclerView, dx, dy);
+
+				totalItemCount = layoutManager.getItemCount();
+				lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+
+				if (!mIsLoading && totalItemCount <= (lastVisibleItemPosition + Constans.OPINIONS_PER_PAGE)) {
+					getPresenter().getOpinions(opinionsAdapter.getLastItemId(), false);
+					mIsLoading = true;
+				}
+			}
+		});
+
 	}
 
 	@OnClick(R.id.fab_new_opinion)
@@ -98,7 +134,8 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 
 	@Override
 	protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
-		loadData(pullToRefresh);
+		contentView.setRefreshing(false);
+		mIsLoading = false;
 		return getResources().getString(R.string.null_Connection_Exception);
 	}
 
@@ -121,9 +158,7 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 
 		opinionsAdapter.setOpinionsList(data);
 
-		rvOpinions.setAdapter(opinionsAdapter);
-		opinionsAdapter.notifyDataSetChanged();
-
+		mIsLoading = false;
 		contentView.setRefreshing(false);
 
 	}
@@ -133,13 +168,19 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 		errorView.setVisibility(View.GONE);
 		loadingView.setVisibility(View.VISIBLE);
 
-		getPresenter().getOpinionsList(pullToRefresh);
+		getPresenter().getOpinions(opinionsAdapter.getLastItemId(), pullToRefresh);
 	}
 
 	@Override
 	public void onRefresh() {
 		errorView.setVisibility(View.GONE);
+		showLoading(true);
 		loadData(true);
+	}
+
+	@Override
+	public void setRefreshing() {
+		contentView.setRefreshing(false);
 	}
 
 	@Override

@@ -1,40 +1,24 @@
 package com.papaprogramador.presidenciales.Adapters;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.ViewHolders.OpinionsViewHolder;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.OpinionsViewHolder> {
+public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsViewHolder> {
 
 	private List<Opinions> opinionsList;
 
 	public OpinionsAdapter() {
-	}
-
-	public List<Opinions> getOpinionsList() {
-		return opinionsList;
-	}
-
-	public void setOpinionsList(List<Opinions> opinionsList) {
-		this.opinionsList = opinionsList;
+		this.opinionsList = new ArrayList<>();
 	}
 
 	@NonNull
@@ -46,124 +30,38 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.Opinio
 
 	@Override
 	public void onBindViewHolder(@NonNull OpinionsViewHolder holder, int position) {
-
-		RequestOptions options = new RequestOptions()
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.centerCrop();
-
 		Opinions opinions = opinionsList.get(position);
+		holder.setData(opinions);
+	}
 
-		holder.userName.setText(opinions.getUserName());
-		holder.datePublication.setText(opinions.getDatePublication());
-		holder.opinionText.setText(opinions.getOpinionText());
+	public List<Opinions> getOpinionsList() {
+		return opinionsList;
+	}
 
-		holder.btnLikeOpinion.setText(String.valueOf(opinions.getCountLike()));
-		holder.btnCommentOpinion.setText(String.valueOf(opinions.getCountComments()));
-		holder.btnShareOpinion.setText(String.valueOf(opinions.getCountShare()));
+	public void setOpinionsList(List<Opinions> newOpinionsList) {
 
-		holder.urlPhotoProfile = opinions.getUrlPhotoProfile();
-		holder.urlPoliticalFlag = opinions.getUrlPoliticalFlag();
+		if (!this.opinionsList.containsAll(newOpinionsList)) {
 
-		if (opinions.getUrlOpinionImage() != null) {
-			holder.urlOpinionImage = opinions.getUrlOpinionImage();
+			this.opinionsList.addAll(newOpinionsList);
+			Collections.sort(opinionsList);
+			notifyItemRangeInserted(0, newOpinionsList.size());
+		}
+	}
 
-			//Imagen de la opinion cargada por el usuario
-			holder.imageOpinion.setImageURI(holder.urlOpinionImage);
+	public String getLastItemId() {
 
-//			Glide.with(holder.context)
-//					.load(holder.urlOpinionImage)
-//					.apply(options)
-//					.into(holder.imageOpinion);
-		} else {
-			holder.imageOpinion.setVisibility(View.GONE);
+		String lastItem = null;
+		int lastItemId = this.opinionsList.size() == 0 ? -1 : this.opinionsList.size() - 1;
+
+		if (lastItemId >= 0) {
+			lastItem = opinionsList.get(lastItemId).getOpinionId();
 		}
 
-		holder.opinionId = opinions.getOpinionId();
-		holder.userId = opinions.getUserId();
-
-		holder.likeClicked = opinions.isLikeClicked();
-
-		//Foto del usuario
-		holder.userPhotoProfile.setImageURI(holder.urlPhotoProfile);
-//		Glide.with(holder.context)
-//				.load(holder.urlPhotoProfile)
-//				.apply(options)
-//				.into(holder.userPhotoProfile);
-
-		//Bandera politica del usuario
-		holder.flagPolitical.setImageURI(holder.urlPoliticalFlag);
-//		Glide.with(holder.context)
-//				.load(holder.urlPoliticalFlag)
-//				.apply(options)
-//				.into(holder.flagPolitical);
-
-
-		holder.setOnClickListener();
+		return lastItem;
 	}
 
 	@Override
 	public int getItemCount() {
-		return opinionsList.size();
-	}
-
-	public static class OpinionsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-		Context context;
-
-		String opinionId;
-		String userId;
-		String urlPhotoProfile;
-		String urlPoliticalFlag;
-		String urlOpinionImage;
-
-		@BindView(R.id.img_user_profile)
-		SimpleDraweeView userPhotoProfile;
-		@BindView(R.id.user_name)
-		TextView userName;
-		@BindView(R.id.date_publication)
-		TextView datePublication;
-		@BindView(R.id.flag_political)
-		SimpleDraweeView flagPolitical;
-		@BindView(R.id.opinion_text)
-		TextView opinionText;
-		@BindView(R.id.image_opinion)
-		SimpleDraweeView imageOpinion;
-		@BindView(R.id.btn_like_opinion)
-		Button btnLikeOpinion;
-		@BindView(R.id.btn_comment_opinion)
-		Button btnCommentOpinion;
-		@BindView(R.id.btn_share_opinion)
-		Button btnShareOpinion;
-		@BindView(R.id.opinion_menu)
-		ImageView opinionMenu;
-
-		boolean likeClicked;
-
-		OpinionsViewHolder(View itemView) {
-			super(itemView);
-			ButterKnife.bind(this, itemView);
-			context = itemView.getContext();
-		}
-
-		void setOnClickListener() {
-			btnLikeOpinion.setOnClickListener(this);
-			btnCommentOpinion.setOnClickListener(this);
-			btnShareOpinion.setOnClickListener(this);
-			opinionMenu.setOnClickListener(this);
-		}
-
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-				case R.id.btn_like_opinion:
-					break;
-				case R.id.btn_comment_opinion:
-					break;
-				case R.id.btn_share_opinion:
-					break;
-				case R.id.opinion_menu:
-					break;
-			}
-		}
+		return opinionsList == null ? 0 : opinionsList.size();
 	}
 }

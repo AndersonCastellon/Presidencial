@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/upload_image_background"
-    android:padding="@dimen/nav_header_vertical_spacing">
+    android:paddingTop="@dimen/nav_header_vertical_spacing">
 
     <LinearLayout
         android:id="@+id/headboard_opinion"
@@ -14,7 +14,7 @@
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/img_user_profile"
             android:layout_width="60dp"
-            android:layout_height="60dp"/>
+            android:layout_height="60dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -108,6 +108,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/upload_image_background"
             android:drawableStart="@drawable/ic_like"
             android:textColor="@color/secondary_text" />
 
@@ -117,6 +118,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/upload_image_background"
             android:drawableStart="@drawable/ic_post_comments"
             android:textColor="@color/secondary_text" />
 
@@ -126,6 +128,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/upload_image_background"
             android:drawableStart="@drawable/ic_share_app"
             android:textColor="@color/secondary_text" />
 
