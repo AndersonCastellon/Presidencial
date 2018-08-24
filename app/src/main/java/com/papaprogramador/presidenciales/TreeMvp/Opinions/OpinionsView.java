@@ -48,6 +48,7 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 	//TODO: Botón flotante debe ocultarse al hacer scroll hacia abajo
 	//TODO: Botón mostrar más en textos largos
 	//TODO: borde y separación entre opiniones
+	//TODO: Corregir error que poner el correo como nombre de usuario
 
 
 	@BindView(R.id.rv_opinions)
@@ -93,15 +94,9 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 
 		contentView.setColorSchemeResources(R.color.google_blue, R.color.google_green, R.color.google_red, R.color.google_yellow);
 
-/*		rvOpinions.setHasFixedSize(true);
-		rvOpinions.setItemViewCacheSize(20);
-		rvOpinions.setDrawingCacheEnabled(true);*/
-
 		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvOpinions.getContext(),
 				layoutManager.getOrientation());
 		rvOpinions.addItemDecoration(dividerItemDecoration);
-
-//		loadData(false);
 
 		rvOpinions.addOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
