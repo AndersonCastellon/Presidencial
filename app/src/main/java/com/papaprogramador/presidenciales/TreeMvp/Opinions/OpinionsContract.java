@@ -14,8 +14,8 @@ public interface OpinionsContract {
 	}
 
 	interface Presenter extends MvpPresenter<OpinionsContract.View> {
-		void getOpinions(String opinionId, boolean pullToRefresh);
-		void getDataOpinions(String opinionId, boolean pullToRefresh);
+		void getOpinions(long opinionId, boolean pullToRefresh);
+		void getDataOpinions(long opinionId, boolean pullToRefresh);
 		void getListOpinions(DataSnapshot dataSnapshot);
 	}
 }

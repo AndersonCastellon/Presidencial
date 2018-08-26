@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.MvpLceViewStateFragment;
@@ -38,7 +37,7 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 	//TODO: Utilizar RxFirebase para usar hilos de fondo en la obtención de la lista de opiniones -> COMPLETADO
 	//TODO: Resolver porqué la app se vuelve lenta al haber muchas opiniones -> COMPLETADO
 	//TODO: Retornar a el tab de las opiniones al publicar o cancelar una opinión MainView -> COMPLETADO
-	//TODO: Resolver java.lang.OutOfMemoryError: Failed to allocate a 31961100 byte allocation with 16776768 free bytes and 23MB until OOM
+	//TODO: Resolver java.lang.OutOfMemoryError: Failed to allocate a 31961100 byte allocation with 16776768 free bytes and 23MB until OOM -> SOLUCIONADO
 	//TODO: Implementar paginación para no sobrecargar la memoria -> EN PROCESO
 
 
@@ -61,7 +60,7 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 	OpinionsAdapter opinionsAdapter;
 
 	private LinearLayoutManager layoutManager;
-	private int totalItemCount = 0;
+	private int totalItemCount;
 	private int lastVisibleItemPosition;
 	private boolean mIsLoading;
 
@@ -103,8 +102,14 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
 
+			}
+
+			@Override
+			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+				super.onScrollStateChanged(recyclerView, newState);
+
 				totalItemCount = layoutManager.getItemCount();
-				lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+				lastVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition();
 
 				if (!mIsLoading && totalItemCount <= (lastVisibleItemPosition + Constans.OPINIONS_PER_PAGE)) {
 					getPresenter().getOpinions(opinionsAdapter.getLastItemId(), false);
@@ -136,7 +141,7 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 
 	@Override
 	public List<Opinions> getData() {
-		return opinionsAdapter == null ? null : opinionsAdapter.getOpinionsList();
+		return opinionsAdapter == null ? null : opinionsAdapter.getMainListOpinions();
 	}
 
 	@NonNull
@@ -151,7 +156,7 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 		errorView.setVisibility(View.GONE);
 		loadingView.setVisibility(View.GONE);
 
-		opinionsAdapter.setOpinionsList(data);
+		opinionsAdapter.setMainListOpinions(data);
 
 		mIsLoading = false;
 		contentView.setRefreshing(false);

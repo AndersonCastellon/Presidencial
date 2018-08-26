@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.papaprogramador.presidenciales.Obj.Opinions;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.ViewHolders.OpinionsViewHolder;
@@ -15,10 +16,11 @@ import java.util.List;
 
 public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsViewHolder> {
 
-	private List<Opinions> opinionsList;
+	private List<Opinions> mainListOpinions;
+	private long lastItem = 0;
 
 	public OpinionsAdapter() {
-		this.opinionsList = new ArrayList<>();
+		this.mainListOpinions = new ArrayList<>();
 	}
 
 	@NonNull
@@ -30,38 +32,34 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsViewHolder> {
 
 	@Override
 	public void onBindViewHolder(@NonNull OpinionsViewHolder holder, int position) {
-		Opinions opinions = opinionsList.get(position);
+		Opinions opinions = mainListOpinions.get(position);
 		holder.setData(opinions);
 	}
 
-	public List<Opinions> getOpinionsList() {
-		return opinionsList;
+	public List<Opinions> getMainListOpinions() {
+		Collections.sort(mainListOpinions);
+
+		if (mainListOpinions.size() != 0){
+			lastItem = mainListOpinions.get((mainListOpinions.size() - 1)).getOrderBy();
+		}
+
+		notifyDataSetChanged();
+		return mainListOpinions;
 	}
 
-	public void setOpinionsList(List<Opinions> newOpinionsList) {
+	public void setMainListOpinions(List<Opinions> newOpinionsList) {
 
-		if (!this.opinionsList.containsAll(newOpinionsList)) {
-
-			this.opinionsList.addAll(newOpinionsList);
-			Collections.sort(opinionsList);
-			notifyItemRangeInserted(0, newOpinionsList.size());
+		if (!this.mainListOpinions.containsAll(newOpinionsList)) {
+			this.mainListOpinions.addAll(newOpinionsList);
 		}
 	}
 
-	public String getLastItemId() {
-
-		String lastItem = null;
-		int lastItemId = this.opinionsList.size() == 0 ? -1 : this.opinionsList.size() - 1;
-
-		if (lastItemId >= 0) {
-			lastItem = opinionsList.get(lastItemId).getOpinionId();
-		}
-
+	public long getLastItemId() {
 		return lastItem;
 	}
 
 	@Override
 	public int getItemCount() {
-		return opinionsList == null ? 0 : opinionsList.size();
+		return mainListOpinions == null ? 0 : mainListOpinions.size();
 	}
 }

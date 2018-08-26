@@ -392,4 +392,13 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 		super.onStop();
 		getPresenter().removeAuthListener();
 	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		if (bitmap != null){
+			bitmap.recycle();
+		}
+	}
 }

@@ -45,7 +45,7 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View> i
 
 
 	@Override
-	public void getOpinions(String opinionId, final boolean pullToRefresh) {
+	public void getOpinions(long opinionId, final boolean pullToRefresh) {
 
 		if (!CheckConnection.checkConnection(context)) {
 			ifViewAttached(new ViewAction<OpinionsContract.View>() {
@@ -60,16 +60,18 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View> i
 	}
 
 	@Override
-	public void getDataOpinions(String opinionId, final boolean pullToRefresh) {
+	public void getDataOpinions(long opinionId, final boolean pullToRefresh) {
 
 		Query query;
 
-		if (opinionId == null) {
+		if (opinionId == 0) {
 			query = firebaseReference
+					.orderByChild("orderBy")
 					.limitToLast(Constans.OPINIONS_PER_PAGE);
 		} else {
 			query = firebaseReference
-					.startAt(opinionId)
+					.orderByChild("orderBy")
+					.endAt(opinionId)
 					.limitToLast(Constans.OPINIONS_PER_PAGE);
 		}
 
