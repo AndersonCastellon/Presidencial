@@ -38,12 +38,12 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsViewHolder> {
 
 	public List<Opinions> getMainListOpinions() {
 		Collections.sort(mainListOpinions);
+		notifyItemRangeInserted((mainListOpinions.size()+1), 20);
 
 		if (mainListOpinions.size() != 0){
 			lastItem = mainListOpinions.get((mainListOpinions.size() - 1)).getOrderBy();
 		}
 
-		notifyDataSetChanged();
 		return mainListOpinions;
 	}
 

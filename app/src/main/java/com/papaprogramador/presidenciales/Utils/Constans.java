@@ -58,5 +58,5 @@ public class Constans {
 	public static final String SP_BLOCK_TAB_POSITION = "CurrentTabPosition";
 	public static final String SP_PUT_TAB_POSITION = "tabPosition";
 
-	public static int OPINIONS_PER_PAGE = 20;
+	public static int OPINIONS_PER_PAGE = 5;
 }
