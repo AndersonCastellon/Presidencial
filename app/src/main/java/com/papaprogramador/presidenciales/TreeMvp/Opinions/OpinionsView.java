@@ -102,16 +102,10 @@ public class OpinionsView extends MvpLceViewStateFragment<SwipeRefreshLayout, Li
 			public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 				super.onScrolled(recyclerView, dx, dy);
 
-			}
-
-			@Override
-			public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-				super.onScrollStateChanged(recyclerView, newState);
-
 				totalItemCount = layoutManager.getItemCount();
-				lastVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition();
+				lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
 
-				if (!mIsLoading && totalItemCount <= (lastVisibleItemPosition + Constans.OPINIONS_PER_PAGE)) {
+				if (!mIsLoading && totalItemCount <= (lastVisibleItemPosition + 1)) {
 					getPresenter().getOpinions(opinionsAdapter.getLastItemId(), false);
 					mIsLoading = true;
 				}
