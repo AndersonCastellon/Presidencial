@@ -23,7 +23,7 @@
 
         </FrameLayout>
 
-        <include layout="@layout/contenido_principal" />
+        <include layout="@layout/main_content" />
 
     </LinearLayout>
 

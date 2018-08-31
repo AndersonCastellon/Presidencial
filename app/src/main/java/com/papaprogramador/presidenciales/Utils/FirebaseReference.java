@@ -13,5 +13,5 @@ public class FirebaseReference {
 
 	public static final String POLITICAL_FLAG = "politicalFlag";
 	public static final String OPINIONS_IMAGES = "OpinionsImages";
-	public static final String NODE_OPINIONS = "Opinions";
+	public static final String NODE_OPINIONS = "Opinion";
 }

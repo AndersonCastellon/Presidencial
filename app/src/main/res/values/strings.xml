@@ -135,6 +135,9 @@
     <string name="delete_selected_image_message">Deseas eliminar la imagen seleccionada?</string>
     <string name="opinion_cancel_title">Cancelar opinión</string>
     <string name="opinion_cancel_message">Deseas cancelar la creación de tu opinión?</string>
+    <string name="opinion_error_remove">Lo siento, no tienes permisos para eliminar esta opinión</string>
+    <string name="error_server">Error del servidor, intentalo nuevamente</string>
+    <string name="opinion_read_error_message">Lo siento, no puedes leer las opiniones</string>
 
 
 </resources>

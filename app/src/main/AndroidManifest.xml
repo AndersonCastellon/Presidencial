@@ -41,7 +41,7 @@
             android:name=".View.Activity.ResetPasswordView"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".View.Activity.DetailCandidatoView"
+            android:name=".View.Activity.DetailOfCandidates"
             android:parentActivityName=".View.Activity.MainView"
             android:theme="@style/AppThemeStatusBarTransparent"
             tools:ignore="InnerclassSeparator">
@@ -50,7 +50,7 @@
                 android:value=".View.Activity.MainView" />
         </activity>
         <activity
-            android:name=".TreeMvp.NewOpinion.NewOpinionView"
+            android:name=".Views.NewOpinion.NewOpinionView"
             tools:ignore="InnerclassSeparator"
             android:theme="@style/AppTheme" />
 

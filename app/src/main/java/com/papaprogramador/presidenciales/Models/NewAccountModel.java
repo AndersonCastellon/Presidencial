@@ -1,12 +1,11 @@
 package com.papaprogramador.presidenciales.Models;
 
 import android.content.Context;
-import android.net.Uri;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.papaprogramador.presidenciales.InterfacesMVP.NewAccount;
-import com.papaprogramador.presidenciales.Obj.User;
+import com.papaprogramador.presidenciales.common.pojo.User;
 import com.papaprogramador.presidenciales.UseCases.ValidarEmail;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Utils.FirebaseReference;

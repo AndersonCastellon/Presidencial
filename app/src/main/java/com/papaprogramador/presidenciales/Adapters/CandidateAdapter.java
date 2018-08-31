@@ -15,8 +15,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
-import com.papaprogramador.presidenciales.Obj.Candidate;
-import com.papaprogramador.presidenciales.View.Activity.DetailCandidatoView;
+import com.papaprogramador.presidenciales.common.pojo.Candidate;
+import com.papaprogramador.presidenciales.View.Activity.DetailOfCandidates;
 
 import java.util.List;
 
@@ -106,7 +106,7 @@ public class CandidateAdapter extends RecyclerView.Adapter<CandidateAdapter.Cand
 		public void onClick(View v) {
 			switch (v.getId()) {
 				case R.id.imagenCandidato:
-					Intent detalleCandidato = new Intent(context, DetailCandidatoView.class);
+					Intent detalleCandidato = new Intent(context, DetailOfCandidates.class);
 					detalleCandidato.putExtra(Constans.PUT_ID_CANDIDATE, idcandidato);
 					detalleCandidato.putExtra(Constans.PUT_NOMBRE_CANDIDATE, textViewNombre.getText().toString());
 					detalleCandidato.putExtra(Constans.PUT_URL_IMAGEN_CANDIDATE, urlImage);

@@ -1,11 +1,9 @@
 package com.papaprogramador.presidenciales.Presenters;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -13,7 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseUser;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-import com.papaprogramador.presidenciales.Obj.User;
+import com.papaprogramador.presidenciales.common.pojo.User;
 import com.papaprogramador.presidenciales.UseCases.ValidarEmail;
 import com.papaprogramador.presidenciales.InterfacesMVP.LoginContract;
 import com.papaprogramador.presidenciales.UseCases.GoogleApiClientListener;

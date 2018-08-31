@@ -16,7 +16,7 @@ import com.hannesdorfmann.mosby3.mvp.viewstate.lce.MvpLceViewStateFragment;
 import com.hannesdorfmann.mosby3.mvp.viewstate.lce.data.RetainingLceViewState;
 import com.papaprogramador.presidenciales.Adapters.CandidateAdapter;
 import com.papaprogramador.presidenciales.InterfacesMVP.CandidateFragment;
-import com.papaprogramador.presidenciales.Obj.Candidate;
+import com.papaprogramador.presidenciales.common.pojo.Candidate;
 import com.papaprogramador.presidenciales.Presenters.ListCandidateFragmentPresenter;
 import com.papaprogramador.presidenciales.R;
 

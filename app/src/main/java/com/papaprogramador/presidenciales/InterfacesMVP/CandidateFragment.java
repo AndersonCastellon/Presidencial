@@ -2,7 +2,7 @@ package com.papaprogramador.presidenciales.InterfacesMVP;
 
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView;
-import com.papaprogramador.presidenciales.Obj.Candidate;
+import com.papaprogramador.presidenciales.common.pojo.Candidate;
 
 import java.util.List;
 

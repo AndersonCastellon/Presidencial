@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
 import com.papaprogramador.presidenciales.InterfacesMVP.CandidateFragment;
 import com.papaprogramador.presidenciales.UseCases.CandidateListCallbackFirebase;
-import com.papaprogramador.presidenciales.Obj.Candidate;
+import com.papaprogramador.presidenciales.common.pojo.Candidate;
 import com.papaprogramador.presidenciales.Utils.StaticMethods.CheckConnection;
 
 import java.util.List;

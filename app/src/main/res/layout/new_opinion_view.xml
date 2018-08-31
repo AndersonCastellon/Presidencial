@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/root_view_opinions"
-    tools:context="com.papaprogramador.presidenciales.TreeMvp.NewOpinion.NewOpinionView">
+    tools:context="com.papaprogramador.presidenciales.Views.NewOpinion.NewOpinionView">
 
     <include
         android:id="@+id/toolbar"
