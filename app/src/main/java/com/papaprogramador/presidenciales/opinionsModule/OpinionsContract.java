@@ -13,6 +13,7 @@ public interface OpinionsContract {
 		void add(Opinion opinion);
 		void update(Opinion opinion);
 		void remove(Opinion opinion);
+		void onComplete();
 
 		void removeFail();
 		void onShowError(int resMsg);
@@ -21,11 +22,13 @@ public interface OpinionsContract {
 	interface Presenter extends MvpPresenter<OpinionsContract.View> {
 		void onCreate();
 		void onPause();
-		void onResume();
+		void onResume(long lastOpinion);
 		void onDestroy();
 
+		void getData(long lastOpinion);
+
 		void remove (Opinion opinion);
-		void onEventListener(OpinionEvent event);
+		void onDataEventListener(OpinionEvent event);
 	}
 
 	interface Interactor {

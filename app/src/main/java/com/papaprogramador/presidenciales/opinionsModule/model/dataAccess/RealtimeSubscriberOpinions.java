@@ -71,7 +71,6 @@ public class RealtimeSubscriberOpinions {
 					@Override
 					public void onError(Throwable t) {
 						t.getMessage();
-						t.toString();
 						t.getCause();
 					}
 

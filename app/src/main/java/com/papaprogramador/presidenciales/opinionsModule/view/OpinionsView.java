@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,15 +13,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
+import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.Views.NewOpinion.NewOpinionView;
+import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.opinionsModule.OpinionsContract;
 import com.papaprogramador.presidenciales.opinionsModule.presenter.OpinionsPresenter;
 import com.papaprogramador.presidenciales.opinionsModule.view.Adapters.OnItemClickListener;
 import com.papaprogramador.presidenciales.opinionsModule.view.Adapters.OpinionsAdapter;
-import com.papaprogramador.presidenciales.common.pojo.Opinion;
-import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.Views.NewOpinion.NewOpinionView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,9 +51,10 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 
 	@BindView(R.id.rv_opinions)
 	RecyclerView rvOpinions;
-
 	@BindView(R.id.contentView)
 	SwipeRefreshLayout contentView;
+	@BindView(R.id.loadingView)
+	ProgressBar loadingView;
 
 	Unbinder unbinder;
 	OpinionsAdapter opinionsAdapter;
@@ -81,6 +84,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 		unbinder = ButterKnife.bind(this, view);
 		setContentView();
 		setRecyclerView();
+		getPresenter().onCreate();
 
 		rvOpinions.addOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
@@ -91,7 +95,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 				lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
 
 				if (!mIsLoading && totalItemCount <= (lastVisibleItemPosition + 1)) {
-//					getPresenter().getOpinions(opinionsAdapter.getLastItemId(), false);
+					getPresenter().getData(opinionsAdapter.getLastItemId());
 					mIsLoading = true;
 				}
 			}
@@ -114,7 +118,14 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 
 	private void setContentView() {
 		contentView.setOnRefreshListener(this);
-		contentView.setColorSchemeResources(R.color.google_blue, R.color.google_green, R.color.google_red, R.color.google_yellow);
+		contentView.setColorSchemeResources(R.color.google_blue, R.color.google_green,
+				R.color.google_red, R.color.google_yellow);
+	}
+
+	@OnClick(R.id.fab_new_opinion)
+	public void onNewOpinionClicked() {
+		Intent intent = new Intent(getActivity(), NewOpinionView.class);
+		startActivity(intent);
 	}
 
 	@NonNull
@@ -125,73 +136,92 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 
 	@Override
 	public void onRefresh() {
-
+		getPresenter().getData(opinionsAdapter.getLastItemId());
 	}
 
 	@Override
 	public void showProgress(boolean show) {
-
+		if (show) {
+			contentView.setVisibility(View.GONE);
+			loadingView.setVisibility(View.VISIBLE);
+		} else {
+			contentView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
 	public void add(Opinion opinion) {
-
+		opinionsAdapter.add(opinion);
 	}
 
 	@Override
 	public void update(Opinion opinion) {
-
+		opinionsAdapter.update(opinion);
 	}
 
 	@Override
 	public void remove(Opinion opinion) {
+		opinionsAdapter.remove(opinion);
+	}
 
+	@Override
+	public void onComplete() {
+		contentView.setRefreshing(false);
+		mIsLoading = false;
 	}
 
 	@Override
 	public void removeFail() {
-
+		Snackbar.make(contentView, R.string.opinion_error_remove, Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onShowError(int resMsg) {
-
+		Snackbar.make(contentView, resMsg, Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onImageClick(Opinion opinion) {
-
+		Snackbar.make(contentView, "onImageClick", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onLikeClick(Opinion opinion) {
-
+		Snackbar.make(contentView, "onLikeClick", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onCommentClick(Opinion opinion) {
-
+		Snackbar.make(contentView, "onCommentClick", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onShareClick(Opinion opinion) {
-
+		Snackbar.make(contentView, "onShareClick", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onMenuClick(Opinion opinion) {
-
+		Snackbar.make(contentView, "onMenuClick", Snackbar.LENGTH_LONG).show();
 	}
 
-	@OnClick(R.id.fab_new_opinion)
-	public void onViewClicked() {
-		Intent intent = new Intent(getActivity(), NewOpinionView.class);
-		startActivity(intent);
+	@Override
+	public void onPause() {
+		super.onPause();
+		getPresenter().onPause();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		getPresenter().onResume(opinionsAdapter.getLastItemId());
 	}
 
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
 		unbinder.unbind();
+		getPresenter().onDestroy();
 	}
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.R;
 
@@ -25,14 +26,17 @@ import butterknife.ButterKnife;
 
 public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHolder> {
 
-	private List<Opinion> mainListOpinions;
+	private List<Opinion> opinionList;
 	private long lastItem = 0;
 	private OnItemClickListener listener;
+	private FirebaseUserAPI mUserAPI;
 	private Context context;
+	private boolean order = true;
 
 	public OpinionsAdapter(OnItemClickListener listener) {
-		this.mainListOpinions = new ArrayList<>();
+		this.opinionList = new ArrayList<>();
 		this.listener = listener;
+		this.mUserAPI = FirebaseUserAPI.getInstance();
 
 	}
 
@@ -46,7 +50,11 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-		Opinion opinion = mainListOpinions.get(position);
+		Opinion opinion = opinionList.get(position);
+
+		if (opinion.getUserId().equals(mUserAPI.getUserId())) {
+			holder.opinionMenu.setVisibility(View.VISIBLE);
+		}
 
 		holder.userName.setText(opinion.getUserName());
 		holder.datePublication.setText(opinion.getDatePublication());
@@ -74,11 +82,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 			holder.imageOpinion.setVisibility(View.GONE);
 		}
 
-		holder.opinionId = opinion.getOpinionId();
-		holder.userId = opinion.getUserId();
-
 		holder.likeClicked = opinion.isLikeClicked();
-
 
 		Glide.with(context)
 				.load(holder.urlPhotoProfile)
@@ -93,37 +97,51 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 		holder.setOnClickListener(opinion, listener);
 	}
 
-	public List<Opinion> getMainListOpinions() {
-		Collections.sort(mainListOpinions);
-		notifyItemRangeInserted((mainListOpinions.size() + 1), mainListOpinions.size());
-
-		if (mainListOpinions.size() != 0) {
-			lastItem = mainListOpinions.get((mainListOpinions.size() - 1)).getOrderBy();
-		}
-
-		return mainListOpinions;
-	}
-
-	public void setMainListOpinions(List<Opinion> newOpinionList) {
-
-		if (!this.mainListOpinions.containsAll(newOpinionList)) {
-			this.mainListOpinions.addAll(newOpinionList);
-		}
-	}
-
 	public long getLastItemId() {
+		if (order) {
+			Collections.sort(opinionList);
+		}
+		if (opinionList.size() != 0) {
+			lastItem = opinionList.get((opinionList.size() - 1)).getOrderBy();
+		}
 		return lastItem;
 	}
 
 	@Override
 	public int getItemCount() {
-		return mainListOpinions == null ? 0 : mainListOpinions.size();
+		return opinionList == null ? 0 : opinionList.size();
+	}
+
+	public void add(Opinion opinion) {
+		if (!opinionList.contains(opinion)) {
+			opinionList.add(opinion);
+			if (order) {
+				Collections.sort(opinionList);
+			}
+			notifyDataSetChanged();
+		} else {
+			order = false;
+		}
+	}
+
+	public void update(Opinion opinion) {
+		if (opinionList.contains(opinion)) {
+			final int index = opinionList.indexOf(opinion);
+			opinionList.set(index, opinion);
+			notifyItemChanged(index);
+		}
+	}
+
+	public void remove(Opinion opinion) {
+		if (opinionList.contains(opinion)) {
+			final int index = opinionList.indexOf(opinion);
+			opinionList.remove(index);
+			notifyItemRemoved(index);
+		}
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder {
 
-		private String opinionId;
-		private String userId;
 		private String urlPhotoProfile;
 		private String urlPoliticalFlag;
 		private String urlOpinionImage;
