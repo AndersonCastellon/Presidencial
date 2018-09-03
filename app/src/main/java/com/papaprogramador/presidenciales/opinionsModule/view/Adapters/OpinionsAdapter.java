@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
-import com.papaprogramador.presidenciales.opinionsModule.pojo.Likes;
+import com.papaprogramador.presidenciales.opinionsModule.pojo.Like;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,12 +24,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHolder> {
 
 	private List<Opinion> opinionList;
-	private List<Likes> likesList;
+	private List<Like> likeList;
 	private long lastItem = 0;
 	private OnItemClickListener listener;
 	private FirebaseUserAPI mUserAPI;

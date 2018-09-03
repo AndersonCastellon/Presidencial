@@ -1,14 +1,14 @@
 package com.papaprogramador.presidenciales.opinionsModule.pojo;
 
-public class Likes {
+public class Like {
 
 	private String userId;
 	private boolean clickLike;
 
-	public Likes() {
+	public Like() {
 	}
 
-	public Likes(String userId, boolean clickLike) {
+	public Like(String userId, boolean clickLike) {
 		this.userId = userId;
 		this.clickLike = clickLike;
 	}
