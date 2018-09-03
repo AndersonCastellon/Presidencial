@@ -13,9 +13,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
-import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.opinionsModule.pojo.Likes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,10 +24,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHolder> {
 
 	private List<Opinion> opinionList;
+	private List<Likes> likesList;
 	private long lastItem = 0;
 	private OnItemClickListener listener;
 	private FirebaseUserAPI mUserAPI;
@@ -50,8 +53,19 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
 		Opinion opinion = opinionList.get(position);
 
+		setViewHolder(opinion, holder);
+		setClickLike();
+		holder.setOnClickListener(opinion, listener);
+	}
+
+	private void setClickLike() {
+
+	}
+
+	private void setViewHolder(Opinion opinion, ViewHolder holder) {
 		if (opinion.getUserId().equals(mUserAPI.getUserId())) {
 			holder.opinionMenu.setVisibility(View.VISIBLE);
 		}
@@ -82,8 +96,6 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 			holder.imageOpinion.setVisibility(View.GONE);
 		}
 
-		holder.likeClicked = opinion.isLikeClicked();
-
 		Glide.with(context)
 				.load(holder.urlPhotoProfile)
 				.apply(options)
@@ -93,8 +105,6 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 				.load(holder.urlPoliticalFlag)
 				.apply(options)
 				.into(holder.flagPolitical);
-
-		holder.setOnClickListener(opinion, listener);
 	}
 
 	public long getLastItemId() {
@@ -177,26 +187,39 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 		}
 
 		void setOnClickListener(final Opinion opinion, final OnItemClickListener listener) {
-			view.setOnClickListener(new View.OnClickListener() {
+
+			view.findViewById(R.id.btn_like_opinion).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					switch (v.getId()) {
-						case R.id.btn_like_opinion:
-							listener.onLikeClick(opinion);
-							break;
-						case R.id.btn_comment_opinion:
-							listener.onCommentClick(opinion);
-							break;
-						case R.id.btn_share_opinion:
-							listener.onShareClick(opinion);
-							break;
-						case R.id.opinion_menu:
-							listener.onMenuClick(opinion);
-							break;
-						case R.id.image_opinion:
-							listener.onImageClick(opinion);
-							break;
-					}
+					listener.onLikeClick(opinion);
+				}
+			});
+
+			view.findViewById(R.id.btn_comment_opinion).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					listener.onCommentClick(opinion);
+				}
+			});
+
+			view.findViewById(R.id.btn_share_opinion).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					listener.onShareClick(opinion);
+				}
+			});
+
+			view.findViewById(R.id.opinion_menu).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					listener.onMenuClick(opinion);
+				}
+			});
+
+			view.findViewById(R.id.image_opinion).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					listener.onImageClick(opinion);
 				}
 			});
 		}
