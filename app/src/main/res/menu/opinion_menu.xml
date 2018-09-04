@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/edit_opinion"
+        android:title="@string/edit_opinion"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/remove_opinion"
+        android:title="@string/remove_opinion"
+        app:showAsAction="never"
+        />
+</menu>

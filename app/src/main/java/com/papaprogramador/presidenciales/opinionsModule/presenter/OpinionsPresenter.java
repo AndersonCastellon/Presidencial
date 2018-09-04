@@ -51,6 +51,21 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 	}
 
 	@Override
+	public void onLikeClick(Opinion opinion) {
+
+	}
+
+	@Override
+	public void onCommentClick(Opinion opinion) {
+
+	}
+
+	@Override
+	public void onShareClick(Opinion opinion) {
+
+	}
+
+	@Override
 	public void remove(final Opinion opinion) {
 		ifViewAttached(new ViewAction<OpinionsContract.View>() {
 			@Override

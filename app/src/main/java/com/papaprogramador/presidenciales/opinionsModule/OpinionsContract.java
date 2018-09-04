@@ -27,6 +27,9 @@ public interface OpinionsContract {
 
 		void getData(long lastOpinion);
 
+		void onLikeClick(Opinion opinion);
+		void onCommentClick(Opinion opinion);
+		void onShareClick(Opinion opinion);
 		void remove (Opinion opinion);
 		void onDataEventListener(OpinionEvent event);
 	}

@@ -1,6 +1,7 @@
 package com.papaprogramador.presidenciales.opinionsModule.view;
 
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +11,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -23,6 +29,8 @@ import com.papaprogramador.presidenciales.opinionsModule.OpinionsContract;
 import com.papaprogramador.presidenciales.opinionsModule.presenter.OpinionsPresenter;
 import com.papaprogramador.presidenciales.opinionsModule.view.Adapters.OnItemClickListener;
 import com.papaprogramador.presidenciales.opinionsModule.view.Adapters.OpinionsAdapter;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -104,7 +112,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	private void setRecyclerView() {
-		opinionsAdapter = new OpinionsAdapter(this);
+		opinionsAdapter = new OpinionsAdapter(getActivity(),this);
 		rvOpinions.setAdapter(opinionsAdapter);
 
 		layoutManager = new LinearLayoutManager(getActivity());
@@ -202,8 +210,13 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	@Override
-	public void onMenuClick(Opinion opinion) {
-		Snackbar.make(contentView, "onMenuClick", Snackbar.LENGTH_LONG).show();
+	public void onEditOpinionClick(Opinion opinion) {
+
+	}
+
+	@Override
+	public void onRemoveOpinionClick(Opinion opinion) {
+		getPresenter().remove(opinion);
 	}
 
 	@Override

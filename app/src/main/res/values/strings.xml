@@ -138,6 +138,8 @@
     <string name="opinion_error_remove">Lo siento, no tienes permisos para eliminar esta opinión</string>
     <string name="error_server">Error del servidor, intentalo nuevamente</string>
     <string name="opinion_read_error_message">Lo siento, no puedes leer las opiniones</string>
+    <string name="edit_opinion">Editar</string>
+    <string name="remove_opinion">Eliminar</string>
 
 
 </resources>

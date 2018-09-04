@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -28,14 +30,14 @@ import butterknife.ButterKnife;
 public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHolder> {
 
 	private List<Opinion> opinionList;
-	private List<Like> likeList;
 	private long lastItem = 0;
 	private OnItemClickListener listener;
 	private FirebaseUserAPI mUserAPI;
 	private Context context;
 	private boolean order = true;
 
-	public OpinionsAdapter(OnItemClickListener listener) {
+	public OpinionsAdapter(Context context, OnItemClickListener listener) {
+		this.context = context;
 		this.opinionList = new ArrayList<>();
 		this.listener = listener;
 		this.mUserAPI = FirebaseUserAPI.getInstance();
@@ -46,7 +48,6 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.opinions_layout, parent, false);
-		context = parent.getContext();
 		return new ViewHolder(view);
 	}
 
@@ -57,7 +58,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 
 		setViewHolder(opinion, holder);
 		setClickLike();
-		holder.setOnClickListener(opinion, listener);
+		holder.setOnClickListener(opinion, context, listener);
 	}
 
 	private void setClickLike() {
@@ -185,7 +186,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 			view = itemView;
 		}
 
-		void setOnClickListener(final Opinion opinion, final OnItemClickListener listener) {
+		void setOnClickListener(final Opinion opinion, final Context context, final OnItemClickListener listener) {
 
 			view.findViewById(R.id.btn_like_opinion).setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -211,7 +212,23 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 			view.findViewById(R.id.opinion_menu).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					listener.onMenuClick(opinion);
+					PopupMenu popupMenu = new PopupMenu(context, opinionMenu);
+					popupMenu.inflate(R.menu.opinion_menu);
+					popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+						@Override
+						public boolean onMenuItemClick(MenuItem item) {
+
+							switch (item.getItemId()) {
+								case R.id.edit_opinion:
+									listener.onEditOpinionClick(opinion);
+									break;
+								case R.id.remove_opinion:
+									listener.onRemoveOpinionClick(opinion);
+									break;
+							}
+							return false;
+						}
+					});
 				}
 			});
 

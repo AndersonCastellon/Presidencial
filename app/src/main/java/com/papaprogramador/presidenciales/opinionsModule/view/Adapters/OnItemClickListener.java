@@ -7,5 +7,6 @@ public interface OnItemClickListener {
 	void onLikeClick(Opinion opinion);
 	void onCommentClick(Opinion opinion);
 	void onShareClick(Opinion opinion);
-	void onMenuClick(Opinion opinion);
+	void onEditOpinionClick(Opinion opinion);
+	void onRemoveOpinionClick(Opinion opinion);
 }
