@@ -2,12 +2,14 @@ package com.papaprogramador.presidenciales.opinionsModule.view;
 
 
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +52,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	//TODO: Botón flotante debe ocultarse al hacer scroll hacia abajo -> EN PROCESO
 
 
+	//TODO: Al eliminar una opinión, algunas del listado permiten ser eliminadas también aunque no sean del usuario actual
 	//TODO: Botón flotante que notifique que hay nuevas opiniones
 	//TODO: Juntar más el texto y los iconos de los botones inferiores
 	//TODO: Botón mostrar más en textos largos
@@ -215,8 +218,18 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	@Override
-	public void onRemoveOpinionClick(Opinion opinion) {
-		getPresenter().remove(opinion);
+	public void onRemoveOpinionClick(final Opinion opinion) {
+		new AlertDialog.Builder(Objects.requireNonNull(getActivity()))
+				.setTitle(R.string.opinion_dialog_remove_title)
+				.setMessage(R.string.opinion_dialog_remove_message)
+				.setPositiveButton(R.string.opinion_dialog_remove_ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						getPresenter().remove(opinion);
+					}
+				})
+				.setNegativeButton(R.string.common_dialog_cancel, null)
+				.show();
 	}
 
 	@Override

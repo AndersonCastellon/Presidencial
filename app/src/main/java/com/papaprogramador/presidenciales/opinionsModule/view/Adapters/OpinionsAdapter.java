@@ -229,6 +229,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 							return false;
 						}
 					});
+					popupMenu.show();
 				}
 			});
 

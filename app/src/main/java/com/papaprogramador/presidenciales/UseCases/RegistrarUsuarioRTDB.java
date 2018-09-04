@@ -68,11 +68,9 @@ public class RegistrarUsuarioRTDB {
 	}
 
 	private void registrarSoloNombreUsuario() {
-		String emailUser = user.getEmail();
-
 		databaseReference.child(FirebaseReference.NODO_USUARIO)
 				.child(userId).child(FirebaseReference.NODO_NOMBRE_USUARIO)
-				.setValue(emailUser);
+				.setValue(user.getUsername());
 
 		listener.registroExitoso(true);
 	}

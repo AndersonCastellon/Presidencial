@@ -140,6 +140,10 @@
     <string name="opinion_read_error_message">Lo siento, no puedes leer las opiniones</string>
     <string name="edit_opinion">Editar</string>
     <string name="remove_opinion">Eliminar</string>
+    <string name="opinion_dialog_remove_title">Eliminar opinión</string>
+    <string name="opinion_dialog_remove_message">Esta acción eliminará de forma permanente esta opinión</string>
+    <string name="opinion_dialog_remove_ok">Eliminar</string>
+    <string name="common_dialog_cancel">Cancelar</string>
 
 
 </resources>
