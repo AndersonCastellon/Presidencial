@@ -10,5 +10,6 @@ public class MyApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+		FirebaseDatabase.getInstance().getReference().keepSynced(true);
 	}
 }

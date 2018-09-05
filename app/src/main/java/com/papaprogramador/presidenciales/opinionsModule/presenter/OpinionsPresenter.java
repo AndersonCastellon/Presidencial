@@ -3,6 +3,7 @@ package com.papaprogramador.presidenciales.opinionsModule.presenter;
 import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.papaprogramador.presidenciales.opinionsModule.events.LikeEvent;
 import com.papaprogramador.presidenciales.opinionsModule.events.OpinionEvent;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.opinionsModule.OpinionsContract;
@@ -51,18 +52,13 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 	}
 
 	@Override
-	public void onLikeClick(Opinion opinion) {
+	public void onLikeClick(final Opinion opinion) {
+		ifViewAttached(new ViewAction<OpinionsContract.View>() {
+			@Override
+			public void run(@NonNull OpinionsContract.View view) {
 
-	}
-
-	@Override
-	public void onCommentClick(Opinion opinion) {
-
-	}
-
-	@Override
-	public void onShareClick(Opinion opinion) {
-
+			}
+		});
 	}
 
 	@Override
@@ -78,7 +74,7 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 
 	@Subscribe
 	@Override
-	public void onDataEventListener(final OpinionEvent event) {
+	public void onDataOpinionListener(final OpinionEvent event) {
 		ifViewAttached(new ViewAction<OpinionsContract.View>() {
 			@Override
 			public void run(@NonNull OpinionsContract.View view) {
@@ -107,6 +103,24 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 					case OpinionEvent.ON_COMPLETE:
 						view.showProgress(false);
 						view.onComplete();
+						break;
+				}
+			}
+		});
+	}
+
+	@Subscribe
+	@Override
+	public void onDataLikesListener(final LikeEvent event) {
+		ifViewAttached(new ViewAction<OpinionsContract.View>() {
+			@Override
+			public void run(@NonNull OpinionsContract.View view) {
+				switch (event.getTypeEvent()){
+					case LikeEvent.SUCCES_ADD:
+						view.addLike(event.getLike());
+						break;
+					case LikeEvent.SUCCES_REMOVE:
+						view.removeLike(event.getLike());
 						break;
 				}
 			}

@@ -17,8 +17,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
+import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
-import com.papaprogramador.presidenciales.opinionsModule.pojo.Like;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +30,7 @@ import butterknife.ButterKnife;
 public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHolder> {
 
 	private List<Opinion> opinionList;
+	private List<Like> listLike;
 	private long lastItem = 0;
 	private OnItemClickListener listener;
 	private FirebaseUserAPI mUserAPI;
@@ -39,6 +40,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 	public OpinionsAdapter(Context context, OnItemClickListener listener) {
 		this.context = context;
 		this.opinionList = new ArrayList<>();
+		this.listLike = new ArrayList<>();
 		this.listener = listener;
 		this.mUserAPI = FirebaseUserAPI.getInstance();
 
@@ -147,6 +149,18 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 			final int index = opinionList.indexOf(opinion);
 			opinionList.remove(index);
 			notifyItemRemoved(index);
+		}
+	}
+
+	public void addLike(Like like) {
+		if (!listLike.contains(like)){
+			listLike.add(like);
+		}
+	}
+
+	public void removeLike(Like like) {
+		if (listLike.contains(like)){
+			listLike.remove(like);
 		}
 	}
 

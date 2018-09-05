@@ -8,32 +8,38 @@ import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.common.BasicErrorEventCallback;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseRealtimeDatabaseAPI;
+import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.opinionsModule.events.OpinionEvent;
 
 import durdinapps.rxfirebase2.RxFirebaseChildEvent;
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
-import io.reactivex.BackpressureStrategy;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.ResourceSubscriber;
 
-public class RealtimeSubscriberOpinions {
+import static io.reactivex.BackpressureStrategy.BUFFER;
+
+public class FlowableOpinion {
 
 	private static final String PATH_OPINIONS = "Opinions";
 
 	private FirebaseRealtimeDatabaseAPI mDatabaseAPI;
-	private CompositeDisposable compositeDisposable;
+	private FirebaseUserAPI firebaseUserAPI;
+	private CompositeDisposable disposable;
 
-	public RealtimeSubscriberOpinions() {
+
+	public FlowableOpinion() {
 		mDatabaseAPI = FirebaseRealtimeDatabaseAPI.getInstance();
-		compositeDisposable = new CompositeDisposable();
+		firebaseUserAPI = FirebaseUserAPI.getInstance();
+		disposable = new CompositeDisposable();
 	}
 
 	private DatabaseReference getOpinionsReference() {
 		return mDatabaseAPI.getmReference().child(PATH_OPINIONS);
 	}
+
 
 	public void subscribeToOpinions(long lastOpinion, final OpinionsEventListener listener) {
 
@@ -49,7 +55,7 @@ public class RealtimeSubscriberOpinions {
 					.limitToLast(Constans.OPINIONS_PER_PAGE);
 		}
 
-		compositeDisposable.add(RxFirebaseDatabase.observeChildEvent(query, BackpressureStrategy.BUFFER)
+		disposable.add(RxFirebaseDatabase.observeChildEvent(query, BUFFER)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribeWith(new ResourceSubscriber<RxFirebaseChildEvent<DataSnapshot>>() {
@@ -82,19 +88,12 @@ public class RealtimeSubscriberOpinions {
 
 	}
 
-	private Opinion getOpinion(DataSnapshot dataSnapshot) {
-		Opinion opinion = dataSnapshot.getValue(Opinion.class);
+	public void likeAdd(Opinion opinion) {
 
-		if (opinion != null) {
-			opinion.setOpinionId(dataSnapshot.getKey());
-		}
-		return opinion;
 	}
 
-	public void unsubscribeToOpinions() {
-		if (!compositeDisposable.isDisposed()) {
-			compositeDisposable.dispose();
-		}
+	public void likeRemove(Opinion opinion) {
+
 	}
 
 	public void removeOpinion(Opinion opinion, final BasicErrorEventCallback callback) {
@@ -115,5 +114,20 @@ public class RealtimeSubscriberOpinions {
 						}
 					}
 				});
+	}
+
+	private Opinion getOpinion(DataSnapshot dataSnapshot) {
+		Opinion opinion = dataSnapshot.getValue(Opinion.class);
+
+		if (opinion != null) {
+			opinion.setOpinionId(dataSnapshot.getKey());
+		}
+		return opinion;
+	}
+
+	public void unsubscribeToOpinions() {
+		if (!disposable.isDisposed()) {
+			disposable.dispose();
+		}
 	}
 }

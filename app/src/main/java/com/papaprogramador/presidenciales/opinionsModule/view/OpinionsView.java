@@ -26,6 +26,7 @@ import android.widget.ProgressBar;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Views.NewOpinion.NewOpinionView;
+import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.opinionsModule.OpinionsContract;
 import com.papaprogramador.presidenciales.opinionsModule.presenter.OpinionsPresenter;
@@ -91,11 +92,11 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		getPresenter().onCreate();
 		setRetainInstance(true);
 		unbinder = ButterKnife.bind(this, view);
 		setContentView();
 		setRecyclerView();
-		getPresenter().onCreate();
 
 		rvOpinions.addOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
@@ -115,7 +116,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	private void setRecyclerView() {
-		opinionsAdapter = new OpinionsAdapter(getActivity(),this);
+		opinionsAdapter = new OpinionsAdapter(getActivity(), this);
 		rvOpinions.setAdapter(opinionsAdapter);
 
 		layoutManager = new LinearLayoutManager(getActivity());
@@ -183,6 +184,16 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	@Override
+	public void addLike(Like like) {
+		opinionsAdapter.addLike(like);
+	}
+
+	@Override
+	public void removeLike(Like like) {
+		opinionsAdapter.removeLike(like);
+	}
+
+	@Override
 	public void removeFail() {
 		Snackbar.make(contentView, R.string.opinion_error_remove, Snackbar.LENGTH_LONG).show();
 	}
@@ -194,22 +205,19 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 
 	@Override
 	public void onImageClick(Opinion opinion) {
-		Snackbar.make(contentView, "onImageClick", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onLikeClick(Opinion opinion) {
-		Snackbar.make(contentView, "onLikeClick", Snackbar.LENGTH_LONG).show();
+		getPresenter().onLikeClick(opinion);
 	}
 
 	@Override
 	public void onCommentClick(Opinion opinion) {
-		Snackbar.make(contentView, "onCommentClick", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
 	public void onShareClick(Opinion opinion) {
-		Snackbar.make(contentView, "onShareClick", Snackbar.LENGTH_LONG).show();
 	}
 
 	@Override
