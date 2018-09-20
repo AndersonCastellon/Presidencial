@@ -1,7 +1,6 @@
 package com.papaprogramador.presidenciales.opinionsModule.view;
 
 
-import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,12 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -33,6 +27,7 @@ import com.papaprogramador.presidenciales.opinionsModule.presenter.OpinionsPrese
 import com.papaprogramador.presidenciales.opinionsModule.view.Adapters.OnItemClickListener;
 import com.papaprogramador.presidenciales.opinionsModule.view.Adapters.OpinionsAdapter;
 
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -107,7 +102,9 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 				lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
 
 				if (!mIsLoading && totalItemCount <= (lastVisibleItemPosition + 1)) {
+					requestRemoveLikeNotifiers();
 					getPresenter().getData(opinionsAdapter.getLastItemId());
+					requestAddLikeNotifiers();
 					mIsLoading = true;
 				}
 			}
@@ -148,7 +145,9 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 
 	@Override
 	public void onRefresh() {
+		requestRemoveLikeNotifiers();
 		getPresenter().getData(opinionsAdapter.getLastItemId());
+		requestAddLikeNotifiers();
 	}
 
 	@Override
@@ -178,19 +177,39 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	@Override
+	public void updateOpinionLike(String opinionId, String userId, boolean result) {
+		opinionsAdapter.updateOpinionLike(opinionId, userId, result);
+	}
+
+	@Override
+	public void updateOpinionLikeCounter(String opinionId, String userId, boolean result) {
+		opinionsAdapter.updateOpinionLikeCounter(opinionId, userId, result);
+	}
+
+	@Override
 	public void onComplete() {
 		contentView.setRefreshing(false);
 		mIsLoading = false;
 	}
 
 	@Override
-	public void addLike(Like like) {
-		opinionsAdapter.addLike(like);
+	public void requestAddLikeNotifiers() {
+		List<Opinion> opinions = opinionsAdapter.getItems();
+		if (opinions != null) {
+			for (Opinion opinion : opinions) {
+				getPresenter().requestAddLikeNotifiers(opinion.getOpinionId());
+			}
+		}
 	}
 
 	@Override
-	public void removeLike(Like like) {
-		opinionsAdapter.removeLike(like);
+	public void requestRemoveLikeNotifiers() {
+		List<Opinion> opinions = opinionsAdapter.getItems();
+		if (opinions != null) {
+			for (Opinion opinion : opinions) {
+				getPresenter().requestRemoveLikeNotifiers(opinion.getOpinionId());
+			}
+		}
 	}
 
 	@Override
@@ -233,7 +252,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 				.setPositiveButton(R.string.opinion_dialog_remove_ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
-						getPresenter().remove(opinion);
+						getPresenter().removeOpinion(opinion);
 					}
 				})
 				.setNegativeButton(R.string.common_dialog_cancel, null)
@@ -250,12 +269,14 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	public void onResume() {
 		super.onResume();
 		getPresenter().onResume(opinionsAdapter.getLastItemId());
+		requestAddLikeNotifiers();
 	}
 
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
 		unbinder.unbind();
+		requestRemoveLikeNotifiers();
 		getPresenter().onDestroy();
 	}
 }

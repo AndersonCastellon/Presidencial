@@ -3,6 +3,8 @@ package com.papaprogramador.presidenciales.opinionsModule.presenter;
 import android.support.annotation.NonNull;
 
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
+import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.opinionsModule.events.LikeEvent;
 import com.papaprogramador.presidenciales.opinionsModule.events.OpinionEvent;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
@@ -15,10 +17,12 @@ import org.greenrobot.eventbus.Subscribe;
 public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 		implements OpinionsContract.Presenter {
 
-	private OpinionsInteractor interactor;
+	private OpinionsInteractor opinionsInteractor;
+	private FirebaseUserAPI firebaseUserAPI;
 
 	public OpinionsPresenter() {
-		this.interactor = new OpinionsInteractor();
+		this.opinionsInteractor = new OpinionsInteractor();
+		firebaseUserAPI = FirebaseUserAPI.getInstance();
 	}
 
 	@Override
@@ -28,12 +32,14 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 
 	@Override
 	public void onPause() {
-		interactor.unsubscribeToOpinions();
+		opinionsInteractor.unsubscribeToOpinions();
+		opinionsInteractor.unsubscribeToLikes();
 	}
 
 	@Override
 	public void onResume(final long lastOpinion) {
-		interactor.subscribeToOpinions(lastOpinion);
+		opinionsInteractor.subscribeToOpinions(lastOpinion);
+
 	}
 
 	@Override
@@ -46,28 +52,60 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 		ifViewAttached(new ViewAction<OpinionsContract.View>() {
 			@Override
 			public void run(@NonNull OpinionsContract.View view) {
-				interactor.subscribeToOpinions(lastOpinion);
+				opinionsInteractor.subscribeToOpinions(lastOpinion);
 			}
 		});
 	}
 
 	@Override
-	public void onLikeClick(final Opinion opinion) {
-		ifViewAttached(new ViewAction<OpinionsContract.View>() {
-			@Override
-			public void run(@NonNull OpinionsContract.View view) {
-
-			}
-		});
+	public void requestAddLikeNotifiers(String opinionId) {
+		opinionsInteractor.requestAddLikeNotifiers(opinionId);
 	}
 
 	@Override
-	public void remove(final Opinion opinion) {
+	public void requestRemoveLikeNotifiers(String opinionId) {
+		opinionsInteractor.requestRemoveLikeNotifiers(opinionId);
+	}
+
+	@Override
+	public void onLikeClick(Opinion opinion) {
+		Like like = Like.Builder().opinionId(opinion.getOpinionId())
+				.userId(firebaseUserAPI.getUserId())
+				.build();
+
+		opinionsInteractor.onClickLike(like);
+	}
+
+	@Override
+	public void removeOpinion(final Opinion opinion) {
+		opinionsInteractor.removeOpinion(opinion);
+	}
+
+	@Subscribe
+	@Override
+	public void updateOpinionLike(final LikeEvent event) {
 		ifViewAttached(new ViewAction<OpinionsContract.View>() {
 			@Override
 			public void run(@NonNull OpinionsContract.View view) {
-				view.showProgress(true);
-				interactor.removeOpinion(opinion);
+				String opinionId = event.getLike().getOpinionId();
+				String userId = event.getLike().getUserId();
+				switch (event.getTypeEvent()) {
+					case LikeEvent.SUCCES_ADD:
+						view.updateOpinionLike(opinionId, userId, true);
+						break;
+					case LikeEvent.SUCCES_REMOVE:
+						view.updateOpinionLike(opinionId, userId, false);
+						break;
+					case LikeEvent.LIKE:
+						view.updateOpinionLikeCounter(opinionId, userId, true);
+						break;
+					case LikeEvent.DISLIKE:
+						view.updateOpinionLikeCounter(opinionId, userId, false);
+						break;
+					case LikeEvent.ERROR:
+						view.onShowError(event.getResMsg());
+						break;
+				}
 			}
 		});
 	}
@@ -103,24 +141,6 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 					case OpinionEvent.ON_COMPLETE:
 						view.showProgress(false);
 						view.onComplete();
-						break;
-				}
-			}
-		});
-	}
-
-	@Subscribe
-	@Override
-	public void onDataLikesListener(final LikeEvent event) {
-		ifViewAttached(new ViewAction<OpinionsContract.View>() {
-			@Override
-			public void run(@NonNull OpinionsContract.View view) {
-				switch (event.getTypeEvent()){
-					case LikeEvent.SUCCES_ADD:
-						view.addLike(event.getLike());
-						break;
-					case LikeEvent.SUCCES_REMOVE:
-						view.removeLike(event.getLike());
 						break;
 				}
 			}

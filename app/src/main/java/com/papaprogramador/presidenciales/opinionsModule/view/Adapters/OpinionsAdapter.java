@@ -17,7 +17,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
-import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ import butterknife.ButterKnife;
 public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHolder> {
 
 	private List<Opinion> opinionList;
-	private List<Like> listLike;
 	private long lastItem = 0;
 	private OnItemClickListener listener;
 	private FirebaseUserAPI mUserAPI;
@@ -40,7 +38,6 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 	public OpinionsAdapter(Context context, OnItemClickListener listener) {
 		this.context = context;
 		this.opinionList = new ArrayList<>();
-		this.listLike = new ArrayList<>();
 		this.listener = listener;
 		this.mUserAPI = FirebaseUserAPI.getInstance();
 
@@ -55,58 +52,41 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 
 	@Override
 	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
 		Opinion opinion = opinionList.get(position);
-
 		setViewHolder(opinion, holder);
-		setClickLike();
 		holder.setOnClickListener(opinion, context, listener);
 	}
 
-	private void setClickLike() {
-
-	}
-
 	private void setViewHolder(Opinion opinion, ViewHolder holder) {
-		if (opinion.getUserId().equals(mUserAPI.getUserId())) {
+
+		if (opinion != null && opinion.getUserId().equals(mUserAPI.getUserId())) {
 			holder.opinionMenu.setVisibility(View.VISIBLE);
+		} else {
+			holder.opinionMenu.setVisibility(View.GONE);
 		}
 
 		holder.userName.setText(opinion.getUserName());
-		holder.datePublication.setText(opinion.getDatePublication());
-		holder.opinionText.setText(opinion.getOpinionText());
+		holder.datePublication.setText(String.valueOf(opinion.getDataTime()));
+		holder.opinionText.setText(opinion.getContent());
 
-		holder.btnLikeOpinion.setText(String.valueOf(opinion.getCountLike()));
-		holder.btnCommentOpinion.setText(String.valueOf(opinion.getCountComments()));
-		holder.btnShareOpinion.setText(String.valueOf(opinion.getCountShare()));
-
-		holder.urlPhotoProfile = opinion.getUrlPhotoProfile();
-		holder.urlPoliticalFlag = opinion.getUrlPoliticalFlag();
-
-		RequestOptions options = new RequestOptions()
-				.diskCacheStrategy(DiskCacheStrategy.ALL)
-				.centerCrop();
+		RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop();
 
 		if (opinion.getUrlOpinionImage() != null) {
+			holder.imageOpinion.setVisibility(View.VISIBLE);
 			holder.urlOpinionImage = opinion.getUrlOpinionImage();
-
-			Glide.with(context)
-					.load(holder.urlOpinionImage)
-					.apply(options)
-					.into(holder.imageOpinion);
+			Glide.with(context).load(holder.urlOpinionImage).apply(options).into(holder.imageOpinion);
 		} else {
 			holder.imageOpinion.setVisibility(View.GONE);
 		}
 
-		Glide.with(context)
-				.load(holder.urlPhotoProfile)
-				.apply(options)
-				.into(holder.userPhotoProfile);
+		holder.urlPhotoProfile = opinion.getUrlPhotoProfile();
+		holder.urlPoliticalFlag = opinion.getUrlPoliticalFlag();
+		Glide.with(context).load(holder.urlPhotoProfile).apply(options).into(holder.userPhotoProfile);
+		Glide.with(context).load(holder.urlPoliticalFlag).apply(options).into(holder.flagPolitical);
 
-		Glide.with(context)
-				.load(holder.urlPoliticalFlag)
-				.apply(options)
-				.into(holder.flagPolitical);
+		List<String> userLikes = opinion.getUserLikes();
+		int likesCount = userLikes != null ? userLikes.size() : 0;
+		holder.btnLikeOpinion.setText(String.valueOf(likesCount));
 	}
 
 	public long getLastItemId() {
@@ -114,7 +94,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 			Collections.sort(opinionList);
 		}
 		if (opinionList.size() != 0) {
-			lastItem = opinionList.get((opinionList.size() - 1)).getOrderBy();
+			lastItem = opinionList.get((opinionList.size() - 1)).getDataTime();
 		}
 		return lastItem;
 	}
@@ -125,7 +105,8 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 	}
 
 	public void add(Opinion opinion) {
-		if (!opinionList.contains(opinion)) {
+		int currentPosition = getItemPosition(opinion.getOpinionId());
+		if (currentPosition == -1) {
 			opinionList.add(opinion);
 			if (order) {
 				Collections.sort(opinionList);
@@ -137,7 +118,8 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 	}
 
 	public void update(Opinion opinion) {
-		if (opinionList.contains(opinion)) {
+		int currentPosition = getItemPosition(opinion.getOpinionId());
+		if (currentPosition != -1) {
 			final int index = opinionList.indexOf(opinion);
 			opinionList.set(index, opinion);
 			notifyItemChanged(index);
@@ -145,23 +127,55 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 	}
 
 	public void remove(Opinion opinion) {
-		if (opinionList.contains(opinion)) {
+		int currentPosition = getItemPosition(opinion.getOpinionId());
+		if (currentPosition != -1) {
 			final int index = opinionList.indexOf(opinion);
 			opinionList.remove(index);
 			notifyItemRemoved(index);
 		}
 	}
 
-	public void addLike(Like like) {
-		if (!listLike.contains(like)){
-			listLike.add(like);
+	public List<Opinion> getItems() {
+		return opinionList;
+	}
+
+	public void updateOpinionLike(String opinionId, String userId, boolean result) {
+		int currentPosition = getItemPosition(opinionId);
+		if (currentPosition != -1) {
+			Opinion opinion = opinionList.get(currentPosition);
+			if (result) {
+				opinion.getUserLikes().add(userId);
+			} else {
+				opinion.getUserLikes().remove(userId);
+			}
+
+			notifyItemChanged(currentPosition);
 		}
 	}
 
-	public void removeLike(Like like) {
-		if (listLike.contains(like)){
-			listLike.remove(like);
+	public void updateOpinionLikeCounter(String opinionId, String userId, boolean result) {
+		int currentPosition = getItemPosition(opinionId);
+		if (currentPosition != -1) {
+			Opinion opinion = opinionList.get(currentPosition);
+			if (result) {
+				opinion.getUserLikes().add(userId);
+				notifyItemChanged(currentPosition);
+			} else {
+				opinion.getUserLikes().remove(userId);
+				notifyItemChanged(currentPosition);
+			}
 		}
+	}
+
+	private int getItemPosition(String opinionId) {
+		int position = -1;
+		for (int i = 0; i < opinionList.size() && position == -1; i++) {
+			Opinion opinion = opinionList.get(i);
+			if (opinion.getOpinionId().equals(opinionId)) {
+				position = i;
+			}
+		}
+		return position;
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder {
@@ -191,7 +205,6 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 		@BindView(R.id.opinion_menu)
 		ImageView opinionMenu;
 
-		private boolean likeClicked;
 		private View view;
 
 		ViewHolder(View itemView) {

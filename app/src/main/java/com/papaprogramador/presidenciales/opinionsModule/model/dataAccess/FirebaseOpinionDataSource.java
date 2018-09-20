@@ -21,18 +21,16 @@ import io.reactivex.subscribers.ResourceSubscriber;
 
 import static io.reactivex.BackpressureStrategy.BUFFER;
 
-public class FlowableOpinion {
+public class FirebaseOpinionDataSource {
 
 	private static final String PATH_OPINIONS = "Opinions";
 
 	private FirebaseRealtimeDatabaseAPI mDatabaseAPI;
-	private FirebaseUserAPI firebaseUserAPI;
 	private CompositeDisposable disposable;
 
 
-	public FlowableOpinion() {
+	public FirebaseOpinionDataSource() {
 		mDatabaseAPI = FirebaseRealtimeDatabaseAPI.getInstance();
-		firebaseUserAPI = FirebaseUserAPI.getInstance();
 		disposable = new CompositeDisposable();
 	}
 
@@ -85,14 +83,6 @@ public class FlowableOpinion {
 						listener.onComplete();
 					}
 				}));
-
-	}
-
-	public void likeAdd(Opinion opinion) {
-
-	}
-
-	public void likeRemove(Opinion opinion) {
 
 	}
 

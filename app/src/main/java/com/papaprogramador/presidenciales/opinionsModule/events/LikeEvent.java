@@ -6,6 +6,8 @@ public class LikeEvent {
 
 	public static final int SUCCES_ADD = 1;
 	public static final int SUCCES_REMOVE = 2;
+	public static final int LIKE = 100;
+	public static final int DISLIKE = 200;
 	public static final int ERROR = 3;
 
 	private Like like;

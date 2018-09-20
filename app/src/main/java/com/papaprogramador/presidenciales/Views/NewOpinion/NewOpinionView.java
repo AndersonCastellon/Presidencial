@@ -149,7 +149,6 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 
 	private void getLoadNewOpinion() {
 		String opinionText = etOpinionText.getText().toString();
-
 		if (bitmap != null) {
 			getPresenter().loadOpinionWithImage(bitmap, opinionText);
 		} else {

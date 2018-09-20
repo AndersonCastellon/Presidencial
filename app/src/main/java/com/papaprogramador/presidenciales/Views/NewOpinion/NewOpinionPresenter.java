@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -191,11 +192,12 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 
 						String downloadUri = Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString();
 
-						String datePublication = TimeStamp.timeStamp(PATTERN);
-						long orderBy = Long.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
+						long dataTime = Long.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
 
-						Opinion opinion = new Opinion(userId, userName, urlPhotoProfile, datePublication, urlPoliticalFlag,
-								opinionText, downloadUri, 0, 0, 0, orderBy);
+						Opinion opinion = Opinion.Builder().content(opinionText)
+								.urlOpinionImage(downloadUri).dataTime(dataTime)
+								.userId(userId).userName(userName).urlPhotoProfile(urlPhotoProfile)
+								.urlPoliticalFlag(urlPoliticalFlag).build();
 
 						loadOpinion(opinion);
 					}
@@ -225,12 +227,12 @@ public class NewOpinionPresenter extends MvpBasePresenter<NewOpinionContract.Vie
 			}
 		});
 
-		String datePublication = TimeStamp.timeStamp(PATTERN);
-		long orderBy = Long.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
+		long dataTime = Long.valueOf(TimeStamp.timeStamp("DMyyhhmmss"));
 
-
-		Opinion opinion = new Opinion(userId, userName, urlPhotoProfile, datePublication, urlPoliticalFlag,
-				opinionText, null, 0, 0, 0, orderBy);
+		Opinion opinion = Opinion.Builder().content(opinionText)
+				.dataTime(dataTime)
+				.userId(userId).userName(userName).urlPhotoProfile(urlPhotoProfile)
+				.urlPoliticalFlag(urlPoliticalFlag).build();
 
 		loadOpinion(opinion);
 	}

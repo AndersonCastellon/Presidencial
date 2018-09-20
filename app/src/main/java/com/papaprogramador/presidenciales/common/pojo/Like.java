@@ -1,35 +1,47 @@
 package com.papaprogramador.presidenciales.common.pojo;
 
-import com.google.firebase.database.Exclude;
-
 public class Like {
 
-	@Exclude
 	private String opinionId;
-	private boolean clickLike;
+	private String userId;
 
-	public Like() {
+	private Like(Builder builder) {
+		opinionId = builder.opinionId;
+		userId = builder.userId;
 	}
 
-	public Like(String opinionId, boolean clickLike) {
-		this.opinionId = opinionId;
-		this.clickLike = clickLike;
-	}
-	@Exclude
 	public String getOpinionId() {
 		return opinionId;
 	}
-	@Exclude
-	public void setOpinionId(String opinionId) {
-		this.opinionId = opinionId;
+
+	public String getUserId() {
+		return userId;
 	}
 
-	public boolean isClickLike() {
-		return clickLike;
+	public static Builder Builder() {
+		return new Builder();
 	}
 
-	public void setClickLike(boolean clickLike) {
-		this.clickLike = clickLike;
+	public static class Builder {
+		private String opinionId;
+		private String userId;
+
+		public Builder() {
+		}
+
+		public Builder opinionId(String photoId) {
+			this.opinionId = photoId;
+			return this;
+		}
+
+		public Builder userId(String userId) {
+			this.userId = userId;
+			return this;
+		}
+
+		public Like build() {
+			return new Like(this);
+		}
 	}
 }
 

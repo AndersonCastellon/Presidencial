@@ -2,10 +2,10 @@ package com.papaprogramador.presidenciales.opinionsModule;
 
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
+import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.opinionsModule.events.LikeEvent;
 import com.papaprogramador.presidenciales.opinionsModule.events.OpinionEvent;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
-import com.papaprogramador.presidenciales.common.pojo.Like;
 
 public interface OpinionsContract {
 
@@ -15,10 +15,12 @@ public interface OpinionsContract {
 		void add(Opinion opinion);
 		void update(Opinion opinion);
 		void remove(Opinion opinion);
+		void updateOpinionLike(String opinionId, String userId, boolean result);
+		void updateOpinionLikeCounter(String opinionId, String userId, boolean result);
 		void onComplete();
 
-		void addLike(Like like);
-		void removeLike(Like like);
+		void requestAddLikeNotifiers();
+		void requestRemoveLikeNotifiers();
 
 		void removeFail();
 		void onShowError(int resMsg);
@@ -31,21 +33,24 @@ public interface OpinionsContract {
 		void onDestroy();
 
 		void getData(long lastOpinion);
+		void requestAddLikeNotifiers(String opinionId);
+		void requestRemoveLikeNotifiers(String opinionId);
+		void updateOpinionLike(LikeEvent event);
 
 		void onLikeClick(Opinion opinion);
-		void remove (Opinion opinion);
+		void removeOpinion(Opinion opinion);
 		void onDataOpinionListener(OpinionEvent event);
-		void onDataLikesListener(LikeEvent event);
 	}
 
 	interface Interactor {
 		void subscribeToOpinions(long lastOpinion);
 		void unsubscribeToOpinions();
-		void subscribeToLikes();
+
+		void requestAddLikeNotifiers(String opinionId);
+		void requestRemoveLikeNotifiers(String opinionId);
 		void unsubscribeToLikes();
 
 		void removeOpinion(Opinion opinion);
-		void likeAdd(Opinion opinion);
-		void likeRemove(Opinion opinion);
+		void onClickLike(Like like);
 	}
 }
