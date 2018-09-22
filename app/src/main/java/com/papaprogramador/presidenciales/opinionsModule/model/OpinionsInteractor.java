@@ -21,19 +21,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
 public class OpinionsInteractor implements OpinionsContract.Interactor {
 
 	private FirebaseOpinionDataSource firebaseOpinionDataSource;
 	private FirebaseLikesDataSource firebaseLikesDataSource;
 	private FirebaseUserAPI userAPI;
-	private List<String> userLikes;
-	private List<String> userComments;
-	private List<String> userShares;
 
 	public OpinionsInteractor() {
-		userLikes = new ArrayList<>();
-		userComments = new ArrayList<>();
-		userShares = new ArrayList<>();
 		userAPI = FirebaseUserAPI.getInstance();
 		firebaseOpinionDataSource = new FirebaseOpinionDataSource();
 		firebaseLikesDataSource = new FirebaseLikesDataSource();
@@ -43,19 +43,13 @@ public class OpinionsInteractor implements OpinionsContract.Interactor {
 	public void subscribeToOpinions(long lastOpinion) {
 		firebaseOpinionDataSource.subscribeToOpinions(lastOpinion, new OpinionsEventListener() {
 			@Override
-			public void onChildAdded(Opinion opinion) {
-				userLikes.clear();
-				getUserLikes(opinion);
-				Opinion feedItem = getFeedItem(opinion);
-				postEventOpinion(feedItem, OpinionEvent.SUCCES_ADD);
+			public void onChildAdded(final Opinion opinion) {
+				postEventOpinion(opinion, OpinionEvent.SUCCES_ADD);
 			}
 
 			@Override
 			public void onChildUpdated(Opinion opinion) {
-				userLikes.clear();
-				getUserLikes(opinion);
-				Opinion feedItem = getFeedItem(opinion);
-				postEventOpinion(feedItem, OpinionEvent.SUCCES_UPDATE);
+				postEventOpinion(opinion, OpinionEvent.SUCCES_UPDATE);
 			}
 
 			@Override
@@ -71,38 +65,6 @@ public class OpinionsInteractor implements OpinionsContract.Interactor {
 			@Override
 			public void onError(int resMsg) {
 				postEventOpinion(OpinionEvent.ERROR_SERVER, resMsg);
-			}
-		});
-	}
-
-	private Opinion getFeedItem(Opinion opinion) {
-		return Opinion.Builder()
-				.opinionId(opinion.getOpinionId())
-				.content(opinion.getContent())
-				.urlOpinionImage(opinion.getUrlOpinionImage())
-				.dataTime(opinion.getDataTime())
-				.userId(opinion.getUserId())
-				.userName(opinion.getUserName())
-				.urlPoliticalFlag(opinion.getUrlPoliticalFlag())
-				.urlPhotoProfile(opinion.getUrlPhotoProfile())
-				.userLikes(userLikes)
-				.userComments(userComments)
-				.userShares(userShares)
-				.build();
-	}
-
-	private void getUserLikes(Opinion opinion) {
-		firebaseLikesDataSource.getLikes(opinion.getOpinionId(), new LikeDataSource.ListLikesListener() {
-			@Override
-			public void onSuccess(List<Like> likes) {
-				for (Like like : likes) {
-					userLikes.add(like.getUserId());
-				}
-			}
-
-			@Override
-			public void onError(Exception e) {
-
 			}
 		});
 	}

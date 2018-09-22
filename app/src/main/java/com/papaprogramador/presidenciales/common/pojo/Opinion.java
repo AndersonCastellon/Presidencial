@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public class Opinion implements Comparable<Opinion> {
 
 
 	public Opinion() {
+		userLikes = new ArrayList<>();
 	}
 
 	public Opinion(Builder builder) {
