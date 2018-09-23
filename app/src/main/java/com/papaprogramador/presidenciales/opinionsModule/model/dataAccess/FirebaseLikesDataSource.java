@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.papaprogramador.presidenciales.common.ChangeEventListener;
+import com.papaprogramador.presidenciales.common.FirebaseRxDatabase;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseRealtimeDatabaseAPI;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Like;
@@ -24,6 +25,8 @@ import durdinapps.rxfirebase2.RxFirebaseChildEvent;
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.internal.subscribers.SinglePostCompleteSubscriber;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.ResourceSubscriber;
 
@@ -89,12 +92,12 @@ public class FirebaseLikesDataSource implements LikeDataSource {
 		final DatabaseReference likeRef = getReference().child(PATH_OPINIONS)
 				.child(like.getOpinionId()).child(PATH_LIKES);
 
-		disposable.add(RxFirebaseDatabase.observeValueEvent(likeRef)
+		disposable.add(FirebaseRxDatabase.observeValueEvent(likeRef, BUFFER)
 				.subscribeOn(Schedulers.newThread())
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribeWith(new ResourceSubscriber<DataSnapshot>() {
+				.subscribe(new Consumer<DataSnapshot>() {
 					@Override
-					public void onNext(DataSnapshot dataSnapshot) {
+					public void accept(DataSnapshot dataSnapshot) throws Exception {
 						if (dataSnapshot.hasChild(like.getUserId())) {
 							likeRef.child(like.getUserId()).removeValue()
 									.addOnFailureListener(new OnFailureListener() {
@@ -122,16 +125,6 @@ public class FirebaseLikesDataSource implements LikeDataSource {
 								}
 							});
 						}
-					}
-
-					@Override
-					public void onError(Throwable t) {
-						listener.onError((Exception) t);
-					}
-
-					@Override
-					public void onComplete() {
-
 					}
 				}));
 	}

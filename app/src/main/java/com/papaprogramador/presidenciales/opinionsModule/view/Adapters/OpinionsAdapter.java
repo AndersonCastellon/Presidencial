@@ -148,7 +148,6 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 			} else {
 				opinion.getUserLikes().remove(userId);
 			}
-
 			notifyItemChanged(currentPosition);
 		}
 	}
