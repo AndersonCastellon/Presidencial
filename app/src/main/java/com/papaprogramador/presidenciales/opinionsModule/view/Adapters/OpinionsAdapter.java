@@ -130,7 +130,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 		int currentPosition = getItemPosition(opinion.getOpinionId());
 		if (currentPosition != -1) {
 			final int index = opinionList.indexOf(opinion);
-			opinionList.set(index, opinion);
+			opinionList.set(currentPosition, opinion);
 			notifyItemChanged(index);
 		}
 	}
@@ -153,9 +153,13 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 		if (currentPosition != -1) {
 			Opinion opinion = opinionList.get(currentPosition);
 			if (result) {
-				opinion.getUserLikes().add(userId);
+				if (!opinion.getUserLikes().contains(userId)) {
+					opinion.addUserLikeId(userId);
+				}
 			} else {
-				opinion.getUserLikes().remove(userId);
+				if (opinion.getUserLikes().contains(userId)) {
+					opinion.removeUserLikeId(userId);
+				}
 			}
 			notifyItemChanged(currentPosition, result);
 		}
@@ -166,11 +170,15 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 		if (currentPosition != -1) {
 			Opinion opinion = opinionList.get(currentPosition);
 			if (result) {
-				opinion.getUserLikes().add(userId);
-				notifyItemChanged(currentPosition);
+				if (!opinion.getUserLikes().contains(userId)) {
+					opinion.addUserLikeId(userId);
+					notifyItemChanged(currentPosition);
+				}
 			} else {
-				opinion.getUserLikes().remove(userId);
-				notifyItemChanged(currentPosition, result);
+				if (opinion.getUserLikes().contains(userId)) {
+					opinion.removeUserLikeId(userId);
+					notifyItemChanged(currentPosition, result);
+				}
 			}
 		}
 	}

@@ -94,6 +94,14 @@ public class Opinion implements Comparable<Opinion> {
 		return userShares;
 	}
 
+	public void addUserLikeId(String userLikeId) {
+		this.userLikes.add(userLikeId);
+	}
+
+	public void removeUserLikeId(String userLikeId) {
+		this.userLikes.remove(userLikeId);
+	}
+
 	public static Builder Builder() {
 		return new Builder();
 	}

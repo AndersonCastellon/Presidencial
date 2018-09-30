@@ -148,7 +148,7 @@ public class FirebaseOpinionDataSource {
 			opinion.setOpinionId(dataSnapshot.getKey());
 			if (likes != null) {
 				for (Like like : likes) {
-					opinion.getUserLikes().add(like.getUserId());
+					opinion.addUserLikeId(like.getUserId());
 				}
 			}
 		}
