@@ -145,5 +145,10 @@
     <string name="opinion_dialog_remove_ok">Eliminar</string>
     <string name="common_dialog_cancel">Cancelar</string>
 
+    <plurals name="likes_count">
+        <item quantity="one">%d like</item>
+        <item quantity="other">%d likes</item>
+    </plurals>
+
 
 </resources>

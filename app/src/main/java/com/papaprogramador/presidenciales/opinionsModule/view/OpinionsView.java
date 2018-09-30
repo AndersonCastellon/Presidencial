@@ -103,7 +103,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 
 				if (!mIsLoading && totalItemCount <= (lastVisibleItemPosition + 1)) {
 					requestRemoveLikeNotifiers();
-					getPresenter().getData(opinionsAdapter.getLastItemId());
+					getPresenter().getData(opinionsAdapter.getLastItemId(), opinionsAdapter.getItems());
 					requestAddLikeNotifiers();
 					mIsLoading = true;
 				}
@@ -146,7 +146,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	@Override
 	public void onRefresh() {
 		requestRemoveLikeNotifiers();
-		getPresenter().getData(opinionsAdapter.getLastItemId());
+		getPresenter().getData(opinionsAdapter.getLastItemId(), opinionsAdapter.getItems());
 		requestAddLikeNotifiers();
 	}
 
@@ -268,7 +268,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	@Override
 	public void onResume() {
 		super.onResume();
-		getPresenter().onResume(opinionsAdapter.getLastItemId());
+		getPresenter().onResume(opinionsAdapter.getLastItemId(), opinionsAdapter.getItems());
 		requestAddLikeNotifiers();
 	}
 

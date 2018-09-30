@@ -8,8 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -19,8 +21,11 @@ import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -66,15 +71,16 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 		}
 
 		holder.userName.setText(opinion.getUserName());
-		holder.datePublication.setText(String.valueOf(opinion.getDataTime()));
+		Date timestamp = new Date(opinion.getDataTime());
+		holder.datePublication.setText(timestamp.toString());
 		holder.opinionText.setText(opinion.getContent());
 
 		RequestOptions options = new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop();
 
 		if (opinion.getUrlOpinionImage() != null) {
 			holder.imageOpinion.setVisibility(View.VISIBLE);
-			holder.urlOpinionImage = opinion.getUrlOpinionImage();
 			Glide.with(context).load(holder.urlOpinionImage).apply(options).into(holder.imageOpinion);
+			holder.urlOpinionImage = opinion.getUrlOpinionImage();
 		} else {
 			holder.imageOpinion.setVisibility(View.GONE);
 		}
@@ -86,7 +92,10 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 
 		List<String> userLikes = opinion.getUserLikes();
 		int likesCount = userLikes != null ? userLikes.size() : 0;
-		holder.btnLikeOpinion.setText(String.valueOf(likesCount));
+		holder.btnLikeOpinion.setImageResource(userLikes != null && userLikes.contains(mUserAPI.getUserId())
+				? R.drawable.ic_like_clicked : R.drawable.ic_like);
+		holder.likeCounter.setCurrentText(holder.itemView.getResources().getQuantityString(R.plurals.likes_count,
+				likesCount, likesCount));
 	}
 
 	public long getLastItemId() {
@@ -148,7 +157,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 			} else {
 				opinion.getUserLikes().remove(userId);
 			}
-			notifyItemChanged(currentPosition);
+			notifyItemChanged(currentPosition, result);
 		}
 	}
 
@@ -161,7 +170,7 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 				notifyItemChanged(currentPosition);
 			} else {
 				opinion.getUserLikes().remove(userId);
-				notifyItemChanged(currentPosition);
+				notifyItemChanged(currentPosition, result);
 			}
 		}
 	}
@@ -196,13 +205,15 @@ public class OpinionsAdapter extends RecyclerView.Adapter<OpinionsAdapter.ViewHo
 		@BindView(R.id.image_opinion)
 		ImageView imageOpinion;
 		@BindView(R.id.btn_like_opinion)
-		Button btnLikeOpinion;
+		ImageButton btnLikeOpinion;
 		@BindView(R.id.btn_comment_opinion)
-		Button btnCommentOpinion;
+		ImageButton btnCommentOpinion;
 		@BindView(R.id.btn_share_opinion)
-		Button btnShareOpinion;
+		ImageButton btnShareOpinion;
 		@BindView(R.id.opinion_menu)
 		ImageView opinionMenu;
+		@BindView(R.id.like_counter)
+		TextSwitcher likeCounter;
 
 		private View view;
 

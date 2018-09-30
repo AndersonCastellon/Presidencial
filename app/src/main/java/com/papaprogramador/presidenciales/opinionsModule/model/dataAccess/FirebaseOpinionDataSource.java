@@ -13,6 +13,7 @@ import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.opinionsModule.events.OpinionEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import durdinapps.rxfirebase2.RxFirebaseChildEvent;
@@ -44,18 +45,18 @@ public class FirebaseOpinionDataSource {
 	}
 
 
-	public void subscribeToOpinions(long lastOpinion, final OpinionsEventListener listener) {
+	public void subscribeToOpinions(long lastOpinion, List<Opinion> opinionList, final OpinionsEventListener listener) {
 
 		final Query query;
 		if (lastOpinion == 0) {
-			query = getOpinionsReference()
-					.orderByChild(Opinion.ORDER_BY)
-					.limitToLast(Constans.OPINIONS_PER_PAGE);
+			query = getOpinionsReference().orderByChild(Opinion.ORDER_BY).limitToLast(Constans.OPINIONS_PER_PAGE);
 		} else {
-			query = getOpinionsReference()
-					.orderByChild(Opinion.ORDER_BY)
-					.endAt(lastOpinion)
-					.limitToLast(Constans.OPINIONS_PER_PAGE);
+			query = getOpinionsReference().orderByChild(Opinion.ORDER_BY).endAt(lastOpinion).limitToLast(Constans.OPINIONS_PER_PAGE);
+		}
+
+		final List<String> currentOpinion = new ArrayList<>();
+		for (Opinion opinion : opinionList) {
+			currentOpinion.add(opinion.getOpinionId());
 		}
 
 		disposable.add(RxFirebaseDatabase.observeChildEvent(query, BUFFER)
@@ -64,38 +65,41 @@ public class FirebaseOpinionDataSource {
 				.subscribeWith(new ResourceSubscriber<RxFirebaseChildEvent<DataSnapshot>>() {
 					@Override
 					public void onNext(final RxFirebaseChildEvent<DataSnapshot> dataSnapshotRxFirebaseChildEvent) {
-						switch (dataSnapshotRxFirebaseChildEvent.getEventType()) {
-							case ADDED:
-								firebaseLikesDataSource.getLikes(dataSnapshotRxFirebaseChildEvent.getValue().getKey(),
-										new LikeDataSource.ListLikesListener() {
-											@Override
-											public void onSuccess(List<Like> likes) {
-												listener.onChildAdded(getOpinion(dataSnapshotRxFirebaseChildEvent.getValue(), likes));
-											}
 
-											@Override
-											public void onError(Exception e) {
+						if (!currentOpinion.contains(dataSnapshotRxFirebaseChildEvent.getValue().getKey())) {
+							switch (dataSnapshotRxFirebaseChildEvent.getEventType()) {
+								case ADDED:
+									firebaseLikesDataSource.getLikes(dataSnapshotRxFirebaseChildEvent.getValue().getKey(),
+											new LikeDataSource.ListLikesListener() {
+												@Override
+												public void onSuccess(List<Like> likes) {
+													listener.onChildAdded(getOpinion(dataSnapshotRxFirebaseChildEvent.getValue(), likes));
+												}
 
-											}
-										});
-								break;
-							case CHANGED:
-								firebaseLikesDataSource.getLikes(dataSnapshotRxFirebaseChildEvent.getValue().getKey(),
-										new LikeDataSource.ListLikesListener() {
-											@Override
-											public void onSuccess(List<Like> likes) {
-												listener.onChildUpdated(getOpinion(dataSnapshotRxFirebaseChildEvent.getValue(), likes));
-											}
+												@Override
+												public void onError(Exception e) {
 
-											@Override
-											public void onError(Exception e) {
+												}
+											});
+									break;
+								case CHANGED:
+									firebaseLikesDataSource.getLikes(dataSnapshotRxFirebaseChildEvent.getValue().getKey(),
+											new LikeDataSource.ListLikesListener() {
+												@Override
+												public void onSuccess(List<Like> likes) {
+													listener.onChildUpdated(getOpinion(dataSnapshotRxFirebaseChildEvent.getValue(), likes));
+												}
 
-											}
-										});
-								break;
-							case REMOVED:
-								listener.onChildRemoved(getOpinion(dataSnapshotRxFirebaseChildEvent.getValue()));
-								break;
+												@Override
+												public void onError(Exception e) {
+
+												}
+											});
+									break;
+								case REMOVED:
+									listener.onChildRemoved(getOpinion(dataSnapshotRxFirebaseChildEvent.getValue()));
+									break;
+							}
 						}
 					}
 
@@ -133,7 +137,7 @@ public class FirebaseOpinionDataSource {
 				});
 	}
 
-	private Opinion getOpinion(DataSnapshot dataSnapshot){
+	private Opinion getOpinion(DataSnapshot dataSnapshot) {
 		return getOpinion(dataSnapshot, null);
 	}
 

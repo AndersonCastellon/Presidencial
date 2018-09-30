@@ -40,8 +40,8 @@ public class OpinionsInteractor implements OpinionsContract.Interactor {
 	}
 
 	@Override
-	public void subscribeToOpinions(long lastOpinion) {
-		firebaseOpinionDataSource.subscribeToOpinions(lastOpinion, new OpinionsEventListener() {
+	public void subscribeToOpinions(long lastOpinion, List<Opinion> opinionList) {
+		firebaseOpinionDataSource.subscribeToOpinions(lastOpinion,opinionList, new OpinionsEventListener() {
 			@Override
 			public void onChildAdded(final Opinion opinion) {
 				postEventOpinion(opinion, OpinionEvent.SUCCES_ADD);

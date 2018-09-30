@@ -14,12 +14,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -52,7 +53,7 @@ public class MainView extends MvpViewStateActivity<MainViewContrat.View, MainVie
 	@BindView(R.id.navview)
 	NavigationView navigationView;
 	@BindView(R.id.layout_view_pager)
-	LinearLayout layoutViewPager;
+	CoordinatorLayout layoutViewPager;
 	@BindView(R.id.options_menu)
 	FrameLayout optionsMenu;
 

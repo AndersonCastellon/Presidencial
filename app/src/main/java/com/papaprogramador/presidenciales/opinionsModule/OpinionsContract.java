@@ -7,6 +7,8 @@ import com.papaprogramador.presidenciales.opinionsModule.events.LikeEvent;
 import com.papaprogramador.presidenciales.opinionsModule.events.OpinionEvent;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 
+import java.util.List;
+
 public interface OpinionsContract {
 
 	interface View extends MvpView {
@@ -29,10 +31,10 @@ public interface OpinionsContract {
 	interface Presenter extends MvpPresenter<OpinionsContract.View> {
 		void onCreate();
 		void onPause();
-		void onResume(long lastOpinion);
+		void onResume(long lastOpinion, List<Opinion> opinionList);
 		void onDestroy();
 
-		void getData(long lastOpinion);
+		void getData(long lastOpinion, List<Opinion> opinionList);
 		void requestAddLikeNotifiers(String opinionId);
 		void requestRemoveLikeNotifiers(String opinionId);
 		void updateOpinionLike(LikeEvent event);
@@ -43,7 +45,7 @@ public interface OpinionsContract {
 	}
 
 	interface Interactor {
-		void subscribeToOpinions(long lastOpinion);
+		void subscribeToOpinions(long lastOpinion, List<Opinion> opinionList);
 		void unsubscribeToOpinions();
 
 		void requestAddLikeNotifiers(String opinionId);

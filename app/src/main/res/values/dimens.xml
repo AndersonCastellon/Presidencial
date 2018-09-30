@@ -22,4 +22,7 @@
     <dimen name="text_margin_very_small">4dp</dimen>
     <dimen name="imageview_height">250dp</dimen>
     <dimen name="textSizeButton">18sp</dimen>
+
+
+    <dimen name="size_button_opinion">48dp</dimen>
 </resources>

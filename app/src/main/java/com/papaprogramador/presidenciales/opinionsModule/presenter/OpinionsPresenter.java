@@ -14,6 +14,8 @@ import com.papaprogramador.presidenciales.opinionsModule.model.OpinionsInteracto
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.List;
+
 public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 		implements OpinionsContract.Presenter {
 
@@ -37,8 +39,8 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 	}
 
 	@Override
-	public void onResume(final long lastOpinion) {
-		opinionsInteractor.subscribeToOpinions(lastOpinion);
+	public void onResume(final long lastOpinion, List<Opinion> opinionList) {
+		opinionsInteractor.subscribeToOpinions(lastOpinion, opinionList);
 
 	}
 
@@ -48,11 +50,11 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 	}
 
 	@Override
-	public void getData(final long lastOpinion) {
+	public void getData(final long lastOpinion, final List<Opinion> opinionList) {
 		ifViewAttached(new ViewAction<OpinionsContract.View>() {
 			@Override
 			public void run(@NonNull OpinionsContract.View view) {
-				opinionsInteractor.subscribeToOpinions(lastOpinion);
+				opinionsInteractor.subscribeToOpinions(lastOpinion, opinionList);
 			}
 		});
 	}
