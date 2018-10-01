@@ -121,15 +121,21 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 				view.showProgress(false);
 				switch (event.getTypeEvent()) {
 					case OpinionEvent.SUCCES_ADD:
+						view.requestRemoveLikeNotifiers();
 						view.add(event.getOpinion());
+						view.requestRemoveLikeNotifiers();
 						view.onComplete();
 						break;
 					case OpinionEvent.SUCCES_UPDATE:
+						view.requestRemoveLikeNotifiers();
 						view.update(event.getOpinion());
+						view.requestAddLikeNotifiers();
 						view.onComplete();
 						break;
 					case OpinionEvent.SUCCES_REMOVE:
+						view.requestRemoveLikeNotifiers();
 						view.remove(event.getOpinion());
+						view.requestAddLikeNotifiers();
 						view.onComplete();
 						break;
 					case OpinionEvent.ERROR_SERVER:
