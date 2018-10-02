@@ -25,4 +25,5 @@
 
 
     <dimen name="size_button_opinion">48dp</dimen>
+    <dimen name="text_size_edittext">14sp</dimen>
 </resources>

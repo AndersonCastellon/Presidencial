@@ -144,6 +144,7 @@
     <string name="opinion_dialog_remove_message">Esta acción eliminará de forma permanente esta opinión</string>
     <string name="opinion_dialog_remove_ok">Eliminar</string>
     <string name="common_dialog_cancel">Cancelar</string>
+    <string name="no_comments">Aun no hay comentarios aquí... Se tú el primero.</string>
 
     <plurals name="likes_count">
         <item quantity="one">%d like</item>

@@ -16,4 +16,5 @@
     <color name="google_green">#34A853</color>
     <color name="google_yellow">#FBBC05</color>
     <color name="google_red">#EA4335</color>
+    <color name="background_containter_loading_view">#a0000000</color>
 </resources>
