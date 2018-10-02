@@ -114,6 +114,7 @@
                 style="?android:attr/buttonBarStyle"
                 android:layout_width="@dimen/size_button_opinion"
                 android:layout_height="@dimen/size_button_opinion"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_like" />
 
             <ImageButton
@@ -121,6 +122,9 @@
                 style="?android:attr/buttonBarStyle"
                 android:layout_width="@dimen/size_button_opinion"
                 android:layout_height="@dimen/size_button_opinion"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 android:src="@drawable/ic_post_comments" />
 
             <ImageButton
@@ -128,21 +132,24 @@
                 style="?android:attr/buttonBarStyle"
                 android:layout_width="@dimen/size_button_opinion"
                 android:layout_height="@dimen/size_button_opinion"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 android:src="@drawable/ic_share_app" />
 
             <TextSwitcher
                 android:id="@+id/like_counter"
-                android:layout_gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
 
                 <TextView
-                    android:layout_gravity="end"
-                    android:paddingEnd="@dimen/nav_header_vertical_spacing"
-                    android:textColor="@color/google_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="150 likes"/>
+                    android:layout_gravity="end"
+                    android:paddingEnd="@dimen/nav_header_vertical_spacing"
+                    android:text="150 likes"
+                    android:textColor="@color/google_blue" />
 
             </TextSwitcher>
 

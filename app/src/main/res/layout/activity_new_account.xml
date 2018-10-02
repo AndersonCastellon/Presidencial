@@ -135,7 +135,4 @@
             android:visibility="gone" />
 
     </FrameLayout>
-
-
-
 </ScrollView>

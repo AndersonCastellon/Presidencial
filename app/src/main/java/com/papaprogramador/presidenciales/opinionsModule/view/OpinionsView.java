@@ -19,7 +19,9 @@ import android.widget.ProgressBar;
 
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Views.NewOpinion.NewOpinionView;
+import com.papaprogramador.presidenciales.commentsModule.view.CommentsViewClass;
 import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.opinionsModule.OpinionsContract;
@@ -233,6 +235,9 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 
 	@Override
 	public void onCommentClick(Opinion opinion) {
+		Intent intent = new Intent(getActivity(), CommentsViewClass.class);
+		intent.putExtra(Constans.EXTRA_OPINION, opinion.getOpinionId());
+		startActivity(intent);
 	}
 
 	@Override
