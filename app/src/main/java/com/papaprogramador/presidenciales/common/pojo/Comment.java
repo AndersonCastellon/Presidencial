@@ -1,6 +1,6 @@
 package com.papaprogramador.presidenciales.common.pojo;
 
-public class Comments {
+public class Comment {
 	private String commentId;
 	private String opinionId;
 	private String userId;
@@ -9,10 +9,10 @@ public class Comments {
 	private String userPoloticalFlagUrl;
 	private String content;
 
-	public Comments() {
+	public Comment() {
 	}
 
-	Comments(Builder builder) {
+	Comment(Builder builder) {
 		commentId = builder.commentId;
 		opinionId = builder.opinionId;
 		userId = builder.userId;
@@ -101,8 +101,8 @@ public class Comments {
 			return this;
 		}
 
-		public Comments build() {
-			return new Comments(this);
+		public Comment build() {
+			return new Comment(this);
 		}
 	}
 }

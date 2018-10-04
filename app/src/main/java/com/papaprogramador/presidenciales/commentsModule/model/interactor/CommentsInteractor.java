@@ -1,4 +1,6 @@
 package com.papaprogramador.presidenciales.commentsModule.model.interactor;
 
-public interface CommentsInteractor {
+import com.papaprogramador.presidenciales.commentsModule.model.dataAccess.CommentsDataSource;
+
+public interface CommentsInteractor extends CommentsDataSource {
 }
