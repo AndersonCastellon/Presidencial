@@ -8,7 +8,6 @@ import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.common.BasicErrorEventCallback;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseRealtimeDatabaseAPI;
-import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.opinionsModule.events.OpinionEvent;
@@ -41,7 +40,7 @@ public class FirebaseOpinionDataSource {
 	}
 
 	private DatabaseReference getOpinionsReference() {
-		return mDatabaseAPI.getmReference().child(PATH_OPINIONS);
+		return mDatabaseAPI.getReference().child(PATH_OPINIONS);
 	}
 
 

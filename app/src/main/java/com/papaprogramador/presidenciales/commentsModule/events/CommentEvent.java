@@ -5,8 +5,10 @@ import com.papaprogramador.presidenciales.common.pojo.Comment;
 import java.util.List;
 
 public class CommentEvent {
+	public static final int INITIAL_DATA = 0;
 	public static final int SUCCES_ADD = 1;
-	public static final int ERROR = 2;
+	public static final int NO_DATA = 2;
+	public static final int ERROR = 3;
 
 	private List<Comment> comments;
 	private Comment comment;
@@ -36,13 +38,17 @@ public class CommentEvent {
 		return resMsg;
 	}
 
-	private static class Builder {
+	public static Builder Builder() {
+		return new Builder();
+	}
+
+	public static class Builder {
 		private List<Comment> comments;
 		private Comment comment;
 		private int eventType;
 		private int resMsg;
 
-		public Builder() {
+		private Builder() {
 		}
 
 		public Builder comments(List<Comment> comments) {
@@ -55,7 +61,7 @@ public class CommentEvent {
 			return this;
 		}
 
-		public Builder evenType(int eventType) {
+		public Builder eventType(int eventType) {
 			this.eventType = eventType;
 			return this;
 		}

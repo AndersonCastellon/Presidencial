@@ -13,7 +13,6 @@ import com.google.firebase.database.ServerValue;
 import com.papaprogramador.presidenciales.common.ChangeEventListener;
 import com.papaprogramador.presidenciales.common.FirebaseRxDatabase;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseRealtimeDatabaseAPI;
-import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Like;
 
 import java.util.HashMap;
@@ -21,12 +20,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import durdinapps.rxfirebase2.RxFirebaseChildEvent;
 import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.internal.subscribers.SinglePostCompleteSubscriber;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.ResourceSubscriber;
 
@@ -48,7 +45,7 @@ public class FirebaseLikesDataSource implements LikeDataSource {
 	}
 
 	private DatabaseReference getReference() {
-		return mDatabaseAPI.getmReference();
+		return mDatabaseAPI.getReference();
 	}
 
 	@Override

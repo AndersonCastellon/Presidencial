@@ -1,6 +1,9 @@
 package com.papaprogramador.presidenciales.common.pojo;
 
+import com.google.firebase.database.Exclude;
+
 public class Comment {
+	@Exclude
 	private String commentId;
 	private String opinionId;
 	private String userId;
@@ -50,7 +53,7 @@ public class Comment {
 		return content;
 	}
 
-	public static Builder builder() {
+	public static Builder Builder() {
 		return new Builder();
 	}
 
@@ -62,9 +65,6 @@ public class Comment {
 		private String userPhotoUrl;
 		private String userPoloticalFlagUrl;
 		private String content;
-
-		public Builder() {
-		}
 
 		public Builder commentId(String commentId) {
 			this.commentId = commentId;

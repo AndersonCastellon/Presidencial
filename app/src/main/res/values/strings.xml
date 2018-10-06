@@ -145,6 +145,7 @@
     <string name="opinion_dialog_remove_ok">Eliminar</string>
     <string name="common_dialog_cancel">Cancelar</string>
     <string name="no_comments">Aun no hay comentarios aquí... Se tú el primero.</string>
+    <string name="error_while_publish_comment">Error al publicar tu comentario</string>
 
     <plurals name="likes_count">
         <item quantity="one">%d like</item>

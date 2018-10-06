@@ -21,7 +21,7 @@ public class FirebaseRealtimeDatabaseAPI {
 
 	//References
 
-	public DatabaseReference getmReference(){
+	public DatabaseReference getReference(){
 		return mReference;
 	}
 }
