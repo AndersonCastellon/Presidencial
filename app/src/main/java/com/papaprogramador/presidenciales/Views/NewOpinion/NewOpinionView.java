@@ -158,7 +158,6 @@ public class NewOpinionView extends MvpActivity<NewOpinionContract.View, NewOpin
 
 	@Override
 	public void setToolbar() {
-
 		setSupportActionBar(toolbar);
 		if (toolbar != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);

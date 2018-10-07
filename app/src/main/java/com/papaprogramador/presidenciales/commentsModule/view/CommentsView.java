@@ -9,6 +9,7 @@ public interface CommentsView extends MvpView {
 	void showProgress();
 	void hideProgress();
 
+	void setupComments();
 	void addAllComments(List<Comment> comments);
 	void addComment(Comment comment);
 	void addCommentsNotifier();

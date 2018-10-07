@@ -38,6 +38,11 @@
                 android:paddingEnd="@dimen/nav_header_vertical_spacing"
                 android:text="Anderson Castellon" />
 
+            <ImageView
+                android:id="@+id/flag_political"
+                android:layout_width="45dp"
+                android:layout_height="25dp" />
+
             <ImageButton
                 android:id="@+id/image_menu"
                 android:layout_width="0dp"
@@ -60,8 +65,6 @@
                 android:id="@+id/comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Este es un texto de prueba, el cual será borrado una vez
-esté aprobado este layout para su uso en la app final"
                 android:textSize="@dimen/text_size_edittext"
                 android:textStyle="italic" />
 

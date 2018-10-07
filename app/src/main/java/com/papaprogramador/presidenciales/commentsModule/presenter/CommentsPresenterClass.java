@@ -7,6 +7,7 @@ import com.papaprogramador.presidenciales.commentsModule.events.CommentEvent;
 import com.papaprogramador.presidenciales.commentsModule.model.interactor.CommentsInteractor;
 import com.papaprogramador.presidenciales.commentsModule.model.interactor.CommentsInteractorClass;
 import com.papaprogramador.presidenciales.commentsModule.view.CommentsView;
+import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Comment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -16,8 +17,10 @@ public class CommentsPresenterClass extends MvpBasePresenter<CommentsView>
 		implements CommentsPresenter {
 
 	private CommentsInteractor interactor;
+	private FirebaseUserAPI userAPI;
 
 	public CommentsPresenterClass() {
+		userAPI = FirebaseUserAPI.getInstance();
 		interactor = new CommentsInteractorClass();
 	}
 
@@ -37,8 +40,15 @@ public class CommentsPresenterClass extends MvpBasePresenter<CommentsView>
 	}
 
 	@Override
-	public void publishComment(Comment commentPublication) {
-		interactor.publishComment(commentPublication);
+	public void publishComment(String opinionId, String commentText) {
+		interactor.publishComment(Comment.Builder()
+		.opinionId(opinionId)
+		.userId(userAPI.getUserId())
+		.userName(userAPI.getUserName())
+		.userPhotoUrl(userAPI.getPhotoProfile())
+		.userPoliticlaFlagUrl(userAPI.getPoliticalFlag())
+		.content(commentText)
+		.build());
 	}
 
 	@Override
@@ -60,6 +70,7 @@ public class CommentsPresenterClass extends MvpBasePresenter<CommentsView>
 				public void run(@NonNull CommentsView view) {
 					switch (event.getEventType()) {
 						case CommentEvent.INITIAL_DATA:
+							view.showProgress();
 							view.addAllComments(event.getComments());
 							break;
 						case CommentEvent.SUCCES_ADD:
@@ -72,6 +83,7 @@ public class CommentsPresenterClass extends MvpBasePresenter<CommentsView>
 							view.showError(event.getResMsg());
 							break;
 					}
+					view.hideProgress();
 				}
 			});
 		}

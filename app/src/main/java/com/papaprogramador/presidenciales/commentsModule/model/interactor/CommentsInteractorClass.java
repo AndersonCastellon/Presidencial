@@ -21,7 +21,9 @@ public class CommentsInteractorClass implements CommentsInteractor {
 
 	private FirebaseCommentsDataSource commentsDataSource;
 	private Observable<List<Comment>> getCommentsObservable;
+	private Observable<Comment> addCommentsNotifier;
 	private Single<Boolean> publishComment;
+	private Single<Boolean> removeCommentsNotifier;
 
 	public CommentsInteractorClass() {
 		commentsDataSource = new FirebaseCommentsDataSource();
@@ -82,17 +84,65 @@ public class CommentsInteractorClass implements CommentsInteractor {
 
 	@Override
 	public void addCommentNotifier(String opinionId) {
+		addCommentsNotifier = commentsDataSource.addCommentNotifier(opinionId)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread());
 
+		addCommentsNotifier.subscribe(new Observer<Comment>() {
+			@Override
+			public void onSubscribe(Disposable d) {
+
+			}
+
+			@Override
+			public void onNext(Comment comment) {
+				postCommentEvent(CommentEvent.SUCCES_ADD, comment);
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				postCommentEvent(CommentEvent.ERROR, R.string.error_while_get_new_comments);
+			}
+
+			@Override
+			public void onComplete() {
+
+			}
+		});
 	}
 
 	@Override
 	public void removeCommentNotifier(String opinionId) {
+		removeCommentsNotifier = commentsDataSource.removeCommentNotifier(opinionId)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread());
 
+		removeCommentsNotifier.subscribe(new SingleObserver<Boolean>() {
+			@Override
+			public void onSubscribe(Disposable d) {
+
+			}
+
+			@Override
+			public void onSuccess(Boolean aBoolean) {
+				if (!aBoolean) {
+					postCommentEvent(CommentEvent.ERROR, R.string.error_while_remove_listener_comments);
+				}
+			}
+
+			@Override
+			public void onError(Throwable e) {
+				postCommentEvent(CommentEvent.ERROR, R.string.error_while_remove_listener_comments);
+			}
+		});
 	}
 
 	@Override
 	public void onDestroy() {
+	}
 
+	private void postCommentEvent(int eventType, Comment comment) {
+		postCommentEvent(eventType, null, comment, 0);
 	}
 
 	private void postCommentEvent(int eventType, List<Comment> comments) {

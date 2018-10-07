@@ -146,6 +146,9 @@
     <string name="common_dialog_cancel">Cancelar</string>
     <string name="no_comments">Aun no hay comentarios aquí... Se tú el primero.</string>
     <string name="error_while_publish_comment">Error al publicar tu comentario</string>
+    <string name="error_while_get_new_comments">Error al cargar nuevos comentarios</string>
+    <string name="error_while_remove_listener_comments">Error al eliminar la subscripción a los comentarios</string>
+    <string name="comments_title">Comentarios</string>
 
     <plurals name="likes_count">
         <item quantity="one">%d like</item>
