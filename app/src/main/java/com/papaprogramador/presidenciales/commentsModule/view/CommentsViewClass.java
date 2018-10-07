@@ -65,7 +65,6 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	private void setupToolbar() {
 		setSupportActionBar(toolbar);
 		if (toolbar != null) {
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			getSupportActionBar().setDisplayShowHomeEnabled(true);
 			toolbar.setTitle(R.string.comments_title);
 		}
@@ -74,8 +73,11 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	@OnClick(R.id.btn_send_comment)
 	public void onViewClicked() {
 		if (!etComment.getText().toString().isEmpty()) {
+			showProgress();
 			getPresenter().publishComment(opinionId,etComment.getText().toString());
 		}
+
+		etComment.setText("");
 	}
 
 	@Override
@@ -148,19 +150,20 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 
 	@Override
 	protected void onPause() {
-		super.onPause();
 		removeCommentsNotifier();
+		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
-		super.onResume();
 		addCommentsNotifier();
+		super.onResume();
 	}
 
 	@Override
 	protected void onDestroy() {
-		super.onDestroy();
+		removeCommentsNotifier();
 		getPresenter().onDestroy();
+		super.onDestroy();
 	}
 }

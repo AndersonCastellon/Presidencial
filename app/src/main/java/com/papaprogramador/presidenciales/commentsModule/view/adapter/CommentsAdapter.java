@@ -89,7 +89,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 	}
 
 	public void addComment(Comment comment) {
-		if (getItemPosition(comment) == -1) {
+		if (!comments.contains(comment)) {
 			comments.add(comment);
 			notifyItemInserted(comments.size());
 		}

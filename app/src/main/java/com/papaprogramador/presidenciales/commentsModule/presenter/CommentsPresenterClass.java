@@ -72,14 +72,18 @@ public class CommentsPresenterClass extends MvpBasePresenter<CommentsView>
 						case CommentEvent.INITIAL_DATA:
 							view.showProgress();
 							view.addAllComments(event.getComments());
+							view.addCommentsNotifier();
 							break;
 						case CommentEvent.SUCCES_ADD:
+							view.hideProgress();
 							view.addComment(event.getComment());
 							break;
 						case CommentEvent.NO_DATA:
+							view.hideProgress();
 							view.showNoData();
 							break;
 						case CommentEvent.ERROR:
+							view.hideProgress();
 							view.showError(event.getResMsg());
 							break;
 					}
