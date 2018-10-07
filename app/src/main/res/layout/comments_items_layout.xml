@@ -3,70 +3,76 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/nav_header_vertical_spacing">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/container_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:paddingBottom="@dimen/nav_header_vertical_spacing">
+        android:orientation="horizontal"
+        android:padding="@dimen/nav_header_vertical_spacing">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/photo_user"
+            android:layout_width="@dimen/size_circle_image_user"
+            android:layout_height="@dimen/size_circle_image_user"
+            android:paddingStart="@dimen/nav_header_vertical_spacing"
+            android:paddingEnd="@dimen/nav_header_vertical_spacing"/>
 
         <LinearLayout
             android:id="@+id/data_user_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingBottom="@dimen/nav_header_vertical_spacing">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/photo_user"
-                android:layout_width="@dimen/size_circle_image_user"
-                android:layout_height="@dimen/size_circle_image_user"
-                android:paddingStart="@dimen/nav_header_vertical_spacing"
-                android:paddingEnd="@dimen/nav_header_vertical_spacing"
-                android:src="@drawable/ic_send_comment" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/user_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.95"
-                android:paddingStart="@dimen/nav_header_vertical_spacing"
-                android:paddingEnd="@dimen/nav_header_vertical_spacing"
-                android:text="Anderson Castellon" />
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="0dp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.70"/>
 
-            <ImageView
-                android:id="@+id/flag_political"
-                android:layout_width="45dp"
-                android:layout_height="25dp" />
+                <ImageView
+                    android:id="@+id/flag_political"
+                    android:layout_width="35dp"
+                    android:layout_gravity="center"
+                    android:layout_height="19dp"
+                    android:background="@color/primary_dark"/>
 
-            <ImageButton
-                android:id="@+id/image_menu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.05"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_menu_points"
-                android:tint="@color/primary_dark"
-                android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/image_menu"
+                    android:layout_width="0dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.10"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_menu_points"
+                    android:tint="@color/secondary_text"
+                    android:visibility="visible" />
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/container_comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/comment"
+            <LinearLayout
+                android:id="@+id/container_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_edittext"
-                android:textStyle="italic" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_edittext"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

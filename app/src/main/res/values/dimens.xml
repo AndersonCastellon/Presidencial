@@ -26,5 +26,5 @@
 
     <dimen name="size_button_opinion">48dp</dimen>
     <dimen name="text_size_edittext">14sp</dimen>
-    <dimen name="size_circle_image_user">56dp</dimen>
+    <dimen name="size_circle_image_user">80dp</dimen>
 </resources>
