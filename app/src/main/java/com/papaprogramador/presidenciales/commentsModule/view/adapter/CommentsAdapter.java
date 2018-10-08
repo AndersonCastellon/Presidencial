@@ -88,11 +88,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 		notifyItemRangeInserted(0, comments.size());
 	}
 
-	public void addComment(Comment comment) {
+	public boolean addComment(Comment comment) {
+		boolean result = false;
 		if (!comments.contains(comment)) {
 			comments.add(comment);
 			notifyItemInserted(comments.size());
+			result = true;
 		}
+		return result;
 	}
 
 	private int getItemPosition(Comment comment) {

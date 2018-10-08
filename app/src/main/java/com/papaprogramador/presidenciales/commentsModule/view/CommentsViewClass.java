@@ -65,6 +65,7 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	private void setupToolbar() {
 		setSupportActionBar(toolbar);
 		if (toolbar != null) {
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			getSupportActionBar().setDisplayShowHomeEnabled(true);
 			toolbar.setTitle(R.string.comments_title);
 		}
@@ -118,12 +119,16 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 
 	@Override
 	public void addAllComments(List<Comment> comments) {
+		rvComments.setVisibility(View.VISIBLE);
 		commentsAdapter.addAllComments(comments);
 	}
 
 	@Override
 	public void addComment(Comment comment) {
-		commentsAdapter.addComment(comment);
+		rvComments.setVisibility(View.VISIBLE);
+		if (commentsAdapter.addComment(comment)){
+			linearLayoutManager.smoothScrollToPosition(rvComments, null, commentsAdapter.getItemCount());
+		}
 	}
 
 	@Override

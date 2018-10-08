@@ -53,6 +53,7 @@ public class CommentsInteractorClass implements CommentsInteractor {
 
 			@Override
 			public void onComplete() {
+				postCommentEvent(CommentEvent.NO_DATA);
 			}
 		});
 	}
@@ -139,6 +140,10 @@ public class CommentsInteractorClass implements CommentsInteractor {
 
 	@Override
 	public void onDestroy() {
+	}
+
+	private void postCommentEvent(int eventType){
+		postCommentEvent(eventType, null, null, 0);
 	}
 
 	private void postCommentEvent(int eventType, Comment comment) {
