@@ -47,7 +47,6 @@ public abstract class ChangeEventListener<T> implements ChildEventListener {
 	}
 
 	@Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-		Log.d(TAG, "onChildRemoved: ");
 		if (initialDataLoaded) {
 			try {
 				T data = dataSnapshot.getValue(dataClass);

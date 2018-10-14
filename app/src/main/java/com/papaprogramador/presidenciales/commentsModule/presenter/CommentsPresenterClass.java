@@ -42,13 +42,18 @@ public class CommentsPresenterClass extends MvpBasePresenter<CommentsView>
 	@Override
 	public void publishComment(String opinionId, String commentText) {
 		interactor.publishComment(Comment.Builder()
-		.opinionId(opinionId)
-		.userId(userAPI.getUserId())
-		.userName(userAPI.getUserName())
-		.userPhotoUrl(userAPI.getPhotoProfile())
-		.userPoliticlaFlagUrl(userAPI.getPoliticalFlag())
-		.content(commentText)
-		.build());
+				.opinionId(opinionId)
+				.userId(userAPI.getUserId())
+				.userName(userAPI.getUserName())
+				.userPhotoUrl(userAPI.getPhotoProfile())
+				.userPoliticlaFlagUrl(userAPI.getPoliticalFlag())
+				.content(commentText)
+				.build());
+	}
+
+	@Override
+	public void deleteComment(Comment comment) {
+		interactor.deleteComment(comment);
 	}
 
 	@Override
@@ -75,8 +80,15 @@ public class CommentsPresenterClass extends MvpBasePresenter<CommentsView>
 							view.addCommentsNotifier();
 							break;
 						case CommentEvent.SUCCES_ADD:
+							view.removeCommentsNotifier();
 							view.hideProgress();
 							view.addComment(event.getComment());
+							view.addCommentsNotifier();
+							break;
+						case CommentEvent.SUCCES_REMOVED:
+							view.addCommentsNotifier();
+							view.hideProgress();
+							view.deleteComment(event.getComment());
 							break;
 						case CommentEvent.NO_DATA:
 							view.hideProgress();

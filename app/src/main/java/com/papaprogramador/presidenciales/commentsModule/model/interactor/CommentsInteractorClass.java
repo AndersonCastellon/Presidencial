@@ -1,5 +1,7 @@
 package com.papaprogramador.presidenciales.commentsModule.model.interactor;
 
+import android.support.v4.util.Pair;
+
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.commentsModule.events.CommentEvent;
 import com.papaprogramador.presidenciales.commentsModule.model.dataAccess.FirebaseCommentsDataSource;
@@ -21,7 +23,8 @@ public class CommentsInteractorClass implements CommentsInteractor {
 
 	private FirebaseCommentsDataSource commentsDataSource;
 	private Observable<List<Comment>> getCommentsObservable;
-	private Observable<Comment> addCommentsNotifier;
+	private Single<Pair<Boolean, Integer>> deleteComment;
+	private Observable<Pair<Integer, Comment>> addCommentsNotifier;
 	private Single<Boolean> publishComment;
 	private Single<Boolean> removeCommentsNotifier;
 
@@ -84,20 +87,56 @@ public class CommentsInteractorClass implements CommentsInteractor {
 	}
 
 	@Override
-	public void addCommentNotifier(String opinionId) {
-		addCommentsNotifier = commentsDataSource.addCommentNotifier(opinionId)
+	public void deleteComment(Comment comment) {
+		deleteComment = commentsDataSource.deleteComment(comment)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread());
 
-		addCommentsNotifier.subscribe(new Observer<Comment>() {
+		deleteComment.subscribe(new SingleObserver<Pair<Boolean, Integer>>() {
 			@Override
 			public void onSubscribe(Disposable d) {
 
 			}
 
 			@Override
-			public void onNext(Comment comment) {
-				postCommentEvent(CommentEvent.SUCCES_ADD, comment);
+			public void onSuccess(Pair<Boolean, Integer> pair) {
+				if (!pair.first) {
+					postCommentEvent(CommentEvent.ERROR, pair.second);
+				}
+			}
+
+			@Override
+			public void onError(Throwable e) {
+
+			}
+		});
+	}
+
+	@Override
+	public void addCommentNotifier(String opinionId) {
+		addCommentsNotifier = commentsDataSource.addCommentNotifier(opinionId)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread());
+
+		addCommentsNotifier.subscribe(new Observer<Pair<Integer, Comment>>() {
+			@Override
+			public void onSubscribe(Disposable d) {
+
+			}
+
+			@Override
+			public void onNext(Pair<Integer, Comment> pair) {
+				if (pair.first != null) {
+					switch (pair.first) {
+						case CommentEvent.SUCCES_ADD:
+							postCommentEvent(CommentEvent.SUCCES_ADD, pair.second);
+							break;
+						case CommentEvent.SUCCES_REMOVED:
+							postCommentEvent(CommentEvent.SUCCES_REMOVED, pair.second);
+							break;
+					}
+				}
+
 			}
 
 			@Override
@@ -140,9 +179,10 @@ public class CommentsInteractorClass implements CommentsInteractor {
 
 	@Override
 	public void onDestroy() {
+		//descartar todas las subscripciones con rxjava
 	}
 
-	private void postCommentEvent(int eventType){
+	private void postCommentEvent(int eventType) {
 		postCommentEvent(eventType, null, null, 0);
 	}
 

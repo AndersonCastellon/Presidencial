@@ -90,7 +90,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
 	public boolean addComment(Comment comment) {
 		boolean result = false;
-		if (!comments.contains(comment)) {
+		if (getItemPosition(comment) == -1) {
 			comments.add(comment);
 			notifyItemInserted(comments.size());
 			result = true;
@@ -99,14 +99,22 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 	}
 
 	private int getItemPosition(Comment comment) {
-		int currentPosition = -1;
-		for (int i = 0; i < comments.size() && currentPosition == -1; i++) {
+		int position = -1;
+		for (int i = 0; i < comments.size() && position == -1; i++) {
 			Comment c = comments.get(i);
 			if (c.getCommentId().equals(comment.getCommentId())) {
-				currentPosition = i;
+				position = i;
 			}
 		}
-		return currentPosition;
+		return position;
+	}
+
+	public void deleteComment(Comment comment) {
+		int currentPosition = getItemPosition(comment);
+		if (currentPosition != -1) {
+			comments.remove(currentPosition);
+			notifyItemRemoved(currentPosition);
+		}
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder {
@@ -139,7 +147,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 			}
 
 			Glide.with(context).load(comment.getUserPhotoUrl()).apply(options).into(photoUser);
-			if (!comment.getUserPoloticalFlagUrl().isEmpty()) {
+			if (comment.getUserPoloticalFlagUrl() != null) {
 				Glide.with(context).load(comment.getUserPoloticalFlagUrl()).apply(options).into(flagPolitical);
 			} else {
 				flagPolitical.setVisibility(View.GONE);

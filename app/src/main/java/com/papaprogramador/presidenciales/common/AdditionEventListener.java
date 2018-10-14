@@ -47,7 +47,6 @@ public abstract class AdditionEventListener<T> implements ChildEventListener {
 
 	@Override
 	public void onChildRemoved(DataSnapshot dataSnapshot) {
-
 	}
 
 	@Override

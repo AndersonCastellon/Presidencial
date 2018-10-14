@@ -1,5 +1,7 @@
 package com.papaprogramador.presidenciales.commentsModule.model.dataAccess;
 
+import android.support.v4.util.Pair;
+
 import com.papaprogramador.presidenciales.common.pojo.Comment;
 
 import java.util.List;
@@ -12,7 +14,9 @@ public interface CommentsDataSource {
 
 	Single<Boolean> publishComment(Comment commentPublication);
 
-	Observable<Comment> addCommentNotifier(String opinionId);
+	Single<Pair<Boolean, Integer>> deleteComment(Comment comment);
+
+	Observable<Pair<Integer, Comment>> addCommentNotifier(String opinionId);
 
 	Single<Boolean> removeCommentNotifier(String opinionId);
 }

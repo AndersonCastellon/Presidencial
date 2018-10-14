@@ -7,6 +7,7 @@ import java.util.List;
 public class CommentEvent {
 	public static final int INITIAL_DATA = 0;
 	public static final int SUCCES_ADD = 1;
+	public static final int SUCCES_REMOVED = 100;
 	public static final int NO_DATA = 2;
 	public static final int ERROR = 3;
 

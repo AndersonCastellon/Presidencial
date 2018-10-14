@@ -2,6 +2,7 @@ package com.papaprogramador.presidenciales.commentsModule.view;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,14 +38,14 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	LinearLayout noComments;
 	@BindView(R.id.et_comment)
 	EditText etComment;
-	@BindView(R.id.toolbar)
-	Toolbar toolbar;
 	@BindView(R.id.loadingView)
 	ProgressBar loadingView;
 	@BindView(R.id.container_loading_view)
 	FrameLayout containerLoadingView;
 	@BindView(R.id.root)
 	CoordinatorLayout root;
+	@BindView(R.id.toolbar_container)
+	AppBarLayout toolbarContainer;
 
 	private LinearLayoutManager linearLayoutManager;
 	private CommentsAdapter commentsAdapter;
@@ -63,11 +64,11 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	}
 
 	private void setupToolbar() {
-		setSupportActionBar(toolbar);
-		if (toolbar != null) {
+		Toolbar toolbarComments = findViewById(R.id.toolbar_comments);
+		setSupportActionBar(toolbarComments);
+		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			getSupportActionBar().setDisplayShowHomeEnabled(true);
-			toolbar.setTitle(R.string.comments_title);
+			getSupportActionBar().setTitle(R.string.comments_title);
 		}
 	}
 
@@ -75,7 +76,7 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	public void onViewClicked() {
 		if (!etComment.getText().toString().isEmpty()) {
 			showProgress();
-			getPresenter().publishComment(opinionId,etComment.getText().toString());
+			getPresenter().publishComment(opinionId, etComment.getText().toString());
 		}
 
 		etComment.setText("");
@@ -83,7 +84,7 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 
 	@Override
 	public void onDeleteClick(Comment comment) {
-
+		getPresenter().deleteComment(comment);
 	}
 
 	@NonNull
@@ -126,9 +127,15 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	@Override
 	public void addComment(Comment comment) {
 		rvComments.setVisibility(View.VISIBLE);
-		if (commentsAdapter.addComment(comment)){
-			linearLayoutManager.smoothScrollToPosition(rvComments, null, commentsAdapter.getItemCount());
+		if (commentsAdapter.addComment(comment)) {
+			linearLayoutManager.smoothScrollToPosition(rvComments,
+					null, commentsAdapter.getItemCount());
 		}
+	}
+
+	@Override
+	public void deleteComment(Comment comment) {
+		commentsAdapter.deleteComment(comment);
 	}
 
 	@Override

@@ -149,6 +149,9 @@
     <string name="error_while_get_new_comments">Error al cargar nuevos comentarios</string>
     <string name="error_while_remove_listener_comments">Error al eliminar la subscripción a los comentarios</string>
     <string name="comments_title">Comentarios</string>
+    <string name="success_delete_comment">Comentario eliminado correctamente</string>
+    <string name="error_while_delete_comment">No puedes borrar este comentario</string>
+    <string name="error_red">Error de red</string>
 
     <plurals name="likes_count">
         <item quantity="one">%d like</item>

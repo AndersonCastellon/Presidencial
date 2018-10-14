@@ -64,7 +64,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".commentsModule.view.CommentsViewClass"></activity>
+        <activity android:name=".commentsModule.view.CommentsViewClass"
+            android:label="@string/comments_title"/>
     </application>
 
 </manifest>

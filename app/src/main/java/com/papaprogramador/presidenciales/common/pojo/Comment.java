@@ -25,6 +25,10 @@ public class Comment {
 		content = builder.content;
 	}
 
+	public void setCommentId(String commentId) {
+		this.commentId = commentId;
+	}
+
 	public String getCommentId() {
 		return commentId;
 	}

@@ -8,6 +8,8 @@ public interface CommentsInteractor {
 
 	void publishComment(Comment commentPublication);
 
+	void deleteComment(Comment comment);
+
 	void addCommentNotifier(String opinionId);
 
 	void removeCommentNotifier(String opinionId);

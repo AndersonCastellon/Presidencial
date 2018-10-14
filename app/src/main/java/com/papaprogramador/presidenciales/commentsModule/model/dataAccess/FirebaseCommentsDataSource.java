@@ -1,18 +1,19 @@
 package com.papaprogramador.presidenciales.commentsModule.model.dataAccess;
 
 import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.papaprogramador.presidenciales.common.AdditionEventListener;
+import com.papaprogramador.presidenciales.R;
+import com.papaprogramador.presidenciales.commentsModule.events.CommentEvent;
+import com.papaprogramador.presidenciales.common.ChangeEventListener;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseRealtimeDatabaseAPI;
-import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Comment;
 
 import java.util.HashMap;
@@ -23,7 +24,6 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
@@ -34,7 +34,7 @@ public class FirebaseCommentsDataSource implements CommentsDataSource {
 	private static final String PATH_COMMENTS = "Comments";
 
 	private FirebaseRealtimeDatabaseAPI databaseAPI;
-	private Map<String, AdditionEventListener<Comment>> listenerMap = new HashMap<>();
+	private Map<String, ChangeEventListener<Comment>> listenerMap = new HashMap<>();
 
 	public FirebaseCommentsDataSource() {
 		databaseAPI = FirebaseRealtimeDatabaseAPI.getInstance();
@@ -44,7 +44,7 @@ public class FirebaseCommentsDataSource implements CommentsDataSource {
 	public Observable<List<Comment>> getComments(final String opinionId) {
 		return Observable.create(new ObservableOnSubscribe<List<Comment>>() {
 			@Override
-			public void subscribe(final ObservableEmitter<List<Comment>> emitter) throws Exception {
+			public void subscribe(final ObservableEmitter<List<Comment>> emitter) {
 				final DatabaseReference commentRef = databaseAPI.getReference().child(PATH_OPINION)
 						.child(opinionId)
 						.child(PATH_COMMENTS);
@@ -70,7 +70,7 @@ public class FirebaseCommentsDataSource implements CommentsDataSource {
 	public Single<Boolean> publishComment(final Comment commentPublication) {
 		return Single.create(new SingleOnSubscribe<Boolean>() {
 			@Override
-			public void subscribe(final SingleEmitter<Boolean> emitter) throws Exception {
+			public void subscribe(final SingleEmitter<Boolean> emitter) {
 				DatabaseReference commentsRef = databaseAPI.getReference().child(PATH_OPINION)
 						.child(commentPublication.getOpinionId())
 						.child(PATH_COMMENTS);
@@ -98,10 +98,44 @@ public class FirebaseCommentsDataSource implements CommentsDataSource {
 	}
 
 	@Override
-	public Observable<Comment> addCommentNotifier(final String opinionId) {
-		return Observable.create(new ObservableOnSubscribe<Comment>() {
+	public Single<Pair<Boolean, Integer>> deleteComment(final Comment comment) {
+		return Single.create(new SingleOnSubscribe<Pair<Boolean, Integer>>() {
 			@Override
-			public void subscribe(final ObservableEmitter<Comment> emitter) throws Exception {
+			public void subscribe(final SingleEmitter<Pair<Boolean, Integer>> emitter) {
+				DatabaseReference commentRef = databaseAPI.getReference()
+						.child(PATH_OPINION)
+						.child(comment.getOpinionId())
+						.child(PATH_COMMENTS)
+						.child(comment.getCommentId());
+
+				commentRef.removeValue(new DatabaseReference.CompletionListener() {
+					@Override
+					public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+						if (databaseError == null) {
+							emitter.onSuccess(new Pair<>(true, R.string.success_delete_comment));
+						} else {
+							switch (databaseError.getCode()) {
+								case DatabaseError.PERMISSION_DENIED:
+									emitter.onSuccess(new Pair<>(false, R.string.error_while_delete_comment));
+									break;
+								case DatabaseError.NETWORK_ERROR:
+									emitter.onSuccess(new Pair<>(false, R.string.error_red));
+									break;
+								default:
+									emitter.onSuccess(new Pair<>(false, R.string.error_server));
+							}
+						}
+					}
+				});
+			}
+		});
+	}
+
+	@Override
+	public Observable<Pair<Integer, Comment>> addCommentNotifier(final String opinionId) {
+		return Observable.create(new ObservableOnSubscribe<Pair<Integer, Comment>>() {
+			@Override
+			public void subscribe(final ObservableEmitter<Pair<Integer, Comment>> emitter) {
 				DatabaseReference commentRef = databaseAPI.getReference()
 						.child(PATH_OPINION)
 						.child(opinionId).child(PATH_COMMENTS);
@@ -111,11 +145,16 @@ public class FirebaseCommentsDataSource implements CommentsDataSource {
 					listenerMap.remove(opinionId);
 				}
 
-				AdditionEventListener<Comment> listener = new AdditionEventListener<Comment>(commentRef,
+				ChangeEventListener<Comment> listener = new ChangeEventListener<Comment>(commentRef,
 						Comment.class) {
 					@Override
 					protected void onChildAdded(String commentId, Comment commentData) {
-						emitter.onNext(createComment(commentId, commentData));
+						emitter.onNext(new Pair<>(CommentEvent.SUCCES_ADD, createComment(commentId, commentData)));
+					}
+
+					@Override
+					protected void onChildRemoved(String key, Comment data) {
+						emitter.onNext(new Pair<>(CommentEvent.SUCCES_REMOVED, createComment(key, data)));
 					}
 				};
 				listenerMap.put(opinionId, listener);
@@ -127,7 +166,7 @@ public class FirebaseCommentsDataSource implements CommentsDataSource {
 	public Single<Boolean> removeCommentNotifier(final String opinionId) {
 		return Single.create(new SingleOnSubscribe<Boolean>() {
 			@Override
-			public void subscribe(SingleEmitter<Boolean> emitter) throws Exception {
+			public void subscribe(SingleEmitter<Boolean> emitter) {
 				if (listenerMap.containsKey(opinionId)) {
 					DatabaseReference commentRef = databaseAPI.getReference()
 							.child(PATH_OPINION)
@@ -145,7 +184,10 @@ public class FirebaseCommentsDataSource implements CommentsDataSource {
 		List<Comment> comments = new LinkedList<>();
 		for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 			Comment comment = snapshot.getValue(Comment.class);
-			comments.add(comment);
+			if (comment != null) {
+				comment.setCommentId(snapshot.getKey());
+				comments.add(comment);
+			}
 		}
 		return comments;
 	}

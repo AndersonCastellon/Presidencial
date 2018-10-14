@@ -12,6 +12,7 @@ public interface CommentsView extends MvpView {
 	void setupComments();
 	void addAllComments(List<Comment> comments);
 	void addComment(Comment comment);
+	void deleteComment(Comment comment);
 	void addCommentsNotifier();
 	void removeCommentsNotifier();
 	void showNoData();
