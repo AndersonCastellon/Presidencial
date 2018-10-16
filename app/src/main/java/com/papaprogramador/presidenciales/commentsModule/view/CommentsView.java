@@ -17,4 +17,5 @@ public interface CommentsView extends MvpView {
 	void removeCommentsNotifier();
 	void showNoData();
 	void showError(int resMsg);
+	void onBackPressedIntent();
 }

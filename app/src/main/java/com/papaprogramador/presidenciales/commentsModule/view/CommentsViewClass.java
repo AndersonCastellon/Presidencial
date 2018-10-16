@@ -1,8 +1,8 @@
 package com.papaprogramador.presidenciales.commentsModule.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,11 +17,13 @@ import android.widget.ProgressBar;
 import com.hannesdorfmann.mosby3.mvp.MvpActivity;
 import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
+import com.papaprogramador.presidenciales.View.Activity.MainView;
 import com.papaprogramador.presidenciales.commentsModule.presenter.CommentsPresenter;
 import com.papaprogramador.presidenciales.commentsModule.presenter.CommentsPresenterClass;
 import com.papaprogramador.presidenciales.commentsModule.view.adapter.CommentsAdapter;
 import com.papaprogramador.presidenciales.commentsModule.view.adapter.OnMenuCommentItemClickListener;
 import com.papaprogramador.presidenciales.common.pojo.Comment;
+import com.papaprogramador.presidenciales.opinionsModule.view.OpinionsView;
 
 import java.util.List;
 
@@ -38,14 +40,14 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	LinearLayout noComments;
 	@BindView(R.id.et_comment)
 	EditText etComment;
+	@BindView(R.id.toolbar)
+	Toolbar toolbar;
 	@BindView(R.id.loadingView)
 	ProgressBar loadingView;
 	@BindView(R.id.container_loading_view)
 	FrameLayout containerLoadingView;
 	@BindView(R.id.root)
 	CoordinatorLayout root;
-	@BindView(R.id.toolbar_container)
-	AppBarLayout toolbarContainer;
 
 	private LinearLayoutManager linearLayoutManager;
 	private CommentsAdapter commentsAdapter;
@@ -55,8 +57,8 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_comments_view);
-		setupToolbar();
 		ButterKnife.bind(this);
+		setupToolbar();
 		getPresenter().onCreate();
 		opinionId = getIntent().getStringExtra(Constans.EXTRA_OPINION);
 		setupComments();
@@ -64,8 +66,7 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	}
 
 	private void setupToolbar() {
-		Toolbar toolbarComments = findViewById(R.id.toolbar_comments);
-		setSupportActionBar(toolbarComments);
+		setSupportActionBar(toolbar);
 		if (getSupportActionBar() != null) {
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			getSupportActionBar().setTitle(R.string.comments_title);
@@ -158,6 +159,19 @@ public class CommentsViewClass extends MvpActivity<CommentsView, CommentsPresent
 	@Override
 	public void showError(int resMsg) {
 		Snackbar.make(root, resMsg, Snackbar.LENGTH_LONG).show();
+	}
+
+	@Override
+	public void onBackPressedIntent() {
+		Intent intent = new Intent(CommentsViewClass.this, MainView.class);
+		startActivity(intent);
+		finish();
+	}
+
+	@Override
+	public boolean onSupportNavigateUp() {
+		onBackPressedIntent();
+		return super.onSupportNavigateUp();
 	}
 
 	@Override
