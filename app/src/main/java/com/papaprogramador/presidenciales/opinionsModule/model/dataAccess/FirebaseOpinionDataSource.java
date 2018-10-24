@@ -1,162 +1,294 @@
 package com.papaprogramador.presidenciales.opinionsModule.model.dataAccess;
 
+import android.support.annotation.NonNull;
+import android.support.v4.util.Pair;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
-import com.papaprogramador.presidenciales.R;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales.Utils.Constans;
-import com.papaprogramador.presidenciales.common.BasicErrorEventCallback;
+import com.papaprogramador.presidenciales.common.ChangeEventListener;
+import com.papaprogramador.presidenciales.common.LikeValueEventListener;
+import com.papaprogramador.presidenciales.common.OpinionValueEventListener;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseRealtimeDatabaseAPI;
 import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
-import com.papaprogramador.presidenciales.opinionsModule.events.OpinionEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import durdinapps.rxfirebase2.RxFirebaseChildEvent;
-import durdinapps.rxfirebase2.RxFirebaseDatabase;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.ResourceSubscriber;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 
-import static io.reactivex.BackpressureStrategy.BUFFER;
-
-public class FirebaseOpinionDataSource {
+public class FirebaseOpinionDataSource implements OpinionDataSource {
 
 	private static final String PATH_OPINIONS = "Opinions";
+	private static final String PATH_LIKES = "Likes";
 
 	private FirebaseRealtimeDatabaseAPI mDatabaseAPI;
-	private FirebaseLikesDataSource firebaseLikesDataSource;
-	private CompositeDisposable disposable;
 
+	private final Map<String, ChangeEventListener<Opinion>> listenerOpinionMap = new HashMap<>();
+	private final Map<String, ChangeEventListener<Long>> listenerLikeMap = new HashMap<>();
 
 	public FirebaseOpinionDataSource() {
-		firebaseLikesDataSource = new FirebaseLikesDataSource();
 		mDatabaseAPI = FirebaseRealtimeDatabaseAPI.getInstance();
-		disposable = new CompositeDisposable();
 	}
 
 	private DatabaseReference getOpinionsReference() {
 		return mDatabaseAPI.getReference().child(PATH_OPINIONS);
 	}
 
+	@Override
+	public Single<List<Opinion>> getOpinions(final long timeStamp) {
+		return Single.create(new SingleOnSubscribe<List<Opinion>>() {
+			@Override
+			public void subscribe(final SingleEmitter<List<Opinion>> emitter) {
 
-	public void subscribeToOpinions(long lastOpinion, List<Opinion> opinionList, final OpinionsEventListener listener) {
+				final Query query;
+				if (timeStamp == 0) {
+					query = getOpinionsReference().orderByChild(Opinion.ORDER_BY).limitToLast(Constans.OPINIONS_PER_PAGE);
+				} else {
+					query = getOpinionsReference().orderByChild(Opinion.ORDER_BY).endAt(timeStamp).limitToLast(Constans.OPINIONS_PER_PAGE);
+				}
 
-		final Query query;
-		if (lastOpinion == 0) {
-			query = getOpinionsReference().orderByChild(Opinion.ORDER_BY).limitToLast(Constans.OPINIONS_PER_PAGE);
-		} else {
-			query = getOpinionsReference().orderByChild(Opinion.ORDER_BY).endAt(lastOpinion).limitToLast(Constans.OPINIONS_PER_PAGE);
-		}
-
-		final List<String> currentOpinion = new ArrayList<>();
-		for (Opinion opinion : opinionList) {
-			currentOpinion.add(opinion.getOpinionId());
-		}
-
-		disposable.add(RxFirebaseDatabase.observeChildEvent(query, BUFFER)
-				.subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribeWith(new ResourceSubscriber<RxFirebaseChildEvent<DataSnapshot>>() {
+				query.addValueEventListener(new ValueEventListener() {
 					@Override
-					public void onNext(final RxFirebaseChildEvent<DataSnapshot> dataSnapshotRxFirebaseChildEvent) {
+					public void onDataChange(final DataSnapshot opinionSnapshot) {
+						query.removeEventListener(this);
 
-						if (!currentOpinion.contains(dataSnapshotRxFirebaseChildEvent.getValue().getKey())) {
-							switch (dataSnapshotRxFirebaseChildEvent.getEventType()) {
-								case ADDED:
-									firebaseLikesDataSource.getLikes(dataSnapshotRxFirebaseChildEvent.getValue().getKey(),
-											new LikeDataSource.ListLikesListener() {
-												@Override
-												public void onSuccess(List<Like> likes) {
-													listener.onChildAdded(getOpinion(dataSnapshotRxFirebaseChildEvent.getValue(), likes));
-												}
+						for (final DataSnapshot dataOpinion : opinionSnapshot.getChildren()) {
+							final DatabaseReference likeRef = getOpinionsReference().child(dataOpinion.getKey())
+									.child(PATH_LIKES);
+							likeRef.addValueEventListener(new ValueEventListener() {
+								@Override
+								public void onDataChange(DataSnapshot likeSnapshot) {
+									likeRef.removeEventListener(this);
+									List<String> userLikes = new ArrayList<>();
+									for (DataSnapshot dataLike : likeSnapshot.getChildren()) {
+										userLikes.add(dataLike.getKey());
+									}
+									List<Opinion> opinions = new ArrayList<>();
 
-												@Override
-												public void onError(Exception e) {
+									Opinion opinion = dataOpinion.getValue(Opinion.class);
+									if (opinion != null) {
+										opinion.setOpinionId(dataOpinion.getKey());
+										opinion.setUserLikes(userLikes);
+									}
+									emitter.onSuccess(opinions);
+								}
 
-												}
-											});
-									break;
-								case CHANGED:
-									firebaseLikesDataSource.getLikes(dataSnapshotRxFirebaseChildEvent.getValue().getKey(),
-											new LikeDataSource.ListLikesListener() {
-												@Override
-												public void onSuccess(List<Like> likes) {
-													listener.onChildUpdated(getOpinion(dataSnapshotRxFirebaseChildEvent.getValue(), likes));
-												}
+								@Override
+								public void onCancelled(DatabaseError databaseError) {
 
-												@Override
-												public void onError(Exception e) {
-
-												}
-											});
-									break;
-								case REMOVED:
-									listener.onChildRemoved(getOpinion(dataSnapshotRxFirebaseChildEvent.getValue()));
-									break;
-							}
+								}
+							});
 						}
+
 					}
 
 					@Override
-					public void onError(Throwable t) {
-						t.getMessage();
-						t.getCause();
-					}
+					public void onCancelled(DatabaseError databaseError) {
 
-					@Override
-					public void onComplete() {
-						listener.onComplete();
-					}
-				}));
-
-	}
-
-	public void removeOpinion(Opinion opinion, final BasicErrorEventCallback callback) {
-		getOpinionsReference().child(opinion.getOpinionId())
-				.removeValue(new DatabaseReference.CompletionListener() {
-					@Override
-					public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-						if (databaseError == null) {
-							callback.onSuccess();
-						} else {
-							switch (databaseError.getCode()) {
-								case DatabaseError.PERMISSION_DENIED:
-									callback.onError(OpinionEvent.ERROR_TO_REMOVE, R.string.opinion_error_remove);
-									break;
-								default:
-									callback.onError(OpinionEvent.ERROR_SERVER, R.string.error_server);
-							}
-						}
 					}
 				});
+			}
+		});
 	}
 
-	private Opinion getOpinion(DataSnapshot dataSnapshot) {
-		return getOpinion(dataSnapshot, null);
+	@Override
+	public Observable<Pair<Boolean, Opinion>> addOpinionNotifier() {
+		return Observable.create(new ObservableOnSubscribe<Pair<Boolean, Opinion>>() {
+			@Override
+			public void subscribe(final ObservableEmitter<Pair<Boolean, Opinion>> emitter) {
+
+				if (listenerOpinionMap.containsKey(PATH_OPINIONS)) {
+					getOpinionsReference().removeEventListener(listenerOpinionMap.get(PATH_OPINIONS));
+					listenerOpinionMap.remove(PATH_OPINIONS);
+				}
+
+				ChangeEventListener<Opinion> listener = new ChangeEventListener<Opinion>(getOpinionsReference(),
+						Opinion.class) {
+					@Override
+					protected void onChildAdded(String key, Opinion data) {
+						emitter.onNext(new Pair<>(true, createOpinion(key, data)));
+					}
+
+					@Override
+					protected void onChildRemoved(String key, Opinion data) {
+						emitter.onNext(new Pair<>(false, createOpinion(key, data)));
+					}
+				};
+
+				listenerOpinionMap.put(PATH_OPINIONS, listener);
+			}
+		});
 	}
 
-	private Opinion getOpinion(DataSnapshot dataSnapshot, List<Like> likes) {
-		Opinion opinion = dataSnapshot.getValue(Opinion.class);
+	@Override
+	public Single<Boolean> removeOpinionNotifier() {
+		return Single.create(new SingleOnSubscribe<Boolean>() {
+			@Override
+			public void subscribe(SingleEmitter<Boolean> emitter) {
+				if (listenerOpinionMap.containsKey(PATH_OPINIONS)) {
+					getOpinionsReference().removeEventListener(listenerOpinionMap.get(PATH_OPINIONS));
+					listenerOpinionMap.remove(PATH_OPINIONS);
+					emitter.onSuccess(true);
+				} else {
+					emitter.onSuccess(false);
+				}
 
-		if (opinion != null) {
-			opinion.setOpinionId(dataSnapshot.getKey());
-			if (likes != null) {
-				for (Like like : likes) {
-					opinion.addUserLikeId(like.getUserId());
+			}
+		});
+	}
+
+	@Override
+	public Single<Boolean> deleteOpinion(final Opinion opinion) {
+		return Single.create(new SingleOnSubscribe<Boolean>() {
+			@Override
+			public void subscribe(final SingleEmitter<Boolean> emitter) {
+				getOpinionsReference().child(opinion.getOpinionId())
+						.removeValue(new DatabaseReference.CompletionListener() {
+							@Override
+							public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+								if (databaseError == null) {
+									emitter.onSuccess(true);
+								} else {
+									emitter.onSuccess(false);
+								}
+							}
+						});
+			}
+		});
+	}
+
+	@Override
+	public Single<Boolean> toggleLike(final Like like) {
+		return Single.create(new SingleOnSubscribe<Boolean>() {
+			@Override
+			public void subscribe(final SingleEmitter<Boolean> emitter) {
+
+				final DatabaseReference likeRef = getOpinionsReference()
+						.child(like.getOpinionId()).child(PATH_LIKES);
+
+				likeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+					@Override
+					public void onDataChange(DataSnapshot dataSnapshot) {
+						if (dataSnapshot.hasChild(like.getUserId())) {
+							likeRef.child(like.getUserId()).removeValue()
+									.addOnFailureListener(new OnFailureListener() {
+										@Override
+										public void onFailure(@NonNull Exception e) {
+											emitter.onError(e);
+										}
+									}).addOnCompleteListener(new OnCompleteListener<Void>() {
+								@Override
+								public void onComplete(@NonNull Task<Void> task) {
+									emitter.onSuccess(false);
+								}
+							});
+						} else {
+							likeRef.child(like.getUserId()).setValue(ServerValue.TIMESTAMP)
+									.addOnFailureListener(new OnFailureListener() {
+										@Override
+										public void onFailure(@NonNull Exception e) {
+											emitter.onError(e);
+										}
+									}).addOnCompleteListener(new OnCompleteListener<Void>() {
+								@Override
+								public void onComplete(@NonNull Task<Void> task) {
+									emitter.onSuccess(true);
+								}
+							});
+						}
+					}
+
+					@Override
+					public void onCancelled(DatabaseError databaseError) {
+						emitter.onError(databaseError.toException());
+					}
+				});
+			}
+		});
+	}
+
+	@Override
+	public Observable<Pair<Like, Boolean>> addLikeNotifier(final String opinionId) {
+		return Observable.create(new ObservableOnSubscribe<Pair<Like, Boolean>>() {
+			@Override
+			public void subscribe(final ObservableEmitter<Pair<Like, Boolean>> emitter) {
+
+				final DatabaseReference likeRef = getOpinionsReference()
+						.child(opinionId).child(PATH_LIKES);
+
+				if (listenerLikeMap.containsKey(opinionId)) {
+					likeRef.removeEventListener(listenerLikeMap.get(opinionId));
+					listenerLikeMap.remove(opinionId);
+				}
+
+				ChangeEventListener<Long> eventListener = new ChangeEventListener<Long>(likeRef, Long.class) {
+					@Override
+					protected void onChildAdded(String key, Long data) {
+						Like like = Like.Builder()
+								.opinionId(opinionId)
+								.userId(key)
+								.build();
+						emitter.onNext(new Pair<>(like, true));
+					}
+
+					@Override
+					protected void onChildRemoved(String key, Long data) {
+						Like like = Like.Builder()
+								.opinionId(opinionId)
+								.userId(key)
+								.build();
+						emitter.onNext(new Pair<>(like, false));
+					}
+				};
+
+				listenerLikeMap.put(opinionId, eventListener);
+			}
+		});
+	}
+
+	@Override
+	public Single<Boolean> removeLikeNotifier(final String opinionId) {
+		return Single.create(new SingleOnSubscribe<Boolean>() {
+			@Override
+			public void subscribe(SingleEmitter<Boolean> emitter) throws Exception {
+				final DatabaseReference likeRef = getOpinionsReference()
+						.child(opinionId).child(PATH_LIKES);
+
+				if (listenerLikeMap.containsKey(opinionId)) {
+					likeRef.removeEventListener(listenerLikeMap.get(opinionId));
+					listenerLikeMap.remove(opinionId);
+					emitter.onSuccess(true);
 				}
 			}
-		}
-		return opinion;
+		});
 	}
 
-	public void unsubscribeToOpinions() {
-		if (!disposable.isDisposed()) {
-			disposable.dispose();
-		}
+	private Opinion createOpinion(String opinionId, Opinion data) {
+		return Opinion.Builder()
+				.opinionId(opinionId)
+				.userId(data.getUserId())
+				.userName(data.getUserName())
+				.urlPhotoProfile(data.getUrlPhotoProfile())
+				.urlPoliticalFlag(data.getUrlPoliticalFlag())
+				.content(data.getContent())
+				.urlOpinionImage(data.getUrlOpinionImage())
+				.dataTime(data.getDataTime())
+				.build();
 	}
 }

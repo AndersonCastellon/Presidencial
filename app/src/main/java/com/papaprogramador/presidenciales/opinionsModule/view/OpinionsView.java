@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import com.papaprogramador.presidenciales.R;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.Views.NewOpinion.NewOpinionView;
 import com.papaprogramador.presidenciales.commentsModule.view.CommentsViewClass;
-import com.papaprogramador.presidenciales.common.pojo.Like;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.opinionsModule.OpinionsContract;
 import com.papaprogramador.presidenciales.opinionsModule.presenter.OpinionsPresenter;
@@ -36,6 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsContract.Presenter> implements OpinionsContract.View,
 		SwipeRefreshLayout.OnRefreshListener, OnItemClickListener {
@@ -52,10 +51,8 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 
 	//TODO: Al eliminar una opinión, algunas del listado permiten ser eliminadas también aunque no sean del usuario actual
 	//TODO: Botón flotante que notifique que hay nuevas opiniones
-	//TODO: Juntar más el texto y los iconos de los botones inferiores
 	//TODO: Botón mostrar más en textos largos
 	//TODO: borde y separación entre opiniones
-	//TODO: Corregir error que poner el correo como nombre de usuario
 
 
 	@BindView(R.id.rv_opinions)
@@ -94,6 +91,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 		unbinder = ButterKnife.bind(this, view);
 		setContentView();
 		setRecyclerView();
+		getPresenter().getData(opinionsAdapter.getLastItemId());
 
 		rvOpinions.addOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
@@ -105,7 +103,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 
 				if (!mIsLoading && totalItemCount <= (lastVisibleItemPosition + 1)) {
 					requestRemoveLikeNotifiers();
-					getPresenter().getData(opinionsAdapter.getLastItemId(), opinionsAdapter.getItems());
+					getPresenter().getData(opinionsAdapter.getLastItemId());
 					requestAddLikeNotifiers();
 					mIsLoading = true;
 				}
@@ -115,16 +113,13 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	private void setRecyclerView() {
+		rvOpinions.setItemAnimator(new SlideInLeftAnimator());
 		opinionsAdapter = new OpinionsAdapter(getActivity(), this);
 		rvOpinions.setAdapter(opinionsAdapter);
 
 		layoutManager = new LinearLayoutManager(getActivity());
 		layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 		rvOpinions.setLayoutManager(layoutManager);
-
-		DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(rvOpinions.getContext(),
-				layoutManager.getOrientation());
-		rvOpinions.addItemDecoration(dividerItemDecoration);
 	}
 
 	private void setContentView() {
@@ -148,8 +143,9 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	@Override
 	public void onRefresh() {
 		requestRemoveLikeNotifiers();
-		getPresenter().getData(opinionsAdapter.getLastItemId(), opinionsAdapter.getItems());
+		getPresenter().getData(opinionsAdapter.getLastItemId());
 		requestAddLikeNotifiers();
+		onComplete();
 	}
 
 	@Override
@@ -161,6 +157,11 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 			contentView.setVisibility(View.VISIBLE);
 			loadingView.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void addAll(List<Opinion> opinions) {
+		opinionsAdapter.addAll(opinions);
 	}
 
 	@Override
@@ -179,11 +180,6 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	@Override
-	public void updateOpinionLike(String opinionId, String userId, boolean result) {
-		opinionsAdapter.updateOpinionLike(opinionId, userId, result);
-	}
-
-	@Override
 	public void updateOpinionLikeCounter(String opinionId, String userId, boolean result) {
 		opinionsAdapter.updateOpinionLikeCounter(opinionId, userId, result);
 	}
@@ -195,11 +191,21 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	@Override
+	public void requestAddOpinionNotifiers() {
+		getPresenter().addOpinionNotifiers();
+	}
+
+	@Override
+	public void requestRemoveOpinionNotifiers() {
+		getPresenter().removeOpinionNotifiers();
+	}
+
+	@Override
 	public void requestAddLikeNotifiers() {
 		List<Opinion> opinions = opinionsAdapter.getItems();
 		if (opinions != null) {
 			for (Opinion opinion : opinions) {
-				getPresenter().requestAddLikeNotifiers(opinion.getOpinionId());
+				getPresenter().addLikeNotifiers(opinion.getOpinionId());
 			}
 		}
 	}
@@ -209,7 +215,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 		List<Opinion> opinions = opinionsAdapter.getItems();
 		if (opinions != null) {
 			for (Opinion opinion : opinions) {
-				getPresenter().requestRemoveLikeNotifiers(opinion.getOpinionId());
+				getPresenter().removeLikeNotifiers(opinion.getOpinionId());
 			}
 		}
 	}
@@ -257,7 +263,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 				.setPositiveButton(R.string.opinion_dialog_remove_ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
-						getPresenter().removeOpinion(opinion);
+						getPresenter().deleteOpinion(opinion);
 					}
 				})
 				.setNegativeButton(R.string.common_dialog_cancel, null)
@@ -265,15 +271,10 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		getPresenter().onPause();
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
-		getPresenter().onResume(opinionsAdapter.getLastItemId(), opinionsAdapter.getItems());
+		getPresenter().getData(opinionsAdapter.getLastItemId());
+		requestAddOpinionNotifiers();
 		requestAddLikeNotifiers();
 	}
 
@@ -282,6 +283,7 @@ public class OpinionsView extends MvpFragment<OpinionsContract.View, OpinionsCon
 		super.onDestroyView();
 		unbinder.unbind();
 		requestRemoveLikeNotifiers();
+		requestRemoveOpinionNotifiers();
 		getPresenter().onDestroy();
 	}
 }

@@ -1,139 +1,216 @@
 package com.papaprogramador.presidenciales.opinionsModule.model;
 
 import android.support.v4.util.Pair;
-
 import com.papaprogramador.presidenciales.R;
-import com.papaprogramador.presidenciales.common.BasicErrorEventCallback;
-import com.papaprogramador.presidenciales.common.dataAccess.FirebaseUserAPI;
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 import com.papaprogramador.presidenciales.opinionsModule.OpinionsContract;
 import com.papaprogramador.presidenciales.opinionsModule.events.LikeEvent;
 import com.papaprogramador.presidenciales.opinionsModule.events.OpinionEvent;
-import com.papaprogramador.presidenciales.opinionsModule.model.dataAccess.FirebaseLikesDataSource;
-import com.papaprogramador.presidenciales.opinionsModule.model.dataAccess.LikeDataSource;
-import com.papaprogramador.presidenciales.opinionsModule.model.dataAccess.OpinionsEventListener;
 import com.papaprogramador.presidenciales.opinionsModule.model.dataAccess.FirebaseOpinionDataSource;
 import com.papaprogramador.presidenciales.common.pojo.Like;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class OpinionsInteractor implements OpinionsContract.Interactor {
 
-	private FirebaseOpinionDataSource firebaseOpinionDataSource;
-	private FirebaseLikesDataSource firebaseLikesDataSource;
-	private FirebaseUserAPI userAPI;
+	private FirebaseOpinionDataSource opinionDataSource;
 
 	public OpinionsInteractor() {
-		userAPI = FirebaseUserAPI.getInstance();
-		firebaseOpinionDataSource = new FirebaseOpinionDataSource();
-		firebaseLikesDataSource = new FirebaseLikesDataSource();
+		opinionDataSource = new FirebaseOpinionDataSource();
 	}
 
 	@Override
-	public void subscribeToOpinions(long lastOpinion, List<Opinion> opinionList) {
-		firebaseOpinionDataSource.subscribeToOpinions(lastOpinion,opinionList, new OpinionsEventListener() {
-			@Override
-			public void onChildAdded(final Opinion opinion) {
-				postEventOpinion(opinion, OpinionEvent.SUCCES_ADD);
-			}
+	public void getOpinions(long timeStamp) {
+		opinionDataSource.getOpinions(timeStamp)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new SingleObserver<List<Opinion>>() {
+					@Override
+					public void onSubscribe(Disposable d) {
+					}
 
-			@Override
-			public void onChildUpdated(Opinion opinion) {
-				postEventOpinion(opinion, OpinionEvent.SUCCES_UPDATE);
-			}
+					@Override
+					public void onSuccess(List<Opinion> opinionList) {
+						postEventOpinion(opinionList, OpinionEvent.INITIAL_DATA);
+					}
 
-			@Override
-			public void onChildRemoved(Opinion opinion) {
-				postEventOpinion(opinion, OpinionEvent.SUCCES_REMOVE);
-			}
-
-			@Override
-			public void onComplete() {
-				postEventOpinion(OpinionEvent.ON_COMPLETE);
-			}
-
-			@Override
-			public void onError(int resMsg) {
-				postEventOpinion(OpinionEvent.ERROR_SERVER, resMsg);
-			}
-		});
+					@Override
+					public void onError(Throwable e) {
+					}
+				});
 	}
 
 	@Override
-	public void unsubscribeToOpinions() {
-		firebaseOpinionDataSource.unsubscribeToOpinions();
+	public void addOpinionNotifier() {
+		opinionDataSource.addOpinionNotifier()
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new Observer<Pair<Boolean, Opinion>>() {
+					@Override
+					public void onSubscribe(Disposable d) {
+
+					}
+
+					@Override
+					public void onNext(Pair<Boolean, Opinion> pair) {
+						if (pair.first){
+							postEventOpinion(pair.second, OpinionEvent.SUCCES_ADD);
+						} else {
+							postEventOpinion(pair.second, OpinionEvent.SUCCES_REMOVE);
+						}
+					}
+
+					@Override
+					public void onError(Throwable e) {
+
+					}
+
+					@Override
+					public void onComplete() {
+
+					}
+				});
 	}
 
 	@Override
-	public void requestAddLikeNotifiers(String opinionId) {
-		firebaseLikesDataSource.addLikeNotifier(opinionId, new LikeDataSource.LikeNotifierListener() {
-			@Override
-			public void onSuccess(Pair<Like, Boolean> likePair) {
-				Like like = likePair.first;
-				if (!Objects.requireNonNull(like).getUserId().equals(userAPI.getUserId())) {
-					postEventLike(like, likePair.second ? LikeEvent.LIKE : LikeEvent.DISLIKE);
-				}
-			}
+	public void removeOpinionNotifier() {
+		opinionDataSource.removeOpinionNotifier()
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new SingleObserver<Boolean>() {
+					@Override
+					public void onSubscribe(Disposable d) {
 
-			@Override
-			public void onError(Exception e) {
-				postEventLike(R.string.error_server);
-			}
-		});
+					}
+					@Override
+					public void onSuccess(Boolean aBoolean) {
+
+					}
+
+					@Override
+					public void onError(Throwable e) {
+
+					}
+				});
 	}
 
 	@Override
-	public void requestRemoveLikeNotifiers(String opinionId) {
-		firebaseLikesDataSource.removeLikeNotifier(opinionId);
+	public void toggleLike(Like like) {
+		opinionDataSource.toggleLike(like)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new SingleObserver<Boolean>() {
+					@Override
+					public void onSubscribe(Disposable d) {
+
+					}
+
+					@Override
+					public void onSuccess(Boolean aBoolean) {
+						if (!aBoolean){
+							postEventLike(R.string.error_while_like, LikeEvent.ERROR);
+						}
+					}
+
+					@Override
+					public void onError(Throwable e) {
+
+					}
+				});
 	}
 
 	@Override
-	public void unsubscribeToLikes() {
-		firebaseLikesDataSource.unsubscribeToLikes();
+	public void addLikeNotifier(String opinionId) {
+		opinionDataSource.addLikeNotifier(opinionId)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new Observer<Pair<Like, Boolean>>() {
+					@Override
+					public void onSubscribe(Disposable d) {
+
+					}
+
+					@Override
+					public void onNext(Pair<Like, Boolean> pair) {
+						if (pair.second){
+							postEventLike(pair.first, LikeEvent.LIKE);
+						} else {
+							postEventLike(pair.first, LikeEvent.DISLIKE);
+						}
+					}
+
+					@Override
+					public void onError(Throwable e) {
+
+					}
+
+					@Override
+					public void onComplete() {
+
+					}
+				});
 	}
 
 	@Override
-	public void removeOpinion(Opinion opinion) {
-		firebaseOpinionDataSource.removeOpinion(opinion, new BasicErrorEventCallback() {
-			@Override
-			public void onSuccess() {
-				postEventOpinion(OpinionEvent.SUCCES_REMOVE);
-			}
+	public void removeLikeNotifier(String opinionId) {
+		opinionDataSource.removeLikeNotifier(opinionId)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new SingleObserver<Boolean>() {
+					@Override
+					public void onSubscribe(Disposable d) {
 
-			@Override
-			public void onError(int typeEvent, int resMsg) {
-				postEventOpinion(typeEvent, resMsg);
-			}
-		});
+					}
+
+					@Override
+					public void onSuccess(Boolean aBoolean) {
+
+					}
+
+					@Override
+					public void onError(Throwable e) {
+
+					}
+				});
 	}
 
 	@Override
-	public void onClickLike(final Like like) {
-		firebaseLikesDataSource.toggleLike(like, new LikeDataSource.ToggleLikeListener() {
-			@Override
-			public void onSuccess(boolean result) {
-				if (result) {
-					postEventLike(like, LikeEvent.SUCCES_ADD);
-				} else {
-					postEventLike(like, LikeEvent.SUCCES_REMOVE);
-				}
-			}
+	public void deleteOpinion(Opinion opinion) {
+		opinionDataSource.deleteOpinion(opinion)
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new SingleObserver<Boolean>() {
+					@Override
+					public void onSubscribe(Disposable d) {
 
-			@Override
-			public void onError(Exception e) {
-				postEventLike(R.string.error_server);
-			}
-		});
+					}
+
+					@Override
+					public void onSuccess(Boolean aBoolean) {
+						if (aBoolean){
+							postEventOpinion(OpinionEvent.SUCCES_REMOVE, R.string.delete_opinion);
+						} else {
+							postEventOpinion(OpinionEvent.ERROR_TO_REMOVE, R.string.error_while_delete_opinion);
+						}
+					}
+
+					@Override
+					public void onError(Throwable e) {
+
+					}
+				});
+	}
+
+	private void postEventLike(int resMsg, int typeEvent) {
+		postEventLike(null, typeEvent, resMsg);
 	}
 
 	private void postEventLike(int resMsg) {
@@ -152,20 +229,25 @@ public class OpinionsInteractor implements OpinionsContract.Interactor {
 		EventBus.getDefault().post(likeEvent);
 	}
 
+	private void postEventOpinion(List<Opinion> opinions, int typeEvent) {
+		postEventOpinion(opinions, null, typeEvent, 0);
+	}
+
 	private void postEventOpinion(int typeEvent) {
-		postEventOpinion(null, typeEvent, 0);
+		postEventOpinion(null, null, typeEvent, 0);
 	}
 
 	private void postEventOpinion(int typeEvent, int resMsg) {
-		postEventOpinion(null, typeEvent, resMsg);
+		postEventOpinion(null, null, typeEvent, resMsg);
 	}
 
 	private void postEventOpinion(Opinion opinion, int typeEvent) {
-		postEventOpinion(opinion, typeEvent, 0);
+		postEventOpinion(null, opinion, typeEvent, 0);
 	}
 
-	private void postEventOpinion(Opinion opinion, int typeEvent, int resMsg) {
+	private void postEventOpinion(List<Opinion> opinions, Opinion opinion, int typeEvent, int resMsg) {
 		OpinionEvent opinionEvent = new OpinionEvent();
+		opinionEvent.setOpinions(opinions);
 		opinionEvent.setOpinion(opinion);
 		opinionEvent.setTypeEvent(typeEvent);
 		opinionEvent.setResMsg(resMsg);

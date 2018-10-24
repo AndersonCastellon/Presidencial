@@ -33,15 +33,7 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 	}
 
 	@Override
-	public void onPause() {
-		opinionsInteractor.unsubscribeToOpinions();
-		opinionsInteractor.unsubscribeToLikes();
-	}
-
-	@Override
-	public void onResume(final long lastOpinion, List<Opinion> opinionList) {
-		opinionsInteractor.subscribeToOpinions(lastOpinion, opinionList);
-
+	public void onResume() {
 	}
 
 	@Override
@@ -50,23 +42,33 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 	}
 
 	@Override
-	public void getData(final long lastOpinion, final List<Opinion> opinionList) {
+	public void addOpinionNotifiers() {
+		opinionsInteractor.addOpinionNotifier();
+	}
+
+	@Override
+	public void removeOpinionNotifiers() {
+		opinionsInteractor.removeOpinionNotifier();
+	}
+
+	@Override
+	public void getData(final long timeStamp) {
 		ifViewAttached(new ViewAction<OpinionsContract.View>() {
 			@Override
 			public void run(@NonNull OpinionsContract.View view) {
-				opinionsInteractor.subscribeToOpinions(lastOpinion, opinionList);
+				opinionsInteractor.getOpinions(timeStamp);
 			}
 		});
 	}
 
 	@Override
-	public void requestAddLikeNotifiers(String opinionId) {
-		opinionsInteractor.requestAddLikeNotifiers(opinionId);
+	public void addLikeNotifiers(String opinionId) {
+		opinionsInteractor.addLikeNotifier(opinionId);
 	}
 
 	@Override
-	public void requestRemoveLikeNotifiers(String opinionId) {
-		opinionsInteractor.requestRemoveLikeNotifiers(opinionId);
+	public void removeLikeNotifiers(String opinionId) {
+		opinionsInteractor.removeLikeNotifier(opinionId);
 	}
 
 	@Override
@@ -75,12 +77,12 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 				.userId(firebaseUserAPI.getUserId())
 				.build();
 
-		opinionsInteractor.onClickLike(like);
+		opinionsInteractor.toggleLike(like);
 	}
 
 	@Override
-	public void removeOpinion(final Opinion opinion) {
-		opinionsInteractor.removeOpinion(opinion);
+	public void deleteOpinion(final Opinion opinion) {
+		opinionsInteractor.deleteOpinion(opinion);
 	}
 
 	@Subscribe
@@ -92,12 +94,6 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 				String opinionId = event.getLike().getOpinionId();
 				String userId = event.getLike().getUserId();
 				switch (event.getTypeEvent()) {
-					case LikeEvent.SUCCES_ADD:
-						view.updateOpinionLike(opinionId, userId, true);
-						break;
-					case LikeEvent.SUCCES_REMOVE:
-						view.updateOpinionLike(opinionId, userId, false);
-						break;
 					case LikeEvent.LIKE:
 						view.updateOpinionLikeCounter(opinionId, userId, true);
 						break;
@@ -120,6 +116,11 @@ public class OpinionsPresenter extends MvpBasePresenter<OpinionsContract.View>
 			public void run(@NonNull OpinionsContract.View view) {
 				view.showProgress(false);
 				switch (event.getTypeEvent()) {
+					case OpinionEvent.INITIAL_DATA:
+						view.addAll(event.getOpinions());
+						view.requestAddOpinionNotifiers();
+						view.requestAddLikeNotifiers();
+						break;
 					case OpinionEvent.SUCCES_ADD:
 						view.requestRemoveLikeNotifiers();
 						view.add(event.getOpinion());

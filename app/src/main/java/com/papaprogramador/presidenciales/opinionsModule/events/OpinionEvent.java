@@ -2,8 +2,11 @@ package com.papaprogramador.presidenciales.opinionsModule.events;
 
 import com.papaprogramador.presidenciales.common.pojo.Opinion;
 
+import java.util.List;
+
 public class OpinionEvent {
 
+	public static final int INITIAL_DATA = 100;
 	public static final int SUCCES_ADD = 1;
 	public static final int SUCCES_UPDATE = 2;
 	public static final int SUCCES_REMOVE = 3;
@@ -11,6 +14,7 @@ public class OpinionEvent {
 	public static final int ERROR_TO_REMOVE = 5;
 	public static final int ON_COMPLETE = 6;
 
+	private List<Opinion> opinions;
 	private Opinion opinion;
 	private int typeEvent;
 	private int resMsg;
@@ -40,5 +44,13 @@ public class OpinionEvent {
 
 	public void setResMsg(int resMsg) {
 		this.resMsg = resMsg;
+	}
+
+	public List<Opinion> getOpinions() {
+		return opinions;
+	}
+
+	public void setOpinions(List<Opinion> opinions) {
+		this.opinions = opinions;
 	}
 }

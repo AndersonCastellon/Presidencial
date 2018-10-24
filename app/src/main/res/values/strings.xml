@@ -152,6 +152,9 @@
     <string name="success_delete_comment">Comentario eliminado correctamente</string>
     <string name="error_while_delete_comment">No puedes borrar este comentario</string>
     <string name="error_red">Error de red</string>
+    <string name="error_while_like">Error al dar like, intentalo de nuevo</string>
+    <string name="delete_opinion">Opinion borrada con éxito</string>
+    <string name="error_while_delete_opinion">Error al eliminar la opinión</string>
 
     <plurals name="likes_count">
         <item quantity="one">%d like</item>

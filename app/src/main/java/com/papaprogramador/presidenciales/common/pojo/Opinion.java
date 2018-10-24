@@ -22,8 +22,6 @@ public class Opinion implements Comparable<Opinion> {
 	private String urlPhotoProfile;
 	private String urlPoliticalFlag;
 	private List<String> userLikes;
-	private List<String> userComments;
-	private List<String> userShares;
 
 
 	public Opinion() {
@@ -40,8 +38,6 @@ public class Opinion implements Comparable<Opinion> {
 		this.urlPhotoProfile = builder.urlPhotoProfile;
 		this.urlPoliticalFlag = builder.urlPoliticalFlag;
 		this.userLikes = builder.userLikes;
-		this.userComments = builder.userComments;
-		this.userShares = builder.userShares;
 	}
 
 	public long getDataTime() {
@@ -86,12 +82,8 @@ public class Opinion implements Comparable<Opinion> {
 		return userLikes;
 	}
 
-	public List<String> getUserComments() {
-		return userComments;
-	}
-
-	public List<String> getUserShares() {
-		return userShares;
+	public void setUserLikes(List<String> userLikes) {
+		this.userLikes = userLikes;
 	}
 
 	public void addUserLikeId(String userLikeId) {
@@ -128,8 +120,6 @@ public class Opinion implements Comparable<Opinion> {
 		private String urlPhotoProfile;
 		private String urlPoliticalFlag;
 		private List<String> userLikes;
-		private List<String> userComments;
-		private List<String> userShares;
 
 		private Builder() {
 		}
@@ -176,16 +166,6 @@ public class Opinion implements Comparable<Opinion> {
 
 		public Builder userLikes(List<String> userLikes) {
 			this.userLikes = userLikes;
-			return this;
-		}
-
-		public Builder userComments(List<String> userComments) {
-			this.userComments = userComments;
-			return this;
-		}
-
-		public Builder userShares(List<String> userShares) {
-			this.userShares = userShares;
 			return this;
 		}
 

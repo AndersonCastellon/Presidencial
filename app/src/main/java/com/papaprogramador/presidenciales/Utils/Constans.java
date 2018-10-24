@@ -60,5 +60,5 @@ public class Constans {
 	public static final String EXTRA_OPINION = "EXTRA_OPINION";
 
 
-	public static int OPINIONS_PER_PAGE = 5;
+	public static int OPINIONS_PER_PAGE = 50;
 }
