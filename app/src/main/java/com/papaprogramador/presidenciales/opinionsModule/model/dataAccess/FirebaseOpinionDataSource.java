@@ -14,7 +14,6 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.papaprogramador.presidenciales.Utils.Constans;
 import com.papaprogramador.presidenciales.common.ChangeEventListener;
-import com.papaprogramador.presidenciales.common.LikeValueEventListener;
 import com.papaprogramador.presidenciales.common.OpinionValueEventListener;
 import com.papaprogramador.presidenciales.common.dataAccess.FirebaseRealtimeDatabaseAPI;
 import com.papaprogramador.presidenciales.common.pojo.Like;
@@ -58,51 +57,15 @@ public class FirebaseOpinionDataSource implements OpinionDataSource {
 
 				final Query query;
 				if (timeStamp == 0) {
-					query = getOpinionsReference().orderByChild(Opinion.ORDER_BY).limitToLast(Constans.OPINIONS_PER_PAGE);
+					query = getOpinionsReference().orderByChild(Opinion.ORDER_BY)
+							.limitToLast(Constans.OPINIONS_PER_PAGE);
 				} else {
-					query = getOpinionsReference().orderByChild(Opinion.ORDER_BY).endAt(timeStamp).limitToLast(Constans.OPINIONS_PER_PAGE);
+					query = getOpinionsReference().orderByChild(Opinion.ORDER_BY)
+							.endAt(timeStamp).limitToLast(Constans.OPINIONS_PER_PAGE);
 				}
 
-				query.addValueEventListener(new ValueEventListener() {
-					@Override
-					public void onDataChange(final DataSnapshot opinionSnapshot) {
-						query.removeEventListener(this);
-
-						for (final DataSnapshot dataOpinion : opinionSnapshot.getChildren()) {
-							final DatabaseReference likeRef = getOpinionsReference().child(dataOpinion.getKey())
-									.child(PATH_LIKES);
-							likeRef.addValueEventListener(new ValueEventListener() {
-								@Override
-								public void onDataChange(DataSnapshot likeSnapshot) {
-									likeRef.removeEventListener(this);
-									List<String> userLikes = new ArrayList<>();
-									for (DataSnapshot dataLike : likeSnapshot.getChildren()) {
-										userLikes.add(dataLike.getKey());
-									}
-									List<Opinion> opinions = new ArrayList<>();
-
-									Opinion opinion = dataOpinion.getValue(Opinion.class);
-									if (opinion != null) {
-										opinion.setOpinionId(dataOpinion.getKey());
-										opinion.setUserLikes(userLikes);
-									}
-									emitter.onSuccess(opinions);
-								}
-
-								@Override
-								public void onCancelled(DatabaseError databaseError) {
-
-								}
-							});
-						}
-
-					}
-
-					@Override
-					public void onCancelled(DatabaseError databaseError) {
-
-					}
-				});
+				OpinionValueEventListener listener = new OpinionValueEventListener(query);
+				emitter.onSuccess(listener.getOpinions());
 			}
 		});
 	}
