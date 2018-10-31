@@ -12,7 +12,7 @@ import io.reactivex.Single;
 
 public interface OpinionDataSource {
 
-	Single<List<Opinion>> getOpinions(long timeStamp);
+	Observable<List<Opinion>> getOpinions(long timeStamp);
 
 	Observable<Pair<Boolean, Opinion>> addOpinionNotifier();
 

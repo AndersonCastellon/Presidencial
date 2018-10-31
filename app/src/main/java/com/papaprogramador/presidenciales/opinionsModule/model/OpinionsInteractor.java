@@ -32,18 +32,23 @@ public class OpinionsInteractor implements OpinionsContract.Interactor {
 		opinionDataSource.getOpinions(timeStamp)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new SingleObserver<List<Opinion>>() {
+				.subscribe(new Observer<List<Opinion>>() {
 					@Override
 					public void onSubscribe(Disposable d) {
 					}
 
 					@Override
-					public void onSuccess(List<Opinion> opinionList) {
+					public void onNext(List<Opinion> opinionList) {
 						postEventOpinion(opinionList, OpinionEvent.INITIAL_DATA);
 					}
 
 					@Override
 					public void onError(Throwable e) {
+					}
+
+					@Override
+					public void onComplete() {
+
 					}
 				});
 	}
